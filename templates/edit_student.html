@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Santri - {{ student.nama }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Page Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>
+                    <i class="bi bi-pencil-square"></i> Edit Data Santri
+                </h2>
+                <a href="{{ url_for('view_students') }}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Kembali ke Daftar
+                </a>
+            </div>
+
+            <!-- Current Data Info -->
+            <div class="alert alert-info">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    <div>
+                        <strong>Data saat ini:</strong> {{ student.nama }} | 
+                        Nilai: {{ student.nilai_hafalan }} | 
+                        Input: {{ student.tanggal_input.strftime('%d/%m/%Y %H:%M') }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-person-gear"></i> Edit Formulir Data Santri
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('edit_student', student_id=student.id) }}">
+                        <!-- Nama Santri -->
+                        <div class="mb-4">
+                            <label for="nama" class="form-label">
+                                <i class="bi bi-person"></i> Nama Santri <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" 
+                                   class="form-control form-control-lg" 
+                                   id="nama" 
+                                   name="nama" 
+                                   value="{{ student.nama }}"
+                                   placeholder="Masukkan nama lengkap santri"
+                                   maxlength="100"
+                                   required>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle"></i> Nama santri maksimal 100 karakter
+                            </div>
+                        </div>
+
+                        <!-- Nilai Hafalan -->
+                        <div class="mb-4">
+                            <label for="nilai_hafalan" class="form-label">
+                                <i class="bi bi-award"></i> Nilai Hafalan <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <input type="number" 
+                                       class="form-control form-control-lg" 
+                                       id="nilai_hafalan" 
+                                       name="nilai_hafalan" 
+                                       value="{{ student.nilai_hafalan }}"
+                                       placeholder="0"
+                                       min="0" 
+                                       max="100"
+                                       required>
+                                <span class="input-group-text">/ 100</span>
+                            </div>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle"></i> Nilai hafalan dalam rentang 0-100
+                            </div>
+                        </div>
+
+                        <!-- Catatan -->
+                        <div class="mb-4">
+                            <label for="catatan" class="form-label">
+                                <i class="bi bi-chat-text"></i> Catatan (Opsional)
+                            </label>
+                            <textarea class="form-control" 
+                                      id="catatan" 
+                                      name="catatan" 
+                                      rows="4"
+                                      placeholder="Tambahkan catatan atau komentar tentang progress hafalan santri..."
+                                      maxlength="500">{{ student.catatan or '' }}</textarea>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle"></i> Catatan maksimal 500 karakter
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('view_students') }}" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-x-circle"></i> Batal
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Simpan Perubahan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Change History Info -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="bi bi-clock-history"></i> Informasi Data
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>Tanggal Input Pertama:</strong><br>
+                            <span class="text-muted">{{ student.tanggal_input.strftime('%d %B %Y, %H:%M') }}</span>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>ID Santri:</strong><br>
+                            <span class="text-muted">#{{ student.id }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warning Card -->
+            <div class="alert alert-warning mt-4">
+                <div class="d-flex align-items-start">
+                    <i class="bi bi-exclamation-triangle-fill me-2 mt-1"></i>
+                    <div>
+                        <strong>Peringatan:</strong>
+                        <ul class="mb-0 mt-1">
+                            <li>Pastikan data yang diubah sudah benar sebelum menyimpan</li>
+                            <li>Perubahan data akan langsung tersimpan di database</li>
+                            <li>Tanggal input asli akan tetap dipertahankan</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Auto-format nama santri (capitalize first letter of each word)
+document.getElementById('nama').addEventListener('blur', function() {
+    let nama = this.value;
+    nama = nama.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+    this.value = nama;
+});
+
+// Real-time character counter for catatan
+document.getElementById('catatan').addEventListener('input', function() {
+    const maxLength = 500;
+    const currentLength = this.value.length;
+    const remaining = maxLength - currentLength;
+    
+    let helpText = this.parentElement.querySelector('.form-text');
+    if (remaining <= 50) {
+        helpText.innerHTML = `<i class="bi bi-exclamation-triangle"></i> ${remaining} karakter tersisa`;
+        helpText.className = 'form-text text-warning';
+    } else {
+        helpText.innerHTML = '<i class="bi bi-info-circle"></i> Catatan maksimal 500 karakter';
+        helpText.className = 'form-text';
+    }
+});
+
+// Score indicator
+document.getElementById('nilai_hafalan').addEventListener('input', function() {
+    const score = parseInt(this.value);
+    let helpText = this.parentElement.parentElement.querySelector('.form-text');
+    
+    if (score >= 90) {
+        helpText.innerHTML = '<i class="bi bi-emoji-smile"></i> Sangat Baik! (90-100)';
+        helpText.className = 'form-text text-success';
+    } else if (score >= 75) {
+        helpText.innerHTML = '<i class="bi bi-emoji-neutral"></i> Baik (75-89)';
+        helpText.className = 'form-text text-warning';
+    } else if (score >= 60) {
+        helpText.innerHTML = '<i class="bi bi-emoji-frown"></i> Cukup (60-74)';
+        helpText.className = 'form-text text-info';
+    } else if (score >= 0) {
+        helpText.innerHTML = '<i class="bi bi-emoji-frown"></i> Perlu Perbaikan (< 60)';
+        helpText.className = 'form-text text-danger';
+    } else {
+        helpText.innerHTML = '<i class="bi bi-info-circle"></i> Nilai hafalan dalam rentang 0-100';
+        helpText.className = 'form-text';
+    }
+});
+
+// Initialize current score indicator
+document.getElementById('nilai_hafalan').dispatchEvent(new Event('input'));
+
+// Confirm before leaving if form has changes
+let originalFormData = new FormData(document.querySelector('form'));
+window.addEventListener('beforeunload', function (e) {
+    let currentFormData = new FormData(document.querySelector('form'));
+    let hasChanges = false;
+    
+    for (let [key, value] of currentFormData.entries()) {
+        if (originalFormData.get(key) !== value) {
+            hasChanges = true;
+            break;
+        }
+    }
+    
+    if (hasChanges) {
+        e.preventDefault();
+        e.returnValue = '';
+    }
+});
+</script>
+{% endblock %}

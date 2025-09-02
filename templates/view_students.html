@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+
+{% block title %}Data Santri - Sistem Manajemen Hafalan Santri{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            <i class="bi bi-list-ul"></i> Data Santri 
+            {% if students %}
+                <small class="text-muted">({{ students|length }} santri)</small>
+            {% endif %}
+        </h2>
+        <a href="{{ url_for('add_student') }}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Tambah Santri
+        </a>
+    </div>
+
+    <!-- Search and Filter Card -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h6 class="mb-0">
+                <i class="bi bi-funnel"></i> Pencarian & Filter
+            </h6>
+        </div>
+        <div class="card-body">
+            <form method="GET" action="{{ url_for('view_students') }}">
+                <div class="row g-3">
+                    <!-- Search -->
+                    <div class="col-md-4">
+                        <label for="search" class="form-label">Cari Nama Santri</label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="search" 
+                               name="search" 
+                               value="{{ search or '' }}"
+                               placeholder="Masukkan nama santri...">
+                    </div>
+
+                    <!-- Min Score -->
+                    <div class="col-md-2">
+                        <label for="min_score" class="form-label">Nilai Min</label>
+                        <input type="number" 
+                               class="form-control" 
+                               id="min_score" 
+                               name="min_score" 
+                               value="{{ min_score or '' }}"
+                               min="0" 
+                               max="100"
+                               placeholder="0">
+                    </div>
+
+                    <!-- Max Score -->
+                    <div class="col-md-2">
+                        <label for="max_score" class="form-label">Nilai Max</label>
+                        <input type="number" 
+                               class="form-control" 
+                               id="max_score" 
+                               name="max_score" 
+                               value="{{ max_score or '' }}"
+                               min="0" 
+                               max="100"
+                               placeholder="100">
+                    </div>
+
+                    <!-- Sort By -->
+                    <div class="col-md-2">
+                        <label for="sort_by" class="form-label">Urutkan</label>
+                        <select class="form-select" id="sort_by" name="sort_by">
+                            <option value="tanggal_input" {{ 'selected' if sort_by == 'tanggal_input' }}>Tanggal</option>
+                            <option value="nama" {{ 'selected' if sort_by == 'nama' }}>Nama</option>
+                            <option value="nilai_hafalan" {{ 'selected' if sort_by == 'nilai_hafalan' }}>Nilai</option>
+                        </select>
+                    </div>
+
+                    <!-- Sort Order -->
+                    <div class="col-md-2">
+                        <label for="sort_order" class="form-label">Urutan</label>
+                        <select class="form-select" id="sort_order" name="sort_order">
+                            <option value="desc" {{ 'selected' if sort_order == 'desc' }}>Terbaru</option>
+                            <option value="asc" {{ 'selected' if sort_order == 'asc' }}>Terlama</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-search"></i> Cari
+                        </button>
+                        <a href="{{ url_for('view_students') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-clockwise"></i> Reset
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Students Table -->
+    {% if students %}
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Santri</th>
+                            <th>Nilai Hafalan</th>
+                            <th>Status</th>
+                            <th>Tanggal Input</th>
+                            <th>Catatan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>
+                                <strong>{{ student.nama }}</strong>
+                            </td>
+                            <td>
+                                <span class="badge fs-6
+                                    {% if student.nilai_hafalan >= 90 %}bg-success
+                                    {% elif student.nilai_hafalan >= 75 %}bg-warning
+                                    {% elif student.nilai_hafalan >= 60 %}bg-info
+                                    {% else %}bg-danger{% endif %}">
+                                    {{ student.nilai_hafalan }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if student.nilai_hafalan >= 90 %}
+                                    <span class="badge bg-success">Sangat Baik</span>
+                                {% elif student.nilai_hafalan >= 75 %}
+                                    <span class="badge bg-warning">Baik</span>
+                                {% elif student.nilai_hafalan >= 60 %}
+                                    <span class="badge bg-info">Cukup</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Perlu Perbaikan</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <small class="text-muted">
+                                    {{ student.tanggal_input.strftime('%d/%m/%Y') }}<br>
+                                    {{ student.tanggal_input.strftime('%H:%M') }}
+                                </small>
+                            </td>
+                            <td>
+                                {% if student.catatan %}
+                                    <span class="text-muted" 
+                                          data-bs-toggle="tooltip" 
+                                          data-bs-placement="top" 
+                                          title="{{ student.catatan }}">
+                                        {{ student.catatan[:30] }}{% if student.catatan|length > 30 %}...{% endif %}
+                                    </span>
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{{ url_for('edit_student', student_id=student.id) }}" 
+                                       class="btn btn-outline-primary btn-sm"
+                                       data-bs-toggle="tooltip" 
+                                       title="Edit Data">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <button type="button" 
+                                            class="btn btn-outline-danger btn-sm"
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#deleteModal{{ student.id }}"
+                                            title="Hapus Data">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Delete Confirmation Modal -->
+                                <div class="modal fade" id="deleteModal{{ student.id }}" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">
+                                                    <i class="bi bi-exclamation-triangle text-danger"></i> 
+                                                    Konfirmasi Hapus
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Apakah Anda yakin ingin menghapus data santri:</p>
+                                                <div class="alert alert-warning">
+                                                    <strong>{{ student.nama }}</strong><br>
+                                                    <small>Nilai: {{ student.nilai_hafalan }} | Input: {{ student.tanggal_input.strftime('%d/%m/%Y %H:%M') }}</small>
+                                                </div>
+                                                <p class="text-danger">
+                                                    <i class="bi bi-exclamation-triangle"></i> 
+                                                    Data yang dihapus tidak dapat dikembalikan!
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    <i class="bi bi-x-circle"></i> Batal
+                                                </button>
+                                                <form method="POST" 
+                                                      action="{{ url_for('delete_student', student_id=student.id) }}" 
+                                                      style="display: inline;">
+                                                    <button type="submit" class="btn btn-danger">
+                                                        <i class="bi bi-trash"></i> Hapus
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <!-- Empty State -->
+    <div class="card">
+        <div class="card-body text-center py-5">
+            <div class="text-muted mb-3">
+                <i class="bi bi-inbox" style="font-size: 4rem;"></i>
+            </div>
+            {% if search or min_score or max_score %}
+                <h4 class="text-muted">Tidak Ada Data yang Sesuai</h4>
+                <p class="text-muted mb-4">Tidak ditemukan santri yang sesuai dengan kriteria pencarian Anda.</p>
+                <a href="{{ url_for('view_students') }}" class="btn btn-outline-primary me-2">
+                    <i class="bi bi-arrow-clockwise"></i> Reset Filter
+                </a>
+            {% else %}
+                <h4 class="text-muted">Belum Ada Data Santri</h4>
+                <p class="text-muted mb-4">Mulai dengan menambahkan data santri pertama Anda.</p>
+            {% endif %}
+            <a href="{{ url_for('add_student') }}" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Tambah Santri
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+// Initialize tooltips
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl);
+});
+
+// Auto-submit form when sort options change
+document.getElementById('sort_by').addEventListener('change', function() {
+    this.form.submit();
+});
+
+document.getElementById('sort_order').addEventListener('change', function() {
+    this.form.submit();
+});
+</script>
+{% endblock %}

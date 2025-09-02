@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}Beranda - Sistem Manajemen Hafalan Santri{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="bg-primary rounded p-4 text-center">
+                <h1 class="display-4 text-white mb-3">
+                    <i class="bi bi-book"></i> Sistem Manajemen Hafalan Santri
+                </h1>
+                <p class="lead text-white mb-4">Platform digital untuk membantu guru mengelola dan memantau progress hafalan para santri dengan mudah dan efisien.</p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="{{ url_for('add_student') }}" class="btn btn-light btn-lg">
+                        <i class="bi bi-plus-circle"></i> Tambah Data Santri
+                    </a>
+                    <a href="{{ url_for('view_students') }}" class="btn btn-outline-light btn-lg">
+                        <i class="bi bi-list-ul"></i> Lihat Semua Data
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-5">
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="text-primary mb-3">
+                        <i class="bi bi-people-fill" style="font-size: 3rem;"></i>
+                    </div>
+                    <h2 class="card-title">{{ total_students }}</h2>
+                    <p class="card-text text-muted">Total Santri Terdaftar</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="text-success mb-3">
+                        <i class="bi bi-graph-up" style="font-size: 3rem;"></i>
+                    </div>
+                    <h2 class="card-title">{{ avg_score }}</h2>
+                    <p class="card-text text-muted">Rata-rata Nilai Hafalan</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Students -->
+    {% if recent_students %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-clock-history"></i> Data Santri Terbaru
+                    </h5>
+                    <a href="{{ url_for('view_students') }}" class="btn btn-outline-primary btn-sm">
+                        Lihat Semua <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nama Santri</th>
+                                    <th>Nilai Hafalan</th>
+                                    <th>Tanggal Input</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in recent_students %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ student.nama }}</strong>
+                                    </td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if student.nilai_hafalan >= 90 %}bg-success
+                                            {% elif student.nilai_hafalan >= 75 %}bg-warning
+                                            {% else %}bg-danger{% endif %}">
+                                            {{ student.nilai_hafalan }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <small class="text-muted">
+                                            {{ student.tanggal_input.strftime('%d/%m/%Y %H:%M') }}
+                                        </small>
+                                    </td>
+                                    <td>
+                                        {% if student.nilai_hafalan >= 90 %}
+                                            <span class="badge bg-success">Sangat Baik</span>
+                                        {% elif student.nilai_hafalan >= 75 %}
+                                            <span class="badge bg-warning">Baik</span>
+                                        {% elif student.nilai_hafalan >= 60 %}
+                                            <span class="badge bg-info">Cukup</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Perlu Perbaikan</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <div class="text-muted mb-3">
+                        <i class="bi bi-inbox" style="font-size: 4rem;"></i>
+                    </div>
+                    <h4 class="text-muted">Belum Ada Data Santri</h4>
+                    <p class="text-muted mb-4">Mulai dengan menambahkan data santri pertama Anda.</p>
+                    <a href="{{ url_for('add_student') }}" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Tambah Santri Pertama
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Features Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3 class="text-center mb-4">Fitur Utama</h3>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="text-primary mb-3">
+                        <i class="bi bi-plus-circle-fill" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h5 class="card-title">Input Data Mudah</h5>
+                    <p class="card-text">Form sederhana untuk menginput nama santri dan nilai hafalan dengan validasi otomatis.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="text-success mb-3">
+                        <i class="bi bi-search" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h5 class="card-title">Pencarian & Filter</h5>
+                    <p class="card-text">Cari santri berdasarkan nama dan filter berdasarkan rentang nilai untuk analisis yang lebih baik.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="text-info mb-3">
+                        <i class="bi bi-graph-up" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h5 class="card-title">Monitoring Progress</h5>
+                    <p class="card-text">Pantau progress hafalan santri dengan statistik otomatis dan tampilan yang informatif.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

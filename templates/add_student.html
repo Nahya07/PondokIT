@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}Tambah Santri - Sistem Manajemen Hafalan Santri{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Page Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>
+                    <i class="bi bi-plus-circle"></i> Tambah Data Santri Baru
+                </h2>
+                <a href="{{ url_for('view_students') }}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Kembali ke Daftar
+                </a>
+            </div>
+
+            <!-- Form Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-person-plus"></i> Formulir Data Santri
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('add_student') }}">
+                        <!-- Nama Santri -->
+                        <div class="mb-4">
+                            <label for="nama" class="form-label">
+                                <i class="bi bi-person"></i> Nama Santri <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" 
+                                   class="form-control form-control-lg" 
+                                   id="nama" 
+                                   name="nama" 
+                                   placeholder="Masukkan nama lengkap santri"
+                                   maxlength="100"
+                                   required>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle"></i> Nama santri maksimal 100 karakter
+                            </div>
+                        </div>
+
+                        <!-- Nilai Hafalan -->
+                        <div class="mb-4">
+                            <label for="nilai_hafalan" class="form-label">
+                                <i class="bi bi-award"></i> Nilai Hafalan <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <input type="number" 
+                                       class="form-control form-control-lg" 
+                                       id="nilai_hafalan" 
+                                       name="nilai_hafalan" 
+                                       placeholder="0"
+                                       min="0" 
+                                       max="100"
+                                       required>
+                                <span class="input-group-text">/ 100</span>
+                            </div>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle"></i> Nilai hafalan dalam rentang 0-100
+                            </div>
+                        </div>
+
+                        <!-- Catatan -->
+                        <div class="mb-4">
+                            <label for="catatan" class="form-label">
+                                <i class="bi bi-chat-text"></i> Catatan (Opsional)
+                            </label>
+                            <textarea class="form-control" 
+                                      id="catatan" 
+                                      name="catatan" 
+                                      rows="4"
+                                      placeholder="Tambahkan catatan atau komentar tentang progress hafalan santri..."
+                                      maxlength="500"></textarea>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle"></i> Catatan maksimal 500 karakter
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-x-circle"></i> Batal
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Simpan Data
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Help Card -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="bi bi-question-circle"></i> Panduan Pengisian
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="bi bi-person-check"></i> Nama Santri</h6>
+                            <ul class="list-unstyled text-muted small">
+                                <li>• Masukkan nama lengkap santri</li>
+                                <li>• Pastikan ejaan nama sudah benar</li>
+                                <li>• Maksimal 100 karakter</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="bi bi-trophy"></i> Nilai Hafalan</h6>
+                            <ul class="list-unstyled text-muted small">
+                                <li>• Rentang nilai: 0-100</li>
+                                <li>• 90-100: Sangat Baik</li>
+                                <li>• 75-89: Baik</li>
+                                <li>• 60-74: Cukup</li>
+                                <li>• < 60: Perlu Perbaikan</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Auto-format nama santri (capitalize first letter of each word)
+document.getElementById('nama').addEventListener('blur', function() {
+    let nama = this.value;
+    nama = nama.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+    this.value = nama;
+});
+
+// Real-time character counter for catatan
+document.getElementById('catatan').addEventListener('input', function() {
+    const maxLength = 500;
+    const currentLength = this.value.length;
+    const remaining = maxLength - currentLength;
+    
+    let helpText = this.parentElement.querySelector('.form-text');
+    if (remaining <= 50) {
+        helpText.innerHTML = `<i class="bi bi-exclamation-triangle"></i> ${remaining} karakter tersisa`;
+        helpText.className = 'form-text text-warning';
+    } else {
+        helpText.innerHTML = '<i class="bi bi-info-circle"></i> Catatan maksimal 500 karakter';
+        helpText.className = 'form-text';
+    }
+});
+
+// Score indicator
+document.getElementById('nilai_hafalan').addEventListener('input', function() {
+    const score = parseInt(this.value);
+    let helpText = this.parentElement.parentElement.querySelector('.form-text');
+    
+    if (score >= 90) {
+        helpText.innerHTML = '<i class="bi bi-emoji-smile"></i> Sangat Baik! (90-100)';
+        helpText.className = 'form-text text-success';
+    } else if (score >= 75) {
+        helpText.innerHTML = '<i class="bi bi-emoji-neutral"></i> Baik (75-89)';
+        helpText.className = 'form-text text-warning';
+    } else if (score >= 60) {
+        helpText.innerHTML = '<i class="bi bi-emoji-frown"></i> Cukup (60-74)';
+        helpText.className = 'form-text text-info';
+    } else if (score >= 0) {
+        helpText.innerHTML = '<i class="bi bi-emoji-frown"></i> Perlu Perbaikan (< 60)';
+        helpText.className = 'form-text text-danger';
+    } else {
+        helpText.innerHTML = '<i class="bi bi-info-circle"></i> Nilai hafalan dalam rentang 0-100';
+        helpText.className = 'form-text';
+    }
+});
+</script>
+{% endblock %}
