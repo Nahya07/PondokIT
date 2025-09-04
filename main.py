@@ -1,15 +1,30 @@
-from flask import Flask, render_template, request, jsonify
+import os
+from flask import Flask, render_template, request, jsonify, redirect, url_for
+from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-# Ini adalah 'database' sementara yang disimpan di memori server.
-# SANGAT PENTING: Untuk penggunaan permanen, ganti ini dengan database sungguhan seperti PostgreSQL.
-# Menggunakan variabel ini akan MENGHILANGKAN SEMUA data saat server direstart!
+# Tambahkan SECRET_KEY untuk manajemen sesi
+# GANTI INI dengan kode rahasia yang kuat!
+app.secret_key = 'anda-harus-mengganti-ini-dengan-kode-rahasia-yang-kuat'
+
+# Konfigurasi folder tempat file akan disimpan
+UPLOAD_FOLDER = 'static/uploads'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Batasan untuk jenis file yang diizinkan
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+# --- 'database' sementara ---
 app_data = {
     'pondoks': [
         {
             'pondokId': "PPTI#1",
-            'password': "123",
+            'password_hash': generate_password_hash("123"), # Kata sandi sudah di-hash
             'pondokName': "PONDOK PESANTREN TAHFIDZ INTERNASIONAL",
             'data': {
                 'santri': [
@@ -28,19 +43,25 @@ app_data = {
                 ]
             }
         }
-    ]
+    ],
+    'galeri': [] # Bagian baru untuk menyimpan daftar foto
 }
 
-# Fungsi utilitas untuk menemukan pondok berdasarkan ID
+# --- Fungsi utilitas ---
 def find_pondok(pondok_id):
     return next((p for p in app_data['pondoks'] if p['pondokId'].lower() == pondok_id.lower()), None)
 
+def allowed_file(filename):
+    """Fungsi untuk memeriksa ekstensi file yang diizinkan."""
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 # --- ROUTES & API ENDPOINTS ---
 
-# Route utama untuk melayani berkas index.html
 @app.route('/')
 def index():
-    return render_template('index.html')
+    """Menampilkan halaman utama dengan formulir unggah."""
+    return render_template('index.html', galeri=app_data['galeri'])
 
 # Endpoint untuk Pendaftaran Pondok Baru
 @app.route('/api/register', methods=['POST'])
@@ -52,14 +73,17 @@ def register():
     if find_pondok(pondok_id):
         return jsonify({'success': False, 'message': 'Nama pondok dan nomor unik sudah terdaftar.'}), 409
 
+    # Menggunakan generate_password_hash untuk keamanan
+    password_hash = generate_password_hash(password)
+
     new_pondok = {
         'pondokId': pondok_id,
-        'password': password,
+        'password_hash': password_hash,
         'pondokName': pondok_id.split('#')[0].strip(),
         'data': {'santri': [], 'hafalan': [], 'target': [], 'guru': []}
     }
     app_data['pondoks'].append(new_pondok)
-    return jsonify({'success': True, 'message': 'Pendaftaran berhasil!'})
+    return redirect(url_for('index'))
 
 # Endpoint untuk Login Pondok dan Guru
 @app.route('/api/login', methods=['POST'])
@@ -70,8 +94,9 @@ def login():
 
     pondok = find_pondok(pondok_id)
 
-    if pondok and pondok['password'] == password:
-        return jsonify({'success': True, 'pondokName': pondok['pondokName']})
+    # Menggunakan check_password_hash untuk verifikasi
+    if pondok and check_password_hash(pondok['password_hash'], password):
+        return redirect(url_for('index'))
     else:
         return jsonify({'success': False, 'message': 'Nama Pondok atau kata sandi salah.'}), 401
 
@@ -99,6 +124,28 @@ def save_data():
     else:
         return jsonify({'success': False, 'message': 'Gagal menyimpan data.'}), 404
 
+# Endpoint untuk mengunggah foto
+@app.route('/unggah', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return 'Tidak ada bagian file di permintaan', 400
+
+    file = request.files['file']
+
+    if file.filename == '':
+        return 'Tidak ada file yang dipilih', 400
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+
+        # Tambahkan nama file ke database galeri
+        app_data['galeri'].append(filename)
+
+        return 'Foto berhasil diunggah', 200
+
+    return 'Jenis file tidak diizinkan', 400
+
 if __name__ == '__main__':
-    # Gunakan host '0.0.0.0' agar dapat diakses dari luar Replit/Render
-    app.run(host='0.0.0.0', debug=True)
+    app.run(debug=True, host='0.0.0.0')
