@@ -1464,6 +1464,40 @@
 
             showPage('roleSelection');
         });
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("form-santri"); // pastikan form lu punya id="form-santri"
+
+            form.addEventListener("submit", async (e) => {
+              e.preventDefault(); // biar ga reload halaman
+
+              const nama = document.getElementById("nama").value;
+              const hafalan = document.getElementById("hafalan").value;
+              const kelas = document.getElementById("kelas").value;
+
+              try {
+                const res = await fetch("/api/save-data", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ nama, hafalan, kelas })
+                });
+
+                const result = await res.json();
+
+                if (result.success) {
+                  alert("Data santri berhasil disimpan!");
+                  form.reset();
+                  // reload tabel biar data baru langsung muncul
+                  if (typeof loadSantri === "function") loadSantri();
+                } else {
+                  alert("Gagal simpan data: " + result.message);
+                }
+              } catch (err) {
+                console.error(err);
+                alert("Error koneksi ke server");
+              }
+            });
+          });
     </script>
 </body>
 </html>
