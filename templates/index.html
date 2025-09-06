@@ -828,7 +828,7 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    sessionStorage.setItem('currentPondokId', pondokId);
+                    sessionStorage.setItem('currentPondokId', result.pondokDbId);
                     document.getElementById('pondok-name-display').textContent = result.pondokName;
                     document.getElementById('access-code-header').classList.remove('hidden');
                     document.getElementById('wali-pondok-id-container').classList.add('hidden');
