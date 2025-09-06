@@ -728,6 +728,8 @@
                     body: JSON.stringify({ pondokId: currentPondokId })
                 });
                 const result = await response.json();
+                console.log("Data diterima:", result); // Tambahkan ini untuk debugging
+
                 if (result.success) {
                     appDataCache[currentPondokId] = result.data;
                     return appDataCache[currentPondokId];

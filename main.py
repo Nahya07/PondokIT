@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
 
 app = Flask(__name__)
 
@@ -27,6 +28,7 @@ class Pondok(db.Model):
     pondok_id = db.Column(db.String(500), unique=True, nullable=False)
     password_hash = db.Column(db.String(500), nullable=False)
     pondok_name = db.Column(db.String(500), nullable=False)
+    santri = db.relationship('Santri', backref='pondok', lazy=True)
 
     def __repr__(self):
         return f'<Pondok {self.pondok_id}>'
@@ -38,6 +40,7 @@ class Santri(db.Model):
     nama = db.Column(db.String(500), nullable=False)
     hafalan = db.Column(db.String(500), nullable=False)
     kelas = db.Column(db.String(500), nullable=True)
+    pondok_id = db.Column(db.Integer, db.ForeignKey('pondoks.id'), nullable=False)
 
 # --- Fungsi utilitas ---
 def allowed_file(filename):
@@ -83,14 +86,20 @@ def login():
     pondok = Pondok.query.filter_by(pondok_id=pondok_id).first()
 
     if pondok and check_password_hash(pondok.password_hash, password):
-        return jsonify({'success': True, 'pondokName': pondok.pondok_name})
+        return jsonify({'success': True, 'pondokName': pondok.pondok_name, 'pondokDbId': pondok.id})
     return jsonify({'success': False, 'message': 'ID Pondok atau password salah.'}), 401
 
 # Ambil semua data santri
-@app.route('/api/get-data', methods=['GET'])
+@app.route('/api/get-data', methods=['POST'])
 def get_data():
     try:
-        santri_list = Santri.query.all()
+        data = request.json
+        pondok_db_id = data.get('pondokDbId')
+
+        if not pondok_db_id:
+            return jsonify({'success': False, 'message': 'ID Pondok tidak ditemukan.'}), 400
+
+        santri_list = Santri.query.filter_by(pondok_id=pondok_db_id).all()
         hasil = [
             {"id": s.id, "nama": s.nama, "hafalan": s.hafalan, "kelas": s.kelas}
             for s in santri_list
@@ -107,11 +116,12 @@ def save_data():
         nama = data.get('nama')
         hafalan = data.get('hafalan')
         kelas = data.get('kelas')
+        pondok_db_id = data.get('pondokDbId')
 
-        if not nama or not hafalan:
-            return jsonify({'success': False, 'message': 'Nama dan hafalan wajib diisi'}), 400
+        if not nama or not hafalan or not pondok_db_id:
+            return jsonify({'success': False, 'message': 'Data tidak lengkap'}), 400
 
-        new_santri = Santri(nama=nama, hafalan=hafalan, kelas=kelas)
+        new_santri = Santri(nama=nama, hafalan=hafalan, kelas=kelas, pondok_id=pondok_db_id)
         db.session.add(new_santri)
         db.session.commit()
 
