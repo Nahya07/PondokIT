@@ -24,9 +24,9 @@ db = SQLAlchemy(app)
 class Pondok(db.Model):
     __tablename__ = 'pondoks'
     id = db.Column(db.Integer, primary_key=True)
-    pondok_id = db.Column(db.String(80), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)
-    pondok_name = db.Column(db.String(128), nullable=False)
+    pondok_id = db.Column(db.String(500), unique=True, nullable=False)
+    password_hash = db.Column(db.String(500), nullable=False)
+    pondok_name = db.Column(db.String(500), nullable=False)
 
     def __repr__(self):
         return f'<Pondok {self.pondok_id}>'
@@ -35,9 +35,9 @@ class Pondok(db.Model):
 class Santri(db.Model):
     __tablename__ = 'santri'
     id = db.Column(db.Integer, primary_key=True)
-    nama = db.Column(db.String(100), nullable=False)
-    hafalan = db.Column(db.String(200), nullable=False)
-    kelas = db.Column(db.String(10), nullable=True)
+    nama = db.Column(db.String(500), nullable=False)
+    hafalan = db.Column(db.String(500), nullable=False)
+    kelas = db.Column(db.String(500), nullable=True)
 
 # --- Fungsi utilitas ---
 def allowed_file(filename):
