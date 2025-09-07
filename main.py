@@ -1,5 +1,6 @@
 import os
 from flask import Flask, render_template, request, jsonify
+from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
@@ -22,6 +23,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Inisialisasi database
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # --- Model Database ---
 class Pondok(db.Model):
