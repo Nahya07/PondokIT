@@ -6,17 +6,17 @@
     <title>Monitoring Hafalan Santri</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
-            background-color: #f0f4f8;
+            background-color: #f0f4f8; /* Light blue-gray background */
         }
         .main-content {
             background-color: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(5px);
         }
+        /* Custom scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
@@ -29,7 +29,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .ornament-border {
-            border: 2px solid #c7a17a;
+            border: 2px solid #c7a17a; /* Gold color */
             padding: 20px;
             position: relative;
             box-shadow: 0 0 15px rgba(0,0,0,0.1);
@@ -42,6 +42,8 @@
         }
         .ornament-border::before { top: -15px; left: -15px; }
         .ornament-border::after { bottom: -15px; right: -15px; }
+
+        /* Tooltip for features */
         .feature-tooltip .tooltip-text {
             visibility: hidden;
             width: 160px;
@@ -62,9 +64,11 @@
             visibility: visible;
             opacity: 1;
         }
+        /* Video Modal */
         #video-modal {
             transition: opacity 0.3s ease;
         }
+        /* Custom toggle switch for alarm */
         .toggle-checkbox:checked { right: 0; border-color: #10B981; }
         .toggle-checkbox:checked + .toggle-label { background-color: #10B981; }
     </style>
@@ -736,10 +740,14 @@
 
         async function saveData(newData) {
             const currentPondokId = sessionStorage.getItem('currentPondokId');
-            if (!currentPondokId) return false;
+            if (!currentPondokId) {
+                alert("Sesi login berakhir. Silakan login kembali.");
+                logout();
+                return false;
+            }
 
             try {
-                const response = await fetch('/api/save-data', {
+                const response = await fetch('/api/save-santri', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ ...newData, pondokId: currentPondokId })
@@ -747,14 +755,15 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    appDataCache[currentPondokId] = newData;
                     return true;
                 } else {
                     console.error("Gagal menyimpan data:", result.message);
+                    alert("Gagal menyimpan data: " + result.message);
                     return false;
                 }
             } catch (error) {
                 console.error("Gagal mengirim data ke server:", error);
+                alert("Error koneksi ke server.");
                 return false;
             }
         }
@@ -771,6 +780,8 @@
                 document.getElementById('access-code').placeholder = "Kode Akses Wali";
                 showPage('accessCode');
             } else if (role === 'guru') {
+                document.getElementById('wali-pondok-id-container').classList.add('hidden');
+                document.getElementById('access-code-header').classList.remove('hidden');
                 showPage('pondokLogin');
             }
         }
@@ -848,7 +859,6 @@
             const pondokIdInput = document.getElementById('wali-pondok-id').value.trim();
             const currentPondokId = loginContext === 'wali' ? pondokIdInput : sessionStorage.getItem('currentPondokId');
 
-            // Cek apakah pondokId ada di cache, jika tidak, coba ambil dari server
             if (!appDataCache[currentPondokId]) {
                 await fetchData();
             }
@@ -1046,42 +1056,60 @@
 
         document.getElementById('santri-form').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const pondokData = await fetchData();
-            if (!pondokData) return;
+            const form = this;
 
+            // Step 1: Unggah file foto
+            const fotoInput = document.getElementById('foto');
+            let fotoUrl = null;
+
+            if (fotoInput.files.length > 0) {
+                const formData = new FormData();
+                formData.append('file', fotoInput.files[0]);
+
+                try {
+                    const response = await fetch('/unggah', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const result = await response.json();
+
+                    if (result.success) {
+                        fotoUrl = result.file_url;
+                    } else {
+                        alert('Gagal mengunggah foto: ' + result.message);
+                        return;
+                    }
+                } catch (error) {
+                    alert('Error koneksi saat mengunggah foto.');
+                    return;
+                }
+            }
+
+            // Step 2: Kirim data santri ke server
             const santriId = document.getElementById('santri-id').value ? parseInt(document.getElementById('santri-id').value) : null;
             const nama = document.getElementById('nama').value;
             const kelas = document.getElementById('kelas').value;
-            const foto = document.getElementById('foto').value;
             const harian = document.getElementById('form-target-harian').value;
             const mingguan = document.getElementById('form-target-mingguan').value;
             const bulanan = document.getElementById('form-target-bulanan').value;
             const tahunan = document.getElementById('form-target-tahunan').value;
-            const tercapai = document.querySelector('input[name="tercapai"]:checked').value === 'true';
+            const tercapai = document.querySelector('input[name="tercapai"]:checked')?.value === 'true';
 
-            if (santriId) {
-                let santriIndex = pondokData.santri.findIndex(s => s.id === santriId);
-                let targetIndex = pondokData.target.findIndex(t => t.santri_id === santriId);
-                if (santriIndex !== -1) {
-                    pondokData.santri[santriIndex] = { ...pondokData.santri[santriIndex], nama, kelas, foto };
+            const santriData = {
+                id: santriId,
+                nama,
+                kelas,
+                foto: fotoUrl,
+                target: {
+                    harian, mingguan, bulanan, tahunan, tercapai,
+                    progres_persen: { harian: 0, mingguan: 0, bulanan: 0 }
                 }
-                if (targetIndex !== -1) {
-                    pondokData.target[targetIndex] = { ...pondokData.target[targetIndex], harian, mingguan, bulanan, tahunan, tercapai };
-                } else {
-                    pondokData.target.push({ santri_id: santriId, harian, mingguan, bulanan, tahunan, tercapai, progres_persen: { harian: 0, mingguan: 0, bulanan: 0 } });
-                }
-            } else {
-                const newId = pondokData.santri.length > 0 ?
-                    Math.max(...pondokData.santri.map(s => s.id)) + 1 : 1;
-                pondokData.santri.push({ id: newId, nama, kelas, foto });
-                pondokData.target.push({ santri_id: newId, harian, mingguan, bulanan, tahunan, tercapai, progres_persen: { harian: 0, mingguan: 0, bulanan: 0 } });
-            }
+            };
 
-            const saveSuccess = await saveData(pondokData);
+            const saveSuccess = await saveData(santriData);
             if(saveSuccess) {
+                alert('Data santri berhasil disimpan!');
                 backToGuruDashboard();
-            } else {
-                alert("Gagal menyimpan data ke server.");
             }
         });
 
@@ -1348,7 +1376,7 @@
                 };
                 prayerTimesToday = {
                     'Fajr': todayTimings.Fajr.substring(0, 5), 'Dhuhr': todayTimings.Dhuhr.substring(0, 5),
-                    'Asr': todayTimings.Asr.substring(0, 5), 'Maghrib': today-Timings.Maghrib.substring(0, 5),
+                    'Asr': todayTimings.Asr.substring(0, 5), 'Maghrib': todayTimings.Maghrib.substring(0, 5),
                     'Isha': todayTimings.Isha.substring(0, 5),
                 };
                 for (const [nama, waktu] of Object.entries(jadwalPenting)) {
