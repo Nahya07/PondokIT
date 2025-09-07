@@ -728,7 +728,7 @@
                     body: JSON.stringify({ pondokId: currentPondokId })
                 });
                 const result = await response.json();
-                console.log("Data diterima:", result); // Tambahkan ini untuk debugging
+                console.log("Data diterima:", result);
 
                 if (result.success) {
                     appDataCache[currentPondokId] = result.data;
@@ -748,9 +748,10 @@
                 const response = await fetch('/api/save-data', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ pondokId: currentPondokId, data: newData })
+                    body: JSON.stringify({ ...newData, pondokId: currentPondokId })
                 });
                 const result = await response.json();
+
                 if (result.success) {
                     appDataCache[currentPondokId] = newData;
                     return true;
