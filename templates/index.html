@@ -82,8 +82,8 @@
                 <source src="https://cdn.pixabay.com/video/2022/09/23/131953-755734533_large.mp4" type="video/mp4">
                 Browser anda tidak menyokong tag video.
             </video>
-            <h3 data-translate-key="login_welcome" class="text-xl font-bold text-teal-800 mb-2">Selamat Datang!</h3>
-            <p data-translate-key="login_welcome_text" class="text-gray-600">Terima kasih sudah mengunjungi aplikasi monitoring hafalan kami. Semoga bermanfaat.</p>
+            <h3 data-translate-key="login_welcome" class="text-xl font-bold text-teal-800 mb-2"></h3>
+            <p data-translate-key="login_welcome_text" class="text-gray-600"></p>
         </div>
     </div>
 
@@ -103,6 +103,9 @@
                     </button>
                 </div>
             </div>
+             <a href="https://wa.me/6285520767908" target="_blank" class="fixed bottom-8 right-8 z-40 text-center">
+                <span data-translate-key="complaint_info" class="text-sm font-semibold text-gray-600 mt-1">Info Pengaduan</span>
+            </a>
         </div>
 
         <div id="pondok-register-page" class="hidden flex flex-col items-center justify-center min-h-screen">
@@ -189,12 +192,9 @@
                              <input type="text" id="wali-pondok-id" placeholder="Nama Pondok & Nomor Unik" class="w-full px-4 py-3 text-center border border-gray-300 rounded-lg focus:ring-4 focus:ring-teal-200 focus:border-teal-500 transition duration-300" >
                         </div>
                         <div class="relative">
-                            <input type="password" id="access-code" data-translate-key="access_code_placeholder" placeholder="Kode Akses Anda" class="w-full px-4 py-3 text-center border border-gray-300 rounded-lg focus:ring-4 focus:ring-teal-200 focus:border-teal-500 transition duration-300" required>
-                            <button type="button" onclick="togglePasswordVisibility('access-code', this)" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                            </button>
+                            <input type="text" id="access-code" data-translate-key="access_code_placeholder" placeholder="Kode Akses Anda" class="w-full px-4 py-3 text-center border border-gray-300 rounded-lg focus:ring-4 focus:ring-teal-200 focus:border-teal-500 transition duration-300" required>
                         </div>
-                        <button type="submit" data-translate-key="login_button" class="w-full px-4 py-3 font-semibold text-white bg-teal-700 rounded-lg hover:bg-teal-800 focus:outline-none focus:ring-4 focus:ring-teal-300 transition duration-300">
+                        <button type="submit" data-translate-key="login_button" class="w-full px-4 py-3 font-semibold text-white bg-teal-700 rounded-lg hover:bg-teal-800 focus:outline-none focus:ring-4 focus:ring-300 transition duration-300">
                             Masuk
                         </button>
                     </form>
@@ -234,6 +234,9 @@
                     <p data-translate-key="footer_text">Project dibuat oleh team (muhammad nahya fadlallah)</p>
                 </footer>
             </div>
+             <a href="https://wa.me/6285520767908" target="_blank" class="fixed bottom-8 right-8 z-40 text-center">
+                <span data-translate-key="complaint_info" class="text-sm font-semibold text-gray-600 mt-1">Info Pengaduan</span>
+            </a>
         </div>
 
         <div id="wali-dashboard-page" class="hidden fade-in main-content p-8 rounded-xl shadow-lg">
@@ -356,6 +359,19 @@
                     <button onclick="logout()" class="px-3 py-2 text-sm font-semibold text-red-600 bg-red-100 rounded-lg hover:bg-red-200 transition">Keluar</button>
                 </div>
             </header>
+            <div id="unique-access-code-section" class="bg-teal-50 p-6 rounded-lg shadow-inner mb-6 text-center">
+                <h3 class="text-xl font-bold text-teal-800 mb-2">Kode Akses Wali Santri</h3>
+                <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <p id="unique-access-code" class="text-2xl font-mono tracking-widest text-gray-800 p-2 bg-white rounded-md border border-teal-300 shadow-sm"></p>
+                    <button onclick="copyAccessCode()" class="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition">
+                        Salin Kode
+                    </button>
+                    <a id="whatsapp-link" href="#" target="_blank" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12.04 2.167c-5.495 0-9.96 4.465-9.96 9.96 0 1.634.437 3.275 1.258 4.71L2.16 21.84l4.966-1.306c1.37.78 2.912 1.185 4.914 1.185 5.494 0 9.96-4.465 9.96-9.96 0-5.495-4.466-9.96-9.96-9.96zM17.47 16.32c-.156.467-.936.463-1.603.224-.666-.238-2.618-1.01-3.036-1.166-.418-.157-.723-.235-1.028.235-.305.47-.936 1.165-1.14 1.413-.204.248-.408.27-.76.092-.352-.178-1.464-.539-2.79-1.722-1.028-.9-1.714-2.28-1.92-2.65-.204-.37-.02-.574.156-.76.155-.178.303-.306.46-.539.155-.234.204-.418.305-.652.102-.234.05-.438-.02-.652-.07-.215-.65-.585-.898-.82-.248-.235-.497-.196-.701-.196-.205 0-.46-.079-.708-.079-.247 0-.666.236-.936.63-.27.394-.97 1.173-.97 2.858 0 1.685 1.002 3.308 1.142 3.556.14.248 1.968 3.018 4.8 4.228 2.834 1.21 2.834.814 3.33 1.05.496.236.936.204 1.306.027.37-.177 1.092-.497 1.248-.73.155-.233.223-.448.33-.63z"/></svg>
+                        Bagikan di WhatsApp
+                    </a>
+                </div>
+            </div>
             <div id="guru-santri-list" class="space-y-4">
                 </div>
         </div>
@@ -378,7 +394,7 @@
                         </div>
                         <div>
                             <label for="kelas" class="block text-sm font-medium text-gray-700">Kelas</label>
-                            <select id="kelas" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-teal-500 focus:border-teal-500" required></select>
+                            <select id="kelas" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3" required></select>
                         </div>
                     </div>
                         <label for="foto" class="block text-sm font-medium text-gray-700">Unggah Foto Santri</label>
@@ -571,7 +587,7 @@
         const translations = {
             id: {
                 app_title: "Monitoring Hafalan Santri",
-                login_welcome: "Selamat Datang!",
+                login_welcome: "السلام عليكم ورحمة الله وبركاته<br>Selamat Datang!",
                 login_welcome_text: "Terima kasih sudah mengunjungi aplikasi monitoring hafalan kami. Semoga bermanfaat.",
                 login_title: "Sistem Monitoring Hafalan",
                 login_subtitle: "Silakan masukkan kode akses untuk melanjutkan.",
@@ -582,11 +598,13 @@
                 tooltip_realtime: "Monitoring Real-time",
                 tooltip_guardian: "Akses Wali Santri",
                 tooltip_report: "Laporan Terstruktur",
-                footer_text: "Project dibuat oleh team (muhammad nahya fadlallah)"
+                footer_text: "Project dibuat oleh team (muhammad nahya fadlallah)",
+                unique_code_copied: "Kode akses berhasil disalin!",
+                complaint_info: "Info Pengaduan"
             },
             en: {
                 app_title: "Student Memorization Monitoring",
-                login_welcome: "Welcome!",
+                login_welcome: "السلام عليكم ورحمة الله وبركاته<br>Welcome!",
                 login_welcome_text: "Thank you for visiting our memorization monitoring application. We hope you find it useful.",
                 login_title: "Memorization Monitoring System",
                 login_subtitle: "Please enter the access code to continue.",
@@ -597,11 +615,13 @@
                 tooltip_realtime: "Real-time Monitoring",
                 tooltip_guardian: "Guardian Access",
                 tooltip_report: "Structured Reports",
-                footer_text: "Project created by the team (muhammad nahya fadlallah)"
+                footer_text: "Project created by the team (muhammad nahya fadlallah)",
+                unique_code_copied: "Access code copied successfully!",
+                complaint_info: "Complaint Info"
             },
             ja: {
                 app_title: "生徒の暗記モニタリング",
-                login_welcome: "ようこそ！",
+                login_welcome: "السلام عليكم ورحمة الله وبركاته<br>ようこそ！",
                 login_welcome_text: "私たちの暗記モニタリングアプリケーションをご覧いただきありがとうございます。お役に立てば幸いです。",
                 login_title: "暗記モニタリングシステム",
                 login_subtitle: "続行するにはアクセスコードを入力してください。",
@@ -612,11 +632,13 @@
                 tooltip_realtime: "リアルタイムモニタリング",
                 tooltip_guardian: "保護者アクセス",
                 tooltip_report: "構造化レポート",
-                footer_text: "プロジェクト作成者チーム (muhammad nahya fadlallah)"
+                footer_text: "プロジェクト作成者チーム (muhammad nahya fadlallah)",
+                unique_code_copied: "アクセスコードが正常にコピーされました！",
+                complaint_info: "苦情情報"
             },
             ar: {
                 app_title: "مراقبة حفظ الطلاب",
-                login_welcome: "أهلاً وسهلاً!",
+                login_welcome: "السلام عليكم ورحمة الله وبركاته<br>أهلاً وسهلاً!",
                 login_welcome_text: "شكراً لزيارتكم تطبيقنا لمراقبة الحفظ. نأمل أن يكون مفيداً لكم.",
                 login_title: "نظام مراقبة الحفظ",
                 login_subtitle: "الرجاء إدخال رمز الدخول للمتابعة.",
@@ -627,11 +649,13 @@
                 tooltip_realtime: "مراقبة فورية",
                 tooltip_guardian: "وصول ولي الأمر",
                 tooltip_report: "تقارير منظمة",
-                footer_text: "تم إنشاء المشروع بواسطة فريق (محمد نحيا فضل الله)"
+                footer_text: "تم إنشاء المشروع بواسطة فريق (محمد نحيا فضل الله)",
+                unique_code_copied: "تم نسخ رمز الدخول بنجاح!",
+                complaint_info: "معلومات الشكوى"
             },
             ru: {
                 app_title: "Мониторинг запоминания студентов",
-                login_welcome: "Добро пожаловать!",
+                login_welcome: "السلام عليكم ورحمة الله وبركاته<br>Добро пожаловать!",
                 login_welcome_text: "Спасибо, что посетили наше приложение для мониторинга запоминания. Надеемся, оно будет вам полезно.",
                 login_title: "Система мониторинга запоминания",
                 login_subtitle: "Пожалуйста, введите код доступа, чтобы продолжить.",
@@ -642,11 +666,13 @@
                 tooltip_realtime: "Мониторинг в реальном времени",
                 tooltip_guardian: "Доступ для опекунов",
                 tooltip_report: "Структурированные отчеты",
-                footer_text: "Проект создан командой (мухаммад нахья фадлаллах)"
+                footer_text: "Проект создан командой (мухаммад нахья фадлаллах)",
+                unique_code_copied: "Код доступа успешно скопирован!",
+                complaint_info: "Информация о жалобах"
             },
             jw: {
                 app_title: "Monitoring Apalan Santri",
-                login_welcome: "Sugeng Rawuh!",
+                login_welcome: "السلام عليكم ورحمة الله وبركاته<br>Sugeng Rawuh!",
                 login_welcome_text: "Matur nuwun sampun ngunjungi aplikasi monitoring apalan kita. Mugi-mugi mupangati.",
                 login_title: "Sistem Monitoring Apalan",
                 login_subtitle: "Monggo ketik kode akses kangge nglanjutaken.",
@@ -657,7 +683,9 @@
                 tooltip_realtime: "Monitoring Real-time",
                 tooltip_guardian: "Akses Wali Santri",
                 tooltip_report: "Laporan Rapi",
-                footer_text: "Proyek digarap dening tim (muhammad nahya fadlallah)"
+                footer_text: "Proyek digarap dening tim (muhammad nahya fadlallah)",
+                unique_code_copied: "Kode akses kasil disalin!",
+                complaint_info: "Info Pengaduan"
             }
         };
 
@@ -710,6 +738,28 @@
             }
         }
 
+        // --- UTILITY FUNCTIONS ---
+        function generateUniqueCode() {
+            return Math.random().toString(36).substring(2, 8).toUpperCase();
+        }
+        function copyAccessCode() {
+            const codeEl = document.getElementById('unique-access-code');
+            const range = document.createRange();
+            range.selectNode(codeEl);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    alert(translations[localStorage.getItem('selectedLanguage') || 'id'].unique_code_copied);
+                }
+            } catch (err) {
+                console.error('Failed to copy text:', err);
+                alert("Gagal menyalin kode. Silakan salin manual: " + codeEl.textContent);
+            }
+            window.getSelection().removeAllRanges();
+        }
+
         // --- API & DATA HANDLING ---
         async function fetchData() {
             const pondokDbId = sessionStorage.getItem('currentPondokId');
@@ -720,6 +770,7 @@
             }
 
             try {
+                // Fetch data for a specific pondok
                 const response = await fetch('/api/get-data', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -748,7 +799,7 @@
             }
 
             try {
-                const response = await fetch('/api/save-santri', {
+                const response = await fetch('/api/save-data', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ ...newData, pondokId: currentPondokId })
@@ -769,16 +820,38 @@
             }
         }
 
+        async function uploadFile(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('/unggah', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                if (result.success) {
+                    return result.file_url;
+                } else {
+                    alert('Gagal mengunggah foto: ' + result.message);
+                    return null;
+                }
+            } catch (error) {
+                alert('Error koneksi saat mengunggah foto.');
+                return null;
+            }
+        }
+
         // --- AUTHENTICATION FLOW ---
         function handleRoleSelection(role) {
             showWelcomeVideo();
             loginContext = role;
             if (role === 'wali') {
-                document.getElementById('wali-pondok-id-container').classList.remove('hidden');
+                document.getElementById('wali-pondok-id-container').classList.add('hidden');
                 document.getElementById('access-code-header').classList.add('hidden');
                 document.getElementById('access-code-title').textContent = "Login Wali Santri";
-                document.getElementById('access-code-subtitle').textContent = "Masukkan Nama Pondok & Kode Akses Wali.";
-                document.getElementById('access-code').placeholder = "Kode Akses Wali";
+                document.getElementById('access-code-subtitle').textContent = "Masukkan Kode Akses Unik yang diberikan Pondok.";
+                document.getElementById('access-code').placeholder = "Kode Akses Unik";
                 showPage('accessCode');
             } else if (role === 'guru') {
                 document.getElementById('wali-pondok-id-container').classList.add('hidden');
@@ -799,26 +872,33 @@
                 return;
             }
 
-            try {
-                const response = await fetch('/api/register', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ pondokId, password })
-                });
-                const result = await response.json();
+        const accessCode = document.getElementById('wali-access-code').value;
 
-                if (result.success) {
-                    alert('Pendaftaran berhasil! Silakan login.');
-                    showPage('pondokLogin');
+            try {
+                const response = await fetch('/api/wali-login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ accessCode }) // Kirim hanya kode akses
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    // Simpan data di sessionStorage
+                    sessionStorage.setItem('pondokDbId', data.pondokDbId);
+                    sessionStorage.setItem('pondokName', data.pondokName);
+                    sessionStorage.setItem('role', 'wali');
+                    // Alihkan ke halaman login berhasil
+                    checkLoginState();
                 } else {
-                    errorEl.textContent = result.message;
-                    errorEl.classList.remove('hidden');
+                    // Tampilkan pesan kesalahan
+                    showToast('error', data.message);
                 }
             } catch (error) {
-                errorEl.textContent = "Terjadi kesalahan saat mendaftar.";
-                errorEl.classList.remove('hidden');
+                console.error('Login error:', error);
+                showToast('error', 'Terjadi kesalahan saat login.');
             }
         });
+
         document.getElementById('pondok-login-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const pondokId = document.getElementById('login-pondok-id').value.trim();
@@ -836,13 +916,16 @@
                 if (result.success) {
                     sessionStorage.setItem('currentPondokId', result.pondokDbId);
                     document.getElementById('pondok-name-display').textContent = result.pondokName;
-                    document.getElementById('access-code-header').classList.remove('hidden');
-                    document.getElementById('wali-pondok-id-container').classList.add('hidden');
-                    document.getElementById('access-code-title').textContent = "Verifikasi Akses Guru";
-                    document.getElementById('access-code-subtitle').textContent = "Silakan masukkan kode akses Guru untuk melanjutkan.";
-                    document.getElementById('access-code').placeholder = "Kode Akses Guru";
                     errorEl.classList.add('hidden');
-                    showPage('accessCode');
+                    // Fetch and render guru dashboard directly
+                    const pondokData = await fetchData();
+                    if (pondokData) {
+                        renderGuruDashboard();
+                        showPage('guruDashboard');
+                    } else {
+                         alert("Gagal memuat data pondok. Silakan coba lagi.");
+                         logout();
+                    }
                 } else {
                     errorEl.textContent = result.message;
                     errorEl.classList.remove('hidden');
@@ -852,75 +935,44 @@
                 errorEl.classList.remove('hidden');
             }
         });
+
         document.getElementById('access-code-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const code = document.getElementById('access-code').value.trim().toUpperCase();
             const errorEl = document.getElementById('access-code-error');
-            const pondokIdInput = document.getElementById('wali-pondok-id').value.trim();
 
-            if (loginContext === 'wali') {
-                // Cek kode akses wali terlebih dahulu
-                if (code !== 'MENGAJI') {
-                    errorEl.textContent = "Kode yang Anda masukkan salah.";
-                    errorEl.classList.remove('hidden');
-                    return;
-                }
+            try {
+                const response = await fetch('/api/get-pondok-by-code', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ uniqueAccessCode: code })
+                });
+                const result = await response.json();
 
-                try {
-                    // Langkah 1: Kirim nama pondok ke backend untuk mendapatkan ID
-                    const response = await fetch('/api/get-pondok-by-name', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({ pondokId: pondokIdInput })
-                    });
-                    const result = await response.json();
-
-                    if (!result.success) {
-                        errorEl.textContent = "Nama Pondok tidak ditemukan. Silakan periksa kembali.";
-                        errorEl.classList.remove('hidden');
-                        return;
-                    }
-
-                    // Langkah 2: Simpan ID database ke sessionStorage
+                if (result.success) {
                     sessionStorage.setItem('currentPondokId', result.pondokDbId);
                     document.getElementById('pondok-name-display').textContent = result.pondokName;
-
-                    // Langkah 3: Ambil data lengkap dan tampilkan dashboard
                     const pondokData = await fetchData();
-                    if (!pondokData) {
+                    if (pondokData) {
+                         appDataCache[result.pondokDbId] = pondokData;
+                         errorEl.classList.add('hidden');
+                         renderWaliDashboard();
+                         showPage('waliDashboard');
+                    } else {
                         errorEl.textContent = "Gagal memuat data pondok. Silakan coba lagi.";
                         errorEl.classList.remove('hidden');
-                        return;
                     }
-
-                    // Simpan data lengkap ke cache
-                    appDataCache[result.pondokDbId] = pondokData;
-
-                    errorEl.classList.add('hidden');
-                    renderWaliDashboard();
-                    showPage('waliDashboard');
-
-                } catch (error) {
-                    console.error("Error:", error);
-                    errorEl.textContent = "Terjadi kesalahan koneksi. Silakan coba lagi.";
+                } else {
+                    errorEl.textContent = result.message;
                     errorEl.classList.remove('hidden');
                 }
-
-            } else if (loginContext === 'guru' && code === 'MENGAMALKAN') {
-                const pondokData = await fetchData();
-                if (!pondokData) {
-                    errorEl.textContent = "Data pondok tidak ditemukan. Silakan login ulang.";
-                    errorEl.classList.remove('hidden');
-                    return;
-                }
-                errorEl.classList.add('hidden');
-                renderGuruDashboard();
-                showPage('guruDashboard');
-            } else {
-                errorEl.textContent = "Kode yang Anda masukkan salah.";
+            } catch (error) {
+                console.error("Error:", error);
+                errorEl.textContent = "Terjadi kesalahan koneksi. Silakan coba lagi.";
                 errorEl.classList.remove('hidden');
             }
         });
+
         function logout() {
             sessionStorage.removeItem('currentPondokId');
             loginContext = null;
@@ -1053,6 +1105,10 @@
             const pondokData = await fetchData();
             if (!pondokData) return;
 
+            // Display unique access code
+            document.getElementById('unique-access-code').textContent = pondokData.uniqueAccessCode || 'Tidak ada kode';
+            document.getElementById('whatsapp-link').href = `https://wa.me/?text=${encodeURIComponent('Halo, wali santri! Berikut adalah kode akses unik untuk monitoring hafalan anak Anda: ' + pondokData.uniqueAccessCode)}`;
+
             const listContainer = document.getElementById('guru-santri-list');
             listContainer.innerHTML = '';
             pondokData.santri.sort((a, b) => a.nama.localeCompare(b.nama)).forEach(santri => {
@@ -1077,7 +1133,6 @@
                 document.getElementById('form-title').textContent = `Ubah Data: ${santri.nama}`;
                 document.getElementById('nama').value = santri.nama;
                 document.getElementById('kelas').value = santri.kelas;
-                document.getElementById('foto').value = santri.foto;
                 if(target){
                     document.getElementById('form-target-harian').value = target.harian;
                     document.getElementById('form-target-mingguan').value = target.mingguan;
@@ -1101,27 +1156,21 @@
             const fotoInput = document.getElementById('foto');
             let fotoUrl = null;
 
+            // If the user selects a new file, upload it. Otherwise, keep the existing URL.
             if (fotoInput.files.length > 0) {
-                const formData = new FormData();
-                formData.append('file', fotoInput.files[0]);
-
-                try {
-                    const response = await fetch('/unggah', {
-                        method: 'POST',
-                        body: formData
-                    });
-                    const result = await response.json();
-
-                    if (result.success) {
-                        fotoUrl = result.file_url;
-                    } else {
-                        alert('Gagal mengunggah foto: ' + result.message);
-                        return;
-                    }
-                } catch (error) {
-                    alert('Error koneksi saat mengunggah foto.');
+                fotoUrl = await uploadFile(fotoInput.files[0]);
+                if (!fotoUrl) {
                     return;
                 }
+            } else {
+                 const santriId = document.getElementById('santri-id').value;
+                 const pondokData = await fetchData();
+                 if (santriId && pondokData) {
+                     const santri = pondokData.santri.find(s => s.id === parseInt(santriId));
+                     if (santri) {
+                         fotoUrl = santri.foto;
+                     }
+                 }
             }
 
             // Step 2: Kirim data santri ke server
@@ -1145,7 +1194,12 @@
                 }
             };
 
-            const saveSuccess = await saveData(santriData);
+            const saveSuccess = await saveData({
+                santri: appDataCache[sessionStorage.getItem('currentPondokId')].santri,
+                target: appDataCache[sessionStorage.getItem('currentPondokId')].target,
+                hafalan: appDataCache[sessionStorage.getItem('currentPondokId')].hafalan,
+                guru: appDataCache[sessionStorage.getItem('currentPondokId')].guru,
+            });
             if(saveSuccess) {
                 alert('Data santri berhasil disimpan!');
                 backToGuruDashboard();
@@ -1470,8 +1524,13 @@
             const audio = document.getElementById('azan-alarm');
             audio.play().catch(e => {
                 console.error("Gagal memutar audio alarm:", e);
-                alert(`Waktu Salat ${prayerName} telah tiba.`);
+                // Fallback for failed playback
+                const notification = document.getElementById('alarm-notification');
+                document.getElementById('alarm-text').textContent = `Waktu Salat ${prayerName} telah tiba.`;
+                notification.classList.remove('hidden');
+                setTimeout(() => dismissAlarm(), 5000); // hide after 5 seconds
             });
+
             const notification = document.getElementById('alarm-notification');
             document.getElementById('alarm-text').textContent = `Telah Masuk Waktu Salat ${prayerName}`;
             notification.classList.remove('hidden');
@@ -1482,7 +1541,8 @@
             const audio = document.getElementById('azan-alarm');
             audio.pause();
             audio.currentTime = 0;
-            document.getElementById('alarm-notification').classList.add('hidden');
+            const notification = document.getElementById('alarm-notification');
+            notification.classList.add('hidden');
         }
 
         // --- INITIALIZATION ---

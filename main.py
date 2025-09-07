@@ -4,6 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
+import secrets # Tambahkan untuk membuat kode akses yang aman
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -28,11 +30,13 @@ class Pondok(db.Model):
     pondok_id = db.Column(db.String(500), unique=True, nullable=False)
     password_hash = db.Column(db.String(500), nullable=False)
     pondok_name = db.Column(db.String(500), nullable=False)
+    # Kolom baru untuk kode akses wali
+    access_code = db.Column(db.String(50), unique=True, nullable=True)
     santri = db.relationship('Santri', backref='pondok', lazy=True)
     guru = db.relationship('Guru', backref='pondok_guru', lazy=True)
     hafalan = db.relationship('Hafalan', backref='pondok_hafalan', lazy=True)
 
-    def __repr__(self):
+    def repr(self):
         return f'<Pondok {self.pondok_id}>'
 
 class Santri(db.Model):
@@ -83,8 +87,9 @@ def register():
     data = request.json
     pondok_id = data.get('pondokId', '').strip()
     password = data.get('password')
+    pondok_name = data.get('pondokName', '').strip()
 
-    if not pondok_id or not password:
+    if not all([pondok_id, password, pondok_name]):
         return jsonify({'success': False, 'message': 'Data tidak lengkap.'}), 400
 
     existing_pondok = Pondok.query.filter_by(pondok_id=pondok_id).first()
@@ -92,15 +97,24 @@ def register():
         return jsonify({'success': False, 'message': 'Nama pondok sudah terdaftar.'}), 409
 
     password_hash = generate_password_hash(password)
-    pondok_name = pondok_id.split('#')[0].strip()
+    access_code = secrets.token_urlsafe(8).upper() # Membuat kode akses unik
 
-    new_pondok = Pondok(pondok_id=pondok_id, password_hash=password_hash, pondok_name=pondok_name)
+    new_pondok = Pondok(
+        pondok_id=pondok_id,
+        password_hash=password_hash,
+        pondok_name=pondok_name,
+        access_code=access_code
+    )
     db.session.add(new_pondok)
     db.session.commit()
 
-    return jsonify({'success': True, 'message': 'Pendaftaran berhasil!'})
+    return jsonify({
+        'success': True,
+        'message': 'Pendaftaran berhasil!',
+        'accessCode': new_pondok.access_code # Mengirimkan kode akses ke frontend
+    })
 
-# Login pondok
+# Login pengurus/guru
 @app.route('/api/login', methods=['POST'])
 def login():
     credentials = request.json
@@ -113,25 +127,20 @@ def login():
         return jsonify({'success': True, 'pondokName': pondok.pondok_name, 'pondokDbId': pondok.id})
     return jsonify({'success': False, 'message': 'ID Pondok atau password salah.'}), 401
 
-# Ambil ID pondok dari nama pondok
-@app.route('/api/get-pondok-by-name', methods=['POST'])
-def get_pondok_by_name():
-    try:
-        data = request.json
-        pondok_id_string = data.get('pondokId')
+# Login wali santri dengan kode akses (REVISI PENTING)
+@app.route('/api/wali-login', methods=['POST'])
+def wali_login():
+    data = request.json
+    access_code = data.get('accessCode')
 
-        if not pondok_id_string:
-            return jsonify({'success': False, 'message': 'ID Pondok tidak ditemukan.'}), 400
+    if not access_code:
+        return jsonify({'success': False, 'message': 'Kode akses tidak boleh kosong.'}), 400
 
-        pondok = Pondok.query.filter_by(pondok_id=pondok_id_string).first()
+    pondok = Pondok.query.filter_by(access_code=access_code.upper()).first()
 
-        if pondok:
-            return jsonify({'success': True, 'pondokDbId': pondok.id, 'pondokName': pondok.pondok_name})
-        else:
-            return jsonify({'success': False, 'message': 'Pondok tidak ditemukan.'}), 404
-
-    except Exception as e:
-        return jsonify({'success': False, 'message': str(e)}), 500
+    if pondok:
+        return jsonify({'success': True, 'pondokName': pondok.pondok_name, 'pondokDbId': pondok.id})
+    return jsonify({'success': False, 'message': 'Kode akses salah.'}), 401
 
 # Ambil semua data pondok
 @app.route('/api/get-data', methods=['POST'])
@@ -146,6 +155,7 @@ def get_data():
         santri_list = Santri.query.filter_by(pondok_id=pondok_db_id).all()
         guru_list = Guru.query.filter_by(pondok_id=pondok_db_id).all()
         hafalan_list = Hafalan.query.filter_by(pondok_id=pondok_db_id).all()
+        pondok_data = Pondok.query.get(pondok_db_id)
 
         santri_json = [
             {
@@ -153,12 +163,12 @@ def get_data():
                 "nama": s.nama,
                 "kelas": s.kelas,
                 "foto": s.foto,
+                "tercapai": s.tercapai,
                 "target": {
                     "harian": s.target_harian,
                     "mingguan": s.target_mingguan,
                     "bulanan": s.target_bulanan,
                     "tahunan": s.target_tahunan,
-                    "tercapai": s.tercapai
                 }
             } for s in santri_list
         ]
@@ -169,7 +179,15 @@ def get_data():
             {"id": h.id, "santri_id": h.santri_id, "tanggal": h.tanggal.strftime('%Y-%m-%d'), "setoran": h.setoran, "jenis": h.jenis, "penilaian": h.penilaian} for h in hafalan_list
         ]
 
-        return jsonify({'success': True, 'data': {'santri': santri_json, 'guru': guru_json, 'hafalan': hafalan_json}})
+        return jsonify({
+            'success': True,
+            'data': {
+                'santri': santri_json,
+                'guru': guru_json,
+                'hafalan': hafalan_json,
+                'uniqueAccessCode': pondok_data.access_code
+            }
+        })
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
 
@@ -302,7 +320,6 @@ def save_hafalan():
             return jsonify({'success': False, 'message': 'Data tidak lengkap.'}), 400
 
         # Note: Frontend akan mengirimkan tanggal sebagai string, kita perlu mengkonversinya ke objek date
-        from datetime import datetime
         tanggal_obj = datetime.strptime(hafalan_data['tanggal'], '%Y-%m-%d').date()
 
         new_hafalan = Hafalan(
@@ -347,12 +364,12 @@ def upload_file():
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
     if 'file' not in request.files:
-        return 'Tidak ada file di request', 400
+        return jsonify({'success': False, 'message': 'Tidak ada file di request'}), 400
 
     file = request.files['file']
 
     if file.filename == '':
-        return 'Tidak ada file dipilih', 400
+        return jsonify({'success': False, 'message': 'Tidak ada file dipilih'}), 400
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
@@ -365,5 +382,8 @@ def upload_file():
 # Run server
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()
+        # Tambahkan ini untuk membuat kolom baru di database jika belum ada
+        # HANYA JALANKAN INI SAAT PERTAMA KALI
+        # db.create_all() 
+        pass 
     app.run(debug=True, host='0.0.0.0', port=5000)
