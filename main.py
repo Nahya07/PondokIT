@@ -117,6 +117,27 @@ def login():
         return jsonify({'success': True, 'pondokName': pondok.pondok_name, 'pondokDbId': pondok.id})
     return jsonify({'success': False, 'message': 'ID Pondok atau password salah.'}), 401
 
+@app.route('/api/login-wali', methods=['POST'])
+def login_wali():
+    data = request.json
+    pondok_id = data.get('pondokId')
+    access_code = data.get('accessCode')
+
+    # cari pondok berdasarkan username (string)
+    pondok = Pondok.query.filter_by(pondok_id=pondok_id).first()
+    if not pondok:
+        return jsonify({'success': False, 'message': 'Pondok tidak ditemukan.'}), 404
+
+    # validasi kode akses wali
+    if pondok.access_code_wali and access_code == pondok.access_code_wali:
+        return jsonify({
+            'success': True,
+            'pondokName': pondok.pondok_name,
+            'pondokDbId': pondok.id
+        })
+
+    return jsonify({'success': False, 'message': 'Kode akses salah.'}), 401
+
 @app.route('/api/get-data', methods=['POST'])
 def get_data():
     try:

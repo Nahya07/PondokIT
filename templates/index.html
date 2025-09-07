@@ -568,327 +568,276 @@
 
     <script>
         // --- TRANSLATION ---
-        const translations = {
-            id: {
-                app_title: "Monitoring Hafalan Santri",
-                login_welcome: "Selamat Datang!",
-                login_welcome_text: "Terima kasih sudah mengunjungi aplikasi monitoring hafalan kami. Semoga bermanfaat.",
-                login_title: "Sistem Monitoring Hafalan",
-                login_subtitle: "Silakan masukkan kode akses untuk melanjutkan.",
-                access_code_placeholder: "Kode Akses Anda",
-                login_button: "Masuk",
-                login_error: "Kode yang Anda masukkan salah.",
-                hadith_text: "\"Sebaik-baik kalian adalah orang<br>yang belajar Al-Qur'an dan mengajarkannya.\"",
-                tooltip_realtime: "Monitoring Real-time",
-                tooltip_guardian: "Akses Wali Santri",
-                tooltip_report: "Laporan Terstruktur",
-                footer_text: "Project dibuat oleh team (muhammad nahya fadlallah)"
-            },
-            en: {
-                app_title: "Student Memorization Monitoring",
-                login_welcome: "Welcome!",
-                login_welcome_text: "Thank you for visiting our memorization monitoring application. We hope you find it useful.",
-                login_title: "Memorization Monitoring System",
-                login_subtitle: "Please enter the access code to continue.",
-                access_code_placeholder: "Your Access Code",
-                login_button: "Login",
-                login_error: "The code you entered is incorrect.",
-                hadith_text: "\"The best of you are those<br>who learn the Qur'an and teach it.\"",
-                tooltip_realtime: "Real-time Monitoring",
-                tooltip_guardian: "Guardian Access",
-                tooltip_report: "Structured Reports",
-                footer_text: "Project created by the team (muhammad nahya fadlallah)"
-            },
-            ja: {
-                app_title: "生徒の暗記モニタリング",
-                login_welcome: "ようこそ！",
-                login_welcome_text: "私たちの暗記モニタリングアプリケーションをご覧いただきありがとうございます。お役に立てば幸いです。",
-                login_title: "暗記モニタリングシステム",
-                login_subtitle: "続行するにはアクセスコードを入力してください。",
-                access_code_placeholder: "アクセスコード",
-                login_button: "ログイン",
-                login_error: "入力したコードが間違っています。",
-                hadith_text: "「あなた方の中で最も優れた者は<br>クルアーンを学び、それを教える者である。」",
-                tooltip_realtime: "リアルタイムモニタリング",
-                tooltip_guardian: "保護者アクセス",
-                tooltip_report: "構造化レポート",
-                footer_text: "プロジェクト作成者チーム (muhammad nahya fadlallah)"
-            },
-            ar: {
-                app_title: "مراقبة حفظ الطلاب",
-                login_welcome: "أهلاً وسهلاً!",
-                login_welcome_text: "شكراً لزيارتكم تطبيقنا لمراقبة الحفظ. نأمل أن يكون مفيداً لكم.",
-                login_title: "نظام مراقبة الحفظ",
-                login_subtitle: "الرجاء إدخال رمز الدخول للمتابعة.",
-                access_code_placeholder: "رمز الدخول الخاص بك",
-                login_button: "دخول",
-                login_error: "الرمز الذي أدخلته غير صحيح.",
-                hadith_text: "خيركم من تعلم القرآن وعلمه",
-                tooltip_realtime: "مراقبة فورية",
-                tooltip_guardian: "وصول ولي الأمر",
-                tooltip_report: "تقارير منظمة",
-                footer_text: "تم إنشاء المشروع بواسطة فريق (محمد نحيا فضل الله)"
-            },
-            ru: {
-                app_title: "Мониторинг запоминания студентов",
-                login_welcome: "Добро пожаловать!",
-                login_welcome_text: "Спасибо, что посетили наше приложение для мониторинга запоминания. Надеемся, оно будет вам полезно.",
-                login_title: "Система мониторинга запоминания",
-                login_subtitle: "Пожалуйста, введите код доступа, чтобы продолжить.",
-                access_code_placeholder: "Ваш код доступа",
-                login_button: "Войти",
-                login_error: "Вы ввели неверный код.",
-                hadith_text: "\"Лучшими из вас являются те,<br>кто изучает Коран dan учит ему других.\"",
-                tooltip_realtime: "Мониторинг в реальном времени",
-                tooltip_guardian: "Доступ для опекунов",
-                tooltip_report: "Структурированные отчеты",
-                footer_text: "Проект создан командой (мухаммад нахья фадлаллах)"
-            },
-            jw: {
-                app_title: "Monitoring Apalan Santri",
-                login_welcome: "Sugeng Rawuh!",
-                login_welcome_text: "Matur nuwun sampun ngunjungi aplikasi monitoring apalan kita. Mugi-mugi mupangati.",
-                login_title: "Sistem Monitoring Apalan",
-                login_subtitle: "Monggo ketik kode akses kangge nglanjutaken.",
-                access_code_placeholder: "Kode Akses Panjenengan",
-                login_button: "Mlebet",
-                login_error: "Kode ingkang panjenengan ketik salah.",
-                hadith_text: "\"Sak apik-apike sliramu yaiku wong<br>sing sinau Al-Qur'an lan ngajarake.\"",
-                tooltip_realtime: "Monitoring Real-time",
-                tooltip_guardian: "Akses Wali Santri",
-                tooltip_report: "Laporan Rapi",
-                footer_text: "Proyek digarap dening tim (muhammad nahya fadlallah)"
-            }
-        };
+                const translations = {
+                    id: { app_title: "Monitoring Hafalan Santri", login_welcome: "Selamat Datang!", login_welcome_text: "Terima kasih sudah mengunjungi aplikasi monitoring hafalan kami. Semoga bermanfaat.", login_title: "Sistem Monitoring Hafalan", login_subtitle: "Silakan masukkan kode akses untuk melanjutkan.", access_code_placeholder: "Kode Akses Anda", login_button: "Masuk", login_error: "Kode yang Anda masukkan salah.", hadith_text: "\"Sebaik-baik kalian adalah orang<br>yang belajar Al-Qur'an dan mengajarkannya.\"", tooltip_realtime: "Monitoring Real-time", tooltip_guardian: "Akses Wali Santri", tooltip_report: "Laporan Terstruktur", footer_text: "Project dibuat oleh team (muhammad nahya fadlallah)" },
+                    en: { app_title: "Student Memorization Monitoring", login_welcome: "Welcome!", login_welcome_text: "Thank you for visiting our memorization monitoring application. We hope you find it useful.", login_title: "Memorization Monitoring System", login_subtitle: "Please enter the access code to continue.", access_code_placeholder: "Your Access Code", login_button: "Login", login_error: "The code you entered is incorrect.", hadith_text: "\"The best of you are those<br>who learn the Qur'an and teach it.\"", tooltip_realtime: "Real-time Monitoring", tooltip_guardian: "Guardian Access", tooltip_report: "Structured Reports", footer_text: "Project created by the team (muhammad nahya fadlallah)" },
+                    ja: { app_title: "生徒の暗記モニタリング", login_welcome: "ようこそ！", login_welcome_text: "私たちの暗記モニタリングアプリケーションをご覧いただきありがとうございます。お役に立てば幸いです。", login_title: "暗記モニタリングシステム", login_subtitle: "続行するにはアクセスコードを入力してください。", access_code_placeholder: "アクセスコード", login_button: "ログイン", login_error: "入力したコードが間違っています。", hadith_text: "「あなた方の中で最も優れた者は<br>クルアーンを学び、それを教える者である。」", tooltip_realtime: "リアルタイムモニタリング", tooltip_guardian: "保護者アクセス", tooltip_report: "構造化レポート", footer_text: "プロジェクト作成者チーム (muhammad nahya fadlallah)" },
+                    ar: { app_title: "مراقبة حفظ الطلاب", login_welcome: "أهلاً وسهلاً!", login_welcome_text: "شكراً لزيارتكم تطبيقنا لمراقبة الحفظ. نأمل أن يكون مفيداً لكم.", login_title: "نظام مراقبة الحفظ", login_subtitle: "الرجاء إدخال رمز الدخول للمتابعة.", access_code_placeholder: "رمز الدخول الخاص بك", login_button: "دخول", login_error: "الرمز الذي أدخلته غير صحيح.", hadith_text: "خيركم من تعلم القرآن وعلمه", tooltip_realtime: "مراقبة فورية", tooltip_guardian: "وصول ولي الأمر", tooltip_report: "تقارير منظمة", footer_text: "تم إنشاء المشروع بواسطة فريق (محمد نحيا فضل الله)" },
+                    ru: { app_title: "Мониторинг запоминания студентов", login_welcome: "Добро пожаловать!", login_welcome_text: "Спасибо, что посетили наше приложение для мониторинга запоминания. Надеемся, оно будет вам полезно.", login_title: "Система мониторинга запоминания", login_subtitle: "Пожалуйста, введите код доступа, чтобы продолжить.", access_code_placeholder: "Ваш код доступа", login_button: "Войти", login_error: "Вы ввели неверный код.", hadith_text: "\"Лучшими из вас являются те,<br>кто изучает Коран dan учит ему других.\"", tooltip_realtime: "Мониторинг в реальном времени", tooltip_guardian: "Доступ для опекунов", tooltip_report: "Структурированные отчеты", footer_text: "Проект создан командой (мухаммад нахья фадлаллах)" },
+                    jw: { app_title: "Monitoring Apalan Santri", login_welcome: "Sugeng Rawuh!", login_welcome_text: "Matur nuwun sampun ngunjungi aplikasi monitoring apalan kita. Mugi-mugi mupangati.", login_title: "Sistem Monitoring Apalan", login_subtitle: "Monggo ketik kode akses kangge nglanjutaken.", access_code_placeholder: "Kode Akses Panjenengan", login_button: "Mlebet", login_error: "Kode ingkang panjenengan ketik salah.", hadith_text: "\"Sak apik-apike sliramu yaiku wong<br>sing sinau Al-Qur'an lan ngajarake.\"", tooltip_realtime: "Monitoring Real-time", tooltip_guardian: "Akses Wali Santri", tooltip_report: "Laporan Rapi", footer_text: "Proyek digarap dening tim (muhammad nahya fadlallah)" }
+                };
 
-        function setLanguage(lang) {
-            document.documentElement.lang = lang;
-            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                function setLanguage(lang) {
+                    document.documentElement.lang = lang;
+                    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                    const elements = document.querySelectorAll('[data-translate-key]');
+                    elements.forEach(el => {
+                        const key = el.getAttribute('data-translate-key');
+                        if (translations[lang] && translations[lang][key]) {
+                            if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                                el.placeholder = translations[lang][key];
+                            } else {
+                                el.innerHTML = translations[lang][key];
+                            }
+                        }
+                    });
+                    if (translations[lang] && translations[lang].app_title) {
+                        document.title = translations[lang].app_title;
+                    }
+                    localStorage.setItem('selectedLanguage', lang);
+                }
 
-            const elements = document.querySelectorAll('[data-translate-key]');
-            elements.forEach(el => {
-                const key = el.getAttribute('data-translate-key');
-                if (translations[lang] && translations[lang][key]) {
-                    if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-                        el.placeholder = translations[lang][key];
-                    } else {
-                        el.innerHTML = translations[lang][key];
+                // --- APPLICATION STATE ---
+                let appDataCache = {};
+                let loginContext = null; // 'wali' or 'guru'
+
+                const pages = {
+                    roleSelection: document.getElementById('role-selection-page'),
+                    pondokRegister: document.getElementById('pondok-register-page'),
+                    pondokLogin: document.getElementById('pondok-login-page'),
+                    accessCode: document.getElementById('access-code-page'),
+                    waliDashboard: document.getElementById('wali-dashboard-page'),
+                    detailSantri: document.getElementById('detail-santri-page'),
+                    guruDashboard: document.getElementById('guru-dashboard-page'),
+                    guruForm: document.getElementById('guru-form-page'),
+                    guruManagement: document.getElementById('guru-management-page'),
+                    jadwalDonasi: document.getElementById('jadwal-donasi-page'),
+                    about: document.getElementById('about-page'),
+                };
+                function showPage(pageName) {
+                    Object.values(pages).forEach(page => page.classList.add('hidden'));
+                    if (pages[pageName]) {
+                        pages[pageName].classList.remove('hidden');
+                        pages[pageName].classList.add('flex');
+                        if(['waliDashboard', 'detailSantri', 'guruDashboard', 'guruForm', 'guruManagement', 'jadwalDonasi', 'about'].includes(pageName)){
+                            pages[pageName].classList.remove('flex');
+                        }
                     }
                 }
-            });
-            if (translations[lang] && translations[lang].app_title) {
-                document.title = translations[lang].app_title;
-            }
-            localStorage.setItem('selectedLanguage', lang);
-        }
 
-        // --- APPLICATION STATE (Sekarang menggunakan memori dan sessionStorage) ---
-        let appDataCache = {};
-        let loginContext = null; // 'wali' or 'guru'
+                // --- API & DATA HANDLING ---
+                async function fetchData() {
+                    const currentPondokId = sessionStorage.getItem("currentPondokId");
 
-        const pages = {
-            roleSelection: document.getElementById('role-selection-page'),
-            pondokRegister: document.getElementById('pondok-register-page'),
-            pondokLogin: document.getElementById('pondok-login-page'),
-            accessCode: document.getElementById('access-code-page'),
-            waliDashboard: document.getElementById('wali-dashboard-page'),
-            detailSantri: document.getElementById('detail-santri-page'),
-            guruDashboard: document.getElementById('guru-dashboard-page'),
-            guruForm: document.getElementById('guru-form-page'),
-            guruManagement: document.getElementById('guru-management-page'),
-            jadwalDonasi: document.getElementById('jadwal-donasi-page'),
-            about: document.getElementById('about-page'),
-        };
-        function showPage(pageName) {
-            Object.values(pages).forEach(page => page.classList.add('hidden'));
-            if (pages[pageName]) {
-                pages[pageName].classList.remove('hidden');
-                pages[pageName].classList.add('flex');
-                if(['waliDashboard', 'detailSantri', 'guruDashboard', 'guruForm', 'guruManagement', 'jadwalDonasi', 'about'].includes(pageName)){
-                    pages[pageName].classList.remove('flex');
+                    if (!currentPondokId) {
+                        console.warn("Tidak ada pondokId di sessionStorage.");
+                        return null;
+                    }
+
+                    if (appDataCache[currentPondokId]) {
+                        return appDataCache[currentPondokId];
+                    }
+
+                    try {
+                        const response = await fetch("/api/get-data", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ pondokId: Number(currentPondokId) }) // ⬅️ integer
+                        });
+
+                        const result = await response.json();
+                        console.log("Data diterima:", result);
+
+                        if (result.success) {
+                            const canonicalId = result.pondokDbId || currentPondokId;
+                            sessionStorage.setItem("currentPondokId", canonicalId);
+                            appDataCache[canonicalId] = result.data;
+                            return appDataCache[canonicalId];
+                        } else {
+                            alert(result.message || "Gagal mengambil data.");
+                            return null;
+                        }
+                    } catch (err) {
+                        console.error("Error fetchData:", err);
+                        alert("Terjadi kesalahan saat ambil data.");
+                        return null;
+                    }
                 }
-            }
-        }
 
-        // --- API & DATA HANDLING ---
-        async function fetchData() {
-            const currentPondokId = sessionStorage.getItem('currentPondokId');
-            if (!currentPondokId) return null;
+                async function saveData(newData) {
+                    const currentPondokId = sessionStorage.getItem('currentPondokId');
+                    if (!currentPondokId) {
+                        alert("Sesi login berakhir. Silakan login kembali.");
+                        logout();
+                        return false;
+                    }
 
-            if (appDataCache[currentPondokId]) {
-                return appDataCache[currentPondokId];
-            }
+                    try {
+                        const response = await fetch('/api/save-santri', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({ ...newData, pondokId: currentPondokId })
+                        });
+                        const result = await response.json();
 
-            try {
-                const response = await fetch('/api/get-data', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ pondokId: currentPondokId })
+                        if (result.success) {
+                            return true;
+                        } else {
+                            console.error("Gagal menyimpan data:", result.message);
+                            alert("Gagal menyimpan data: " + result.message);
+                            return false;
+                        }
+                    } catch (error) {
+                        console.error("Gagal mengirim data ke server:", error);
+                        alert("Error koneksi ke server.");
+                        return false;
+                    }
+                }
+
+                // --- AUTHENTICATION FLOW ---
+                function handleRoleSelection(role) {
+                    showWelcomeVideo();
+                    loginContext = role;
+                    if (role === 'wali') {
+                        document.getElementById('wali-pondok-id-container').classList.remove('hidden');
+                        document.getElementById('access-code-header').classList.add('hidden');
+                        document.getElementById('access-code-title').textContent = "Login Wali Santri";
+                        document.getElementById('access-code-subtitle').textContent = "Masukkan Nama Pondok & Kode Akses Wali.";
+                        document.getElementById('access-code').placeholder = "Kode Akses Wali";
+                        showPage('accessCode');
+                    } else if (role === 'guru') {
+                        document.getElementById('wali-pondok-id-container').classList.add('hidden');
+                        document.getElementById('access-code-header').classList.remove('hidden');
+                        showPage('pondokLogin');
+                    }
+                }
+
+                document.getElementById('pondok-register-form').addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const pondokId = document.getElementById('register-pondok-id').value.trim();
+                    const password = document.getElementById('register-password').value;
+                    const errorEl = document.getElementById('register-error');
+
+                    if (!pondokId.includes('#') || password.length < 6) {
+                        errorEl.textContent = "Format Nama Pondok salah atau kata sandi terlalu pendek.";
+                        errorEl.classList.remove('hidden');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch('/api/register', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({ pondokId, password })
+                        });
+                        const result = await response.json();
+
+                        if (result.success) {
+                            alert('Pendaftaran berhasil! Silakan login.');
+                            showPage('pondokLogin');
+                        } else {
+                            errorEl.textContent = result.message;
+                            errorEl.classList.remove('hidden');
+                        }
+                    } catch (error) {
+                        errorEl.textContent = "Terjadi kesalahan saat mendaftar.";
+                        errorEl.classList.remove('hidden');
+                    }
                 });
-                const result = await response.json();
-                console.log("Data diterima:", result); // Tambahkan ini untuk debugging
 
-                if (result.success) {
-                    appDataCache[currentPondokId] = result.data;
-                    return appDataCache[currentPondokId];
-                }
-            } catch (error) {
-                console.error("Gagal mengambil data dari server:", error);
-            }
-            return null;
-        }
+                document.getElementById('pondok-login-form').addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const pondokId = document.getElementById('login-pondok-id').value.trim();
+                    const password = document.getElementById('login-password').value;
+                    const errorEl = document.getElementById('pondok-login-error');
 
-        async function saveData(newData) {
-            const currentPondokId = sessionStorage.getItem('currentPondokId');
-            if (!currentPondokId) {
-                alert("Sesi login berakhir. Silakan login kembali.");
-                logout();
-                return false;
-            }
+                    try {
+                        const response = await fetch('/api/login', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({ pondokId, password })
+                        });
+                        const result = await response.json();
 
-            try {
-                const response = await fetch('/api/save-santri', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ ...newData, pondokId: currentPondokId })
+                        if (result.success) {
+                            sessionStorage.setItem('currentPondokId', result.pondokDbId);
+                            document.getElementById('pondok-name-display').textContent = result.pondokName;
+                            document.getElementById('access-code-header').classList.remove('hidden');
+                            document.getElementById('wali-pondok-id-container').classList.add('hidden');
+                            document.getElementById('access-code-title').textContent = "Verifikasi Akses Guru";
+                            document.getElementById('access-code-subtitle').textContent = "Silakan masukkan kode akses Guru untuk melanjutkan.";
+                            document.getElementById('access-code').placeholder = "Kode Akses Guru";
+                            errorEl.classList.add('hidden');
+                            showPage('accessCode');
+                        } else {
+                            errorEl.textContent = result.message;
+                            errorEl.classList.remove('hidden');
+                        }
+                    } catch (error) {
+                        errorEl.textContent = "Terjadi kesalahan saat login.";
+                        errorEl.classList.remove('hidden');
+                    }
                 });
-                const result = await response.json();
 
-                if (result.success) {
-                    return true;
-                } else {
-                    console.error("Gagal menyimpan data:", result.message);
-                    alert("Gagal menyimpan data: " + result.message);
-                    return false;
+                // --- LOGIN WALI BARU ---
+                async function handleLoginWali(event) {
+                    event.preventDefault();
+
+                    const pondokId = document.getElementById("wali-pondok-id").value.trim();
+                    const accessCode = document.getElementById("access-code").value.trim();
+
+                    try {
+                        const response = await fetch("/api/login-wali", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ pondokId, accessCode })
+                        });
+
+                        const result = await response.json();
+                        console.log("Hasil login wali:", result);
+
+                        if (result.success) {
+                            sessionStorage.setItem("currentPondokId", result.pondokDbId);
+                            alert("Login wali berhasil untuk pondok: " + result.pondokName);
+
+                            renderWaliDashboard();
+                            showPage("waliDashboard");
+                        } else {
+                            alert(result.message || "Login wali gagal.");
+                        }
+                    } catch (err) {
+                        console.error("Error login wali:", err);
+                        alert("Terjadi kesalahan saat login wali.");
+                    }
                 }
-            } catch (error) {
-                console.error("Gagal mengirim data ke server:", error);
-                alert("Error koneksi ke server.");
-                return false;
-            }
-        }
 
-        // --- AUTHENTICATION FLOW ---
-        function handleRoleSelection(role) {
-            showWelcomeVideo();
-            loginContext = role;
-            if (role === 'wali') {
-                document.getElementById('wali-pondok-id-container').classList.remove('hidden');
-                document.getElementById('access-code-header').classList.add('hidden');
-                document.getElementById('access-code-title').textContent = "Login Wali Santri";
-                document.getElementById('access-code-subtitle').textContent = "Masukkan Nama Pondok & Kode Akses Wali.";
-                document.getElementById('access-code').placeholder = "Kode Akses Wali";
-                showPage('accessCode');
-            } else if (role === 'guru') {
-                document.getElementById('wali-pondok-id-container').classList.add('hidden');
-                document.getElementById('access-code-header').classList.remove('hidden');
-                showPage('pondokLogin');
-            }
-        }
+                // --- ACCESS CODE FORM ---
+                document.getElementById('access-code-form').addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    if (loginContext === 'wali') {
+                        return handleLoginWali(e); // ⬅️ pakai API login wali
+                    }
 
-        document.getElementById('pondok-register-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const pondokId = document.getElementById('register-pondok-id').value.trim();
-            const password = document.getElementById('register-password').value;
-            const errorEl = document.getElementById('register-error');
+                    const code = document.getElementById('access-code').value.trim().toUpperCase();
+                    const errorEl = document.getElementById('access-code-error');
 
-            if (!pondokId.includes('#') || password.length < 6) {
-                errorEl.textContent = "Format Nama Pondok salah atau kata sandi terlalu pendek.";
-                errorEl.classList.remove('hidden');
-                return;
-            }
-
-            try {
-                const response = await fetch('/api/register', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ pondokId, password })
+                    if (loginContext === 'guru' && code === 'MENGAMALKAN') {
+                        errorEl.classList.add('hidden');
+                        renderGuruDashboard();
+                        showPage('guruDashboard');
+                    } else {
+                        errorEl.textContent = "Kode yang Anda masukkan salah.";
+                        errorEl.classList.remove('hidden');
+                    }
                 });
-                const result = await response.json();
 
-                if (result.success) {
-                    alert('Pendaftaran berhasil! Silakan login.');
-                    showPage('pondokLogin');
-                } else {
-                    errorEl.textContent = result.message;
-                    errorEl.classList.remove('hidden');
+                function logout() {
+                    sessionStorage.removeItem('currentPondokId');
+                    loginContext = null;
+                    document.getElementById('access-code').value = '';
+                    document.getElementById('pondok-login-form').reset();
+                    showPage('roleSelection');
                 }
-            } catch (error) {
-                errorEl.textContent = "Terjadi kesalahan saat mendaftar.";
-                errorEl.classList.remove('hidden');
-            }
-        });
-        document.getElementById('pondok-login-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const pondokId = document.getElementById('login-pondok-id').value.trim();
-            const password = document.getElementById('login-password').value;
-            const errorEl = document.getElementById('pondok-login-error');
-
-            try {
-                const response = await fetch('/api/login', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ pondokId, password })
-                });
-                const result = await response.json();
-
-                if (result.success) {
-                    sessionStorage.setItem('currentPondokId', result.pondokDbId);
-                    document.getElementById('pondok-name-display').textContent = result.pondokName;
-                    document.getElementById('access-code-header').classList.remove('hidden');
-                    document.getElementById('wali-pondok-id-container').classList.add('hidden');
-                    document.getElementById('access-code-title').textContent = "Verifikasi Akses Guru";
-                    document.getElementById('access-code-subtitle').textContent = "Silakan masukkan kode akses Guru untuk melanjutkan.";
-                    document.getElementById('access-code').placeholder = "Kode Akses Guru";
-                    errorEl.classList.add('hidden');
-                    showPage('accessCode');
-                } else {
-                    errorEl.textContent = result.message;
-                    errorEl.classList.remove('hidden');
-                }
-            } catch (error) {
-                errorEl.textContent = "Terjadi kesalahan saat login.";
-                errorEl.classList.remove('hidden');
-            }
-        });
-        document.getElementById('access-code-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const code = document.getElementById('access-code').value.trim().toUpperCase();
-            const errorEl = document.getElementById('access-code-error');
-
-            const pondokIdInput = document.getElementById('wali-pondok-id').value.trim();
-            const currentPondokId = loginContext === 'wali' ? pondokIdInput : sessionStorage.getItem('currentPondokId');
-
-            if (!appDataCache[currentPondokId]) {
-                await fetchData();
-            }
-
-            if (loginContext === 'wali' && code === 'MENGAJI') {
-                if (!appDataCache[currentPondokId]) {
-                    errorEl.textContent = "Pondok tidak ditemukan atau kode salah.";
-                    errorEl.classList.remove('hidden');
-                    return;
-                }
-                sessionStorage.setItem('currentPondokId', currentPondokId);
-                errorEl.classList.add('hidden');
-                renderWaliDashboard();
-                showPage('waliDashboard');
-            } else if (loginContext === 'guru' && code === 'MENGAMALKAN') {
-                errorEl.classList.add('hidden');
-                renderGuruDashboard();
-                showPage('guruDashboard');
-            } else {
-                errorEl.textContent = "Kode yang Anda masukkan salah.";
-                errorEl.classList.remove('hidden');
-            }
-        });
-        function logout() {
-            sessionStorage.removeItem('currentPondokId');
-            loginContext = null;
-            document.getElementById('access-code').value = '';
-            document.getElementById('pondok-login-form').reset();
-            showPage('roleSelection');
-        }
 
         function searchSantri() {
             const searchTerm = document.getElementById('search-santri').value.toLowerCase();
