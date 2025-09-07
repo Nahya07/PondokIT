@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
 
 app = Flask(__name__)
 
@@ -28,7 +29,8 @@ class Pondok(db.Model):
     password_hash = db.Column(db.String(500), nullable=False)
     pondok_name = db.Column(db.String(500), nullable=False)
     santri = db.relationship('Santri', backref='pondok', lazy=True)
-    guru = db.relationship('Guru', backref='pondok', lazy=True)
+    guru = db.relationship('Guru', backref='pondok_guru', lazy=True)
+    hafalan = db.relationship('Hafalan', backref='pondok_hafalan', lazy=True)
 
     def __repr__(self):
         return f'<Pondok {self.pondok_id}>'
@@ -37,40 +39,32 @@ class Santri(db.Model):
     __tablename__ = 'santri'
     id = db.Column(db.Integer, primary_key=True)
     nama = db.Column(db.String(500), nullable=False)
-    foto = db.Column(db.String(500), nullable=True) # Ini akan menyimpan URL foto
     kelas = db.Column(db.String(500), nullable=True)
+    foto = db.Column(db.String(500), nullable=True)
+    tercapai = db.Column(db.Boolean, nullable=True)
+    target_harian = db.Column(db.String(500), nullable=True)
+    target_mingguan = db.Column(db.String(500), nullable=True)
+    target_bulanan = db.Column(db.String(500), nullable=True)
+    target_tahunan = db.Column(db.String(500), nullable=True)
     pondok_id = db.Column(db.Integer, db.ForeignKey('pondoks.id'), nullable=False)
-    target = db.relationship('Target', backref='santri', uselist=False, lazy=True)
-    hafalan_setoran = db.relationship('Hafalan', backref='santri', lazy=True)
+    hafalan_history = db.relationship('Hafalan', backref='santri', lazy=True, cascade="all, delete-orphan")
 
 class Guru(db.Model):
     __tablename__ = 'guru'
     id = db.Column(db.Integer, primary_key=True)
     nama = db.Column(db.String(500), nullable=False)
-    mengajar_kelas = db.Column(db.String(500), nullable=True)
+    mengajar_kelas = db.Column(db.String(500), nullable=False)
     pondok_id = db.Column(db.Integer, db.ForeignKey('pondoks.id'), nullable=False)
 
 class Hafalan(db.Model):
     __tablename__ = 'hafalan'
     id = db.Column(db.Integer, primary_key=True)
-    santri_id = db.Column(db.Integer, db.ForeignKey('santri.id'), nullable=False)
-    tanggal = db.Column(db.String(500), nullable=False)
+    tanggal = db.Column(db.Date, nullable=False)
     setoran = db.Column(db.String(500), nullable=False)
     jenis = db.Column(db.String(500), nullable=False)
     penilaian = db.Column(db.String(500), nullable=False)
-
-class Target(db.Model):
-    __tablename__ = 'target'
-    id = db.Column(db.Integer, primary_key=True)
-    santri_id = db.Column(db.Integer, db.ForeignKey('santri.id'), nullable=False, unique=True)
-    harian = db.Column(db.String(500), nullable=True)
-    mingguan = db.Column(db.String(500), nullable=True)
-    bulanan = db.Column(db.String(500), nullable=True)
-    tahunan = db.Column(db.String(500), nullable=True)
-    tercapai = db.Column(db.Boolean, nullable=False, default=False)
-    progres_persen_harian = db.Column(db.Integer, default=0)
-    progres_persen_mingguan = db.Column(db.Integer, default=0)
-    progres_persen_bulanan = db.Column(db.Integer, default=0)
+    santri_id = db.Column(db.Integer, db.ForeignKey('santri.id'), nullable=False)
+    pondok_id = db.Column(db.Integer, db.ForeignKey('pondoks.id'), nullable=False)
 
 # --- Fungsi utilitas ---
 def allowed_file(filename):
@@ -83,6 +77,7 @@ def allowed_file(filename):
 def index():
     return render_template('index.html')
 
+# Register pondok baru
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.json
@@ -105,6 +100,7 @@ def register():
 
     return jsonify({'success': True, 'message': 'Pendaftaran berhasil!'})
 
+# Login pondok
 @app.route('/api/login', methods=['POST'])
 def login():
     credentials = request.json
@@ -117,181 +113,213 @@ def login():
         return jsonify({'success': True, 'pondokName': pondok.pondok_name, 'pondokDbId': pondok.id})
     return jsonify({'success': False, 'message': 'ID Pondok atau password salah.'}), 401
 
-@app.route('/api/login-wali', methods=['POST'])
-def login_wali():
-    data = request.json
-    pondok_id = data.get('pondokId')
-    access_code = data.get('accessCode')
+# Ambil ID pondok dari nama pondok
+@app.route('/api/get-pondok-by-name', methods=['POST'])
+def get_pondok_by_name():
+    try:
+        data = request.json
+        pondok_id_string = data.get('pondokId')
 
-    # cari pondok berdasarkan username (string)
-    pondok = Pondok.query.filter_by(pondok_id=pondok_id).first()
-    if not pondok:
-        return jsonify({'success': False, 'message': 'Pondok tidak ditemukan.'}), 404
+        if not pondok_id_string:
+            return jsonify({'success': False, 'message': 'ID Pondok tidak ditemukan.'}), 400
 
-    # validasi kode akses wali
-    if pondok.access_code_wali and access_code == pondok.access_code_wali:
-        return jsonify({
-            'success': True,
-            'pondokName': pondok.pondok_name,
-            'pondokDbId': pondok.id
-        })
+        pondok = Pondok.query.filter_by(pondok_id=pondok_id_string).first()
 
-    return jsonify({'success': False, 'message': 'Kode akses salah.'}), 401
+        if pondok:
+            return jsonify({'success': True, 'pondokDbId': pondok.id, 'pondokName': pondok.pondok_name})
+        else:
+            return jsonify({'success': False, 'message': 'Pondok tidak ditemukan.'}), 404
 
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+# Ambil semua data pondok
 @app.route('/api/get-data', methods=['POST'])
 def get_data():
     try:
         data = request.json
-        pondok_db_id = data.get('pondokId')
+        pondok_db_id = data.get('pondokDbId')
 
         if not pondok_db_id:
             return jsonify({'success': False, 'message': 'ID Pondok tidak ditemukan.'}), 400
 
         santri_list = Santri.query.filter_by(pondok_id=pondok_db_id).all()
         guru_list = Guru.query.filter_by(pondok_id=pondok_db_id).all()
+        hafalan_list = Hafalan.query.filter_by(pondok_id=pondok_db_id).all()
 
-        # Filter hafalan dan target berdasarkan santri yang ada di pondok
-        santri_ids = [s.id for s in santri_list]
-        hafalan_list = Hafalan.query.filter(Hafalan.santri_id.in_(santri_ids)).all()
-        target_list = Target.query.filter(Target.santri_id.in_(santri_ids)).all()
+        santri_json = [
+            {
+                "id": s.id,
+                "nama": s.nama,
+                "kelas": s.kelas,
+                "foto": s.foto,
+                "target": {
+                    "harian": s.target_harian,
+                    "mingguan": s.target_mingguan,
+                    "bulanan": s.target_bulanan,
+                    "tahunan": s.target_tahunan,
+                    "tercapai": s.tercapai
+                }
+            } for s in santri_list
+        ]
+        guru_json = [
+            {"id": g.id, "nama": g.nama, "mengajar_kelas": g.mengajar_kelas} for g in guru_list
+        ]
+        hafalan_json = [
+            {"id": h.id, "santri_id": h.santri_id, "tanggal": h.tanggal.strftime('%Y-%m-%d'), "setoran": h.setoran, "jenis": h.jenis, "penilaian": h.penilaian} for h in hafalan_list
+        ]
 
-        hasil_santri = [{"id": s.id, "nama": s.nama, "kelas": s.kelas, "foto": s.foto} for s in santri_list]
-        hasil_guru = [{"id": g.id, "nama": g.nama, "mengajar_kelas": g.mengajar_kelas} for g in guru_list]
-        hasil_hafalan = [{"id": h.id, "santri_id": h.santri_id, "tanggal": h.tanggal, "setoran": h.setoran, "jenis": h.jenis, "penilaian": h.penilaian} for h in hafalan_list]
-        hasil_target = [{"id": t.id, "santri_id": t.santri_id, "harian": t.harian, "mingguan": t.mingguan, "bulanan": t.bulanan, "tahunan": t.tahunan, "tercapai": t.tercapai, "progres_persen": {"harian": t.progres_persen_harian, "mingguan": t.progres_persen_mingguan, "bulanan": t.progres_persen_bulanan}} for t in target_list]
-
-        return jsonify({'success': True, 'data': {'santri': hasil_santri, 'guru': hasil_guru, 'hafalan': hasil_hafalan, 'target': hasil_target}})
+        return jsonify({'success': True, 'data': {'santri': santri_json, 'guru': guru_json, 'hafalan': hafalan_json}})
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
 
+# Simpan data santri
 @app.route('/api/save-santri', methods=['POST'])
 def save_santri():
     try:
         data = request.json
-        santri_id = data.get('id')
-        nama = data.get('nama')
-        kelas = data.get('kelas')
-        foto_url = data.get('foto') # Menangkap URL foto
         pondok_db_id = data.get('pondokId')
+        santri_data = data.get('santriData')
 
-        if not nama or not kelas or not foto_url or not pondok_db_id:
-            return jsonify({'success': False, 'message': 'Data tidak lengkap'}), 400
+        if not pondok_db_id or not santri_data:
+            return jsonify({'success': False, 'message': 'Data tidak lengkap.'}), 400
 
-        if santri_id:
-            santri = Santri.query.get(santri_id)
-            if not santri or santri.pondok_id != pondok_db_id:
-                 return jsonify({'success': False, 'message': 'Santri tidak valid.'}), 400
+        santri_id = santri_data.get('id')
+        if santri_id:  # Update data santri
+            santri_to_update = Santri.query.get(santri_id)
+            if not santri_to_update:
+                return jsonify({'success': False, 'message': 'Santri tidak ditemukan.'}), 404
 
-            santri.nama = nama
-            santri.kelas = kelas
-            santri.foto = foto_url
-            db.session.commit()
-            return jsonify({'success': True, 'message': 'Data santri berhasil diperbarui!'})
-        else:
-            new_santri = Santri(nama=nama, kelas=kelas, foto=foto_url, pondok_id=pondok_db_id)
+            santri_to_update.nama = santri_data['nama']
+            santri_to_update.kelas = santri_data['kelas']
+            santri_to_update.foto = santri_data['foto']
+            santri_to_update.tercapai = santri_data['target']['tercapai']
+            santri_to_update.target_harian = santri_data['target']['harian']
+            santri_to_update.target_mingguan = santri_data['target']['mingguan']
+            santri_to_update.target_bulanan = santri_data['target']['bulanan']
+            santri_to_update.target_tahunan = santri_data['target']['tahunan']
+        else:  # Tambah santri baru
+            new_santri = Santri(
+                nama=santri_data['nama'],
+                kelas=santri_data['kelas'],
+                foto=santri_data['foto'],
+                tercapai=santri_data['target']['tercapai'],
+                target_harian=santri_data['target']['harian'],
+                target_mingguan=santri_data['target']['mingguan'],
+                target_bulanan=santri_data['target']['bulanan'],
+                target_tahunan=santri_data['target']['tahunan'],
+                pondok_id=pondok_db_id
+            )
             db.session.add(new_santri)
-            db.session.commit()
-            return jsonify({'success': True, 'message': 'Data santri berhasil ditambahkan!'})
+
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Data santri berhasil disimpan!'})
     except Exception as e:
-        db.session.rollback()
         return jsonify({'success': False, 'message': str(e)}), 500
 
+# Hapus data santri
 @app.route('/api/delete-santri', methods=['POST'])
 def delete_santri():
     try:
         data = request.json
         santri_id = data.get('santriId')
-        pondok_db_id = data.get('pondokId')
 
-        if not santri_id or not pondok_db_id:
-             return jsonify({'success': False, 'message': 'Data tidak lengkap'}), 400
+        if not santri_id:
+            return jsonify({'success': False, 'message': 'ID Santri tidak ditemukan.'}), 400
 
-        santri = Santri.query.get(santri_id)
-        if not santri or santri.pondok_id != pondok_db_id:
-             return jsonify({'success': False, 'message': 'Santri tidak valid.'}), 400
+        santri_to_delete = Santri.query.get(santri_id)
+        if not santri_to_delete:
+            return jsonify({'success': False, 'message': 'Santri tidak ditemukan.'}), 404
 
-        db.session.delete(santri)
+        db.session.delete(santri_to_delete)
         db.session.commit()
 
-        return jsonify({'success': True, 'message': 'Santri berhasil dihapus!'})
+        return jsonify({'success': True, 'message': 'Data santri berhasil dihapus!'})
     except Exception as e:
-        db.session.rollback()
         return jsonify({'success': False, 'message': str(e)}), 500
 
+# Simpan data guru
 @app.route('/api/save-guru', methods=['POST'])
 def save_guru():
     try:
         data = request.json
-        guru_id = data.get('id')
-        nama = data.get('nama')
-        mengajar_kelas = data.get('mengajar_kelas')
         pondok_db_id = data.get('pondokId')
+        guru_data = data.get('guruData')
 
-        if not nama or not mengajar_kelas or not pondok_db_id:
-            return jsonify({'success': False, 'message': 'Data tidak lengkap'}), 400
+        if not pondok_db_id or not guru_data:
+            return jsonify({'success': False, 'message': 'Data tidak lengkap.'}), 400
 
-        if guru_id: # Update
-            guru = Guru.query.get(guru_id)
-            if not guru or guru.pondok_id != pondok_db_id:
-                return jsonify({'success': False, 'message': 'Guru tidak valid.'}), 400
-
-            guru.nama = nama
-            guru.mengajar_kelas = mengajar_kelas
-            db.session.commit()
-            return jsonify({'success': True, 'message': 'Data guru berhasil diperbarui!'})
-        else: # Add
-            new_guru = Guru(nama=nama, mengajar_kelas=mengajar_kelas, pondok_id=pondok_db_id)
+        guru_id = guru_data.get('id')
+        if guru_id:  # Update guru
+            guru_to_update = Guru.query.get(guru_id)
+            if not guru_to_update:
+                return jsonify({'success': False, 'message': 'Guru tidak ditemukan.'}), 404
+            guru_to_update.nama = guru_data['nama']
+            guru_to_update.mengajar_kelas = guru_data['mengajar_kelas']
+        else:  # Tambah guru baru
+            new_guru = Guru(
+                nama=guru_data['nama'],
+                mengajar_kelas=guru_data['mengajar_kelas'],
+                pondok_id=pondok_db_id
+            )
             db.session.add(new_guru)
-            db.session.commit()
-            return jsonify({'success': True, 'message': 'Data guru berhasil ditambahkan!'})
+
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Data guru berhasil disimpan!'})
     except Exception as e:
-        db.session.rollback()
         return jsonify({'success': False, 'message': str(e)}), 500
 
+# Hapus data guru
 @app.route('/api/delete-guru', methods=['POST'])
 def delete_guru():
     try:
         data = request.json
         guru_id = data.get('guruId')
-        pondok_db_id = data.get('pondokId')
 
-        if not guru_id or not pondok_db_id:
-            return jsonify({'success': False, 'message': 'Data tidak lengkap'}), 400
+        if not guru_id:
+            return jsonify({'success': False, 'message': 'ID Guru tidak ditemukan.'}), 400
 
-        guru = Guru.query.get(guru_id)
-        if not guru or guru.pondok_id != pondok_db_id:
-            return jsonify({'success': False, 'message': 'Guru tidak valid.'}), 400
+        guru_to_delete = Guru.query.get(guru_id)
+        if not guru_to_delete:
+            return jsonify({'success': False, 'message': 'Guru tidak ditemukan.'}), 404
 
-        db.session.delete(guru)
+        db.session.delete(guru_to_delete)
         db.session.commit()
 
         return jsonify({'success': True, 'message': 'Data guru berhasil dihapus!'})
     except Exception as e:
-        db.session.rollback()
         return jsonify({'success': False, 'message': str(e)}), 500
 
+# Simpan data hafalan
 @app.route('/api/save-hafalan', methods=['POST'])
 def save_hafalan():
     try:
         data = request.json
-        santri_id = data.get('santriId')
-        tanggal = data.get('tanggal')
-        setoran = data.get('setoran')
-        jenis = data.get('jenis')
-        penilaian = data.get('penilaian')
+        pondok_db_id = data.get('pondokId')
+        hafalan_data = data.get('hafalanData')
 
-        if not santri_id or not tanggal or not setoran or not jenis or not penilaian:
-             return jsonify({'success': False, 'message': 'Data tidak lengkap'}), 400
+        if not pondok_db_id or not hafalan_data:
+            return jsonify({'success': False, 'message': 'Data tidak lengkap.'}), 400
 
-        new_hafalan = Hafalan(santri_id=santri_id, tanggal=tanggal, setoran=setoran, jenis=jenis, penilaian=penilaian)
+        # Note: Frontend akan mengirimkan tanggal sebagai string, kita perlu mengkonversinya ke objek date
+        from datetime import datetime
+        tanggal_obj = datetime.strptime(hafalan_data['tanggal'], '%Y-%m-%d').date()
+
+        new_hafalan = Hafalan(
+            tanggal=tanggal_obj,
+            setoran=hafalan_data['setoran'],
+            jenis=hafalan_data['jenis'],
+            penilaian=hafalan_data['penilaian'],
+            santri_id=hafalan_data['santriId'],
+            pondok_id=pondok_db_id
+        )
         db.session.add(new_hafalan)
         db.session.commit()
-
-        return jsonify({'success': True, 'message': 'Setoran hafalan berhasil ditambahkan!'})
+        return jsonify({'success': True, 'message': 'Data hafalan berhasil disimpan!'})
     except Exception as e:
-        db.session.rollback()
         return jsonify({'success': False, 'message': str(e)}), 500
 
+# Hapus data hafalan
 @app.route('/api/delete-hafalan', methods=['POST'])
 def delete_hafalan():
     try:
@@ -299,79 +327,38 @@ def delete_hafalan():
         hafalan_id = data.get('hafalanId')
 
         if not hafalan_id:
-             return jsonify({'success': False, 'message': 'Data tidak lengkap'}), 400
+            return jsonify({'success': False, 'message': 'ID Hafalan tidak ditemukan.'}), 400
 
-        hafalan = Hafalan.query.get(hafalan_id)
-        if not hafalan:
-             return jsonify({'success': False, 'message': 'Setoran hafalan tidak ditemukan.'}), 404
+        hafalan_to_delete = Hafalan.query.get(hafalan_id)
+        if not hafalan_to_delete:
+            return jsonify({'success': False, 'message': 'Hafalan tidak ditemukan.'}), 404
 
-        db.session.delete(hafalan)
+        db.session.delete(hafalan_to_delete)
         db.session.commit()
 
-        return jsonify({'success': True, 'message': 'Setoran hafalan berhasil dihapus!'})
+        return jsonify({'success': True, 'message': 'Hafalan berhasil dihapus!'})
     except Exception as e:
-        db.session.rollback()
         return jsonify({'success': False, 'message': str(e)}), 500
 
-@app.route('/api/save-target', methods=['POST'])
-def save_target():
-    try:
-        data = request.json
-        santri_id = data.get('santriId')
-        harian = data.get('harian')
-        mingguan = data.get('mingguan')
-        bulanan = data.get('bulanan')
-        tahunan = data.get('tahunan')
-        tercapai = data.get('tercapai')
-        progres_harian = data.get('progres_persen_harian')
-        progres_mingguan = data.get('progres_persen_mingguan')
-        progres_bulanan = data.get('progres_persen_bulanan')
-
-        if not santri_id:
-            return jsonify({'success': False, 'message': 'ID Santri tidak ditemukan'}), 400
-
-        target = Target.query.filter_by(santri_id=santri_id).first()
-        if target:
-            target.harian = harian
-            target.mingguan = mingguan
-            target.bulanan = bulanan
-            target.tahunan = tahunan
-            target.tercapai = tercapai
-            target.progres_persen_harian = progres_harian
-            target.progres_persen_mingguan = progres_mingguan
-            target.progres_persen_bulanan = progres_bulanan
-        else:
-            new_target = Target(santri_id=santri_id, harian=harian, mingguan=mingguan, bulanan=bulanan, tahunan=tahunan, tercapai=tercapai, progres_persen_harian=progres_harian, progres_persen_mingguan=progres_mingguan, progres_persen_bulanan=progres_bulanan)
-            db.session.add(new_target)
-
-        db.session.commit()
-        return jsonify({'success': True, 'message': 'Target hafalan berhasil disimpan!'})
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'success': False, 'message': str(e)}), 500
-
+# Upload file foto
 @app.route('/unggah', methods=['POST'])
 def upload_file():
     UPLOAD_FOLDER = 'static/uploads'
-    if not os.path.exists(UPLOAD_FOLDER):
-        os.makedirs(UPLOAD_FOLDER)
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
     if 'file' not in request.files:
-        return jsonify({'success': False, 'message': 'Tidak ada file di request'}), 400
+        return 'Tidak ada file di request', 400
 
     file = request.files['file']
 
     if file.filename == '':
-        return jsonify({'success': False, 'message': 'Tidak ada file dipilih'}), 400
+        return 'Tidak ada file dipilih', 400
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         filepath = os.path.join(UPLOAD_FOLDER, filename)
         file.save(filepath)
-
-        # Mengembalikan URL publik dari file yang diunggah
-        file_url = f'/static/uploads/{filename}'
-        return jsonify({'success': True, 'file_url': file_url})
+        return jsonify({'success': True, 'file_url': f'/static/uploads/{filename}'})
 
     return jsonify({'success': False, 'message': 'Jenis file tidak diizinkan'}), 400
 
