@@ -839,7 +839,6 @@
 
         // --- AUTHENTICATION FLOW ---
         function handleRoleSelection(role) {
-
             loginContext = role;
             if (role === 'wali') {
                 document.getElementById('access-code-title').textContent = "Login Wali Santri";
@@ -867,7 +866,7 @@
             }
         }
 
-        // EVENT LISTENERS
+        // --- EVENT LISTENERS ---
         document.getElementById('pondok-register-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const pondokId = document.getElementById('register-pondok-id').value.trim();
@@ -1039,7 +1038,143 @@
             });
         }
 
+        // --- FUNGSI-FUNGSI BARU YANG DITAMBAHKAN ---
+        function showGuruForm(santriId) {
+            // Logika untuk menampilkan form guru dengan data santriId
+            console.log(`Menampilkan form untuk santri dengan ID: ${santriId}`);
+            showPage('guruForm');
+        }
+
+        function showGuruManagementPage() {
+            // Logika untuk menampilkan halaman manajemen guru
+            console.log("Menampilkan halaman manajemen guru.");
+            showPage('guruManagement');
+        }
+
+        function showJadwalDonasiPage() {
+            // Logika untuk menampilkan halaman jadwal donasi
+            console.log("Menampilkan halaman jadwal donasi.");
+            showPage('jadwalDonasi');
+        }
+
         // --- SISANYA TETAP SAMA ---
+        function handleAlarmToggleChange(event) {
+            localStorage.setItem('alarmEnabled', event.target.checked);
+            // Logika lain jika diperlukan
+        }
+
+        async function showGuruForm(santriId = null) {
+            // Logika untuk menampilkan form pengisian data santri
+            const pondokData = await fetchData();
+            const form = document.getElementById('guru-santri-form');
+            const isEditing = santriId !== null;
+            form.dataset.editingId = isEditing ? santriId : '';
+            document.getElementById('form-title').textContent = isEditing ? 'Ubah Data Santri' : 'Tambah Santri Baru';
+
+            if (isEditing) {
+                const santri = pondokData.santri.find(s => s.id === santriId);
+                if (santri) {
+                    document.getElementById('nama-santri').value = santri.nama;
+                    document.getElementById('kelas').value = santri.kelas;
+                    document.getElementById('form-target-harian').value = santri.target.harian;
+                    document.getElementById('form-target-mingguan').value = santri.target.mingguan;
+                }
+            } else {
+                form.reset();
+            }
+
+            showPage('guruForm');
+        }
+
+        document.getElementById('guru-santri-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const nama = document.getElementById('nama-santri').value.trim();
+            const kelas = document.getElementById('kelas').value;
+            const targetHarian = document.getElementById('form-target-harian').value;
+            const targetMingguan = document.getElementById('form-target-mingguan').value;
+            const fotoFile = document.getElementById('foto-santri').files[0];
+            const isEditing = !!this.dataset.editingId;
+            const santriId = isEditing ? this.dataset.editingId : null;
+
+            if (!nama || !kelas || !targetHarian || !targetMingguan) {
+                alert('Mohon lengkapi semua data.');
+                return;
+            }
+
+            let fotoUrl = isEditing ? appDataCache[sessionStorage.getItem('currentPondokId')].santri.find(s => s.id == santriId).foto : '';
+            if (fotoFile) {
+                fotoUrl = await uploadFile(fotoFile);
+                if (!fotoUrl) {
+                    return;
+                }
+            }
+
+            const pondokData = await fetchData();
+            let newSantriData;
+
+            if (isEditing) {
+                const santriIndex = pondokData.santri.findIndex(s => s.id == santriId);
+                if (santriIndex !== -1) {
+                    pondokData.santri[santriIndex] = {
+                        ...pondokData.santri[santriIndex],
+                        nama: nama,
+                        kelas: kelas,
+                        foto: fotoUrl,
+                        target: { harian: targetHarian, mingguan: targetMingguan, bulanan: '', tahunan: '', tercapai: false }
+                    };
+                }
+                newSantriData = pondokData;
+            } else {
+                const newId = `santri-${Date.now()}`;
+                const newSantri = {
+                    id: newId,
+                    nama: nama,
+                    kelas: kelas,
+                    foto: fotoUrl || 'https://placehold.co/400x400?text=Foto Santri',
+                    target: { harian: targetHarian, mingguan: targetMingguan, bulanan: '', tahunan: '', tercapai: false },
+                    riwayat_setoran: []
+                };
+                pondokData.santri.push(newSantri);
+                newSantriData = pondokData;
+            }
+
+            const success = await saveData(newSantriData);
+            if (success) {
+                alert(`Data santri berhasil ${isEditing ? 'diubah' : 'ditambahkan'}.`);
+                appDataCache = {};
+                checkLoginState();
+            }
+        });
+
+        async function deleteSantri(santriId) {
+            if (!confirm('Apakah Anda yakin ingin menghapus data santri ini?')) {
+                return;
+            }
+            const pondokData = await fetchData();
+            const updatedSantriList = pondokData.santri.filter(s => s.id !== santriId);
+            pondokData.santri = updatedSantriList;
+            const success = await saveData(pondokData);
+            if (success) {
+                alert('Data santri berhasil dihapus.');
+                appDataCache = {};
+                checkLoginState();
+            }
+        }
+
+        // Fungsi-fungsi untuk manajemen guru (placeholder)
+        async function showGuruManagementPage() {
+            console.log('Fungsi manajemen guru belum diimplementasikan sepenuhnya.');
+            showPage('guruManagement');
+        }
+
+        async function showJadwalDonasiPage() {
+            console.log('Fungsi jadwal donasi belum diimplementasikan sepenuhnya.');
+            showPage('jadwalDonasi');
+        }
+
+        // PENTING: Pindahkan event listener ini ke tempat yang tepat di HTML kamu
+        // Misalnya, di dalam tombol di halaman guru dashboard
+        // <button onclick="showGuruForm()">Tambah Santri Baru</button>
 
         document.addEventListener('DOMContentLoaded', () => {
             const savedLang = localStorage.getItem('selectedLanguage') || 'id';
@@ -1047,7 +1182,7 @@
             setLanguage(savedLang);
             const alarmToggle = document.getElementById('alarm-toggle');
             alarmToggle.checked = localStorage.getItem('alarmEnabled') === 'true';
-            alarmToggle.addEventListener('change', handleAlarmToggleChange);
+            alarmToggle.addEventListener('change', (event) => localStorage.setItem('alarmEnabled', event.target.checked));
             const kelasSelectSantri = document.getElementById('kelas');
             const kelasSelectGuru = document.getElementById('guru-kelas');
             kelasSelectSantri.innerHTML = '';
@@ -1075,5 +1210,3 @@
             checkLoginState();
         });
     </script>
-    </body>
-    </html>
