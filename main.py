@@ -41,6 +41,37 @@ class Santri(db.Model):
     hafalan = db.Column(db.String(500), nullable=False)
     kelas = db.Column(db.String(500), nullable=True)
     pondok_id = db.Column(db.Integer, db.ForeignKey('pondoks.id'), nullable=False)
+    target = db.relationship('Target', backref='santri', lazy=True)
+    hafalan_setoran = db.relationship('Hafalan', backref='santri', lazy=True)
+
+class Guru(db.Model):
+    __tablename__ = 'guru'
+    id = db.Column(db.Integer, primary_key=True)
+    nama = db.Column(db.String(500), nullable=False)
+    mengajar_kelas = db.Column(db.String(500), nullable=True)
+    pondok_id = db.Column(db.Integer, db.ForeignKey('pondoks.id'), nullable=False)
+
+class Hafalan(db.Model):
+    __tablename__ = 'hafalan'
+    id = db.Column(db.Integer, primary_key=True)
+    santri_id = db.Column(db.Integer, db.ForeignKey('santri.id'), nullable=False)
+    tanggal = db.Column(db.String(500), nullable=False)
+    setoran = db.Column(db.String(500), nullable=False)
+    jenis = db.Column(db.String(500), nullable=False)
+    penilaian = db.Column(db.String(500), nullable=False)
+
+class Target(db.Model):
+    __tablename__ = 'target'
+    id = db.Column(db.Integer, primary_key=True)
+    santri_id = db.Column(db.Integer, db.ForeignKey('santri.id'), nullable=False)
+    harian = db.Column(db.String(500), nullable=True)
+    mingguan = db.Column(db.String(500), nullable=True)
+    bulanan = db.Column(db.String(500), nullable=True)
+    tahunan = db.Column(db.String(500), nullable=True)
+    tercapai = db.Column(db.Boolean, nullable=False, default=False)
+    progres_persen_harian = db.Column(db.Integer, default=0)
+    progres_persen_mingguan = db.Column(db.Integer, default=0)
+    progres_persen_bulanan = db.Column(db.Integer, default=0)
 
 # --- Fungsi utilitas ---
 def allowed_file(filename):
@@ -100,11 +131,16 @@ def get_data():
             return jsonify({'success': False, 'message': 'ID Pondok tidak ditemukan.'}), 400
 
         santri_list = Santri.query.filter_by(pondok_id=pondok_db_id).all()
-        hasil = [
-            {"id": s.id, "nama": s.nama, "hafalan": s.hafalan, "kelas": s.kelas}
-            for s in santri_list
-        ]
-        return jsonify({'success': True, 'data': hasil})
+        guru_list = Guru.query.filter_by(pondok_id=pondok_db_id).all()
+        hafalan_list = Hafalan.query.all() # Ini masih kurang aman
+        target_list = Target.query.all() # Ini masih kurang aman
+
+        hasil_santri = [{"id": s.id, "nama": s.nama, "hafalan": s.hafalan, "kelas": s.kelas} for s in santri_list]
+        hasil_guru = [{"id": g.id, "nama": g.nama, "mengajar_kelas": g.mengajar_kelas} for g in guru_list]
+        hasil_hafalan = [{"id": h.id, "santri_id": h.santri_id, "tanggal": h.tanggal, "setoran": h.setoran, "jenis": h.jenis, "penilaian": h.penilaian} for h in hafalan_list]
+        hasil_target = [{"id": t.id, "santri_id": t.santri_id, "harian": t.harian, "mingguan": t.mingguan, "bulanan": t.bulanan, "tahunan": t.tahunan, "tercapai": t.tercapai, "progres_persen": {"harian": t.progres_persen_harian, "mingguan": t.progres_persen_mingguan, "bulanan": t.progres_persen_bulanan}} for t in target_list]
+
+        return jsonify({'success': True, 'data': {'santri': hasil_santri, 'guru': hasil_guru, 'hafalan': hasil_hafalan, 'target': hasil_target}})
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
 
