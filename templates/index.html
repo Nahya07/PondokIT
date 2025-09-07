@@ -872,30 +872,31 @@
                 return;
             }
 
-        const accessCode = document.getElementById('wali-access-code').value;
+        document.getElementById('access-code-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            // Gunakan ID yang benar: 'access-code'
+            const accessCode = document.getElementById('access-code').value; 
 
             try {
                 const response = await fetch('/api/wali-login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ accessCode }) // Kirim hanya kode akses
+                    body: JSON.stringify({ accessCode })
                 });
                 const data = await response.json();
 
                 if (data.success) {
-                    // Simpan data di sessionStorage
                     sessionStorage.setItem('pondokDbId', data.pondokDbId);
                     sessionStorage.setItem('pondokName', data.pondokName);
                     sessionStorage.setItem('role', 'wali');
-                    // Alihkan ke halaman login berhasil
                     checkLoginState();
                 } else {
                     // Tampilkan pesan kesalahan
-                    showToast('error', data.message);
+                    // showToast('error', data.message);
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                showToast('error', 'Terjadi kesalahan saat login.');
+                // showToast('error', 'Terjadi kesalahan saat login.');
             }
         });
 
