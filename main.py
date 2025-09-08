@@ -47,6 +47,7 @@ class Santri(db.Model):
     kelas = db.Column(db.String(500), nullable=True)
     foto = db.Column(db.String(500), nullable=True)
     tercapai = db.Column(db.Boolean, nullable=True)
+    total_hafalan_juz = db.Column(db.Integer, nullable=True) # Perubahan ini
     target_harian = db.Column(db.String(500), nullable=True)
     target_mingguan = db.Column(db.String(500), nullable=True)
     target_bulanan = db.Column(db.String(500), nullable=True)
@@ -165,6 +166,7 @@ def get_data():
                 "kelas": s.kelas,
                 "foto": s.foto,
                 "tercapai": s.tercapai,
+                "total_hafalan_juz": s.total_hafalan_juz, # Perubahan ini
                 "target": {
                     "harian": s.target_harian,
                     "mingguan": s.target_mingguan,
@@ -204,6 +206,8 @@ def save_santri():
             return jsonify({'success': False, 'message': 'Data tidak lengkap.'}), 400
 
         santri_id = santri_data.get('id')
+        total_hafalan_juz = santri_data.get('total_hafalan_juz') # Perubahan ini
+
         if santri_id:  # Update data santri
             santri_to_update = Santri.query.get(santri_id)
             if not santri_to_update:
@@ -213,6 +217,7 @@ def save_santri():
             santri_to_update.kelas = santri_data['kelas']
             santri_to_update.foto = santri_data['foto']
             santri_to_update.tercapai = santri_data['target']['tercapai']
+            santri_to_update.total_hafalan_juz = total_hafalan_juz # Perubahan ini
             santri_to_update.target_harian = santri_data['target']['harian']
             santri_to_update.target_mingguan = santri_data['target']['mingguan']
             santri_to_update.target_bulanan = santri_data['target']['bulanan']
@@ -223,6 +228,7 @@ def save_santri():
                 kelas=santri_data['kelas'],
                 foto=santri_data['foto'],
                 tercapai=santri_data['target']['tercapai'],
+                total_hafalan_juz=total_hafalan_juz, # Perubahan ini
                 target_harian=santri_data['target']['harian'],
                 target_mingguan=santri_data['target']['mingguan'],
                 target_bulanan=santri_data['target']['bulanan'],
@@ -385,6 +391,6 @@ if __name__ == '__main__':
     with app.app_context():
         # Tambahkan ini untuk membuat kolom baru di database jika belum ada
         # HANYA JALANKAN INI SAAT PERTAMA KALI
-        # db.create_all() 
-        pass 
+        # db.create_all()
+        pass
     app.run(debug=True, host='0.0.0.0', port=5000)
