@@ -866,17 +866,22 @@
             const password = document.getElementById('register-password').value;
             const errorEl = document.getElementById('register-error');
 
+            // Validasi frontend yang lebih kuat
             if (!pondokId.includes('#') || password.length < 6) {
                 errorEl.textContent = "Format Nama Pondok salah atau kata sandi terlalu pendek.";
                 errorEl.classList.remove('hidden');
                 return;
             }
 
+            // Ambil pondokName dari pondokId sebelum mengirim ke server
+            const pondokName = pondokId.split('#')[0].trim();
+
             try {
                 const response = await fetch('/api/register', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ pondokId, password }) // HANYA kirim pondokId dan password
+                    // Kirim semua data yang dibutuhkan backend
+                    body: JSON.stringify({ pondokId, password, pondokName }) 
                 });
                 const result = await response.json();
                 if (result.success) {
