@@ -1,3 +1,681 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring Hafalan Santri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
+            background-color: #f0f4f8; /* Light blue-gray background */
+        }
+        .main-content {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .ornament-border {
+            border: 2px solid #c7a17a; /* Gold color */
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        .ornament-border::before, .ornament-border::after {
+            content: '❁';
+            position: absolute;
+            font-size: 24px;
+            color: #c7a17a;
+        }
+        .ornament-border::before { top: -15px; left: -15px; }
+        .ornament-border::after { bottom: -15px; right: -15px; }
+
+        /* Tooltip for features */
+        .feature-tooltip .tooltip-text {
+            visibility: hidden;
+            width: 160px;
+            background-color: #334155;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -80px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .feature-tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        /* Video Modal */
+        #video-modal {
+            transition: opacity 0.3s ease;
+        }
+        /* Custom toggle switch for alarm */
+        .toggle-checkbox:checked { right: 0; border-color: #10B981; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #10B981; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div id="video-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg p-6 text-center max-w-lg w-full relative">
+            <button onclick="closeVideoModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800">&times;</button>
+            <video class="w-full rounded-md mb-4" autoplay muted loop playsinline>
+                <source src="https://cdn.pixabay.com/video/2022/09/23/131953-755734533_large.mp4" type="video/mp4">
+                Browser anda tidak menyokong tag video.
+            </video>
+            <h3 data-translate-key="login_welcome" class="text-xl font-bold text-teal-800 mb-2"></h3>
+            <p data-translate-key="login_welcome_text" class="text-gray-600"></p>
+        </div>
+    </div>
+
+    <div id="app" class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+        <div id="role-selection-page" class="flex flex-col items-center justify-center min-h-screen">
+            <div class="fixed top-4 right-4 z-50">
+                <select id="language-selector" onchange="setLanguage(this.value)" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-teal-500 focus:border-teal-500">
+                    <option value="id">Bahasa Indonesia</option>
+                    <option value="en">English</option>
+                    <option value="ja">日本語</option>
+                    <option value="ar">العربية</option>
+                    <option value="ru">Русский</option>
+                    <option value="jw">Basa Jawa</option>
+                </select>
+            </div>
+            <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-2xl text-center">
+                 <p class="text-4xl text-teal-800" style="font-family: 'MCS Hijaz S_U normal', serif;">بسم الله الرحمن الرحيم</p>
+                <h2 class="text-2xl font-bold text-gray-900">Selamat Datang di Aplikasi Monitoring</h2>
+                <p class="text-gray-600">Silakan pilih peran Anda untuk melanjutkan:</p>
+                <div class="space-y-4 pt-4">
+                    <button onclick="handleRoleSelection('wali')" class="w-full px-4 py-3 font-semibold text-white bg-teal-700 rounded-lg hover:bg-teal-800 transition duration-300">
+                        Saya Wali Santri
+                    </button>
+                    <button onclick="handleRoleSelection('guru')" class="w-full px-4 py-3 font-semibold text-teal-700 bg-teal-100 rounded-lg hover:bg-teal-200 transition duration-300">
+                        Saya Pengurus / Guru
+                    </button>
+                </div>
+            </div>
+            <div class="flex justify-between items-end mt-8 w-full max-w-lg mx-auto">
+                     <div class="text-left">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-teal-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v11.494m-9-5.747h18M5.25 7.497l3.125-1.562a1.125 1.125 0 011.25 0L18.75 7.5M5.25 16.503l3.125 1.562a1.125 1.125 0 001.25 0L18.75 16.5" />
+                        </svg>
+                        <p data-translate-key="hadith_text" class="text-sm italic text-gray-600 mt-2">"Sebaik-baik kalian adalah orang<br>yang belajar Al-Qur'an dan mengajarkannya."</p>
+                    </div>
+                     <div class="flex space-x-4">
+                        <div class="feature-tooltip relative">
+                            <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5z" /></svg>
+                            </div>
+                            <span data-translate-key="tooltip_realtime" class="tooltip-text">Monitoring Real-time</span>
+                        </div>
+                        <div class="feature-tooltip relative">
+                            <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+                            </div>
+                            <span data-translate-key="tooltip_guardian" class="tooltip-text">Akses Wali Santri</span>
+                        </div>
+                         <div class="feature-tooltip relative">
+                            <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                            </div>
+                            <span data-translate-key="tooltip_report" class="tooltip-text">Laporan Terstruktur</span>
+                        </div>
+                    </div>
+                </div>
+                <footer class="mt-8 text-center text-sm text-gray-500">
+                    <button onclick="showAboutPage()" class="text-teal-600 hover:text-teal-800 underline mb-2">Tentang Aplikasi Ini</button>
+                    <p data-translate-key="footer_text">Project dibuat oleh (muhammad nahya fadlallah)</p>
+                </footer>
+             <a href="https://wa.me/6285520767908" target="_blank" class="fixed bottom-8 right-8 z-40 text-center">
+                <span data-translate-key="complaint_info" class="text-sm font-semibold text-gray-600 mt-1">Info Pengaduan</span>
+            </a>
+        </div>
+
+        <div id="pondok-register-page" class="hidden flex flex-col items-center justify-center min-h-screen">
+            <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-2xl">
+                <h2 class="text-2xl font-bold text-center text-gray-900">Daftarkan Pondok Anda</h2>
+                <form id="pondok-register-form" class="space-y-6">
+                    <div>
+                        <label for="register-pondok-id" class="block text-sm font-medium text-gray-700">Nama Pondok & Nomor Unik</label>
+                        <input type="text" id="register-pondok-id" placeholder="Contoh: PPTI#12345" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-4 focus:ring-teal-200" required>
+                         <p class="text-xs text-gray-500 mt-1">Gunakan tanda pagar (#) untuk memisahkan nama dan nomor unik.</p>
+                    </div>
+                     <div>
+                        <label for="register-password" class="block text-sm font-medium text-gray-700">Buat Kata Sandi</label>
+                        <div class="relative mt-1">
+                            <input type="password" id="register-password" placeholder="Minimal 6 karakter" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-4 focus:ring-teal-200" required>
+                            <button type="button" onclick="togglePasswordVisibility('register-password', this)" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full px-4 py-3 font-semibold text-white bg-teal-700 rounded-lg hover:bg-teal-800 transition duration-300">
+                        Daftar
+                    </button>
+                </form>
+                <p id="register-error" class="text-red-500 text-sm mt-2 hidden text-center"></p>
+                <p class="text-center text-sm">
+                    Sudah punya akun? <button onclick="showPage('pondokLogin')" class="font-semibold text-teal-600 hover:underline">Masuk di sini</button>
+                </p>
+            </div>
+        </div>
+
+        <div id="pondok-login-page" class="hidden flex flex-col items-center justify-center min-h-screen">
+            <div class="fixed top-4 right-4 z-50">
+                <select id="language-selector" onchange="setLanguage(this.value)" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-teal-500 focus:border-teal-500">
+                    <option value="id">Bahasa Indonesia</option>
+                    <option value="en">English</option>
+                    <option value="ja">日本語</option>
+                    <option value="ar">العربية</option>
+                    <option value="ru">Русский</option>
+                    <option value="jw">Basa Jawa</option>
+                </select>
+            </div>
+            <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-2xl">
+                 <p class="text-4xl text-teal-800 text-center" style="font-family: 'MCS Hijaz S_U normal', serif;">بسم الله الرحمن الرحيم</p>
+                <h2 class="text-2xl font-bold text-center text-gray-900">Login Pengurus / Guru</h2>
+                        <form id="pondok-login-form" class="space-y-6">
+                            <div>
+                                <label for="login-pondok-id" class="block text-sm font-medium text-gray-700">Nama Pondok & Nomor Unik</label>
+                                <input type="text" id="login-pondok-id" placeholder="Contoh: PPTI#12345" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-4 focus:ring-teal-200" required>
+                    </div>
+                            <div>
+                                <label for="login-password" class="block text-sm font-medium text-gray-700">Kata Sandi</label>
+                                <div class="relative mt-1">
+                                    <input type="password" id="login-password" placeholder="Kata Sandi Anda" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-4 focus:ring-teal-200" required>
+                                </div>
+                            <button type="button" onclick="togglePasswordVisibility('login-password', this)" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                            </button>
+                    </div>
+                    <button type="submit" class="w-full px-4 py-3 font-semibold text-white bg-teal-700 rounded-lg hover:bg-teal-800 transition duration-300">
+                        Login
+                    </button>
+                </form>
+                <p id="pondok-login-error" class="text-red-500 text-sm mt-2 hidden text-center"></p>
+                <p class="text-center text-sm">
+                    Belum punya akun? <button onclick="showPage('pondokRegister')" class="font-semibold text-teal-600 hover:underline">Daftar di sini</button>
+                </p>
+                 <p class="text-center text-sm mt-4">
+                    <button onclick="showPage('roleSelection')" class="text-gray-500 hover:underline">Kembali ke pilihan peran</button>
+                </p>
+            </div>
+            <div class="flex justify-between items-end mt-8 w-full max-w-lg mx-auto">
+                     <div class="text-left">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-teal-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v11.494m-9-5.747h18M5.25 7.497l3.125-1.562a1.125 1.125 0 011.25 0L18.75 7.5M5.25 16.503l3.125 1.562a1.125 1.125 0 001.25 0L18.75 16.5" />
+                        </svg>
+                        <p data-translate-key="hadith_text" class="text-sm italic text-gray-600 mt-2">"Sebaik-baik kalian adalah orang<br>yang belajar Al-Qur'an dan mengajarkannya."</p>
+                    </div>
+                     <div class="flex space-x-4">
+                        <div class="feature-tooltip relative">
+                            <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5z" /></svg>
+                            </div>
+                            <span data-translate-key="tooltip_realtime" class="tooltip-text">Monitoring Real-time</span>
+                        </div>
+                        <div class="feature-tooltip relative">
+                            <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+                            </div>
+                            <span data-translate-key="tooltip_guardian" class="tooltip-text">Akses Wali Santri</span>
+                        </div>
+                         <div class="feature-tooltip relative">
+                            <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                            </div>
+                            <span data-translate-key="tooltip_report" class="tooltip-text">Laporan Terstruktur</span>
+                        </div>
+                    </div>
+                </div>
+                <footer class="mt-8 text-center text-sm text-gray-500">
+                    <button onclick="showAboutPage()" class="text-teal-600 hover:text-teal-800 underline mb-2">Tentang Aplikasi Ini</button>
+                    <p data-translate-key="footer_text">Project dibuat oleh team (muhammad nahya fadlallah)</p>
+                </footer>
+             <a href="https://wa.me/6285520767908" target="_blank" class="fixed bottom-8 right-8 z-40 text-center">
+                <span data-translate-key="complaint_info" class="text-sm font-semibold text-gray-600 mt-1">Info Pengaduan</span>
+            </a>
+        </div>
+
+        <div id="access-code-page" class="hidden flex flex-col items-center justify-center min-h-screen">
+            <div class="w-full max-w-lg text-center">
+                <div id="access-code-header" class="ornament-border bg-white/80 backdrop-blur-sm rounded-xl p-8 mb-8">
+                     <h1 id="pondok-name-display" class="text-4xl font-bold text-teal-800" style="font-family: 'Times New Roman', serif;"></h1>
+                </div>
+                <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-2xl mx-auto">
+                    <div class="fixed top-4 right-4 z-50">
+                        <select id="language-selector" onchange="setLanguage(this.value)" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-teal-500 focus:border-teal-500">
+                            <option value="id">Bahasa Indonesia</option>
+                            <option value="en">English</option>
+                            <option value="ja">日本語</option>
+                            <option value="ar">العربية</option>
+                            <option value="ru">Русский</option>
+                            <option value="jw">Basa Jawa</option>
+                        </select>
+                    </div>
+                    <p class="text-4xl text-teal-800 text-center" style="font-family: 'MCS Hijaz S_U normal', serif;">بسم الله الرحمن الرحيم</p>
+                    <h2 id="access-code-title" data-translate-key="login_title" class="text-2xl font-bold text-gray-900">Sistem Monitoring Hafalan</h2>
+                    <p id="access-code-subtitle" data-translate-key="login_subtitle" class="text-gray-600">Silakan masukkan kode akses untuk melanjutkan.</p>
+                    <form id="access-code-form" class="space-y-6">
+                        <div id="wali-pondok-id-container" class="hidden">
+                             <input type="text" id="wali-pondok-id" placeholder="Nama Pondok & Nomor Unik" class="w-full px-4 py-3 text-center border border-gray-300 rounded-lg focus:ring-4 focus:ring-teal-200 focus:border-teal-500 transition duration-300" >
+                        </div>
+                        <div class="relative">
+                            <input type="text" id="access-code" data-translate-key="access_code_placeholder" placeholder="Kode Akses Anda" class="w-full px-4 py-3 text-center border border-gray-300 rounded-lg focus:ring-4 focus:ring-teal-200 focus:border-teal-500 transition duration-300" required>
+                        </div>
+                        <button type="submit" data-translate-key="login_button" class="w-full px-4 py-3 font-semibold text-white bg-teal-700 rounded-lg hover:bg-teal-800 focus:outline-none focus:ring-4 focus:ring-300 transition duration-300">
+                            Masuk
+                        </button>
+                    </form>
+                    <p id="access-code-error" data-translate-key="login_error" class="text-red-500 text-sm mt-2 hidden">Kode yang Anda masukkan salah.</p>
+                </div>
+
+                <div class="flex justify-between items-end mt-8 w-full max-w-lg mx-auto">
+                     <div class="text-left">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-teal-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v11.494m-9-5.747h18M5.25 7.497l3.125-1.562a1.125 1.125 0 011.25 0L18.75 7.5M5.25 16.503l3.125 1.562a1.125 1.125 0 001.25 0L18.75 16.5" />
+                        </svg>
+                        <p data-translate-key="hadith_text" class="text-sm italic text-gray-600 mt-2">"Sebaik-baik kalian adalah orang<br>yang belajar Al-Qur'an dan mengajarkannya."</p>
+                    </div>
+                     <div class="flex space-x-4">
+                        <div class="feature-tooltip relative">
+                            <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5z" /></svg>
+                            </div>
+                            <span data-translate-key="tooltip_realtime" class="tooltip-text">Monitoring Real-time</span>
+                        </div>
+                        <div class="feature-tooltip relative">
+                            <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+                            </div>
+                            <span data-translate-key="tooltip_guardian" class="tooltip-text">Akses Wali Santri</span>
+                        </div>
+                         <div class="feature-tooltip relative">
+                            <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                            </div>
+                            <span data-translate-key="tooltip_report" class="tooltip-text">Laporan Terstruktur</span>
+                        </div>
+                    </div>
+                </div>
+                <footer class="mt-8 text-center text-sm text-gray-500">
+                    <button onclick="showAboutPage()" class="text-teal-600 hover:text-teal-800 underline mb-2">Tentang Aplikasi Ini</button>
+                    <p data-translate-key="footer_text">Project dibuat oleh team (muhammad nahya fadlallah)</p>
+                </footer>
+             <a href="https://wa.me/6285520767908" target="_blank" class="fixed bottom-8 right-8 z-40 text-center">
+                <span data-translate-key="complaint_info" class="text-sm font-semibold text-gray-600 mt-1">Info Pengaduan</span>
+            </a>
+        </div>
+
+        <div id="wali-dashboard-page" class="hidden fade-in main-content p-8 rounded-xl shadow-lg">
+            <header class="flex flex-col md:flex-row justify-between md:items-center mb-8 pb-4 border-b border-gray-300">
+                <div>
+                    <h1 class="text-3xl font-bold text-teal-800">Dashboard Wali Santri</h1>
+                    <p class="text-gray-600">Cari dan klik nama santri untuk melihat detail progres hafalan.</p>
+                </div>
+                <div class="w-full md:w-auto mt-4 md:mt-0 flex items-center space-x-4">
+                    <button onclick="showJadwalDonasiPage()" class="px-4 py-2 font-semibold text-amber-700 bg-amber-100 rounded-lg hover:bg-amber-200 transition">Jadwal & Donasi</button>
+                    <input type="text" id="search-santri" onkeyup="searchSantri()" placeholder="Cari nama santri..." class="w-full md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-200">
+                    <button onclick="logout()" class="px-4 py-2 font-semibold text-teal-700 bg-teal-100 rounded-lg hover:bg-teal-200 transition">Keluar</button>
+                </div>
+            </header>
+            <div id="santri-gallery" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                </div>
+             <p id="no-results" class="text-center text-gray-500 py-10 hidden">Santri tidak ditemukan.</p>
+        </div>
+
+        <div id="detail-santri-page" class="hidden fade-in">
+            <header class="mb-4">
+                <button onclick="backToWaliDashboard()" class="mb-4 flex items-center text-teal-600 hover:text-teal-800 font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                    Kembali ke Daftar Santri
+                </button>
+            </header>
+            <div class="bg-white/90 p-8 rounded-xl shadow-lg">
+                <div class="flex flex-col md:flex-row items-center md:items-start text-center md:text-left md:space-x-8 pb-8 border-b">
+                    <img id="detail-foto" src="" alt="Foto Santri" class="w-32 h-32 rounded-full object-cover border-4 border-amber-200 shadow-md mb-4 md:mb-0" onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=Error';">
+                    <div>
+                        <h2 id="detail-nama" class="text-3xl font-bold text-gray-900"></h2>
+                        <p id="detail-kelas" class="text-xl text-gray-600"></p>
+                        <p id="detail-pengajar" class="text-md text-teal-700 font-semibold mt-1"></p>
+                        <div id="detail-status-target" class="mt-4 inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold"></div>
+                    </div>
+                </div>
+                <div class="py-8 border-b">
+                    <h3 class="text-2xl font-bold mb-6 text-center text-teal-800">Grafik Progres Santri</h3>
+                    <div id="progress-charts" class="space-y-4">
+                        </div>
+                </div>
+                <div class="py-8 border-b">
+                    <h3 class="text-2xl font-bold mb-6 text-center text-teal-800">Laporan Pencapaian Target</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                        <div class="bg-gray-50 p-4 rounded-lg shadow-sm"><p class="text-sm font-medium text-gray-500">Total Hafalan Juz</p><p id="total-hafalan-juz" class="text-lg font-bold text-teal-600"></p></div>
+                        <div class="bg-gray-50 p-4 rounded-lg shadow-sm"><p class="text-sm font-medium text-gray-500">Target Harian</p><p id="target-harian" class="text-lg font-bold text-teal-600"></p></div>
+                        <div class="bg-gray-50 p-4 rounded-lg shadow-sm"><p class="text-sm font-medium text-gray-500">Target Mingguan</p><p id="target-mingguan" class="text-lg font-bold text-teal-600"></p></div>
+                        <div class="bg-gray-50 p-4 rounded-lg shadow-sm"><p class="text-sm font-medium text-gray-500">Target Bulanan</p><p id="target-bulanan" class="text-lg font-bold text-teal-600"></p></div>
+                    </div>
+                </div>
+                <div class="pt-8">
+                    <h3 class="text-2xl font-bold mb-6 text-center text-teal-800">Riwayat Setoran Hafalan</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white">
+                            <thead class="bg-gray-200">
+                                <tr>
+                                    <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Tanggal</th>
+                                    <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Setoran</th>
+                                    <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Jenis</th>
+                                    <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Penilaian Guru</th>
+                                </tr>
+                            </thead>
+                            <tbody id="hafalan-history" class="divide-y divide-gray-200"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="jadwal-donasi-page" class="hidden fade-in">
+            <header class="mb-4">
+                <button onclick="goBackFromJadwal()" class="mb-4 flex items-center text-teal-600 hover:text-teal-800 font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                    Kembali ke Dashboard
+                </button>
+            </header>
+            <div class="bg-white/90 p-8 rounded-xl shadow-lg space-y-12">
+                <div>
+                    <h2 class="text-3xl font-bold text-center text-teal-800 mb-2">Jadwal Solat Hari Ini</h2>
+                    <div class="flex items-center justify-center space-x-3 my-4">
+                        <label for="alarm-toggle" class="font-semibold text-gray-700">Alarm Azan:</label>
+                        <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                            <input type="checkbox" name="alarm-toggle" id="alarm-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                            <label for="alarm-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                        </div>
+                    </div>
+                    <p id="jadwal-lokasi" class="text-center text-gray-600 mb-6">Memuat data untuk lokasi anda...</p>
+                    <div id="jadwal-sholat-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
+                        </div>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-center text-teal-800 mb-6">Donasi Pengembangan Aplikasi</h2>
+                    <div class="max-w-md mx-auto bg-gray-50 p-6 rounded-lg text-center shadow-sm">
+                        <p class="text-gray-700 mb-4">Dukungan anda sangat berarti bagi kami untuk terus mengembangkan aplikasi ini agar lebih bermanfaat bagi ummat. Salurkan donasi terbaik anda melalui e-wallet berikut:</p>
+                        <div class="flex items-center justify-center space-x-2 my-4">
+                            <span id="donation-number" class="text-2xl font-bold text-gray-800 bg-white py-3 px-4 rounded-md border-2 border-dashed">0856 3777 508</span>
+                            <button onclick="copyDonationNumber()" class="px-4 py-3 text-sm font-semibold text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition">Salin</button>
+                        </div>
+                        <div class="flex justify-center space-x-4 mt-4">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="DANA" class="h-8">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_ovo_purple.svg" alt="OVO" class="h-8">
+                        </div>
+                        <p class="text-sm text-gray-500 mt-4">a.n. Tim Pengembang MUHAMMAD NAHYA FADLALLAH</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="guru-dashboard-page" class="hidden fade-in main-content p-8 rounded-xl shadow-lg">
+            <header class="flex flex-col md:flex-row justify-between md:items-center mb-8 pb-4 border-b border-gray-300">
+                <div>
+                    <h1 class="text-3xl font-bold text-teal-800">Panel Guru</h1>
+                    <p class="text-gray-600">Kelola data hafalan santri.</p>
+                </div>
+                <div class="flex items-center space-x-2 mt-4 md:mt-0 flex-wrap">
+                    <button onclick="showJadwalDonasiPage()" class="px-3 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition">Jadwal & Donasi</button>
+                    <button onclick="showGuruManagementPage()" class="px-3 py-2 text-sm font-semibold text-white bg-amber-600 rounded-lg hover:bg-amber-700 transition">
+                        Kelola Data Guru
+                    </button>
+                    <button onclick="showGuruForm(null)" class="px-3 py-2 text-sm font-semibold text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition">
+                        + Tambah Santri Baru
+                    </button>
+                    <button onclick="logout()" class="px-3 py-2 text-sm font-semibold text-red-600 bg-red-100 rounded-lg hover:bg-red-200 transition">Keluar</button>
+                </div>
+            </header>
+            <div id="unique-access-code-section" class="bg-teal-50 p-6 rounded-lg shadow-inner mb-6 text-center">
+                <h3 class="text-xl font-bold text-teal-800 mb-2">Kode Akses Wali Santri</h3>
+                <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <p id="unique-access-code" class="text-2xl font-mono tracking-widest text-gray-800 p-2 bg-white rounded-md border border-teal-300 shadow-sm"></p>
+                    <button onclick="copyAccessCode()" class="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition">
+                        Salin Kode
+                    </button>
+                    <a id="whatsapp-link" href="#" target="_blank" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12.04 2.167c-5.495 0-9.96 4.465-9.96 9.96 0 1.634.437 3.275 1.258 4.71L2.16 21.84l4.966-1.306c1.37.78 2.912 1.185 4.914 1.185 5.494 0 9.96-4.465 9.96-9.96 0-5.495-4.466-9.96-9.96-9.96zM17.47 16.32c-.156.467-.936.463-1.603.224-.666-.238-2.618-1.01-3.036-1.166-.418-.157-.723-.235-1.028.235-.305.47-.936 1.165-1.14 1.413-.204.248-.408.27-.76.092-.352-.178-1.464-.539-2.79-1.722-1.028-.9-1.714-2.28-1.92-2.65-.204-.37-.02-.574.156-.76.155-.178.303-.306.46-.539.155-.234.204-.418.305-.652.102-.234.05-.438-.02-.652-.07-.215-.65-.585-.898-.82-.248-.235-.497-.196-.701-.196-.205 0-.46-.079-.708-.079-.247 0-.666.236-.936.63-.27.394-.97 1.173-.97 2.858 0 1.685 1.002 3.308 1.142 3.556.14.248 1.968 3.018 4.8 4.228 2.834 1.21 2.834.814 3.33 1.05.496.236.936.204 1.306.027.37-.177 1.092-.497 1.248-.73.155-.233.223-.448.33-.63z"/></svg>
+                        Bagikan di WhatsApp
+                    </a>
+                </div>
+            </div>
+            <div id="guru-santri-list" class="space-y-4">
+                </div>
+        </div>
+
+        <div id="guru-form-page" class="hidden fade-in">
+            <header class="mb-4">
+                <button onclick="backToGuruDashboard()" class="mb-4 flex items-center text-teal-600 hover:text-teal-800 font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                    Kembali ke Panel Guru
+                </button>
+            </header>
+            <div class="bg-white/90 p-8 rounded-xl shadow-lg max-w-4xl mx-auto">
+                <h2 id="form-title" class="text-2xl font-bold mb-6 text-teal-800"></h2>
+                <form id="santri-form" class="space-y-6" enctype="multipart/form-data">
+                    <input type="hidden" id="santri-id">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="nama" class="block text-sm font-medium text-gray-700">Nama Lengkap Santri</label>
+                            <input type="text" id="nama" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-teal-500 focus:border-teal-500" required>
+                        </div>
+                        <div>
+                            <label for="kelas" class="block text-sm font-medium text-gray-700">Kelas</label>
+                            <select id="kelas" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3" required></select>
+                        </div>
+                        <div>
+                            <label for="total-hafalan-juz" class="block text-sm font-medium text-gray-700">Total Hafalan Juz</label>
+                            <input type="number" id="total-hafalan-juz" placeholder="Contoh: 5" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-teal-500 focus:border-teal-500">
+                        </div>
+                    </div>
+                        <label for="foto" class="block text-sm font-medium text-gray-700">Unggah Foto Santri</label>
+                            <input type="file" id="foto" name="file" accept="image/*" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3">
+                        </div>
+                    <div class="pt-4 border-t">
+                        <h3 class="text-lg font-medium text-gray-900">Data Target Hafalan</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="form-target-harian" class="block text-sm font-medium text-gray-700">Target Harian</label>
+                            <select id="form-target-harian" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm py-2 px-3"></select>
+                        </div>
+                         <div>
+                            <label for="form-target-mingguan" class="block text-sm font-medium text-gray-700">Target Mingguan</label>
+                            <select id="form-target-mingguan" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm py-2 px-3"></select>
+                        </div>
+                        <div>
+                            <label for="form-target-bulanan" class="block text-sm font-medium text-gray-700">Target Bulanan</label>
+                            <input type="text" id="form-target-bulanan" placeholder="Contoh: 1 Juz" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm py-2 px-3" required>
+                        </div>
+                         <div>
+                            <label for="form-target-tahunan" class="block text-sm font-medium text-gray-700">Target Tahunan</label>
+                            <input type="text" id="form-target-tahunan" placeholder="Contoh: 5 Juz" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm py-2 px-3" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Status Pencapaian Target</label>
+                        <div class="mt-2 flex items-center space-x-4">
+                            <label class="inline-flex items-center"><input type="radio" name="tercapai" value="true" class="form-radio h-4 w-4 text-teal-600"> <span class="ml-2">Mencapai Target</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="tercapai" value="false" class="form-radio h-4 w-4 text-teal-600"> <span class="ml-2">Belum Mencapai Target</span></label>
+                        </div>
+                    </div>
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="px-6 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700">Simpan Data Santri</button>
+                    </div>
+                </form>
+                <div id="hafalan-management-section" class="hidden pt-8 border-t mt-8">
+                    <h3 class="text-xl font-bold mb-4 text-teal-800">Kelola Setoran Hafalan</h3>
+                    <form id="hafalan-form" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end bg-gray-50 p-4 rounded-lg mb-6">
+                        <div>
+                            <label for="hafalan-tanggal" class="block text-sm font-medium">Tanggal</label>
+                            <input type="date" id="hafalan-tanggal" class="mt-1 w-full border-gray-300 rounded-md" required>
+                        </div>
+                        <div>
+                            <label for="hafalan-setoran" class="block text-sm font-medium">Setoran</label>
+                            <input type="text" id="hafalan-setoran" placeholder="Contoh: An-Naba: 1-20" class="mt-1 w-full border-gray-300 rounded-md" required>
+                        </div>
+                        <div>
+                            <label for="hafalan-jenis" class="block text-sm font-medium">Jenis</label>
+                            <select id="hafalan-jenis" class="mt-1 w-full border-gray-300 rounded-md"><option>Hafalan Baru</option><option>Muroja'ah</option></select>
+                        </div>
+                        <div>
+                            <label for="hafalan-penilaian" class="block text-sm font-medium">Penilaian</label>
+                            <select id="hafalan-penilaian" class="mt-1 w-full border-gray-300 rounded-md"><option>Lancar</option><option>Perlu Diulang</option></select>
+                        </div>
+                        <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700">Tambah</button>
+                    </form>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white">
+                            <thead class="bg-gray-200">
+                                <tr>
+                                    <th class="py-2 px-4 text-left text-xs font-medium uppercase">Tanggal</th>
+                                    <th class="py-2 px-4 text-left text-xs font-medium uppercase">Setoran</th>
+                                    <th class="py-2 px-4 text-left text-xs font-medium uppercase">Jenis</th>
+                                    <th class="py-2 px-4 text-left text-xs font-medium uppercase">Penilaian</th>
+                                    <th class="py-2 px-4 text-left text-xs font-medium uppercase">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="guru-hafalan-table" class="divide-y"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="guru-management-page" class="hidden fade-in">
+             <header class="mb-4">
+                <button onclick="backToGuruDashboard()" class="mb-4 flex items-center text-teal-600 hover:text-teal-800 font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                    Kembali ke Panel Guru
+                </button>
+            </header>
+            <div class="bg-white/90 p-8 rounded-xl shadow-lg max-w-4xl mx-auto">
+                <h2 class="text-2xl font-bold mb-6 text-teal-800">Kelola Data Guru</h2>
+                <form id="guru-form" class="space-y-4 bg-gray-50 p-6 rounded-lg mb-8">
+                    <input type="hidden" id="guru-id">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                        <div>
+                            <label for="guru-nama" class="block text-sm font-medium text-gray-700">Nama Guru (Ustadz/Ustadzah)</label>
+                            <input type="text" id="guru-nama" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3" required>
+                        </div>
+                        <div>
+                            <label for="guru-kelas" class="block text-sm font-medium text-gray-700">Mengajar Kelas</label>
+                            <select id="guru-kelas" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3" required></select>
+                        </div>
+                        <button type="submit" class="px-6 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 w-full">Simpan Guru</button>
+                    </div>
+                </form>
+
+                <h3 class="text-xl font-bold mb-4 text-teal-800">Daftar Guru Terdaftar</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase">Nama Guru</th>
+                                <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase">Mengajar Kelas</th>
+                                <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="guru-list-table" class="divide-y divide-gray-200">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="about-page" class="hidden fade-in">
+             <header class="mb-4">
+                <button onclick="showPage('access-code-page')" class="mb-4 flex items-center text-teal-600 hover:text-teal-800 font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                    Kembali
+                </button>
+            </header>
+            <div class="bg-white/90 p-8 rounded-xl shadow-lg max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-center text-teal-800 mb-6">Tentang Aplikasi Monitoring Hafalan</h2>
+
+                <div class="space-y-6 text-gray-700 leading-relaxed">
+                    <section>
+                        <h3 class="text-xl font-semibold text-teal-700 mb-2">Latar Belakang Pembuatan</h3>
+                        <p>
+                            Dalam dunia pendidikan Islam, khususnya di pondok pesantren tahfidz, proses memonitor perkembangan hafalan Al-Qur'an setiap santri adalah sebuah tugas yang krusial namun seringkali menantang. Guru (Ustadz/Ustadzah) harus mencatat setiap setoran, mengidentifikasi kelemahan, dan melaporkannya kepada wali santri. Di sisi lain, wali santri seringkali merasa kesulitan untuk mendapatkan informasi yang real-time dan terstruktur mengenai progres anak-anak mereka. Proses yang masih manual menggunakan buku atau catatan terpisah rentan terhadap kesalahan, kehilangan data, dan memakan waktu. Aplikasi ini lahir dari kebutuhan untuk menjembatani kesenjangan komunikasi tersebut dan mendigitalisasi proses monitoring agar lebih efisien, transparan, dan akurat. </p>
+                    </section>
+
+                    <section>
+                        <h3 class="text-xl font-semibold text-teal-700 mb-2">Tujuan Utama Aplikasi</h3>
+                        <p>
+                            Tujuan utama kami mengembangkan platform ini adalah untuk menciptakan sebuah ekosistem digital yang terintegrasi bagi pondok pesantren, yang berfokus pada tiga pilar utama:
+                        </p>
+                        <ul class="list-disc list-inside pl-4 mt-2 space-y-1">
+                            <li><strong>Memudahkan Guru:</strong> Menyediakan alat yang praktis bagi para guru untuk mencatat, mengelola, dan menganalisis data hafalan santri dengan cepat dan mudah, sehingga mereka dapat lebih fokus pada proses pengajaran.</li>
+                            <li><strong>Memberikan Ketenangan bagi Wali Santri:</strong> Memberikan akses langsung kepada wali santri untuk memantau pencapaian, riwayat setoran, dan target hafalan anak mereka kapan saja dan di mana saja.</li>
+                            <li><strong>Meningkatkan Motivasi Santri:</strong> Dengan adanya target yang jelas dan progres yang dapat dilihat secara visual, kami berharap para santri akan lebih termotivasi untuk mencapai target hafalan mereka.</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h3 class="text-xl font-semibold text-teal-700 mb-2">Manfaat yang Diharapkan</h3>
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="bg-teal-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-teal-800">Bagi Wali Santri</h4>
+                                <p class="text-sm mt-1">Mendapatkan laporan progres yang transparan dan real-time, mempererat hubungan dan dukungan terhadap proses pendidikan anak, serta mendapatkan notifikasi penting seperti jadwal dan pengingat waktu salat.</p>
+                            </div>
+                            <div class="bg-amber-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-amber-800">Bagi Guru & Pengelola</h4>
+                                <p class="text-sm mt-1">Efisiensi dalam pencatatan dan pelaporan, data terpusat dan aman, memudahkan evaluasi kinerja santri secara individual maupun per kelas, dan mengurangi beban administrasi manual.</p>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-green-800">Bagi Santri</h4>
+                                <p class="text-sm mt-1">Melihat pencapaian diri sendiri secara visual, memahami target yang harus dicapai, dan merasa lebih termotivasi karena adanya perhatian dan dukungan dari guru serta orang tua yang terhubung melalui sistem.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <p class="text-center italic text-gray-600 pt-4 border-t mt-8">
+                            Kami percaya bahwa teknologi dapat menjadi alat yang ampuh untuk mendukung pendidikan Al-Qur'an. Semoga aplikasi ini dapat memberikan manfaat yang luas dan menjadi bagian dari ladang amal jariyah kita semua. Aamiin. </p>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <audio id="azan-alarm" src="https://archive.org/download/AzanMakkah/Azan%20Makkah.mp3" preload="auto"></audio>
+
+    <div id="alarm-notification" class="hidden fixed bottom-5 right-5 bg-teal-700 text-white p-4 rounded-lg shadow-2xl z-50 transform transition-all duration-300">
+        <div class="flex items-start">
+            <div class="mr-3">
+                <p class="font-bold text-lg" id="alarm-text"></p>
+                <p class="text-sm">Waktunya menunaikan salat.</p>
+            </div>
+            <button onclick="dismissAlarm()" class="text-teal-200 hover:text-white">&times;</button>
+        </div>
+    </div>
+
+
 <script>
     // --- TRANSLATION ---
     const translations = {
