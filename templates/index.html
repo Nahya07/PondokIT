@@ -737,7 +737,19 @@
             }
         }
     }
-
+    // Tambahkan fungsi ini di dalam tag <script> Anda
+    function goBackFromJadwal() {
+        // Periksa peran pengguna untuk mengarahkan ke dashboard yang benar
+        const role = sessionStorage.getItem('role');
+        if (role === 'guru') {
+            backToGuruDashboard();
+        } else if (role === 'wali') {
+            backToWaliDashboard();
+        } else {
+            // Jika tidak ada peran, kembali ke halaman pilihan peran
+            showPage('roleSelection');
+        }
+    }
     // --- UTILITY FUNCTIONS ---
     function showToast(type, message) {
         // Logika untuk menampilkan toast notification
