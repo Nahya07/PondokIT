@@ -1,32 +1,32 @@
-    import os
-    from flask import Flask, render_template, request, jsonify
-    from flask_migrate import Migrate
-    from werkzeug.security import generate_password_hash, check_password_hash
-    from werkzeug.utils import secure_filename
-    from flask_sqlalchemy import SQLAlchemy
-    from sqlalchemy import create_engine
-    import secrets # Tambahkan untuk membuat kode akses yang aman
-    from datetime import datetime
+import os
+from flask import Flask, render_template, request, jsonify
+from flask_migrate import Migrate
+from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+import secrets # Tambahkan untuk membuat kode akses yang aman
+from datetime import datetime
 
-    app = Flask(__name__)
+app = Flask(__name__)
 
     # SECRET_KEY aman (ubah jadi random panjang di produksi)
-    app.secret_key = os.urandom(24)
+app.secret_key = os.urandom(24)
 
     # Konfigurasi database PostgreSQL (pakai ENV biar aman)
-    DATABASE_URL = os.getenv(
+DATABASE_URL = os.getenv(
         "DATABASE_URL",
         "postgresql://postgres:Allahyahfadz99@db.nxsdokouecgsmeoigukz.supabase.co:5432/postgres"
     )
-    app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     # Inisialisasi database
-    db = SQLAlchemy(app)
-    migrate = Migrate(app, db)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
     # --- Model Database ---
-    class Pondok(db.Model):
+class Pondok(db.Model):
         __tablename__ = 'pondoks'
         id = db.Column(db.Integer, primary_key=True)
         pondok_id = db.Column(db.String(500), unique=True, nullable=False)
