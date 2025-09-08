@@ -934,32 +934,27 @@
             }
         });
 
-        document.getElementById('access-code-form').addEventListener('submit', async function(e) {
+        document.getElementById('access-code-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const code = document.getElementById('access-code').value.trim().toUpperCase();
+            const accessCode = document.getElementById('access-code').value.trim();
             const errorEl = document.getElementById('access-code-error');
 
+            // Reset pesan error
+            errorEl.classList.add('hidden');
+
             try {
-                const response = await fetch('/api/get-pondok-by-code', {
+                const response = await fetch('/api/wali-login', { // URL YANG BENAR
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ uniqueAccessCode: code })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ accessCode }) // VARIABEL YANG BENAR
                 });
                 const result = await response.json();
 
                 if (result.success) {
                     sessionStorage.setItem('currentPondokId', result.pondokDbId);
-                    document.getElementById('pondok-name-display').textContent = result.pondokName;
-                    const pondokData = await fetchData();
-                    if (pondokData) {
-                         appDataCache[result.pondokDbId] = pondokData;
-                         errorEl.classList.add('hidden');
-                         renderWaliDashboard();
-                         showPage('waliDashboard');
-                    } else {
-                        errorEl.textContent = "Gagal memuat data pondok. Silakan coba lagi.";
-                        errorEl.classList.remove('hidden');
-                    }
+                    sessionStorage.setItem('pondokName', result.pondokName);
+                    sessionStorage.setItem('role', 'wali');
+                    checkLoginState();
                 } else {
                     errorEl.textContent = result.message;
                     errorEl.classList.remove('hidden');
