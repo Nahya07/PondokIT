@@ -37,12 +37,6 @@ class Pondok(db.Model):
     guru = db.relationship('Guru', backref='pondok_guru', lazy=True)
     hafalan = db.relationship('Hafalan', backref='pondok_hafalan', lazy=True)
 
-    def __init__(self, pondok_id=None, password_hash=None, pondok_name=None, access_code=None):
-        self.pondok_id = pondok_id
-        self.password_hash = password_hash
-        self.pondok_name = pondok_name
-        self.access_code = access_code
-
     def __repr__(self):
         return f'<Pondok {self.pondok_id}>'
 
@@ -59,18 +53,6 @@ class Santri(db.Model):
     target_tahunan = db.Column(db.String(500), nullable=True)
     pondok_id = db.Column(db.Integer, db.ForeignKey('pondoks.id'), nullable=False)
     hafalan_history = db.relationship('Hafalan', backref='santri', lazy=True, cascade="all, delete-orphan")
-
-    def __init__(self, nama=None, kelas=None, foto=None, tercapai=None, target_harian=None, 
-                 target_mingguan=None, target_bulanan=None, target_tahunan=None, pondok_id=None):
-        self.nama = nama
-        self.kelas = kelas
-        self.foto = foto
-        self.tercapai = tercapai
-        self.target_harian = target_harian
-        self.target_mingguan = target_mingguan
-        self.target_bulanan = target_bulanan
-        self.target_tahunan = target_tahunan
-        self.pondok_id = pondok_id
 
 class Guru(db.Model):
     __tablename__ = 'guru'
