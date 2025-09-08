@@ -1119,7 +1119,6 @@
 
         async function showGuruForm(santriId) {
             const pondokData = await fetchData();
-            // Tambahkan pengecekan ini untuk memastikan data ada
             if (!pondokData || !pondokData.santri) { 
                 console.error("Data pondok tidak ditemukan atau tidak memiliki properti 'santri'.");
                 alert("Gagal memuat data santri. Silakan coba lagi.");
@@ -1132,7 +1131,6 @@
             document.getElementById('santri-id').value = santriId || '';
 
             if (santriId) {
-                // Cari santri di data yang sudah dipastikan ada
                 const santri = pondokData.santri.find(s => s.id === santriId);
                 if (!santri) {
                     console.error(`Santri dengan ID ${santriId} tidak ditemukan.`);
@@ -1143,13 +1141,16 @@
                 document.getElementById('form-title').textContent = `Ubah Data: ${santri.nama}`;
                 document.getElementById('nama').value = santri.nama;
                 document.getElementById('kelas').value = santri.kelas;
-               if(target){
-                            document.getElementById('form-target-harian').value = target.harian;
-                            document.getElementById('form-target-mingguan').value = target.mingguan;
-                            document.getElementById('form-target-bulanan').value = target.bulanan;
-                            document.getElementById('form-target-tahunan').value = target.tahunan;
-                            document.querySelector(`input[name="tercapai"][value="${target.tercapai}"]`).checked = true;
-                        }
+
+                // --- Ini adalah logika yang hilang, untuk mengisi data target ---
+                if (santri.target) {
+                    document.getElementById('form-target-harian').value = santri.target.harian || '';
+                    document.getElementById('form-target-mingguan').value = santri.target.mingguan || '';
+                    document.getElementById('form-target-bulanan').value = santri.target.bulanan || '';
+                    document.getElementById('form-target-tahunan').value = santri.target.tahunan || '';
+                    document.querySelector(`input[name="tercapai"][value="${santri.tercapai}"]`).checked = true;
+                }
+                // --- Akhir dari logika yang hilang ---
 
                 document.getElementById('hafalan-management-section').classList.remove('hidden');
                 renderGuruHafalanTable(santriId);
