@@ -872,18 +872,15 @@
                 return;
             }
 
-            const uniqueAccessCode = generateUniqueCode();
-
             try {
                 const response = await fetch('/api/register', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ pondokId, password, uniqueAccessCode })
+                    body: JSON.stringify({ pondokId, password }) // HANYA kirim pondokId dan password
                 });
                 const result = await response.json();
-
                 if (result.success) {
-                    alert(`Pendaftaran berhasil! Kode Akses Unik Anda: ${uniqueAccessCode}. Salin kode ini dan berikan kepada wali santri.`);
+                    alert(`Pendaftaran berhasil! Kode Akses Unik Anda: ${result.accessCode}. Salin kode ini dan berikan kepada wali santri.`);
                     showPage('pondokLogin');
                 } else {
                     errorEl.textContent = result.message;
