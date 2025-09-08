@@ -934,27 +934,32 @@
             }
         });
 
-        document.getElementById('access-code-form').addEventListener('submit', async (e) => {
+        document.getElementById('access-code-form').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const accessCode = document.getElementById('access-code').value.trim();
+            const code = document.getElementById('access-code').value.trim().toUpperCase();
             const errorEl = document.getElementById('access-code-error');
 
-            // Reset pesan error
-            errorEl.classList.add('hidden');
-
             try {
-                const response = await fetch('/api/wali-login', { // URL YANG BENAR
+                const response = await fetch('/api/get-pondok-by-code', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ accessCode }) // VARIABEL YANG BENAR
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ uniqueAccessCode: code })
                 });
                 const result = await response.json();
 
                 if (result.success) {
                     sessionStorage.setItem('currentPondokId', result.pondokDbId);
-                    sessionStorage.setItem('pondokName', result.pondokName);
-                    sessionStorage.setItem('role', 'wali');
-                    checkLoginState();
+                    document.getElementById('pondok-name-display').textContent = result.pondokName;
+                    const pondokData = await fetchData();
+                    if (pondokData) {
+                         appDataCache[result.pondokDbId] = pondokData;
+                         errorEl.classList.add('hidden');
+                         renderWaliDashboard();
+                         showPage('waliDashboard');
+                    } else {
+                        errorEl.textContent = "Gagal memuat data pondok. Silakan coba lagi.";
+                        errorEl.classList.remove('hidden');
+                    }
                 } else {
                     errorEl.textContent = result.message;
                     errorEl.classList.remove('hidden');
