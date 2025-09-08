@@ -79,44 +79,44 @@ def allowed_file(filename):
 
 # --- ROUTES & API ENDPOINTS ---
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+        @app.route('/')
+        def index():
+            return render_template('index.html')
 
-# Register pondok baru
-    import secrets # Tambahkan di bagian import atas
+        # Register pondok baru
+        import secrets  # Posisikan di bagian atas file, di luar fungsi apa pun
 
-    @app.route('/api/register', methods=['POST'])
-    def register():
-        data = request.json
-        pondok_id = data.get('pondokId', '').strip()
-        password = data.get('password')
-        pondok_name = data.get('pondokName', '').strip()
+        @app.route('/api/register', methods=['POST'])
+        def register():
+            data = request.json
+            pondok_id = data.get('pondokId', '').strip()
+            password = data.get('password')
+            pondok_name = data.get('pondokName', '').strip()
 
-        if not all([pondok_id, password, pondok_name]):
-            return jsonify({'success': False, 'message': 'Data tidak lengkap.'}), 400
+            if not all([pondok_id, password, pondok_name]):
+                return jsonify({'success': False, 'message': 'Data tidak lengkap.'}), 400
 
-        existing_pondok = Pondok.query.filter_by(pondok_id=pondok_id).first()
-        if existing_pondok:
-            return jsonify({'success': False, 'message': 'Nama pondok sudah terdaftar.'}), 409
+            existing_pondok = Pondok.query.filter_by(pondok_id=pondok_id).first()
+            if existing_pondok:
+                return jsonify({'success': False, 'message': 'Nama pondok sudah terdaftar.'}), 409
 
-        password_hash = generate_password_hash(password)
-        access_code = secrets.token_urlsafe(8).upper() # Membuat kode akses unik
+            password_hash = generate_password_hash(password)
+            access_code = secrets.token_urlsafe(8).upper()
 
-        new_pondok = Pondok(
-            pondok_id=pondok_id,
-            password_hash=password_hash,
-            pondok_name=pondok_name,
-            access_code=access_code
-        )
-        db.session.add(new_pondok)
-        db.session.commit()
+            new_pondok = Pondok(
+                pondok_id=pondok_id,
+                password_hash=password_hash,
+                pondok_name=pondok_name,
+                access_code=access_code
+            )
+            db.session.add(new_pondok)
+            db.session.commit()
 
-        return jsonify({
-            'success': True,
-            'message': 'Pendaftaran berhasil!',
-            'accessCode': new_pondok.access_code # Mengirimkan kode akses ke frontend
-        })
+            return jsonify({
+                'success': True,
+                'message': 'Pendaftaran berhasil!',
+                'accessCode': new_pondok.access_code
+            })
 
 # Login pengurus/guru
 @app.route('/api/login', methods=['POST'])
