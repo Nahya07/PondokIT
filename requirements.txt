@@ -1,2 +1,6 @@
 Flask
 gunicorn
+flask-migrate
+flask-sqlalchemy
+sqlalchemy
+werkzeug
