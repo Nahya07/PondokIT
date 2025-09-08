@@ -1117,25 +1117,38 @@
 
         async function showGuruForm(santriId) {
             const pondokData = await fetchData();
-            if (!pondokData) return;
+            // Tambahkan pengecekan ini untuk memastikan data ada
+            if (!pondokData || !pondokData.santri) { 
+                console.error("Data pondok tidak ditemukan atau tidak memiliki properti 'santri'.");
+                alert("Gagal memuat data santri. Silakan coba lagi.");
+                return;
+            }
 
             const form = document.getElementById('santri-form');
             form.reset();
             document.getElementById('hafalan-management-section').classList.add('hidden');
             document.getElementById('santri-id').value = santriId || '';
+
             if (santriId) {
+                // Cari santri di data yang sudah dipastikan ada
                 const santri = pondokData.santri.find(s => s.id === santriId);
-                const target = pondokData.target.find(t => t.santri_id === santriId);
+                if (!santri) {
+                    console.error(`Santri dengan ID ${santriId} tidak ditemukan.`);
+                    alert("Santri tidak ditemukan.");
+                    return;
+                }
+
                 document.getElementById('form-title').textContent = `Ubah Data: ${santri.nama}`;
                 document.getElementById('nama').value = santri.nama;
                 document.getElementById('kelas').value = santri.kelas;
-                if(target){
-                    document.getElementById('form-target-harian').value = target.harian;
-                    document.getElementById('form-target-mingguan').value = target.mingguan;
-                    document.getElementById('form-target-bulanan').value = target.bulanan;
-                    document.getElementById('form-target-tahunan').value = target.tahunan;
-                    document.querySelector(`input[name="tercapai"][value="${target.tercapai}"]`).checked = true;
-                }
+               if(target){
+                            document.getElementById('form-target-harian').value = target.harian;
+                            document.getElementById('form-target-mingguan').value = target.mingguan;
+                            document.getElementById('form-target-bulanan').value = target.bulanan;
+                            document.getElementById('form-target-tahunan').value = target.tahunan;
+                            document.querySelector(`input[name="tercapai"][value="${target.tercapai}"]`).checked = true;
+                        }
+
                 document.getElementById('hafalan-management-section').classList.remove('hidden');
                 renderGuruHafalanTable(santriId);
             } else {
@@ -1143,7 +1156,6 @@
             }
             showPage('guruForm');
         }
-
         document.getElementById('santri-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const form = this;
