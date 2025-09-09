@@ -143,7 +143,7 @@
                 </div>
                 <footer class="mt-8 text-center text-sm text-gray-500">
                     <button onclick="showAboutPage()" class="text-teal-600 hover:text-teal-800 underline mb-2">Tentang Aplikasi Ini</button>
-                    <p data-translate-key="footer_text">Project dibuat oleh (muhammad nahya fadlallah)</p>
+                    <p data-translate-key="footer_text">Project dibuat oleh team (muhammad nahya fadlallah)</p>
                 </footer>
              <a href="https://wa.me/6285520767908" target="_blank" class="fixed bottom-8 right-8 z-40 text-center">
                 <span data-translate-key="complaint_info" class="text-sm font-semibold text-gray-600 mt-1">Info Pengaduan</span>
@@ -180,32 +180,22 @@
         </div>
 
         <div id="pondok-login-page" class="hidden flex flex-col items-center justify-center min-h-screen">
-            <div class="fixed top-4 right-4 z-50">
-                <select id="language-selector" onchange="setLanguage(this.value)" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-teal-500 focus:border-teal-500">
-                    <option value="id">Bahasa Indonesia</option>
-                    <option value="en">English</option>
-                    <option value="ja">日本語</option>
-                    <option value="ar">العربية</option>
-                    <option value="ru">Русский</option>
-                    <option value="jw">Basa Jawa</option>
-                </select>
-            </div>
             <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-2xl">
                  <p class="text-4xl text-teal-800 text-center" style="font-family: 'MCS Hijaz S_U normal', serif;">بسم الله الرحمن الرحيم</p>
                 <h2 class="text-2xl font-bold text-center text-gray-900">Login Pengurus / Guru</h2>
-                        <form id="pondok-login-form" class="space-y-6">
-                            <div>
-                                <label for="login-pondok-id" class="block text-sm font-medium text-gray-700">Nama Pondok & Nomor Unik</label>
-                                <input type="text" id="login-pondok-id" placeholder="Contoh: PPTI#12345" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-4 focus:ring-teal-200" required>
+                <form id="pondok-login-form" class="space-y-6">
+                    <div>
+                        <label for="login-pondok-id" class="block text-sm font-medium text-gray-700">Nama Pondok & Nomor Unik</label>
+                        <input type="text" id="login-pondok-id" placeholder="Contoh: PPTI#12345" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-4 focus:ring-teal-200" required>
                     </div>
-                            <div>
-                                <label for="login-password" class="block text-sm font-medium text-gray-700">Kata Sandi</label>
-                                <div class="relative mt-1">
-                                    <input type="password" id="login-password" placeholder="Kata Sandi Anda" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-4 focus:ring-teal-200" required>
-                                </div>
+                     <div>
+                        <label for="login-password" class="block text-sm font-medium text-gray-700">Kata Sandi</label>
+                        <div class="relative mt-1">
+                            <input type="password" id="login-password" placeholder="Kata Sandi Anda" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-4 focus:ring-teal-200" required>
                             <button type="button" onclick="togglePasswordVisibility('login-password', this)" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                             </button>
+                        </div>
                     </div>
                     <button type="submit" class="w-full px-4 py-3 font-semibold text-white bg-teal-700 rounded-lg hover:bg-teal-800 transition duration-300">
                         Login
@@ -219,111 +209,29 @@
                     <button onclick="showPage('roleSelection')" class="text-gray-500 hover:underline">Kembali ke pilihan peran</button>
                 </p>
             </div>
-            <div class="flex justify-between items-end mt-8 w-full max-w-lg mx-auto">
-                     <div class="text-left">
-                         <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-teal-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v11.494m-9-5.747h18M5.25 7.497l3.125-1.562a1.125 1.125 0 011.25 0L18.75 7.5M5.25 16.503l3.125 1.562a1.125 1.125 0 001.25 0L18.75 16.5" />
-                        </svg>
-                        <p data-translate-key="hadith_text" class="text-sm italic text-gray-600 mt-2">"Sebaik-baik kalian adalah orang<br>yang belajar Al-Qur'an dan mengajarkannya."</p>
-                    </div>
-                     <div class="flex space-x-4">
-                        <div class="feature-tooltip relative">
-                            <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5z" /></svg>
-                            </div>
-                            <span data-translate-key="tooltip_realtime" class="tooltip-text">Monitoring Real-time</span>
-                        </div>
-                        <div class="feature-tooltip relative">
-                            <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
-                            </div>
-                            <span data-translate-key="tooltip_guardian" class="tooltip-text">Akses Wali Santri</span>
-                        </div>
-                         <div class="feature-tooltip relative">
-                            <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                            </div>
-                            <span data-translate-key="tooltip_report" class="tooltip-text">Laporan Terstruktur</span>
-                        </div>
-                    </div>
-                </div>
-                <footer class="mt-8 text-center text-sm text-gray-500">
-                    <button onclick="showAboutPage()" class="text-teal-600 hover:text-teal-800 underline mb-2">Tentang Aplikasi Ini</button>
-                    <p data-translate-key="footer_text">Project dibuat oleh team (muhammad nahya fadlallah)</p>
-                </footer>
-             <a href="https://wa.me/6285520767908" target="_blank" class="fixed bottom-8 right-8 z-40 text-center">
-                <span data-translate-key="complaint_info" class="text-sm font-semibold text-gray-600 mt-1">Info Pengaduan</span>
-            </a>
         </div>
 
         <div id="access-code-page" class="hidden flex flex-col items-center justify-center min-h-screen">
-            <div class="w-full max-w-lg text-center">
-                <div id="access-code-header" class="ornament-border bg-white/80 backdrop-blur-sm rounded-xl p-8 mb-8">
-                     <h1 id="pondok-name-display" class="text-4xl font-bold text-teal-800" style="font-family: 'Times New Roman', serif;"></h1>
-                </div>
-                <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-2xl mx-auto">
-                    <div class="fixed top-4 right-4 z-50">
-                        <select id="language-selector" onchange="setLanguage(this.value)" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-teal-500 focus:border-teal-500">
-                            <option value="id">Bahasa Indonesia</option>
-                            <option value="en">English</option>
-                            <option value="ja">日本語</option>
-                            <option value="ar">العربية</option>
-                            <option value="ru">Русский</option>
-                            <option value="jw">Basa Jawa</option>
-                        </select>
+            <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-2xl mx-auto">
+                <p class="text-4xl text-teal-800 text-center" style="font-family: 'MCS Hijaz S_U normal', serif;">بسم الله الرحمن الرحيم</p>
+                <h2 id="access-code-title" data-translate-key="login_title" class="text-2xl font-bold text-gray-900">Sistem Monitoring Hafalan</h2>
+                <p id="access-code-subtitle" data-translate-key="login_subtitle" class="text-gray-600">Silakan masukkan kode akses untuk melanjutkan.</p>
+                <form id="access-code-form" class="space-y-6">
+                    <div id="wali-pondok-id-container" class="hidden">
+                         <input type="text" id="wali-pondok-id" placeholder="Nama Pondok & Nomor Unik" class="w-full px-4 py-3 text-center border border-gray-300 rounded-lg focus:ring-4 focus:ring-teal-200 focus:border-teal-500 transition duration-300" >
                     </div>
-                    <p class="text-4xl text-teal-800 text-center" style="font-family: 'MCS Hijaz S_U normal', serif;">بسم الله الرحمن الرحيم</p>
-                    <h2 id="access-code-title" data-translate-key="login_title" class="text-2xl font-bold text-gray-900">Sistem Monitoring Hafalan</h2>
-                    <p id="access-code-subtitle" data-translate-key="login_subtitle" class="text-gray-600">Silakan masukkan kode akses untuk melanjutkan.</p>
-                    <form id="access-code-form" class="space-y-6">
-                        <div id="wali-pondok-id-container" class="hidden">
-                             <input type="text" id="wali-pondok-id" placeholder="Nama Pondok & Nomor Unik" class="w-full px-4 py-3 text-center border border-gray-300 rounded-lg focus:ring-4 focus:ring-teal-200 focus:border-teal-500 transition duration-300" >
-                        </div>
-                        <div class="relative">
-                            <input type="text" id="access-code" data-translate-key="access_code_placeholder" placeholder="Kode Akses Anda" class="w-full px-4 py-3 text-center border border-gray-300 rounded-lg focus:ring-4 focus:ring-teal-200 focus:border-teal-500 transition duration-300" required>
-                        </div>
-                        <button type="submit" data-translate-key="login_button" class="w-full px-4 py-3 font-semibold text-white bg-teal-700 rounded-lg hover:bg-teal-800 focus:outline-none focus:ring-4 focus:ring-300 transition duration-300">
-                            Masuk
-                        </button>
-                    </form>
-                    <p id="access-code-error" data-translate-key="login_error" class="text-red-500 text-sm mt-2 hidden">Kode yang Anda masukkan salah.</p>
-                </div>
-
-                <div class="flex justify-between items-end mt-8 w-full max-w-lg mx-auto">
-                     <div class="text-left">
-                         <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-teal-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v11.494m-9-5.747h18M5.25 7.497l3.125-1.562a1.125 1.125 0 011.25 0L18.75 7.5M5.25 16.503l3.125 1.562a1.125 1.125 0 001.25 0L18.75 16.5" />
-                        </svg>
-                        <p data-translate-key="hadith_text" class="text-sm italic text-gray-600 mt-2">"Sebaik-baik kalian adalah orang<br>yang belajar Al-Qur'an dan mengajarkannya."</p>
+                    <div class="relative">
+                        <input type="text" id="access-code" data-translate-key="access_code_placeholder" placeholder="Kode Akses Anda" class="w-full px-4 py-3 text-center border border-gray-300 rounded-lg focus:ring-4 focus:ring-teal-200 focus:border-teal-500 transition duration-300" required>
                     </div>
-                     <div class="flex space-x-4">
-                        <div class="feature-tooltip relative">
-                            <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5z" /></svg>
-                            </div>
-                            <span data-translate-key="tooltip_realtime" class="tooltip-text">Monitoring Real-time</span>
-                        </div>
-                        <div class="feature-tooltip relative">
-                            <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
-                            </div>
-                            <span data-translate-key="tooltip_guardian" class="tooltip-text">Akses Wali Santri</span>
-                        </div>
-                         <div class="feature-tooltip relative">
-                            <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                            </div>
-                            <span data-translate-key="tooltip_report" class="tooltip-text">Laporan Terstruktur</span>
-                        </div>
-                    </div>
-                </div>
-                <footer class="mt-8 text-center text-sm text-gray-500">
-                    <button onclick="showAboutPage()" class="text-teal-600 hover:text-teal-800 underline mb-2">Tentang Aplikasi Ini</button>
-                    <p data-translate-key="footer_text">Project dibuat oleh team (muhammad nahya fadlallah)</p>
-                </footer>
-             <a href="https://wa.me/6285520767908" target="_blank" class="fixed bottom-8 right-8 z-40 text-center">
-                <span data-translate-key="complaint_info" class="text-sm font-semibold text-gray-600 mt-1">Info Pengaduan</span>
-            </a>
+                    <button type="submit" data-translate-key="login_button" class="w-full px-4 py-3 font-semibold text-white bg-teal-700 rounded-lg hover:bg-teal-800 focus:outline-none focus:ring-4 focus:ring-300 transition duration-300">
+                        Masuk
+                    </button>
+                </form>
+                <p id="access-code-error" data-translate-key="login_error" class="text-red-500 text-sm mt-2 hidden">Kode yang Anda masukkan salah.</p>
+                <p class="text-center text-sm mt-4">
+                    <button onclick="showPage('roleSelection')" class="text-gray-500 hover:underline">Kembali ke pilihan peran</button>
+                </p>
+            </div>
         </div>
 
         <div id="wali-dashboard-page" class="hidden fade-in main-content p-8 rounded-xl shadow-lg">
@@ -806,7 +714,7 @@
 
     // --- APPLICATION STATE ---
     let appDataCache = {};
-    let loginContext = null;
+    let loginContext = null; // 'wali' or 'guru'
 
     const pages = {
         roleSelection: document.getElementById('role-selection-page'),
@@ -822,55 +730,36 @@
         about: document.getElementById('about-page'),
     };
     function showPage(pageName) {
-        Object.values(pages).forEach(page => {
-            if (page) page.classList.add('hidden');
-        });
+        Object.values(pages).forEach(page => page.classList.add('hidden'));
         if (pages[pageName]) {
             pages[pageName].classList.remove('hidden');
             pages[pageName].classList.add('flex');
-        }
-    }
-    
-    // FUNGSI NAVIGASI
-    function checkLoginState() {
-        const role = sessionStorage.getItem('role');
-        const pondokDbId = sessionStorage.getItem('currentPondokId');
-        if (role && pondokDbId) {
-            if (role === 'guru') {
-                renderGuruDashboard();
-                showPage('guruDashboard');
-            } else if (role === 'wali') {
-                renderWaliDashboard();
-                showPage('waliDashboard');
+            if(['waliDashboard', 'detailSantri', 'guruDashboard', 'guruForm', 'guruManagement', 'jadwalDonasi', 'about'].includes(pageName)){
+                pages[pageName].classList.remove('flex');
             }
-        } else {
-            showPage('roleSelection');
         }
     }
-
+    // Tambahkan fungsi ini di dalam tag <script> Anda
     function goBackFromJadwal() {
+        // Periksa peran pengguna untuk mengarahkan ke dashboard yang benar
         const role = sessionStorage.getItem('role');
         if (role === 'guru') {
             backToGuruDashboard();
         } else if (role === 'wali') {
             backToWaliDashboard();
         } else {
+            // Jika tidak ada peran, kembali ke halaman pilihan peran
             showPage('roleSelection');
         }
     }
 
-    function backToWaliDashboard() { 
-        renderWaliDashboard(); 
-        showPage('waliDashboard'); 
+    function backToWaliDashboard() {
+        renderWaliDashboard();
+        showPage('waliDashboard');
     }
-
-    function backToGuruDashboard() {
-        renderGuruDashboard();
-        showPage('guruDashboard');
-    }
-
     // --- UTILITY FUNCTIONS ---
     function showToast(type, message) {
+        // Logika untuk menampilkan toast notification
         console.log(`Toast: ${message}`);
         alert(message);
     }
@@ -892,7 +781,7 @@
         }
         window.getSelection().removeAllRanges();
     }
-    
+
     function copyDonationNumber() {
         const numberEl = document.getElementById('donation-number');
         const range = document.createRange();
@@ -915,9 +804,11 @@
     async function fetchData() {
         const pondokDbId = sessionStorage.getItem('currentPondokId');
         if (!pondokDbId) return null;
+
         if (appDataCache[pondokDbId]) {
             return appDataCache[pondokDbId];
         }
+
         try {
             const response = await fetch('/api/get-data', {
                 method: 'POST',
@@ -925,6 +816,7 @@
                 body: JSON.stringify({ pondokDbId: pondokDbId })
             });
             const result = await response.json();
+
             if (result.success) {
                 appDataCache[pondokDbId] = result.data;
                 return appDataCache[pondokDbId];
@@ -937,7 +829,8 @@
             return null;
         }
     }
-    
+
+    // FUNGSI INI SUDAH DIPERBAIKI UNTUK MENGIRIM DATA SPESIFIK
     async function saveData(endpoint, payload) {
         const currentPondokId = sessionStorage.getItem('currentPondokId');
         if (!currentPondokId) {
@@ -945,6 +838,7 @@
             logout();
             return false;
         }
+
         try {
             const response = await fetch(endpoint, {
                 method: 'POST',
@@ -952,7 +846,9 @@
                 body: JSON.stringify(payload)
             });
             const result = await response.json();
+
             if (result.success) {
+                // Setelah data berhasil disimpan, segarkan cache
                 appDataCache = {};
                 return true;
             } else {
@@ -966,10 +862,11 @@
             return false;
         }
     }
-    
+
     async function uploadFile(file) {
         const formData = new FormData();
         formData.append('file', file);
+
         try {
             const response = await fetch('/unggah', {
                 method: 'POST',
@@ -998,18 +895,40 @@
             showPage('pondokLogin');
         }
     }
-    
+
+    // FUNGSI checkLoginState() - DIPINDAHKAN KE ATAS UNTUK MENCEGAH REFERENCEERROR
+    function checkLoginState() {
+        const role = sessionStorage.getItem('role');
+        const pondokDbId = sessionStorage.getItem('currentPondokId');
+
+        if (role && pondokDbId) {
+            if (role === 'guru') {
+                renderGuruDashboard();
+                showPage('guruDashboard');
+            } else if (role === 'wali') {
+                renderWaliDashboard();
+                showPage('waliDashboard');
+            }
+        } else {
+            showPage('roleSelection');
+        }
+    }
+
+    // EVENT LISTENER FORM PENDAFTARAN - SUDAH DIPERBAIKI
     document.getElementById('pondok-register-form').addEventListener('submit', async function(e) {
         e.preventDefault();
         const pondokId = document.getElementById('register-pondok-id').value.trim();
         const password = document.getElementById('register-password').value;
         const errorEl = document.getElementById('register-error');
+
         if (!pondokId.includes('#') || password.length < 6) {
             errorEl.textContent = "Format Nama Pondok salah atau kata sandi terlalu pendek.";
             errorEl.classList.remove('hidden');
             return;
         }
+
         const pondokName = pondokId.split('#')[0].trim();
+
         try {
             const response = await fetch('/api/register', {
                 method: 'POST',
@@ -1030,11 +949,13 @@
         }
     });
 
+    // EVENT LISTENER FORM LOGIN GURU - SUDAH DIPERBAIKI
     document.getElementById('pondok-login-form').addEventListener('submit', async function(e) {
         e.preventDefault();
         const pondokId = document.getElementById('login-pondok-id').value.trim();
         const password = document.getElementById('login-password').value;
         const errorEl = document.getElementById('pondok-login-error');
+
         try {
             const response = await fetch('/api/login', {
                 method: 'POST',
@@ -1042,10 +963,12 @@
                 body: JSON.stringify({ pondokId, password })
             });
             const result = await response.json();
+
             if (result.success) {
                 sessionStorage.setItem('currentPondokId', result.pondokDbId);
                 sessionStorage.setItem('pondokName', result.pondokName);
                 sessionStorage.setItem('role', 'guru');
+                // Panggil fungsi checkLoginState() setelah semua data disimpan
                 checkLoginState();
             } else {
                 errorEl.textContent = result.message;
@@ -1057,6 +980,7 @@
         }
     });
 
+    // EVENT LISTENER FORM LOGIN WALI - SUDAH DIPERBAIKI
     document.getElementById('access-code-form').addEventListener('submit', async (e) => {
         e.preventDefault();
         const accessCode = document.getElementById('access-code').value.trim();
@@ -1088,7 +1012,7 @@
     });
 
     function logout() {
-        sessionStorage.clear();
+        sessionStorage.clear(); // Hapus semua data sesi
         loginContext = null;
         document.getElementById('access-code').value = '';
         document.getElementById('pondok-login-form').reset();
@@ -1096,9 +1020,12 @@
     }
 
     // --- DASHBOARD RENDERING ---
+    // renderWaliDashboard, showSantriDetail, dll. (Fungsi-fungsi ini tidak ada error)
+
     async function renderWaliDashboard() {
         const pondokData = await fetchData();
-        if (!pondokData || !pondokData.santri) return;
+        if (!pondokData) return;
+
         const gallery = document.getElementById('santri-gallery');
         gallery.innerHTML = '';
         pondokData.santri.sort((a, b) => a.nama.localeCompare(b.nama)).forEach(santri => {
@@ -1120,6 +1047,7 @@
         });
     }
 
+    // FUNGSI showSantriDetail - SUDAH DIPERBAIKI
     async function showSantriDetail(santriId) {
         const pondokData = await fetchData();
         if (!pondokData || !pondokData.santri) return;
@@ -1140,7 +1068,7 @@
         document.getElementById('detail-pengajar').textContent = guru ? `Pengajar: ${guru.nama}` : 'Pengajar belum diatur';
 
         const statusEl = document.getElementById('detail-status-target');
-        if (santri.tercapai) {
+        if (santri.tercapai) { // Logika sudah disesuaikan dengan model baru
             statusEl.className = 'mt-4 inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-green-100 text-green-800';
             statusEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>Mencapai Target`;
         } else {
@@ -1156,6 +1084,7 @@
 
         const chartsContainer = document.getElementById('progress-charts');
         chartsContainer.innerHTML = '';
+        // Logika untuk grafik yang hilang
         const historyBody = document.getElementById('hafalan-history');
         historyBody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-gray-500">Memuat data...</td></tr>';
         if (hafalan.length > 0) {
@@ -1214,12 +1143,13 @@
             document.getElementById('kelas').value = santri.kelas;
             document.getElementById('total-hafalan-juz').value = santri.total_hafalan_juz || '';
 
+            // Logika pengisian form target dari data santri
             if (santri.tercapai !== undefined) {
                 document.getElementById('form-target-harian').value = santri.target_harian || '';
                 document.getElementById('form-target-mingguan').value = santri.target_mingguan || '';
                 document.getElementById('form-target-bulanan').value = santri.target_bulanan || '';
                 document.getElementById('form-target-tahunan').value = santri.target_tahunan || '';
-                
+
                 const checkedRadio = document.querySelector(`input[name="tercapai"]:checked`);
                 if (checkedRadio) {
                     checkedRadio.checked = false;
@@ -1237,6 +1167,8 @@
         }
         showPage('guruForm');
     }
+
+    // EVENT LISTENER santri-form - SUDAH DIPERBAIKI
     document.getElementById('santri-form').addEventListener('submit', async function(e) {
         e.preventDefault();
         const form = this;
@@ -1258,7 +1190,7 @@
                 }
             }
         }
-        
+
         // Step 2: Kirim data santri ke server
         const santriId = document.getElementById('santri-id').value ? parseInt(document.getElementById('santri-id').value) : null;
         const nama = document.getElementById('nama').value;
@@ -1289,7 +1221,7 @@
             pondokId: pondokId,
             santriData: santriData
         });
-        
+
         if(saveSuccess) {
             alert('Data santri berhasil disimpan!');
             backToGuruDashboard();
@@ -1328,7 +1260,8 @@
 
     async function renderGuruList() {
         const pondokData = await fetchData();
-        if (!pondokData || !pondokData.guru) return;
+        if (!pondokData) return;
+
         const tableBody = document.getElementById('guru-list-table');
         tableBody.innerHTML = '';
         pondokData.guru.sort((a,b) => a.nama.localeCompare(b.nama)).forEach(guru => {
@@ -1354,7 +1287,7 @@
         const kelas = document.getElementById('guru-kelas').value;
 
         const guruData = { id: guruId, nama, mengajar_kelas: kelas };
-        
+
         const saveSuccess = await saveData('/api/save-guru', { pondokId, guruData });
         if(saveSuccess) {
             renderGuruList();
@@ -1378,14 +1311,15 @@
     }
 
     async function deleteGuru(guruId) {
-        if (!confirm('Apakah Anda yakin ingin menghapus data guru ini?')) return;
-        const pondokId = sessionStorage.getItem('currentPondokId');
-        const saveSuccess = await saveData('/api/delete-guru', { pondokId, guruId });
-        if(saveSuccess) {
-            alert('Data guru berhasil dihapus!');
-            renderGuruList();
-        } else {
-            alert("Gagal menghapus data guru.");
+        if (confirm('Apakah Anda yakin ingin menghapus data guru ini?')) {
+            const pondokId = sessionStorage.getItem('currentPondokId');
+            const saveSuccess = await saveData('/api/delete-guru', { pondokId, guruId });
+            if(saveSuccess) {
+                alert('Data guru berhasil dihapus!');
+                renderGuruList();
+            } else {
+                alert("Gagal menghapus data guru.");
+            }
         }
     }
 
@@ -1664,6 +1598,6 @@
         checkLoginState();
         showPage('roleSelection');
     });
-    </script>
+</script>
 </body>
 </html>
