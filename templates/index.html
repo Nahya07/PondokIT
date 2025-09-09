@@ -351,12 +351,11 @@
         </div>
 
         <div id="guru-dashboard-page" class="hidden fade-in main-content p-8 rounded-xl shadow-lg">
-            <header class="flex flex-col md:flex-row justify-between md:items-center mb-8 pb-4 border-b border-gray-300">
-                <div>
-                    <h1 class="text-3xl font-bold text-teal-800">Panel Guru</h1>
-                    <p class="text-gray-600">Kelola data hafalan santri.</p>
-                </div>
-                <div class="flex items-center space-x-2 mt-4 md:mt-0 flex-wrap">
+            <!-- Header - Judul dan Tombol -->
+            <header class="flex flex-col items-center justify-center text-center mb-8 pb-4 border-b border-gray-300">
+                <h1 class="text-3xl font-bold text-teal-800">Panel Guru</h1>
+                <p class="text-gray-600 mb-4">Kelola data hafalan santri.</p>
+                <div class="flex items-center space-x-2 mt-2 flex-wrap justify-center">
                     <button onclick="showJadwalDonasiPage()" class="px-3 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition">Jadwal & Donasi</button>
                     <button onclick="showGuruManagementPage()" class="px-3 py-2 text-sm font-semibold text-white bg-amber-600 rounded-lg hover:bg-amber-700 transition">
                         Kelola Data Guru
@@ -367,8 +366,15 @@
                     <button onclick="logout()" class="px-3 py-2 text-sm font-semibold text-red-600 bg-red-100 rounded-lg hover:bg-red-200 transition">Keluar</button>
                 </div>
             </header>
-            <div id="unique-access-code-section" class="bg-teal-50 p-6 rounded-lg shadow-inner mb-6 text-center">
-                <h3 class="text-xl font-bold text-teal-800 mb-2">Kode Akses Wali Santri</h3>
+
+            <!-- Daftar Santri -->
+            <div id="guru-santri-list" class="space-y-4">
+                <!-- Data santri akan dirender di sini -->
+            </div>
+
+            <!-- Kode Akses Wali Santri (posisi di bawah) -->
+            <div id="unique-access-code-section" class="bg-teal-50 p-6 rounded-lg shadow-inner mt-8 text-center">
+                <h3 class="text-xl font-bold text-teal-800 mb-4">Kode Akses Wali Santri</h3>
                 <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
                     <p id="unique-access-code" class="text-2xl font-mono tracking-widest text-gray-800 p-2 bg-white rounded-md border border-teal-300 shadow-sm"></p>
                     <button onclick="copyAccessCode()" class="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition">
@@ -379,8 +385,6 @@
                         Bagikan di WhatsApp
                     </a>
                 </div>
-            </div>
-            <div id="guru-santri-list" class="space-y-4">
             </div>
         </div>
 
