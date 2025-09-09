@@ -310,12 +310,12 @@
 
         <!-- DASHBOARD GURU -->
         <div id="guru-dashboard-page" class="hidden fade-in main-content p-4 sm:p-6 md:p-8 rounded-xl shadow-lg">
-            <header class="flex flex-col md:flex-row justify-between items-center mb-6 md:mb-8 pb-4 border-b border-gray-300 space-y-4 md:space-y-0">
-                <div class="text-center md:text-left">
+            <header class="flex flex-col items-center mb-6 md:mb-8 pb-4 border-b border-gray-300">
+                <div class="text-center">
                     <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Panel Guru</h1>
                     <p class="text-gray-600 text-sm sm:text-base">Kelola data hafalan santri.</p>
                 </div>
-                <div class="w-full md:w-auto flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 flex-wrap justify-end">
+                <div class="w-full mt-4 flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 flex-wrap justify-center">
                     <button onclick="showJadwalDonasiPage()" class="w-full sm:w-auto px-3 py-2 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500 transition">Jadwal & Donasi</button>
                     <button onclick="showGuruManagementPage()" class="w-full sm:w-auto px-3 py-2 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500 transition">
                         Kelola Data Guru
@@ -327,7 +327,11 @@
                 </div>
             </header>
 
-            <div id="unique-access-code-section" class="bg-yellow-50 p-6 rounded-lg shadow-inner mb-6 text-center">
+            <div id="guru-santri-list" class="space-y-4">
+                <!-- Santri cards will be rendered here dynamically -->
+            </div>
+
+            <div id="unique-access-code-section" class="bg-yellow-50 p-6 rounded-lg shadow-inner mt-6 text-center">
                 <h3 class="text-xl font-bold text-gray-900 mb-2">Kode Akses Wali Santri</h3>
                 <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
                     <p id="unique-access-code" class="text-2xl font-mono tracking-widest text-gray-800 p-2 bg-white rounded-md border border-yellow-300 shadow-sm"></p>
@@ -339,10 +343,6 @@
                         Bagikan di WhatsApp
                     </a>
                 </div>
-            </div>
-
-            <div id="guru-santri-list" class="space-y-4">
-                <!-- Santri cards will be rendered here dynamically -->
             </div>
         </div>
 
@@ -1097,7 +1097,7 @@
             if (pondokData.uniqueAccessCode) {
                 whatsappLink.href = `https://wa.me/?text=${encodeURIComponent('Halo, wali santri! Berikut adalah kode akses unik untuk monitoring hafalan anak Anda: ' + pondokData.uniqueAccessCode)}`;
             } else {
-                whatsappLink.style.display = 'none'; // Hide the link if no code exists
+                whatsappLink.style.display = 'none';
             }
 
 
