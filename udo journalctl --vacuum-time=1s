@@ -1,0 +1,679 @@
+Sep 05 06:25:16 srv989942 systemd[1]: Started nama_aplikasi.service - Gunicorn instance for a Flask app.
+Sep 05 06:25:17 srv989942 gunicorn[22407]: [2025-09-05 06:25:17 +0000] [22407] [INFO] Starting gunicorn 23.0.0
+Sep 05 06:25:17 srv989942 gunicorn[22407]: [2025-09-05 06:25:17 +0000] [22407] [INFO] Listening at: unix:PondokIT.sock (22407)
+Sep 05 06:25:17 srv989942 gunicorn[22407]: [2025-09-05 06:25:17 +0000] [22407] [INFO] Using worker: sync
+Sep 05 06:25:17 srv989942 gunicorn[22458]: [2025-09-05 06:25:17 +0000] [22458] [INFO] Booting worker with pid: 22458
+Sep 05 06:25:17 srv989942 gunicorn[22459]: [2025-09-05 06:25:17 +0000] [22459] [INFO] Booting worker with pid: 22459
+Sep 05 06:25:17 srv989942 gunicorn[22460]: [2025-09-05 06:25:17 +0000] [22460] [INFO] Booting worker with pid: 22460
+Sep 05 07:12:26 srv989942 gunicorn[22407]: [2025-09-05 07:12:26 +0000] [22407] [INFO] Handling signal: term
+Sep 05 07:12:26 srv989942 systemd[1]: Stopping nama_aplikasi.service - Gunicorn instance for a Flask app...
+Sep 05 07:12:26 srv989942 gunicorn[22459]: [2025-09-05 07:12:26 +0000] [22459] [INFO] Worker exiting (pid: 22459)
+Sep 05 07:12:26 srv989942 gunicorn[22458]: [2025-09-05 07:12:26 +0000] [22458] [INFO] Worker exiting (pid: 22458)
+Sep 05 07:12:26 srv989942 gunicorn[22460]: [2025-09-05 07:12:26 +0000] [22460] [INFO] Worker exiting (pid: 22460)
+Sep 05 07:12:26 srv989942 gunicorn[22407]: [2025-09-05 07:12:26 +0000] [22407] [ERROR] Worker (pid:22459) was sent SIGTERM!
+Sep 05 07:12:26 srv989942 gunicorn[22407]: [2025-09-05 07:12:26 +0000] [22407] [INFO] Shutting down: Master
+Sep 05 07:12:26 srv989942 systemd[1]: nama_aplikasi.service: Deactivated successfully.
+Sep 05 07:12:26 srv989942 systemd[1]: Stopped nama_aplikasi.service - Gunicorn instance for a Flask app.
+Sep 05 07:12:26 srv989942 systemd[1]: nama_aplikasi.service: Consumed 1.212s CPU time, 140.8M memory peak, 0B memory swap peak.
+Sep 05 07:12:26 srv989942 systemd[1]: Started nama_aplikasi.service - Gunicorn instance for a Flask app.
+Sep 05 07:12:26 srv989942 gunicorn[23198]: [2025-09-05 07:12:26 +0000] [23198] [INFO] Starting gunicorn 23.0.0
+Sep 05 07:12:26 srv989942 gunicorn[23198]: [2025-09-05 07:12:26 +0000] [23198] [INFO] Listening at: http://0.0.0.0:5000 (23198)
+Sep 05 07:12:26 srv989942 gunicorn[23198]: [2025-09-05 07:12:26 +0000] [23198] [INFO] Using worker: sync
+Sep 05 07:12:26 srv989942 gunicorn[23199]: [2025-09-05 07:12:26 +0000] [23199] [INFO] Booting worker with pid: 23199
+Sep 05 07:12:27 srv989942 gunicorn[23200]: [2025-09-05 07:12:27 +0000] [23200] [INFO] Booting worker with pid: 23200
+Sep 05 07:12:27 srv989942 gunicorn[23201]: [2025-09-05 07:12:27 +0000] [23201] [INFO] Booting worker with pid: 23201
+Sep 06 00:42:17 srv989942 systemd[1]: Stopping nama_aplikasi.service - Gunicorn instance for a Flask app...
+Sep 06 00:42:17 srv989942 gunicorn[23199]: [2025-09-06 00:42:17 +0000] [23199] [INFO] Worker exiting (pid: 23199)
+Sep 06 00:42:17 srv989942 gunicorn[23200]: [2025-09-06 00:42:17 +0000] [23200] [INFO] Worker exiting (pid: 23200)
+Sep 06 00:42:17 srv989942 gunicorn[23201]: [2025-09-06 00:42:17 +0000] [23201] [INFO] Worker exiting (pid: 23201)
+Sep 06 00:42:17 srv989942 gunicorn[23198]: [2025-09-06 00:42:17 +0000] [23198] [INFO] Handling signal: term
+Sep 06 00:42:17 srv989942 gunicorn[23198]: [2025-09-06 00:42:17 +0000] [23198] [ERROR] Worker (pid:23199) was sent SIGTERM!
+Sep 06 00:42:17 srv989942 gunicorn[23198]: [2025-09-06 00:42:17 +0000] [23198] [ERROR] Worker (pid:23201) was sent SIGTERM!
+Sep 06 00:42:17 srv989942 gunicorn[23198]: [2025-09-06 00:42:17 +0000] [23198] [INFO] Shutting down: Master
+Sep 06 00:42:17 srv989942 systemd[1]: nama_aplikasi.service: Deactivated successfully.
+Sep 06 00:42:17 srv989942 systemd[1]: Stopped nama_aplikasi.service - Gunicorn instance for a Flask app.
+Sep 06 00:42:17 srv989942 systemd[1]: nama_aplikasi.service: Consumed 8.111s CPU time, 125.6M memory peak, 0B memory swap peak.
+Sep 06 00:42:17 srv989942 systemd[1]: Started nama_aplikasi.service - Gunicorn instance for a Flask app.
+Sep 06 00:42:17 srv989942 gunicorn[28469]: [2025-09-06 00:42:17 +0000] [28469] [INFO] Starting gunicorn 23.0.0
+Sep 06 00:42:17 srv989942 gunicorn[28469]: [2025-09-06 00:42:17 +0000] [28469] [INFO] Listening at: http://0.0.0.0:5000 (28469)
+Sep 06 00:42:17 srv989942 gunicorn[28469]: [2025-09-06 00:42:17 +0000] [28469] [INFO] Using worker: sync
+Sep 06 00:42:17 srv989942 gunicorn[28471]: [2025-09-06 00:42:17 +0000] [28471] [INFO] Booting worker with pid: 28471
+Sep 06 00:42:17 srv989942 gunicorn[28472]: [2025-09-06 00:42:17 +0000] [28472] [INFO] Booting worker with pid: 28472
+Sep 06 00:42:17 srv989942 gunicorn[28473]: [2025-09-06 00:42:17 +0000] [28473] [INFO] Booting worker with pid: 28473
+Sep 06 00:48:53 srv989942 gunicorn[28473]: [2025-09-06 00:48:53,296] ERROR in app: Exception on /api/register [POST]
+Sep 06 00:48:53 srv989942 gunicorn[28473]: Traceback (most recent call last):
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     self.dialect.do_execute(
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     cursor.execute(statement, parameters)
+Sep 06 00:48:53 srv989942 gunicorn[28473]: psycopg2.errors.UndefinedTable: relation "pondoks" does not exist
+Sep 06 00:48:53 srv989942 gunicorn[28473]: LINE 2: FROM pondoks
+Sep 06 00:48:53 srv989942 gunicorn[28473]:              ^
+Sep 06 00:48:53 srv989942 gunicorn[28473]: The above exception was the direct cause of the following exception:
+Sep 06 00:48:53 srv989942 gunicorn[28473]: Traceback (most recent call last):
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     response = self.full_dispatch_request()
+Sep 06 00:48:53 srv989942 gunicorn[28473]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     rv = self.handle_user_exception(e)
+Sep 06 00:48:53 srv989942 gunicorn[28473]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     rv = self.dispatch_request()
+Sep 06 00:48:53 srv989942 gunicorn[28473]:          ^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 902, in dispatch_request
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+Sep 06 00:48:53 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/main.py", line 63, in register
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     existing_pondok = Pondok.query.filter_by(pondok_id=pondok_id).first()
+Sep 06 00:48:53 srv989942 gunicorn[28473]:                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2759, in first
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     return self.limit(1)._iter().first()  # type: ignore
+Sep 06 00:48:53 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+Sep 06 00:48:53 srv989942 gunicorn[28473]:                                                   ^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     return self._execute_internal(
+Sep 06 00:48:53 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     result: Result[Any] = compile_state_cls.orm_execute_statement(
+Sep 06 00:48:53 srv989942 gunicorn[28473]:                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     result = conn.execute(
+Sep 06 00:48:53 srv989942 gunicorn[28473]:              ^^^^^^^^^^^^^
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1419, in execute
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     return meth(
+Sep 06 00:48:53 srv989942 gunicorn[28473]:            ^^^^^
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     return connection._execute_clauseelement(
+Sep 06 00:48:53 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1641, in _execute_clauseelement
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     ret = self._execute_context(
+Sep 06 00:48:53 srv989942 gunicorn[28473]:           ^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     return self._exec_single_context(
+Sep 06 00:48:53 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     self._handle_dbapi_exception(
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     self.dialect.do_execute(
+Sep 06 00:48:53 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:48:53 srv989942 gunicorn[28473]:     cursor.execute(statement, parameters)
+Sep 06 00:48:53 srv989942 gunicorn[28473]: sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedTable) relation "pondoks" does not exist
+Sep 06 00:48:53 srv989942 gunicorn[28473]: LINE 2: FROM pondoks
+Sep 06 00:48:53 srv989942 gunicorn[28473]:              ^
+Sep 06 00:48:53 srv989942 gunicorn[28473]: [SQL: SELECT pondoks.id AS pondoks_id, pondoks.pondok_id AS pondoks_pondok_id, pondoks.password_hash AS pondoks_password_hash, pondoks.pondok_name AS pondoks_pondok_name
+Sep 06 00:48:53 srv989942 gunicorn[28473]: FROM pondoks
+Sep 06 00:48:53 srv989942 gunicorn[28473]: WHERE pondoks.pondok_id = %(pondok_id_1)s
+Sep 06 00:48:53 srv989942 gunicorn[28473]:  LIMIT %(param_1)s]
+Sep 06 00:48:53 srv989942 gunicorn[28473]: [parameters: {'pondok_id_1': 'Yasfi#02', 'param_1': 1}]
+Sep 06 00:48:53 srv989942 gunicorn[28473]: (Background on this error at: https://sqlalche.me/e/20/f405)
+Sep 06 00:49:07 srv989942 gunicorn[28471]: [2025-09-06 00:49:07,519] ERROR in app: Exception on /api/register [POST]
+Sep 06 00:49:07 srv989942 gunicorn[28471]: Traceback (most recent call last):
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     self.dialect.do_execute(
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     cursor.execute(statement, parameters)
+Sep 06 00:49:07 srv989942 gunicorn[28471]: psycopg2.errors.UndefinedTable: relation "pondoks" does not exist
+Sep 06 00:49:07 srv989942 gunicorn[28471]: LINE 2: FROM pondoks
+Sep 06 00:49:07 srv989942 gunicorn[28471]:              ^
+Sep 06 00:49:07 srv989942 gunicorn[28471]: The above exception was the direct cause of the following exception:
+Sep 06 00:49:07 srv989942 gunicorn[28471]: Traceback (most recent call last):
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     response = self.full_dispatch_request()
+Sep 06 00:49:07 srv989942 gunicorn[28471]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     rv = self.handle_user_exception(e)
+Sep 06 00:49:07 srv989942 gunicorn[28471]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     rv = self.dispatch_request()
+Sep 06 00:49:07 srv989942 gunicorn[28471]:          ^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 902, in dispatch_request
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+Sep 06 00:49:07 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/main.py", line 63, in register
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     existing_pondok = Pondok.query.filter_by(pondok_id=pondok_id).first()
+Sep 06 00:49:07 srv989942 gunicorn[28471]:                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2759, in first
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     return self.limit(1)._iter().first()  # type: ignore
+Sep 06 00:49:07 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+Sep 06 00:49:07 srv989942 gunicorn[28471]:                                                   ^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     return self._execute_internal(
+Sep 06 00:49:07 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     result: Result[Any] = compile_state_cls.orm_execute_statement(
+Sep 06 00:49:07 srv989942 gunicorn[28471]:                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     result = conn.execute(
+Sep 06 00:49:07 srv989942 gunicorn[28471]:              ^^^^^^^^^^^^^
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1419, in execute
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     return meth(
+Sep 06 00:49:07 srv989942 gunicorn[28471]:            ^^^^^
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     return connection._execute_clauseelement(
+Sep 06 00:49:07 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1641, in _execute_clauseelement
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     ret = self._execute_context(
+Sep 06 00:49:07 srv989942 gunicorn[28471]:           ^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     return self._exec_single_context(
+Sep 06 00:49:07 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     self._handle_dbapi_exception(
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     self.dialect.do_execute(
+Sep 06 00:49:07 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:49:07 srv989942 gunicorn[28471]:     cursor.execute(statement, parameters)
+Sep 06 00:49:07 srv989942 gunicorn[28471]: sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedTable) relation "pondoks" does not exist
+Sep 06 00:49:07 srv989942 gunicorn[28471]: LINE 2: FROM pondoks
+Sep 06 00:49:07 srv989942 gunicorn[28471]:              ^
+Sep 06 00:49:07 srv989942 gunicorn[28471]: [SQL: SELECT pondoks.id AS pondoks_id, pondoks.pondok_id AS pondoks_pondok_id, pondoks.password_hash AS pondoks_password_hash, pondoks.pondok_name AS pondoks_pondok_name
+Sep 06 00:49:07 srv989942 gunicorn[28471]: FROM pondoks
+Sep 06 00:49:07 srv989942 gunicorn[28471]: WHERE pondoks.pondok_id = %(pondok_id_1)s
+Sep 06 00:49:07 srv989942 gunicorn[28471]:  LIMIT %(param_1)s]
+Sep 06 00:49:07 srv989942 gunicorn[28471]: [parameters: {'pondok_id_1': 'Yasfi#02', 'param_1': 1}]
+Sep 06 00:49:07 srv989942 gunicorn[28471]: (Background on this error at: https://sqlalche.me/e/20/f405)
+Sep 06 00:49:10 srv989942 gunicorn[28473]: [2025-09-06 00:49:10,011] ERROR in app: Exception on /api/register [POST]
+Sep 06 00:49:10 srv989942 gunicorn[28473]: Traceback (most recent call last):
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     self.dialect.do_execute(
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     cursor.execute(statement, parameters)
+Sep 06 00:49:10 srv989942 gunicorn[28473]: psycopg2.errors.UndefinedTable: relation "pondoks" does not exist
+Sep 06 00:49:10 srv989942 gunicorn[28473]: LINE 2: FROM pondoks
+Sep 06 00:49:10 srv989942 gunicorn[28473]:              ^
+Sep 06 00:49:10 srv989942 gunicorn[28473]: The above exception was the direct cause of the following exception:
+Sep 06 00:49:10 srv989942 gunicorn[28473]: Traceback (most recent call last):
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     response = self.full_dispatch_request()
+Sep 06 00:49:10 srv989942 gunicorn[28473]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     rv = self.handle_user_exception(e)
+Sep 06 00:49:10 srv989942 gunicorn[28473]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     rv = self.dispatch_request()
+Sep 06 00:49:10 srv989942 gunicorn[28473]:          ^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 902, in dispatch_request
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+Sep 06 00:49:10 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/main.py", line 63, in register
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     existing_pondok = Pondok.query.filter_by(pondok_id=pondok_id).first()
+Sep 06 00:49:10 srv989942 gunicorn[28473]:                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2759, in first
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     return self.limit(1)._iter().first()  # type: ignore
+Sep 06 00:49:10 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+Sep 06 00:49:10 srv989942 gunicorn[28473]:                                                   ^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     return self._execute_internal(
+Sep 06 00:49:10 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     result: Result[Any] = compile_state_cls.orm_execute_statement(
+Sep 06 00:49:10 srv989942 gunicorn[28473]:                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     result = conn.execute(
+Sep 06 00:49:10 srv989942 gunicorn[28473]:              ^^^^^^^^^^^^^
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1419, in execute
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     return meth(
+Sep 06 00:49:10 srv989942 gunicorn[28473]:            ^^^^^
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     return connection._execute_clauseelement(
+Sep 06 00:49:10 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1641, in _execute_clauseelement
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     ret = self._execute_context(
+Sep 06 00:49:10 srv989942 gunicorn[28473]:           ^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     return self._exec_single_context(
+Sep 06 00:49:10 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     self._handle_dbapi_exception(
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     self.dialect.do_execute(
+Sep 06 00:49:10 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:49:10 srv989942 gunicorn[28473]:     cursor.execute(statement, parameters)
+Sep 06 00:49:10 srv989942 gunicorn[28473]: sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedTable) relation "pondoks" does not exist
+Sep 06 00:49:10 srv989942 gunicorn[28473]: LINE 2: FROM pondoks
+Sep 06 00:49:10 srv989942 gunicorn[28473]:              ^
+Sep 06 00:49:10 srv989942 gunicorn[28473]: [SQL: SELECT pondoks.id AS pondoks_id, pondoks.pondok_id AS pondoks_pondok_id, pondoks.password_hash AS pondoks_password_hash, pondoks.pondok_name AS pondoks_pondok_name
+Sep 06 00:49:10 srv989942 gunicorn[28473]: FROM pondoks
+Sep 06 00:49:10 srv989942 gunicorn[28473]: WHERE pondoks.pondok_id = %(pondok_id_1)s
+Sep 06 00:49:10 srv989942 gunicorn[28473]:  LIMIT %(param_1)s]
+Sep 06 00:49:10 srv989942 gunicorn[28473]: [parameters: {'pondok_id_1': 'Yasfi#02', 'param_1': 1}]
+Sep 06 00:49:10 srv989942 gunicorn[28473]: (Background on this error at: https://sqlalche.me/e/20/f405)
+Sep 06 00:49:11 srv989942 gunicorn[28471]: [2025-09-06 00:49:11,165] ERROR in app: Exception on /api/register [POST]
+Sep 06 00:49:11 srv989942 gunicorn[28471]: Traceback (most recent call last):
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     self.dialect.do_execute(
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     cursor.execute(statement, parameters)
+Sep 06 00:49:11 srv989942 gunicorn[28471]: psycopg2.errors.UndefinedTable: relation "pondoks" does not exist
+Sep 06 00:49:11 srv989942 gunicorn[28471]: LINE 2: FROM pondoks
+Sep 06 00:49:11 srv989942 gunicorn[28471]:              ^
+Sep 06 00:49:11 srv989942 gunicorn[28471]: The above exception was the direct cause of the following exception:
+Sep 06 00:49:11 srv989942 gunicorn[28471]: Traceback (most recent call last):
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     response = self.full_dispatch_request()
+Sep 06 00:49:11 srv989942 gunicorn[28471]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     rv = self.handle_user_exception(e)
+Sep 06 00:49:11 srv989942 gunicorn[28471]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     rv = self.dispatch_request()
+Sep 06 00:49:11 srv989942 gunicorn[28471]:          ^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 902, in dispatch_request
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+Sep 06 00:49:11 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/main.py", line 63, in register
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     existing_pondok = Pondok.query.filter_by(pondok_id=pondok_id).first()
+Sep 06 00:49:11 srv989942 gunicorn[28471]:                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2759, in first
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     return self.limit(1)._iter().first()  # type: ignore
+Sep 06 00:49:11 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+Sep 06 00:49:11 srv989942 gunicorn[28471]:                                                   ^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     return self._execute_internal(
+Sep 06 00:49:11 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     result: Result[Any] = compile_state_cls.orm_execute_statement(
+Sep 06 00:49:11 srv989942 gunicorn[28471]:                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     result = conn.execute(
+Sep 06 00:49:11 srv989942 gunicorn[28471]:              ^^^^^^^^^^^^^
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1419, in execute
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     return meth(
+Sep 06 00:49:11 srv989942 gunicorn[28471]:            ^^^^^
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     return connection._execute_clauseelement(
+Sep 06 00:49:11 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1641, in _execute_clauseelement
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     ret = self._execute_context(
+Sep 06 00:49:11 srv989942 gunicorn[28471]:           ^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     return self._exec_single_context(
+Sep 06 00:49:11 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     self._handle_dbapi_exception(
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     self.dialect.do_execute(
+Sep 06 00:49:11 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:49:11 srv989942 gunicorn[28471]:     cursor.execute(statement, parameters)
+Sep 06 00:49:11 srv989942 gunicorn[28471]: sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedTable) relation "pondoks" does not exist
+Sep 06 00:49:11 srv989942 gunicorn[28471]: LINE 2: FROM pondoks
+Sep 06 00:49:11 srv989942 gunicorn[28471]:              ^
+Sep 06 00:49:11 srv989942 gunicorn[28471]: [SQL: SELECT pondoks.id AS pondoks_id, pondoks.pondok_id AS pondoks_pondok_id, pondoks.password_hash AS pondoks_password_hash, pondoks.pondok_name AS pondoks_pondok_name
+Sep 06 00:49:11 srv989942 gunicorn[28471]: FROM pondoks
+Sep 06 00:49:11 srv989942 gunicorn[28471]: WHERE pondoks.pondok_id = %(pondok_id_1)s
+Sep 06 00:49:11 srv989942 gunicorn[28471]:  LIMIT %(param_1)s]
+Sep 06 00:49:11 srv989942 gunicorn[28471]: [parameters: {'pondok_id_1': 'Yasfi#02', 'param_1': 1}]
+Sep 06 00:49:11 srv989942 gunicorn[28471]: (Background on this error at: https://sqlalche.me/e/20/f405)
+Sep 06 00:49:12 srv989942 gunicorn[28472]: [2025-09-06 00:49:12,282] ERROR in app: Exception on /api/register [POST]
+Sep 06 00:49:12 srv989942 gunicorn[28472]: Traceback (most recent call last):
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     self.dialect.do_execute(
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     cursor.execute(statement, parameters)
+Sep 06 00:49:12 srv989942 gunicorn[28472]: psycopg2.errors.UndefinedTable: relation "pondoks" does not exist
+Sep 06 00:49:12 srv989942 gunicorn[28472]: LINE 2: FROM pondoks
+Sep 06 00:49:12 srv989942 gunicorn[28472]:              ^
+Sep 06 00:49:12 srv989942 gunicorn[28472]: The above exception was the direct cause of the following exception:
+Sep 06 00:49:12 srv989942 gunicorn[28472]: Traceback (most recent call last):
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     response = self.full_dispatch_request()
+Sep 06 00:49:12 srv989942 gunicorn[28472]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     rv = self.handle_user_exception(e)
+Sep 06 00:49:12 srv989942 gunicorn[28472]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     rv = self.dispatch_request()
+Sep 06 00:49:12 srv989942 gunicorn[28472]:          ^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 902, in dispatch_request
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+Sep 06 00:49:12 srv989942 gunicorn[28472]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/main.py", line 63, in register
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     existing_pondok = Pondok.query.filter_by(pondok_id=pondok_id).first()
+Sep 06 00:49:12 srv989942 gunicorn[28472]:                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2759, in first
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     return self.limit(1)._iter().first()  # type: ignore
+Sep 06 00:49:12 srv989942 gunicorn[28472]:            ^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+Sep 06 00:49:12 srv989942 gunicorn[28472]:                                                   ^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     return self._execute_internal(
+Sep 06 00:49:12 srv989942 gunicorn[28472]:            ^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     result: Result[Any] = compile_state_cls.orm_execute_statement(
+Sep 06 00:49:12 srv989942 gunicorn[28472]:                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     result = conn.execute(
+Sep 06 00:49:12 srv989942 gunicorn[28472]:              ^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1419, in execute
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     return meth(
+Sep 06 00:49:12 srv989942 gunicorn[28472]:            ^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     return connection._execute_clauseelement(
+Sep 06 00:49:12 srv989942 gunicorn[28472]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1641, in _execute_clauseelement
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     ret = self._execute_context(
+Sep 06 00:49:12 srv989942 gunicorn[28472]:           ^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     return self._exec_single_context(
+Sep 06 00:49:12 srv989942 gunicorn[28472]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     self._handle_dbapi_exception(
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     self.dialect.do_execute(
+Sep 06 00:49:12 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:49:12 srv989942 gunicorn[28472]:     cursor.execute(statement, parameters)
+Sep 06 00:49:12 srv989942 gunicorn[28472]: sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedTable) relation "pondoks" does not exist
+Sep 06 00:49:12 srv989942 gunicorn[28472]: LINE 2: FROM pondoks
+Sep 06 00:49:12 srv989942 gunicorn[28472]:              ^
+Sep 06 00:49:12 srv989942 gunicorn[28472]: [SQL: SELECT pondoks.id AS pondoks_id, pondoks.pondok_id AS pondoks_pondok_id, pondoks.password_hash AS pondoks_password_hash, pondoks.pondok_name AS pondoks_pondok_name
+Sep 06 00:49:12 srv989942 gunicorn[28472]: FROM pondoks
+Sep 06 00:49:12 srv989942 gunicorn[28472]: WHERE pondoks.pondok_id = %(pondok_id_1)s
+Sep 06 00:49:12 srv989942 gunicorn[28472]:  LIMIT %(param_1)s]
+Sep 06 00:49:12 srv989942 gunicorn[28472]: [parameters: {'pondok_id_1': 'Yasfi#02', 'param_1': 1}]
+Sep 06 00:49:12 srv989942 gunicorn[28472]: (Background on this error at: https://sqlalche.me/e/20/f405)
+Sep 06 00:49:12 srv989942 gunicorn[28473]: [2025-09-06 00:49:12,415] ERROR in app: Exception on /api/register [POST]
+Sep 06 00:49:12 srv989942 gunicorn[28473]: Traceback (most recent call last):
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     self.dialect.do_execute(
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     cursor.execute(statement, parameters)
+Sep 06 00:49:12 srv989942 gunicorn[28473]: psycopg2.errors.UndefinedTable: relation "pondoks" does not exist
+Sep 06 00:49:12 srv989942 gunicorn[28473]: LINE 2: FROM pondoks
+Sep 06 00:49:12 srv989942 gunicorn[28473]:              ^
+Sep 06 00:49:12 srv989942 gunicorn[28473]: The above exception was the direct cause of the following exception:
+Sep 06 00:49:12 srv989942 gunicorn[28473]: Traceback (most recent call last):
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     response = self.full_dispatch_request()
+Sep 06 00:49:12 srv989942 gunicorn[28473]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     rv = self.handle_user_exception(e)
+Sep 06 00:49:12 srv989942 gunicorn[28473]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     rv = self.dispatch_request()
+Sep 06 00:49:12 srv989942 gunicorn[28473]:          ^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 902, in dispatch_request
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+Sep 06 00:49:12 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/main.py", line 63, in register
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     existing_pondok = Pondok.query.filter_by(pondok_id=pondok_id).first()
+Sep 06 00:49:12 srv989942 gunicorn[28473]:                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2759, in first
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     return self.limit(1)._iter().first()  # type: ignore
+Sep 06 00:49:12 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+Sep 06 00:49:12 srv989942 gunicorn[28473]:                                                   ^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     return self._execute_internal(
+Sep 06 00:49:12 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     result: Result[Any] = compile_state_cls.orm_execute_statement(
+Sep 06 00:49:12 srv989942 gunicorn[28473]:                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     result = conn.execute(
+Sep 06 00:49:12 srv989942 gunicorn[28473]:              ^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1419, in execute
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     return meth(
+Sep 06 00:49:12 srv989942 gunicorn[28473]:            ^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     return connection._execute_clauseelement(
+Sep 06 00:49:12 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1641, in _execute_clauseelement
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     ret = self._execute_context(
+Sep 06 00:49:12 srv989942 gunicorn[28473]:           ^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     return self._exec_single_context(
+Sep 06 00:49:12 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     self._handle_dbapi_exception(
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     self.dialect.do_execute(
+Sep 06 00:49:12 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:49:12 srv989942 gunicorn[28473]:     cursor.execute(statement, parameters)
+Sep 06 00:49:12 srv989942 gunicorn[28473]: sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedTable) relation "pondoks" does not exist
+Sep 06 00:49:12 srv989942 gunicorn[28473]: LINE 2: FROM pondoks
+Sep 06 00:49:12 srv989942 gunicorn[28473]:              ^
+Sep 06 00:49:12 srv989942 gunicorn[28473]: [SQL: SELECT pondoks.id AS pondoks_id, pondoks.pondok_id AS pondoks_pondok_id, pondoks.password_hash AS pondoks_password_hash, pondoks.pondok_name AS pondoks_pondok_name
+Sep 06 00:49:12 srv989942 gunicorn[28473]: FROM pondoks
+Sep 06 00:49:12 srv989942 gunicorn[28473]: WHERE pondoks.pondok_id = %(pondok_id_1)s
+Sep 06 00:49:12 srv989942 gunicorn[28473]:  LIMIT %(param_1)s]
+Sep 06 00:49:12 srv989942 gunicorn[28473]: [parameters: {'pondok_id_1': 'Yasfi#02', 'param_1': 1}]
+Sep 06 00:49:12 srv989942 gunicorn[28473]: (Background on this error at: https://sqlalche.me/e/20/f405)
+Sep 06 00:49:18 srv989942 gunicorn[28471]: [2025-09-06 00:49:18,119] ERROR in app: Exception on /api/register [POST]
+Sep 06 00:49:18 srv989942 gunicorn[28471]: Traceback (most recent call last):
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     self.dialect.do_execute(
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     cursor.execute(statement, parameters)
+Sep 06 00:49:18 srv989942 gunicorn[28471]: psycopg2.errors.UndefinedTable: relation "pondoks" does not exist
+Sep 06 00:49:18 srv989942 gunicorn[28471]: LINE 2: FROM pondoks
+Sep 06 00:49:18 srv989942 gunicorn[28471]:              ^
+Sep 06 00:49:18 srv989942 gunicorn[28471]: The above exception was the direct cause of the following exception:
+Sep 06 00:49:18 srv989942 gunicorn[28471]: Traceback (most recent call last):
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     response = self.full_dispatch_request()
+Sep 06 00:49:18 srv989942 gunicorn[28471]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     rv = self.handle_user_exception(e)
+Sep 06 00:49:18 srv989942 gunicorn[28471]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     rv = self.dispatch_request()
+Sep 06 00:49:18 srv989942 gunicorn[28471]:          ^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 902, in dispatch_request
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+Sep 06 00:49:18 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/main.py", line 63, in register
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     existing_pondok = Pondok.query.filter_by(pondok_id=pondok_id).first()
+Sep 06 00:49:18 srv989942 gunicorn[28471]:                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2759, in first
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     return self.limit(1)._iter().first()  # type: ignore
+Sep 06 00:49:18 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+Sep 06 00:49:18 srv989942 gunicorn[28471]:                                                   ^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     return self._execute_internal(
+Sep 06 00:49:18 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     result: Result[Any] = compile_state_cls.orm_execute_statement(
+Sep 06 00:49:18 srv989942 gunicorn[28471]:                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     result = conn.execute(
+Sep 06 00:49:18 srv989942 gunicorn[28471]:              ^^^^^^^^^^^^^
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1419, in execute
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     return meth(
+Sep 06 00:49:18 srv989942 gunicorn[28471]:            ^^^^^
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     return connection._execute_clauseelement(
+Sep 06 00:49:18 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1641, in _execute_clauseelement
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     ret = self._execute_context(
+Sep 06 00:49:18 srv989942 gunicorn[28471]:           ^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     return self._exec_single_context(
+Sep 06 00:49:18 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     self._handle_dbapi_exception(
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     self.dialect.do_execute(
+Sep 06 00:49:18 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:49:18 srv989942 gunicorn[28471]:     cursor.execute(statement, parameters)
+Sep 06 00:49:18 srv989942 gunicorn[28471]: sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedTable) relation "pondoks" does not exist
+Sep 06 00:49:18 srv989942 gunicorn[28471]: LINE 2: FROM pondoks
+Sep 06 00:49:18 srv989942 gunicorn[28471]:              ^
+Sep 06 00:49:18 srv989942 gunicorn[28471]: [SQL: SELECT pondoks.id AS pondoks_id, pondoks.pondok_id AS pondoks_pondok_id, pondoks.password_hash AS pondoks_password_hash, pondoks.pondok_name AS pondoks_pondok_name
+Sep 06 00:49:18 srv989942 gunicorn[28471]: FROM pondoks
+Sep 06 00:49:18 srv989942 gunicorn[28471]: WHERE pondoks.pondok_id = %(pondok_id_1)s
+Sep 06 00:49:18 srv989942 gunicorn[28471]:  LIMIT %(param_1)s]
+Sep 06 00:49:18 srv989942 gunicorn[28471]: [parameters: {'pondok_id_1': 'Yasfi#02', 'param_1': 1}]
+Sep 06 00:49:18 srv989942 gunicorn[28471]: (Background on this error at: https://sqlalche.me/e/20/f405)
+Sep 06 00:49:30 srv989942 gunicorn[28473]: [2025-09-06 00:49:30,727] ERROR in app: Exception on /api/register [POST]
+Sep 06 00:49:30 srv989942 gunicorn[28473]: Traceback (most recent call last):
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     self.dialect.do_execute(
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     cursor.execute(statement, parameters)
+Sep 06 00:49:30 srv989942 gunicorn[28473]: psycopg2.errors.UndefinedTable: relation "pondoks" does not exist
+Sep 06 00:49:30 srv989942 gunicorn[28473]: LINE 2: FROM pondoks
+Sep 06 00:49:30 srv989942 gunicorn[28473]:              ^
+Sep 06 00:49:30 srv989942 gunicorn[28473]: The above exception was the direct cause of the following exception:
+Sep 06 00:49:30 srv989942 gunicorn[28473]: Traceback (most recent call last):
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     response = self.full_dispatch_request()
+Sep 06 00:49:30 srv989942 gunicorn[28473]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     rv = self.handle_user_exception(e)
+Sep 06 00:49:30 srv989942 gunicorn[28473]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     rv = self.dispatch_request()
+Sep 06 00:49:30 srv989942 gunicorn[28473]:          ^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 902, in dispatch_request
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+Sep 06 00:49:30 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/main.py", line 63, in register
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     existing_pondok = Pondok.query.filter_by(pondok_id=pondok_id).first()
+Sep 06 00:49:30 srv989942 gunicorn[28473]:                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2759, in first
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     return self.limit(1)._iter().first()  # type: ignore
+Sep 06 00:49:30 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+Sep 06 00:49:30 srv989942 gunicorn[28473]:                                                   ^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     return self._execute_internal(
+Sep 06 00:49:30 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     result: Result[Any] = compile_state_cls.orm_execute_statement(
+Sep 06 00:49:30 srv989942 gunicorn[28473]:                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     result = conn.execute(
+Sep 06 00:49:30 srv989942 gunicorn[28473]:              ^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1419, in execute
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     return meth(
+Sep 06 00:49:30 srv989942 gunicorn[28473]:            ^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     return connection._execute_clauseelement(
+Sep 06 00:49:30 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1641, in _execute_clauseelement
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     ret = self._execute_context(
+Sep 06 00:49:30 srv989942 gunicorn[28473]:           ^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     return self._exec_single_context(
+Sep 06 00:49:30 srv989942 gunicorn[28473]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     self._handle_dbapi_exception(
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     self.dialect.do_execute(
+Sep 06 00:49:30 srv989942 gunicorn[28473]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:49:30 srv989942 gunicorn[28473]:     cursor.execute(statement, parameters)
+Sep 06 00:49:30 srv989942 gunicorn[28473]: sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedTable) relation "pondoks" does not exist
+Sep 06 00:49:30 srv989942 gunicorn[28473]: LINE 2: FROM pondoks
+Sep 06 00:49:30 srv989942 gunicorn[28473]:              ^
+Sep 06 00:49:30 srv989942 gunicorn[28473]: [SQL: SELECT pondoks.id AS pondoks_id, pondoks.pondok_id AS pondoks_pondok_id, pondoks.password_hash AS pondoks_password_hash, pondoks.pondok_name AS pondoks_pondok_name
+Sep 06 00:49:30 srv989942 gunicorn[28473]: FROM pondoks
+Sep 06 00:49:30 srv989942 gunicorn[28473]: WHERE pondoks.pondok_id = %(pondok_id_1)s
+Sep 06 00:49:30 srv989942 gunicorn[28473]:  LIMIT %(param_1)s]
+Sep 06 00:49:30 srv989942 gunicorn[28473]: [parameters: {'pondok_id_1': 'Yasfi#02', 'param_1': 1}]
+Sep 06 00:49:30 srv989942 gunicorn[28473]: (Background on this error at: https://sqlalche.me/e/20/f405)
+Sep 06 00:49:30 srv989942 gunicorn[28471]: [2025-09-06 00:49:30,972] ERROR in app: Exception on /api/register [POST]
+Sep 06 00:49:30 srv989942 gunicorn[28471]: Traceback (most recent call last):
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     self.dialect.do_execute(
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     cursor.execute(statement, parameters)
+Sep 06 00:49:30 srv989942 gunicorn[28471]: psycopg2.errors.UndefinedTable: relation "pondoks" does not exist
+Sep 06 00:49:30 srv989942 gunicorn[28471]: LINE 2: FROM pondoks
+Sep 06 00:49:30 srv989942 gunicorn[28471]:              ^
+Sep 06 00:49:30 srv989942 gunicorn[28471]: The above exception was the direct cause of the following exception:
+Sep 06 00:49:30 srv989942 gunicorn[28471]: Traceback (most recent call last):
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     response = self.full_dispatch_request()
+Sep 06 00:49:30 srv989942 gunicorn[28471]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     rv = self.handle_user_exception(e)
+Sep 06 00:49:30 srv989942 gunicorn[28471]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     rv = self.dispatch_request()
+Sep 06 00:49:30 srv989942 gunicorn[28471]:          ^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/flask/app.py", line 902, in dispatch_request
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+Sep 06 00:49:30 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/main.py", line 63, in register
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     existing_pondok = Pondok.query.filter_by(pondok_id=pondok_id).first()
+Sep 06 00:49:30 srv989942 gunicorn[28471]:                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2759, in first
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     return self.limit(1)._iter().first()  # type: ignore
+Sep 06 00:49:30 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+Sep 06 00:49:30 srv989942 gunicorn[28471]:                                                   ^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     return self._execute_internal(
+Sep 06 00:49:30 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     result: Result[Any] = compile_state_cls.orm_execute_statement(
+Sep 06 00:49:30 srv989942 gunicorn[28471]:                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     result = conn.execute(
+Sep 06 00:49:30 srv989942 gunicorn[28471]:              ^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1419, in execute
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     return meth(
+Sep 06 00:49:30 srv989942 gunicorn[28471]:            ^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     return connection._execute_clauseelement(
+Sep 06 00:49:30 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1641, in _execute_clauseelement
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     ret = self._execute_context(
+Sep 06 00:49:30 srv989942 gunicorn[28471]:           ^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     return self._exec_single_context(
+Sep 06 00:49:30 srv989942 gunicorn[28471]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     self._handle_dbapi_exception(
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     self.dialect.do_execute(
+Sep 06 00:49:30 srv989942 gunicorn[28471]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:49:30 srv989942 gunicorn[28471]:     cursor.execute(statement, parameters)
+Sep 06 00:49:30 srv989942 gunicorn[28471]: sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedTable) relation "pondoks" does not exist
+Sep 06 00:49:30 srv989942 gunicorn[28471]: LINE 2: FROM pondoks
+Sep 06 00:49:30 srv989942 gunicorn[28471]:              ^
+Sep 06 00:49:30 srv989942 gunicorn[28471]: [SQL: SELECT pondoks.id AS pondoks_id, pondoks.pondok_id AS pondoks_pondok_id, pondoks.password_hash AS pondoks_password_hash, pondoks.pondok_name AS pondoks_pondok_name
+Sep 06 00:49:30 srv989942 gunicorn[28471]: FROM pondoks
+Sep 06 00:49:30 srv989942 gunicorn[28471]: WHERE pondoks.pondok_id = %(pondok_id_1)s
+Sep 06 00:49:30 srv989942 gunicorn[28471]:  LIMIT %(param_1)s]
+Sep 06 00:49:30 srv989942 gunicorn[28471]: [parameters: {'pondok_id_1': 'Yasfi#02', 'param_1': 1}]
+Sep 06 00:49:30 srv989942 gunicorn[28471]: (Background on this error at: https://sqlalche.me/e/20/f405)
+Sep 06 00:49:31 srv989942 gunicorn[28472]: [2025-09-06 00:49:31,692] ERROR in app: Exception on /api/register [POST]
+Sep 06 00:49:31 srv989942 gunicorn[28472]: Traceback (most recent call last):
+Sep 06 00:49:31 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+Sep 06 00:49:31 srv989942 gunicorn[28472]:     self.dialect.do_execute(
+Sep 06 00:49:31 srv989942 gunicorn[28472]:   File "/root/PondokIT/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+Sep 06 00:49:31 srv989942 gunicorn[28472]:     cursor.execute(statement, parameters)
+Sep 06 00:49:31 srv989942 gunicorn[28472]: psycopg2.errors.UndefinedTable: relation "pondoks" does not e

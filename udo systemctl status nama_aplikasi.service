@@ -1,0 +1,18 @@
+○ nama_aplikasi.service - Gunicorn instance for a Flask app
+     Loaded: loaded (]8;;file://srv989942/etc/systemd/system/nama_aplikasi.service/etc/systemd/system/nama_aplikasi.service]8;;; [0;1;32menabled[0m; preset: [0;1;32menabled[0m)
+     Active: inactive (dead) since Sat 2025-09-06 05:57:53 UTC; 15h ago
+   Duration: 2h 7min 3.244s
+    Process: 30235 ExecStart=/root/PondokIT/venv/bin/gunicorn --workers 3 --bind 0.0.0.0:5000 main:app (code=exited, status=0/SUCCESS)
+   Main PID: 30235 (code=exited, status=0/SUCCESS)
+        CPU: 2.059s
+
+Sep 06 05:57:53 srv989942 gunicorn[30235]: [2025-09-06 05:57:53 +0000] [30235] [INFO] Handling signal: term
+Sep 06 05:57:53 srv989942 gunicorn[30237]: [2025-09-06 05:57:53 +0000] [30237] [INFO] Worker exiting (pid: 30237)
+Sep 06 05:57:53 srv989942 gunicorn[30238]: [2025-09-06 05:57:53 +0000] [30238] [INFO] Worker exiting (pid: 30238)
+Sep 06 05:57:53 srv989942 gunicorn[30239]: [2025-09-06 05:57:53 +0000] [30239] [INFO] Worker exiting (pid: 30239)
+Sep 06 05:57:53 srv989942 gunicorn[30235]: [2025-09-06 05:57:53 +0000] [30235] [ERROR] Worker (pid:30239) was sent SIGTERM!
+Sep 06 05:57:53 srv989942 gunicorn[30235]: [2025-09-06 05:57:53 +0000] [30235] [ERROR] Worker (pid:30238) was sent SIGTERM!
+Sep 06 05:57:53 srv989942 gunicorn[30235]: [2025-09-06 05:57:53 +0000] [30235] [ERROR] Worker (pid:30237) was sent SIGTERM!
+Sep 06 05:57:53 srv989942 gunicorn[30235]: [2025-09-06 05:57:53 +0000] [30235] [INFO] Shutting down: Master
+Sep 06 05:57:53 srv989942 systemd[1]: nama_aplikasi.service: Deactivated successfully.
+Sep 06 05:57:53 srv989942 systemd[1]: nama_aplikasi.service: Consumed 2.059s CPU time.
