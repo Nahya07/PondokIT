@@ -81,7 +81,7 @@ def allowed_file(filename):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return app.send_static_file('index.html')
 
 # Register pondok baru
 @app.route('/api/register', methods=['POST'])
