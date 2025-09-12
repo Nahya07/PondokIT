@@ -2,7 +2,7 @@
   "name": "Monitoring Hafalan Santri",
   "short_name": "Santri Qur'an",
   "description": "Aplikasi untuk memonitor progres hafalan santri",
-  "start_url": "/index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#f0f4f8",
   "theme_color": "#10b981",
