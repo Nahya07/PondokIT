@@ -1,4 +1,4 @@
-const CACHE_NAME = 'app-cache-v9';
+const CACHE_NAME = 'app-cache-v10';
 const urlsToCache = [
   '/', // Harus selalu ada untuk halaman utama
   '/static/index.html',
