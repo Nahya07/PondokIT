@@ -1,5 +1,5 @@
 {
-  "name": "Monitoring Hafalan Santri",
+  "name": "Santri Qur'an",
   "short_name": "Santri Qur'an",
   "description": "Aplikasi untuk memonitor progres hafalan santri",
   "start_url": "/",
@@ -13,7 +13,7 @@
       "type": "image/png"
     },
     {
-      "src": "/static/assets/icon-512x512.png",
+      "src": "/static/asset/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
