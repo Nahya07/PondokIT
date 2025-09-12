@@ -7,7 +7,6 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="manifest" href="/static/manifest.json">
 
 <script>
@@ -1691,27 +1690,22 @@
 
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
-            const savedLang = localStorage.getItem('selectedLanguage') || 'id';
+            const savedLang = localStorage.getItem('selectedLanguage') |
+
+| 'id';
             const languageSelector = document.getElementById('language-selector');
             if (languageSelector) languageSelector.value = savedLang;
             setLanguage(savedLang);
+            
             const alarmToggle = document.getElementById('alarm-toggle');
             if (alarmToggle) {
                 alarmToggle.checked = localStorage.getItem('alarmEnabled') === 'true';
                 alarmToggle.addEventListener('change', handleAlarmToggleChange);
             }
-	    const welcomeText = document.querySelector('#role-selection-page.ornament-border h2');
-	    const subtitleText = document.querySelector('#role-selection-page.ornament-border p');
-	    if (welcomeText) {
-	        welcomeText.classList.add('text-slide-up');
-	    }
-	    if (subtitleText) {
-	        subtitleText.classList.add('text-slide-up');
-	        subtitleText.style.animationDelay = '0.3s'; // Tunda animasi subteks
-	    }
-	});
+            
             const kelasSelectSantri = document.getElementById('kelas');
             const kelasSelectGuru = document.getElementById('guru-kelas');
+            
             if (kelasSelectSantri) {
                 kelasSelectSantri.innerHTML = '';
                 for (let i = 65; i <= 90; i++) {
@@ -1732,12 +1726,14 @@
                     kelasSelectGuru.appendChild(optionGuru);
                 }
             }
+            
             const targetHarianSelect = document.getElementById('form-target-harian');
             if (targetHarianSelect) {
                 for (let i = 1; i <= 15; i++) {
                     targetHarianSelect.add(new Option(`${i} Baris`, `${i} Baris`));
                 }
             }
+            
             const targetMingguanSelect = document.getElementById('form-target-mingguan');
             if (targetMingguanSelect) {
                 targetMingguanSelect.add(new Option('Setengah Halaman', 'Setengah Halaman'));
@@ -1745,7 +1741,20 @@
                     targetMingguanSelect.add(new Option(`${i} Halaman`, `${i} Halaman`));
                 }
             }
+            
             checkLoginState();
+
+            // Efek animasi untuk teks sambutan
+            const welcomeText = document.querySelector('#role-selection-page.ornament-border h2');
+            const subtitleText = document.querySelector('#role-selection-page.ornament-border p');
+            if (welcomeText) {
+                welcomeText.classList.add('text-slide-up');
+            }
+            if (subtitleText) {
+                subtitleText.classList.add('text-slide-up');
+                subtitleText.style.animationDelay = '0.3s'; // Tunda animasi subteks
+            }
+
             showPage('roleSelection');
         });
     </script>
