@@ -1152,16 +1152,7 @@
                 gallery.appendChild(card);
             });
         }
-
-        async function showSantriDetail(santriId) {
-            const pondokData = await fetchData();
-            if (!pondokData || !pondokData.santri) return;
-            const santri = pondokData.santri.find(s => s.id === santriId);
-            if (!santri) {
-                console.error("Santri tidak ditemukan di data.");
-                return;
-            }
-            function searchSantri() {
+	function searchSantri() {
 	    const input = document.getElementById('search-santri');
 	    const filter = input.value.toLowerCase();
 	    const cards = document.querySelectorAll('#santri-gallery.santri-card');
@@ -1179,12 +1170,19 @@
 	    if (noResultsMessage) {
 	        if (hasResults) {
 	            noResultsMessage.classList.add('hidden');
- 	       } else {
+	        } else {
 	            noResultsMessage.classList.remove('hidden');
 	        }
 	    }
 	}
-
+        async function showSantriDetail(santriId) {
+            const pondokData = await fetchData();
+            if (!pondokData || !pondokData.santri) return;
+            const santri = pondokData.santri.find(s => s.id === santriId);
+            if (!santri) {
+                console.error("Santri tidak ditemukan di data.");
+                return;
+            }
             const guru = pondokData.guru.find(g => g.mengajar_kelas === santri.kelas);
             const hafalan = pondokData.hafalan.filter(h => h.santri_id === santriId).sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
             const detailFoto = document.getElementById('detail-foto');
