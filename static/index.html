@@ -1152,39 +1152,6 @@
                 gallery.appendChild(card);
             });
         }
-
-        async function showSantriDetail(santriId) {
-            const pondokData = await fetchData();
-            if (!pondokData || !pondokData.santri) return;
-            const santri = pondokData.santri.find(s => s.id === santriId);
-            if (!santri) {
-                console.error("Santri tidak ditemukan di data.");
-                return;
-            }
-            function searchSantri() {
-                const input = document.getElementById('search-santri');
-                const filter = input.value.toLowerCase();
-                const cards = document.querySelectorAll('#santri-gallery .santri-card');
-                let hasResults = false;
-                cards.forEach(card => {
-                    const name = card.dataset.name.toLowerCase();
-                    if (name.includes(filter)) {
-                        card.style.display = '';
-                        hasResults = true;
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-                const noResultsMessage = document.getElementById('no-results');
-                if (noResultsMessage) {
-                    if (hasResults) {
-                        noResultsMessage.classList.add('hidden');
-                    } else {
-                        noResultsMessage.classList.remove('hidden');
-                    }
-                }
-            }
-
             const guru = pondokData.guru.find(g => g.mengajar_kelas === santri.kelas);
             const hafalan = pondokData.hafalan.filter(h => h.santri_id === santriId).sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
             const detailFoto = document.getElementById('detail-foto');
@@ -1552,6 +1519,29 @@
             showPage('about');
         }
 
+        function searchSantri() {
+    const input = document.getElementById('search-santri');
+    const filter = input.value.toLowerCase();
+    const cards = document.querySelectorAll('#santri-gallery .santri-card');
+    let hasResults = false;
+    cards.forEach(card => {
+        const name = card.dataset.name.toLowerCase();
+        if (name.includes(filter)) {
+            card.style.display = '';
+            hasResults = true;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    const noResultsMessage = document.getElementById('no-results');
+    if (noResultsMessage) {
+        if (hasResults) {
+            noResultsMessage.classList.add('hidden');
+        } else {
+            noResultsMessage.classList.remove('hidden');
+        }
+    }
+}
         function showWelcomeVideo() {
             if (!sessionStorage.getItem('welcomeVideoShown')) {
                 const modal = document.getElementById('video-modal');
