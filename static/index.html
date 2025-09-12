@@ -10,141 +10,61 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="manifest" href="/static/manifest.json">
 
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/static/service-worker.js').then(function(registration) {
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      }, function(err) {
-        console.log('ServiceWorker registration failed: ', err);
-      });
-    });
-  }
-</script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/static/service-worker.js').then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function(err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
 
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
-            background-color: #f0f4f8;
-        }
-
-        .main-content {
-            background-color: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(5px);
-        }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
+        /* ... Semua kode CSS Anda di sini ... */
+        /* Pastikan Anda menambahkan kode CSS fade-out di bawah ini */
 
         .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+
+        .fade-out {
+            animation: fadeOut 1s ease-in-out forwards;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(20px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        .ornament-border {
-            border: 2px solid #c7a17a;
-            padding: 20px;
-            position: relative;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .ornament-border::before,
-        .ornament-border::after {
-            content: '❁';
-            position: absolute;
-            font-size: 24px;
-            color: #c7a17a;
-        }
-
-        .ornament-border::before {
-            top: -15px;
-            left: -15px;
-        }
-
-        .ornament-border::after {
-            bottom: -15px;
-            right: -15px;
-        }
-
-        /* Tooltip for features */
-        .feature-tooltip .tooltip-text {
-            visibility: hidden;
-            width: 160px;
-            background-color: #334155;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 8px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -80px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .feature-tooltip:hover .tooltip-text {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        /* Video Modal */
-        #video-modal {
-            transition: opacity 0.3s ease;
-        }
-
-        /* Custom toggle switch for alarm */
-        .toggle-checkbox:checked {
-            right: 0;
-            border-color: #10B981;
-        }
-
-        .toggle-checkbox:checked + .toggle-label {
-            background-color: #10B981;
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
         }
     </style>
 </head>
 
 <body class="bg-gray-100 text-gray-800">
 
-    <div id="video-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-lg p-6 text-center max-w-lg w-full relative">
-            <button onclick="closeVideoModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800">&times;</button>
-            <video class="w-full rounded-md mb-4" autoplay muted loop playsinline>
-                <source src="https://cdn.pixabay.com/video/2022/09/23/131953-755734533_large.mp4" type="video/mp4">
-                Browser anda tidak menyokong tag video.
-            </video>
-            <h3 data-translate-key="login_welcome" class="text-xl font-bold text-teal-800 mb-2"></h3>
-            <p data-translate-key="login_welcome_text" class="text-gray-600"></p>
-        </div>
+    <div id="welcome-message" class="hidden fixed inset-0 bg-gray-100 dark:bg-gray-900 z-50 flex items-center justify-center">
+        <h1 class="text-4xl md:text-6xl font-bold text-teal-700 dark:text-teal-300">
+            ASSALAMU'ALAIKUM<br>
+            Selamat Datang di Aplikasi SantriQ
+        </h1>
     </div>
 
     <div id="app" class="container mx-auto p-4 md:p-8 max-w-7xl">
@@ -159,9 +79,9 @@
                     <option value="jw">Basa Jawa</option>
                 </select>
             </div>
+            
             <div class="w-full max-w-sm p-8 space-y-6 bg-white dark:bg-gray-800 rounded-xl shadow-2xl text-center ornament-border relative">
                 <p class="text-4xl text-teal-800 dark:text-teal-400" style="font-family: 'MCS Hijaz S_U normal', serif;">بسم الله الرحمن الرحيم</p>
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Selamat Datang di Aplikasi SantriQ</h2>
                 <p class="text-gray-600 dark:text-gray-400">Silakan pilih peran Anda untuk melanjutkan:</p>
                 <div class="space-y-4 pt-4">
                     <button onclick="handleRoleSelection('wali')" class="w-full px-4 py-3 font-semibold text-white bg-teal-700 rounded-lg hover:bg-teal-800 transition duration-300">
@@ -172,6 +92,7 @@
                     </button>
                 </div>
             </div>
+
             <div class="flex flex-col items-center mt-8 w-full max-w-sm mx-auto space-y-6">
                 <div class="flex flex-wrap justify-center space-x-4">
                     <div class="feature-tooltip relative">
@@ -203,6 +124,7 @@
                     <p data-translate-key="hadith_text" class="text-sm italic text-gray-600 dark:text-gray-400 mt-2">"Sebaik-baik kalian adalah orang<br>yang belajar Al-Qur'an dan mengajarkannya."</p>
                 </div>
             </div>
+            
             <footer class="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
                 <button onclick="showAboutPage()" class="text-teal-600 hover:text-teal-800 underline mb-2">Tentang Aplikasi</button>
                 <p data-translate-key="footer_text">Project dibuat oleh (MUHAMMAD NAHYA FADLALLAH) ©2025 All Rights Reserved</p>
@@ -211,7 +133,6 @@
                 </a>
             </footer>
         </div>
-
         <div id="pondok-register-page" class="hidden flex-col items-center justify-center min-h-screen p-4 bg-gray-100 dark:bg-gray-900 transition-colors duration-500">
             <div class="w-full max-w-sm p-8 space-y-6 bg-white dark:bg-gray-800 rounded-xl shadow-2xl ornament-border relative">
                 <h2 class="text-2xl font-bold text-center text-gray-900 dark:text-gray-100">Daftarkan Pondok Anda</h2>
@@ -683,8 +604,7 @@
             <button onclick="dismissAlarm()" class="text-teal-200 hover:text-white">&times;</button>
         </div>
     </div>
-
-    <script>
+<script>
         // --- TRANSLATION 
         const translations = {
             id: {
@@ -828,7 +748,6 @@
             jadwalDonasi: document.getElementById('jadwal-donasi-page'),
             about: document.getElementById('about-page'),
         };
-
         function showPage(pageName) {
             Object.values(pages).forEach(page => {
                 if (page) {
