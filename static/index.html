@@ -52,19 +52,24 @@
             background: #555;
         }
 
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
+
+       .text-fade-in {
+            animation: fadeIn 1.5s ease-in-out forwards;
         }
-
-        @keyframes fadeIn {
+        
+       .text-slide-up {
+            animation: slideUp 1s ease-out forwards;
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        @keyframes slideUp {
             from {
+                transform: translateY(20px);
                 opacity: 0;
-                transform: translateY(10px);
             }
-
             to {
-                opacity: 1;
                 transform: translateY(0);
+                opacity: 1;
             }
         }
 
@@ -134,18 +139,6 @@
 </head>
 
 <body class="bg-gray-100 text-gray-800">
-
-    <div id="video-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-lg p-6 text-center max-w-lg w-full relative">
-            <button onclick="closeVideoModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800">&times;</button>
-            <video class="w-full rounded-md mb-4" autoplay muted loop playsinline>
-                <source src="https://cdn.pixabay.com/video/2022/09/23/131953-755734533_large.mp4" type="video/mp4">
-                Browser anda tidak menyokong tag video.
-            </video>
-            <h3 data-translate-key="login_welcome" class="text-xl font-bold text-teal-800 mb-2"></h3>
-            <p data-translate-key="login_welcome_text" class="text-gray-600"></p>
-        </div>
-    </div>
 
     <div id="app" class="container mx-auto p-4 md:p-8 max-w-7xl">
         <div id="role-selection-page" class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100 dark:bg-gray-900 transition-colors duration-500">
@@ -1007,7 +1000,6 @@
 
         // --- AUTHENTICATION FLOW ---
         function handleRoleSelection(role) {
-            showWelcomeVideo();
             loginContext = role;
             if (role === 'wali') {
                 showPage('accessCode');
@@ -1130,28 +1122,29 @@
 
         // --- DASHBOARD RENDERING ---
         async function renderWaliDashboard() {
-            const pondokData = await fetchData();
-            if (!pondokData || !pondokData.santri) return;
-            const gallery = document.getElementById('santri-gallery');
-            gallery.innerHTML = '';
-            pondokData.santri.sort((a, b) => a.nama.localeCompare(b.nama)).forEach(santri => {
-                const card = document.createElement('div');
-                card.className = 'text-center cursor-pointer group santri-card';
-                card.dataset.name = santri.nama;
-                card.innerHTML = `
-                <div class="relative">
-                    <img src="${santri.foto}" alt="Foto ${santri.nama}" class="w-full h-auto aspect-square rounded-full object-cover transition-transform duration-300 group-hover:scale-105 border-4 border-white shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=Error';">
-                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 rounded-full transition-all duration-300 flex items-center justify-center">
-                        <span class="text-white opacity-0 group-hover:opacity-100 font-bold">Lihat Detail</span>
-                    </div>
-                </div>
-                <p class="mt-4 font-semibold text-gray-800">${santri.nama}</p>
-                <p class="text-sm text-gray-500">Kelas ${santri.kelas}</p>
-                `;
-                card.onclick = () => showSantriDetail(santri.id);
-                gallery.appendChild(card);
-            });
-        }
+	    const pondokData = await fetchData();
+	    if (!pondokData ||!pondokData.santri) return;
+	    const gallery = document.getElementById('santri-gallery');
+	    gallery.innerHTML = '';
+	    pondokData.santri.sort((a, b) => a.nama.localeCompare(b.nama)).forEach(santri => {
+	        const card = document.createElement('div');
+	        card.className = 'text-center cursor-pointer group santri-card';
+	        card.dataset.name = santri.nama;
+	        const fotoSrc = santri.foto && santri.foto.startsWith('/static/uploads/')? santri.foto : 'https://placehold.co/400x400?text=Error';
+	        card.innerHTML = `
+	        <div class="relative">
+	            <img src="${fotoSrc}" alt="Foto ${santri.nama}" class="w-full h-auto aspect-square rounded-full object-cover transition-transform duration-300 group-hover:scale-105 border-4 border-white shadow-lg">
+	            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 rounded-full transition-all duration-300 flex items-center justify-center">
+	                <span class="text-white opacity-0 group-hover:opacity-100 font-bold">Lihat Detail</span>
+	            </div>
+	        </div>
+	        <p class="mt-4 font-semibold text-gray-800">${santri.nama}</p>
+	        <p class="text-sm text-gray-500">Kelas ${santri.kelas}</p>
+	        `;
+	        card.onclick = () => showSantriDetail(santri.id);
+	        gallery.appendChild(card);
+	    });
+	}
 	function searchSantri() {
 	    const input = document.getElementById('search-santri');
 	    const filter = input.value.toLowerCase();
@@ -1550,25 +1543,6 @@
             showPage('about');
         }
 
-        function showWelcomeVideo() {
-            if (!sessionStorage.getItem('welcomeVideoShown')) {
-                const modal = document.getElementById('video-modal');
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                sessionStorage.setItem('welcomeVideoShown', 'true');
-            }
-        }
-
-        function closeVideoModal() {
-            const modal = document.getElementById('video-modal');
-            modal.style.opacity = '0';
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-                modal.style.opacity = '1';
-            }, 300);
-        }
-
         function showJadwalDonasiPage() {
             fetchJadwalSholat();
             showPage('jadwalDonasi');
@@ -1726,6 +1700,16 @@
                 alarmToggle.checked = localStorage.getItem('alarmEnabled') === 'true';
                 alarmToggle.addEventListener('change', handleAlarmToggleChange);
             }
+	    const welcomeText = document.querySelector('#role-selection-page.ornament-border h2');
+	    const subtitleText = document.querySelector('#role-selection-page.ornament-border p');
+	    if (welcomeText) {
+	        welcomeText.classList.add('text-slide-up');
+	    }
+	    if (subtitleText) {
+	        subtitleText.classList.add('text-slide-up');
+	        subtitleText.style.animationDelay = '0.3s'; // Tunda animasi subteks
+	    }
+	});
             const kelasSelectSantri = document.getElementById('kelas');
             const kelasSelectGuru = document.getElementById('guru-kelas');
             if (kelasSelectSantri) {
