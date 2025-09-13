@@ -7,6 +7,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="manifest" href="/static/manifest.json">
 
 <script>
@@ -51,24 +52,19 @@
             background: #555;
         }
 
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
 
-       .text-fade-in {
-            animation: fadeIn 1.5s ease-in-out forwards;
-        }
-        
-       .text-slide-up {
-            animation: slideUp 1s ease-out forwards;
-            transform: translateY(20px);
-            opacity: 0;
-        }
-        @keyframes slideUp {
+        @keyframes fadeIn {
             from {
-                transform: translateY(20px);
                 opacity: 0;
+                transform: translateY(10px);
             }
+
             to {
-                transform: translateY(0);
                 opacity: 1;
+                transform: translateY(0);
             }
         }
 
@@ -138,6 +134,18 @@
 </head>
 
 <body class="bg-gray-100 text-gray-800">
+
+    <div id="video-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg p-6 text-center max-w-lg w-full relative">
+            <button onclick="closeVideoModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800">&times;</button>
+            <video class="w-full rounded-md mb-4" autoplay muted loop playsinline>
+                <source src="https://cdn.pixabay.com/video/2022/09/23/131953-755734533_large.mp4" type="video/mp4">
+                Browser anda tidak menyokong tag video.
+            </video>
+            <h3 data-translate-key="login_welcome" class="text-xl font-bold text-teal-800 mb-2"></h3>
+            <p data-translate-key="login_welcome_text" class="text-gray-600"></p>
+        </div>
+    </div>
 
     <div id="app" class="container mx-auto p-4 md:p-8 max-w-7xl">
         <div id="role-selection-page" class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100 dark:bg-gray-900 transition-colors duration-500">
@@ -676,15 +684,13 @@
         </div>
     </div>
 
-<script>
+    <script>
         // --- TRANSLATION 
-
         const translations = {
             id: {
                 app_title: "Monitoring Hafalan Santri",
                 login_welcome: "السلام عليكم ورحمة الله وبركاته<br>Selamat Datang!",
-                login_welcome_text: "Terima kasih sudah mengunjungi aplikasi monitoring hafalan kami.
-Semoga bermanfaat.",
+                login_welcome_text: "Terima kasih sudah mengunjungi aplikasi monitoring hafalan kami. Semoga bermanfaat.",
                 login_title: "Sistem Monitoring Hafalan",
                 login_subtitle: "Silakan masukkan kode akses untuk melanjutkan.",
                 access_code_placeholder: "Kode Akses Anda",
@@ -701,8 +707,7 @@ Semoga bermanfaat.",
             en: {
                 app_title: "Student Memorization Monitoring",
                 login_welcome: "السلام عليكم ورحمة الله وبركاته<br>Welcome!",
-                login_welcome_text: "Thank you for visiting our memorization monitoring application.
-We hope you find it useful.",
+                login_welcome_text: "Thank you for visiting our memorization monitoring application. We hope you find it useful.",
                 login_title: "Memorization Monitoring System",
                 login_subtitle: "Please enter the access code to continue.",
                 access_code_placeholder: "Your Access Code",
@@ -736,8 +741,7 @@ We hope you find it useful.",
             ar: {
                 app_title: "مراقبة حفظ الطلاب",
                 login_welcome: "السلام عليكم ورحمة الله وبركاته<br>أهلاً وسهلاً!",
-                login_welcome_text: "شكراً لزيارتكم تطبيقنا لمراقبة الحفظ.
-نأمل أن يكون مفيداً لكم.",
+                login_welcome_text: "شكراً لزيارتكم تطبيقنا لمراقبة الحفظ. نأمل أن يكون مفيداً لكم.",
                 login_title: "نظام مراقبة الحفظ",
                 login_subtitle: "الرجاء إدخال رمز الدخول للمتابعة.",
                 access_code_placeholder: "رمز الدخول الخاص بك",
@@ -754,8 +758,7 @@ We hope you find it useful.",
             ru: {
                 app_title: "Мониторинг запоминания студентов",
                 login_welcome: "السلام عليكم ورحمة الله وبركاته<br>Добро пожаловать!",
-                login_welcome_text: "Спасибо, что посетили наше приложение для мониторинга запоминания.
-Надеемся, оно будет вам полезно.",
+                login_welcome_text: "Спасибо, что посетили наше приложение для мониторинга запоминания. Надеемся, оно будет вам полезно.",
                 login_title: "Система мониторинга запоминания",
                 login_subtitle: "Пожалуйста, введите код доступа, чтобы продолжить.",
                 access_code_placeholder: "Ваш код доступа",
@@ -772,8 +775,7 @@ We hope you find it useful.",
             jw: {
                 app_title: "Monitoring Apalan Santri",
                 login_welcome: "السلام عليكم ورحمة الله وبركاته<br>Sugeng Rawuh!",
-                login_welcome_text: "Matur nuwun sampun ngunjungi aplikasi monitoring apalan kita.
-Mugi-mugi mupangati.",
+                login_welcome_text: "Matur nuwun sampun ngunjungi aplikasi monitoring apalan kita. Mugi-mugi mupangati.",
                 login_title: "Sistem Monitoring Apalan",
                 login_subtitle: "Monggo ketik kode akses kangge nglanjutaken.",
                 access_code_placeholder: "Kode Akses Panjenengan",
@@ -791,14 +793,12 @@ Mugi-mugi mupangati.",
 
         function setLanguage(lang) {
             document.documentElement.lang = lang;
-            document.documentElement.dir = lang === 'ar'? 'rtl' : 'ltr';
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
             const elements = document.querySelectorAll('[data-translate-key]');
             elements.forEach(el => {
                 const key = el.getAttribute('data-translate-key');
                 if (translations[lang] && translations[lang][key]) {
-                    if (el.tagName === 'INPUT' |
-
-| el.tagName === 'TEXTAREA') {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                         el.placeholder = translations[lang][key];
                     } else {
                         el.innerHTML = translations[lang][key];
@@ -895,7 +895,7 @@ Mugi-mugi mupangati.",
             try {
                 const successful = document.execCommand('copy');
                 if (successful) {
-                    alert(translations.unique_code_copied);
+                    alert(translations[localStorage.getItem('selectedLanguage') || 'id'].unique_code_copied);
                 }
             } catch (err) {
                 console.error('Failed to copy text:', err);
@@ -926,8 +926,8 @@ Mugi-mugi mupangati.",
         async function fetchData() {
             const pondokDbId = sessionStorage.getItem('currentPondokId');
             if (!pondokDbId) return null;
-            if (appDataCache) {
-                return appDataCache;
+            if (appDataCache[pondokDbId]) {
+                return appDataCache[pondokDbId];
             }
             try {
                 const response = await fetch('/api/get-data', {
@@ -941,8 +941,8 @@ Mugi-mugi mupangati.",
                 });
                 const result = await response.json();
                 if (result.success) {
-                    appDataCache = result.data;
-                    return appDataCache;
+                    appDataCache[pondokDbId] = result.data;
+                    return appDataCache[pondokDbId];
                 } else {
                     console.error("Gagal mengambil data dari server:", result.message);
                     return null;
@@ -1007,6 +1007,7 @@ Mugi-mugi mupangati.",
 
         // --- AUTHENTICATION FLOW ---
         function handleRoleSelection(role) {
+            showWelcomeVideo();
             loginContext = role;
             if (role === 'wali') {
                 showPage('accessCode');
@@ -1020,14 +1021,12 @@ Mugi-mugi mupangati.",
             const pondokId = document.getElementById('register-pondok-id').value.trim();
             const password = document.getElementById('register-password').value;
             const errorEl = document.getElementById('register-error');
-            if (!pondokId.includes('#') |
-
-| password.length < 6) {
+            if (!pondokId.includes('#') || password.length < 6) {
                 errorEl.textContent = "Format Nama Pondok salah atau kata sandi terlalu pendek.";
                 errorEl.classList.remove('hidden');
                 return;
             }
-            const pondokName = pondokId.split('#').trim();
+            const pondokName = pondokId.split('#')[0].trim();
             try {
                 const response = await fetch('/api/register', {
                     method: 'POST',
@@ -1053,7 +1052,6 @@ Mugi-mugi mupangati.",
                 errorEl.classList.remove('hidden');
             }
         });
-
         document.getElementById('pondok-login-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const pondokId = document.getElementById('login-pondok-id').value.trim();
@@ -1085,7 +1083,6 @@ Mugi-mugi mupangati.",
                 errorEl.classList.remove('hidden');
             }
         });
-
         document.getElementById('access-code-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const accessCode = document.getElementById('access-code').value.trim();
@@ -1117,7 +1114,6 @@ Mugi-mugi mupangati.",
                 errorEl.classList.remove('hidden');
             }
         });
-
         function logout() {
             sessionStorage.clear();
             loginContext = null;
@@ -1135,78 +1131,60 @@ Mugi-mugi mupangati.",
         // --- DASHBOARD RENDERING ---
         async function renderWaliDashboard() {
             const pondokData = await fetchData();
-            if (!pondokData ||!pondokData.santri) return;
+            if (!pondokData || !pondokData.santri) return;
             const gallery = document.getElementById('santri-gallery');
             gallery.innerHTML = '';
-            let hasRenderedSantri = false;
             pondokData.santri.sort((a, b) => a.nama.localeCompare(b.nama)).forEach(santri => {
-                if (!santri ||!santri.id ||!santri.nama) {
-                    console.warn("Melewatkan data santri tidak valid:", santri);
-                    return;
-                }
-                hasRenderedSantri = true;
                 const card = document.createElement('div');
                 card.className = 'text-center cursor-pointer group santri-card';
                 card.dataset.name = santri.nama;
-                const fotoSrc = santri.foto && santri.foto.startsWith('/static/uploads/')? santri.foto : 'https://placehold.co/400x400?text=Error';
                 card.innerHTML = `
                 <div class="relative">
-                    <img src="${fotoSrc}" alt="Foto ${santri.nama}" class="w-full h-auto aspect-square rounded-full object-cover transition-transform duration-300 group-hover:scale-105 border-4 border-white shadow-lg">
+                    <img src="${santri.foto}" alt="Foto ${santri.nama}" class="w-full h-auto aspect-square rounded-full object-cover transition-transform duration-300 group-hover:scale-105 border-4 border-white shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=Error';">
                     <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 rounded-full transition-all duration-300 flex items-center justify-center">
                         <span class="text-white opacity-0 group-hover:opacity-100 font-bold">Lihat Detail</span>
                     </div>
                 </div>
                 <p class="mt-4 font-semibold text-gray-800">${santri.nama}</p>
                 <p class="text-sm text-gray-500">Kelas ${santri.kelas}</p>
-                <p class="text-xs text-teal-600 mt-1">Hafalan: ${santri.total_hafalan_juz |
-
-| 0} Juz</p>
                 `;
                 card.onclick = () => showSantriDetail(santri.id);
                 gallery.appendChild(card);
             });
-            const noResultsMessage = document.getElementById('no-results');
-            if (noResultsMessage) {
-                if (!hasRenderedSantri) {
-                    noResultsMessage.classList.remove('hidden');
-                } else {
-                    noResultsMessage.classList.add('hidden');
-                }
-            }
-        }
-
-        function searchSantri() {
-            const input = document.getElementById('search-santri');
-            const filter = input.value.toLowerCase();
-            const cards = document.querySelectorAll('#santri-gallery.santri-card');
-            let hasResults = false;
-            cards.forEach(card => {
-                const name = card.dataset.name.toLowerCase();
-                if (name.includes(filter)) {
-                    card.style.display = '';
-                    hasResults = true;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-            const noResultsMessage = document.getElementById('no-results');
-            if (noResultsMessage) {
-                if (hasResults) {
-                    noResultsMessage.classList.add('hidden');
-                } else {
-                    noResultsMessage.classList.remove('hidden');
-                }
-            }
         }
 
         async function showSantriDetail(santriId) {
             const pondokData = await fetchData();
-            if (!pondokData ||!pondokData.santri) return;
+            if (!pondokData || !pondokData.santri) return;
             const santri = pondokData.santri.find(s => s.id === santriId);
             if (!santri) {
                 console.error("Santri tidak ditemukan di data.");
                 return;
             }
+            function searchSantri() {
+                const input = document.getElementById('search-santri');
+                const filter = input.value.toLowerCase();
+                const cards = document.querySelectorAll('#santri-gallery .santri-card');
+                let hasResults = false;
+                cards.forEach(card => {
+                    const name = card.dataset.name.toLowerCase();
+                    if (name.includes(filter)) {
+                        card.style.display = '';
+                        hasResults = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                const noResultsMessage = document.getElementById('no-results');
+                if (noResultsMessage) {
+                    if (hasResults) {
+                        noResultsMessage.classList.add('hidden');
+                    } else {
+                        noResultsMessage.classList.remove('hidden');
+                    }
+                }
+            }
+
             const guru = pondokData.guru.find(g => g.mengajar_kelas === santri.kelas);
             const hafalan = pondokData.hafalan.filter(h => h.santri_id === santriId).sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
             const detailFoto = document.getElementById('detail-foto');
@@ -1221,7 +1199,7 @@ Mugi-mugi mupangati.",
             const detailKelas = document.getElementById('detail-kelas');
             if (detailKelas) detailKelas.textContent = `Kelas ${santri.kelas}`;
             const detailPengajar = document.getElementById('detail-pengajar');
-            if (detailPengajar) detailPengajar.textContent = guru? `Pengajar: ${guru.nama}` : 'Pengajar belum diatur';
+            if (detailPengajar) detailPengajar.textContent = guru ? `Pengajar: ${guru.nama}` : 'Pengajar belum diatur';
             const statusEl = document.getElementById('detail-status-target');
             if (statusEl) {
                 if (santri.tercapai) {
@@ -1234,25 +1212,15 @@ Mugi-mugi mupangati.",
             }
 
             const totalHafalanJuzEl = document.getElementById('total-hafalan-juz');
-            if (totalHafalanJuzEl) totalHafalanJuzEl.textContent = santri.total_hafalan_juz |
-
-| '0';
+            if (totalHafalanJuzEl) totalHafalanJuzEl.textContent = santri.total_hafalan_juz || '0';
             const targetHarianEl = document.getElementById('target-harian');
-            if (targetHarianEl) targetHarianEl.textContent = santri.target_harian |
-
-| '-';
+            if (targetHarianEl) targetHarianEl.textContent = santri.target_harian || '-';
             const targetMingguanEl = document.getElementById('target-mingguan');
-            if (targetMingguanEl) targetMingguanEl.textContent = santri.target_mingguan |
-
-| '-';
+            if (targetMingguanEl) targetMingguanEl.textContent = santri.target_mingguan || '-';
             const targetBulananEl = document.getElementById('target-bulanan');
-            if (targetBulananEl) targetBulananEl.textContent = santri.target_bulanan |
-
-| '-';
+            if (targetBulananEl) targetBulananEl.textContent = santri.target_bulanan || '-';
             const targetTahunanEl = document.getElementById('target-tahunan');
-            if (targetTahunanEl) targetTahunanEl.textContent = santri.target_tahunan |
-
-| '-';
+            if (targetTahunanEl) targetTahunanEl.textContent = santri.target_tahunan || '-';
             const chartsContainer = document.getElementById('progress-charts');
             if (chartsContainer) chartsContainer.innerHTML = '';
             const historyBody = document.getElementById('hafalan-history');
@@ -1262,7 +1230,7 @@ Mugi-mugi mupangati.",
                     historyBody.innerHTML = '';
                     hafalan.forEach(h => {
                         const row = historyBody.insertRow();
-                        row.innerHTML = `<td class="py-4 px-6 text-sm text-gray-900">${new Date(h.tanggal).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</td><td class="py-4 px-6 text-sm text-gray-900 font-medium">${h.setoran}</td><td class="py-4 px-6 text-sm text-gray-500">${h.jenis}</td><td class="py-4 px-6 text-sm"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${h.penilaian === 'Lancar'? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${h.penilaian}</span></td>`;
+                        row.innerHTML = `<td class="py-4 px-6 text-sm text-gray-900">${new Date(h.tanggal).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</td><td class="py-4 px-6 text-sm text-gray-900 font-medium">${h.setoran}</td><td class="py-4 px-6 text-sm text-gray-500">${h.jenis}</td><td class="py-4 px-6 text-sm"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${h.penilaian === 'Lancar' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${h.penilaian}</span></td>`;
                     });
                 } else {
                     historyBody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-gray-500">Belum ada riwayat setoran.</td></tr>';
@@ -1273,12 +1241,10 @@ Mugi-mugi mupangati.",
 
         async function renderGuruDashboard() {
             const pondokData = await fetchData();
-            if (!pondokData ||!pondokData.santri) return;
+            if (!pondokData || !pondokData.santri) return;
             const uniqueAccessCodeElement = document.getElementById('unique-access-code');
             if (uniqueAccessCodeElement) {
-                uniqueAccessCodeElement.textContent = pondokData.uniqueAccessCode |
-
-| 'Tidak ada kode';
+                uniqueAccessCodeElement.textContent = pondokData.uniqueAccessCode || 'Tidak ada kode';
             }
             const whatsappLinkElement = document.getElementById('whatsapp-link');
             if (whatsappLinkElement) {
@@ -1307,7 +1273,7 @@ Mugi-mugi mupangati.",
 
         async function showGuruForm(santriId) {
             const pondokData = await fetchData();
-            if (!pondokData ||!pondokData.santri) {
+            if (!pondokData || !pondokData.santri) {
                 console.error("Data pondok tidak ditemukan atau tidak memiliki properti 'santri'.");
                 alert("Gagal memuat data santri. Silakan coba lagi.");
                 return;
@@ -1317,9 +1283,7 @@ Mugi-mugi mupangati.",
             const hafalanSection = document.getElementById('hafalan-management-section');
             if (hafalanSection) hafalanSection.classList.add('hidden');
             const santriIdInput = document.getElementById('santri-id');
-            if (santriIdInput) santriIdInput.value = santriId |
-
-| '';
+            if (santriIdInput) santriIdInput.value = santriId || '';
             if (santriId) {
                 const santri = pondokData.santri.find(s => s.id === santriId);
                 if (!santri) {
@@ -1334,26 +1298,16 @@ Mugi-mugi mupangati.",
                 const kelasSelect = document.getElementById('kelas');
                 if (kelasSelect) kelasSelect.value = santri.kelas;
                 const totalHafalanJuzInput = document.getElementById('total-hafalan-juz');
-                if (totalHafalanJuzInput) totalHafalanJuzInput.value = santri.total_hafalan_juz |
-
-| '';
-                if (santri.tercapai!== undefined) {
+                if (totalHafalanJuzInput) totalHafalanJuzInput.value = santri.total_hafalan_juz || '';
+                if (santri.tercapai !== undefined) {
                     const formTargetHarian = document.getElementById('form-target-harian');
-                    if (formTargetHarian) formTargetHarian.value = santri.target_harian |
-
-| '';
+                    if (formTargetHarian) formTargetHarian.value = santri.target_harian || '';
                     const formTargetMingguan = document.getElementById('form-target-mingguan');
-                    if (formTargetMingguan) formTargetMingguan.value = santri.target_mingguan |
-
-| '';
+                    if (formTargetMingguan) formTargetMingguan.value = santri.target_mingguan || '';
                     const formTargetBulanan = document.getElementById('form-target-bulanan');
-                    if (formTargetBulanan) formTargetBulanan.value = santri.target_bulanan |
-
-| '';
+                    if (formTargetBulanan) formTargetBulanan.value = santri.target_bulanan || '';
                     const formTargetTahunan = document.getElementById('form-target-tahunan');
-                    if (formTargetTahunan) formTargetTahunan.value = santri.target_tahunan |
-
-| '';
+                    if (formTargetTahunan) formTargetTahunan.value = santri.target_tahunan || '';
                     const checkedRadio = document.querySelector(`input[name="tercapai"][value="${santri.tercapai}"]`);
                     if (checkedRadio) {
                         checkedRadio.checked = true;
@@ -1375,7 +1329,7 @@ Mugi-mugi mupangati.",
             const fotoInput = document.getElementById('foto');
             let fotoUrl = null;
             if (fotoInput.files.length > 0) {
-                fotoUrl = await uploadFile(fotoInput.files);
+                fotoUrl = await uploadFile(fotoInput.files[0]);
                 if (!fotoUrl) return;
             } else {
                 const santriId = document.getElementById('santri-id').value;
@@ -1387,11 +1341,11 @@ Mugi-mugi mupangati.",
                     }
                 }
             }
-            const santriId = document.getElementById('santri-id').value? parseInt(document.getElementById('santri-id').value) : null;
+            const santriId = document.getElementById('santri-id').value ? parseInt(document.getElementById('santri-id').value) : null;
             const nama = document.getElementById('nama').value;
             const kelas = document.getElementById('kelas').value;
             const totalHafalanJuzInput = document.getElementById('total-hafalan-juz').value;
-            const totalHafalanJuz = totalHafalanJuzInput === ''? null : parseInt(totalHafalanJuzInput, 10);
+            const totalHafalanJuz = totalHafalanJuzInput === '' ? null : parseInt(totalHafalanJuzInput, 10);
             const harian = document.getElementById('form-target-harian').value;
             const mingguan = document.getElementById('form-target-mingguan').value;
             const bulanan = document.getElementById('form-target-bulanan').value;
@@ -1453,7 +1407,7 @@ Mugi-mugi mupangati.",
 
         async function renderGuruList() {
             const pondokData = await fetchData();
-            if (!pondokData ||!pondokData.guru) return;
+            if (!pondokData || !pondokData.guru) return;
             const tableBody = document.getElementById('guru-list-table');
             if (!tableBody) return;
             tableBody.innerHTML = '';
@@ -1474,7 +1428,7 @@ Mugi-mugi mupangati.",
             e.preventDefault();
             const pondokId = sessionStorage.getItem('currentPondokId');
             if (!pondokId) return;
-            const guruId = document.getElementById('guru-id').value? parseInt(document.getElementById('guru-id').value) : null;
+            const guruId = document.getElementById('guru-id').value ? parseInt(document.getElementById('guru-id').value) : null;
             const nama = document.getElementById('guru-nama').value;
             const kelas = document.getElementById('guru-kelas').value;
             const guruData = {
@@ -1497,7 +1451,7 @@ Mugi-mugi mupangati.",
 
         async function editGuru(guruId) {
             const pondokData = await fetchData();
-            if (!pondokData ||!pondokData.guru) return;
+            if (!pondokData || !pondokData.guru) return;
             const guru = pondokData.guru.find(g => g.id === guruId);
             if (guru) {
                 document.getElementById('guru-id').value = guru.id;
@@ -1525,7 +1479,7 @@ Mugi-mugi mupangati.",
         // --- HAFALAN MANAGEMENT (GURU) ---
         async function renderGuruHafalanTable(santriId) {
             const pondokData = await fetchData();
-            if (!pondokData ||!pondokData.hafalan) return;
+            if (!pondokData || !pondokData.hafalan) return;
             const tableBody = document.getElementById('guru-hafalan-table');
             if (!tableBody) return;
             tableBody.innerHTML = '';
@@ -1598,6 +1552,25 @@ Mugi-mugi mupangati.",
             showPage('about');
         }
 
+        function showWelcomeVideo() {
+            if (!sessionStorage.getItem('welcomeVideoShown')) {
+                const modal = document.getElementById('video-modal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                sessionStorage.setItem('welcomeVideoShown', 'true');
+            }
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('video-modal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                modal.style.opacity = '1';
+            }, 300);
+        }
+
         function showJadwalDonasiPage() {
             fetchJadwalSholat();
             showPage('jadwalDonasi');
@@ -1637,9 +1610,7 @@ Mugi-mugi mupangati.",
                 const geoNameResponse = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=id`);
                 if (geoNameResponse.ok) {
                     const geoNameData = await geoNameResponse.json();
-                    locationName = `${geoNameData.city |
-
-| geoNameData.locality}, ${geoNameData.countryName}`;
+                    locationName = `${geoNameData.city || geoNameData.locality}, ${geoNameData.countryName}`;
                 } else {
                     locationName = "Lokasi Anda Saat Ini";
                 }
@@ -1654,7 +1625,7 @@ Mugi-mugi mupangati.",
                 const response = await fetch(`https://api.aladhan.com/v1/calendar?latitude=${latitude}&longitude=${longitude}&month=${month}&year=${year}`);
                 if (!response.ok) throw new Error(`API Waktu Solat Error: ${response.status}`);
                 const data = await response.json();
-                const todayTimings = data.data.timings;
+                const todayTimings = data.data[date.getDate() - 1].timings;
                 container.innerHTML = '';
                 const jadwalPenting = {
                     'Subuh': todayTimings.Fajr,
@@ -1680,8 +1651,7 @@ Mugi-mugi mupangati.",
                 }
                 setupPrayerAlarm();
             } catch (error) {
-                container.innerHTML = `<div class="col-span-full text-center text-red-500">Gagal memuat jadwal solat.
-Pastikan anda mempunyai sambungan internet.</div>`;
+                container.innerHTML = `<div class="col-span-full text-center text-red-500">Gagal memuat jadwal solat. Pastikan anda mempunyai sambungan internet.</div>`;
                 console.error("Error fetching prayer times:", error);
             }
         }
@@ -1749,19 +1719,15 @@ Pastikan anda mempunyai sambungan internet.</div>`;
 
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
-            const savedLang = localStorage.getItem('selectedLanguage') |
-
-| 'id';
+            const savedLang = localStorage.getItem('selectedLanguage') || 'id';
             const languageSelector = document.getElementById('language-selector');
             if (languageSelector) languageSelector.value = savedLang;
             setLanguage(savedLang);
-
             const alarmToggle = document.getElementById('alarm-toggle');
             if (alarmToggle) {
                 alarmToggle.checked = localStorage.getItem('alarmEnabled') === 'true';
                 alarmToggle.addEventListener('change', handleAlarmToggleChange);
             }
-
             const kelasSelectSantri = document.getElementById('kelas');
             const kelasSelectGuru = document.getElementById('guru-kelas');
             if (kelasSelectSantri) {
@@ -1784,14 +1750,12 @@ Pastikan anda mempunyai sambungan internet.</div>`;
                     kelasSelectGuru.appendChild(optionGuru);
                 }
             }
-
             const targetHarianSelect = document.getElementById('form-target-harian');
             if (targetHarianSelect) {
                 for (let i = 1; i <= 15; i++) {
                     targetHarianSelect.add(new Option(`${i} Baris`, `${i} Baris`));
                 }
             }
-
             const targetMingguanSelect = document.getElementById('form-target-mingguan');
             if (targetMingguanSelect) {
                 targetMingguanSelect.add(new Option('Setengah Halaman', 'Setengah Halaman'));
@@ -1799,20 +1763,7 @@ Pastikan anda mempunyai sambungan internet.</div>`;
                     targetMingguanSelect.add(new Option(`${i} Halaman`, `${i} Halaman`));
                 }
             }
-            
             checkLoginState();
-
-            // Efek animasi untuk teks sambutan
-            const welcomeText = document.querySelector('#role-selection-page.ornament-border h2');
-            const subtitleText = document.querySelector('#role-selection-page.ornament-border p');
-            if (welcomeText) {
-                welcomeText.classList.add('text-slide-up');
-            }
-            if (subtitleText) {
-                subtitleText.classList.add('text-slide-up');
-                subtitleText.style.animationDelay = '0.3s'; // Tunda animasi subteks
-            }
-
             showPage('roleSelection');
         });
     </script>
