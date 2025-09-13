@@ -1853,6 +1853,34 @@ for (let i = 1; i <= 20; i++) {
 
             showPage('roleSelection');
         });
+
+		function handleRoleSelection(role) {
+        // Sembunyiin semua page dulu
+        document.querySelectorAll('#app > div').forEach(div => div.classList.add('hidden'));
+
+        if (role === 'wali') {
+            document.getElementById('access-code-page').classList.remove('hidden');
+        } else if (role === 'guru') {
+            document.getElementById('pondok-login-page').classList.remove('hidden');
+        }
+    }
+
+    function showAboutPage() {
+        document.querySelectorAll('#app > div').forEach(div => div.classList.add('hidden'));
+        document.getElementById('about-page').classList.remove('hidden');
+    }
+
+    function showPage(page) {
+        document.querySelectorAll('#app > div').forEach(div => div.classList.add('hidden'));
+
+        if (page === 'roleSelection') {
+            document.getElementById('role-selection-page').classList.remove('hidden');
+        } else if (page === 'pondokRegister') {
+            document.getElementById('pondok-register-page').classList.remove('hidden');
+        } else if (page === 'pondokLogin') {
+            document.getElementById('pondok-login-page').classList.remove('hidden');
+        }
+    }
     </script>
 </body>
 </html>
