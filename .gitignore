@@ -1,0 +1,11 @@
+# Folders Python
+__pycache__/
+venv/
+.env/
+
+# Log dan file temporer
+*.log
+nohup.out
+
+# File konfigurasi yang sensitif (jika ada)
+.replit
