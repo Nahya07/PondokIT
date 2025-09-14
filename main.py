@@ -205,10 +205,12 @@ def get_data():
                 "foto": s.foto,
                 "tercapai": s.tercapai,
                 "total_hafalan_juz": s.total_hafalan_juz,
-                "target_harian": s.target_harian,
-                "target_mingguan": s.target_mingguan,
-                "target_bulanan": s.target_bulanan,
-                "target_tahunan": s.target_tahunan,
+                "target": {
+                    "harian": s.target_harian,
+                    "mingguan": s.target_mingguan,
+                    "bulanan": s.target_bulanan,
+                    "tahunan": s.target_tahunan,
+                }
             } for s in santri_list
         ]
         guru_json = [
@@ -318,19 +320,27 @@ def save_santri():
             santri_to_update.nama = santri_data['nama']
             santri_to_update.kelas = santri_data['kelas']
             santri_to_update.foto = santri_data.get('foto')
+            
+            # Periksa dan konversi total_hafalan_juz
+            total_juz = santri_data.get('total_hafalan_juz')
+            santri_to_update.total_hafalan_juz = int(total_juz) if total_juz is not None and str(total_juz).isdigit() else None
+            
             santri_to_update.tercapai = santri_data['target']['tercapai']
-            santri_to_update.total_hafalan_juz = santri_data['total_hafalan_juz']
             santri_to_update.target_harian = santri_data['target']['harian']
             santri_to_update.target_mingguan = santri_data['target']['mingguan']
             santri_to_update.target_bulanan = santri_data['target']['bulanan']
             santri_to_update.target_tahunan = santri_data['target']['tahunan']
         else:  # Tambah santri baru
+            # Periksa dan konversi total_hafalan_juz
+            total_juz = santri_data.get('total_hafalan_juz')
+            total_juz = int(total_juz) if total_juz is not None and str(total_juz).isdigit() else None
+            
             new_santri = Santri(
                 nama=santri_data['nama'],
                 kelas=santri_data['kelas'],
                 foto=santri_data.get('foto'),
                 tercapai=santri_data['target']['tercapai'],
-                total_hafalan_juz=santri_data['total_hafalan_juz'],
+                total_hafalan_juz=total_juz,
                 target_harian=santri_data['target']['harian'],
                 target_mingguan=santri_data['target']['mingguan'],
                 target_bulanan=santri_data['target']['bulanan'],
@@ -373,6 +383,11 @@ def save_hafalan():
 
         if not pondok_db_id or not hafalan_data:
             return jsonify({'success': False, 'message': 'Data tidak lengkap.'}), 400
+        
+        # Periksa apakah santri_id ada
+        santri_id = hafalan_data.get('santriId')
+        if not santri_id:
+            return jsonify({'success': False, 'message': 'ID Santri tidak ditemukan.'}), 400
 
         tanggal_obj = datetime.strptime(hafalan_data['tanggal'], '%Y-%m-%d').date()
 
@@ -381,7 +396,7 @@ def save_hafalan():
             setoran=hafalan_data['setoran'],
             jenis=hafalan_data['jenis'],
             penilaian=hafalan_data['penilaian'],
-            santri_id=hafalan_data['santriId'],
+            santri_id=santri_id,
             pondok_id=pondok_db_id
         )
         db.session.add(new_hafalan)
@@ -451,12 +466,15 @@ def add_post():
     )
     db.session.add(new_post)
     db.session.commit()
-    return jsonify({'success': True, 'message': 'Postingan berhasil ditambahkan.'})
+    return jsonify({'success': True, 'message': 'Postingan berhasil ditambahkan.', 'id': new_post.id})
 
 @app.route('/api/like-post', methods=['POST'])
 def like_post():
     data = request.json
     post_id = data.get('postId')
+    
+    if not post_id:
+        return jsonify({'success': False, 'message': 'ID Postingan tidak ditemukan.'}), 400
 
     post_to_like = Post.query.get(post_id)
     if not post_to_like:
@@ -482,17 +500,22 @@ def add_comment():
     )
     db.session.add(new_comment)
     db.session.commit()
-    return jsonify({'success': True, 'message': 'Komentar berhasil ditambahkan.'})
+    return jsonify({'success': True, 'message': 'Komentar berhasil ditambahkan.', 'id': new_comment.id})
 
 @app.route('/api/delete-post', methods=['POST'])
 def delete_post():
     data = request.json
     post_id = data.get('postId')
+    
+    if not post_id:
+        return jsonify({'success': False, 'message': 'ID Postingan tidak ditemukan.'}), 400
 
     post_to_delete = Post.query.get(post_id)
     if not post_to_delete:
         return jsonify({'success': False, 'message': 'Postingan tidak ditemukan.'}), 404
-
+        
+    # Hapus semua komentar terkait terlebih dahulu
+    Comment.query.filter_by(post_id=post_id).delete()
     db.session.delete(post_to_delete)
     db.session.commit()
     return jsonify({'success': True, 'message': 'Postingan berhasil dihapus.'})
