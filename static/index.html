@@ -413,9 +413,6 @@
                     <button onclick="handleRoleSelection('guru')" class="w-full px-4 py-3 font-semibold text-gray-900 bg-yellow-100 rounded-lg hover:bg-yellow-200">
                         Saya Pengurus / Guru
                     </button>
-                    <button onclick="showAiPage()" class="w-full px-4 py-3 font-semibold text-white bg-indigo-700 rounded-lg hover:bg-indigo-800">
-                        Akang Nahya
-                    </button>
                 </div>
             </div>
             <div class="flex flex-col items-center mt-8 w-full max-w-sm mx-auto space-y-6">
@@ -552,7 +549,7 @@
                 </div>
             </div>
             <div id="santri-list-container" class="hidden overflow-y-auto flex-grow px-2 py-4">
-                <button onclick="showPage('waliDashboard')" class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold">
+                <button onclick="renderWaliDashboard()" class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                     </svg>
@@ -567,7 +564,7 @@
 
         <div id="detail-santri-page" class="hidden fade-in p-4 bg-gray-900">
             <header class="mb-4">
-                <button onclick="backToWaliDashboard()" class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold">
+                <button onclick="showSantriListByKelas(sessionStorage.getItem('currentWaliKelas'))" class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                     </svg>
@@ -682,6 +679,9 @@
                     <button onclick="showJadwalDonasiPage()" class="px-3 py-2 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">Jadwal & Donasi</button>
                     <button onclick="showGuruManagementPage()" class="px-3 py-2 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">
                         Kelola Data Guru
+                    </button>
+                    <button onclick="showGuruForm(null)" class="px-3 py-2 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">
+                        + Tambah Santri Baru
                     </button>
                     <button onclick="logout()" class="px-3 py-2 text-sm font-semibold text-red-600 bg-red-100 rounded-lg hover:bg-red-200">Keluar</button>
                 </div>
@@ -928,23 +928,6 @@
                         </ul>
                     </section>
                     <section>
-                        <h3 class="text-xl font-semibold text-yellow-400 mb-2">Manfaat yang Diharapkan</h3>
-                        <div class="grid md:grid-cols-3 gap-6">
-                            <div class="bg-gray-700 p-4 rounded-lg">
-                                <h4 class="font-bold text-yellow-400">Bagi Wali Santri</h4>
-                                <p class="text-sm mt-1">Mendapatkan laporan progres yang transparan dan real-time, mempererat hubungan dan dukungan terhadap proses pendidikan anak, serta mendapatkan notifikasi penting seperti jadwal dan pengingat waktu salat.</p>
-                            </div>
-                            <div class="bg-gray-700 p-4 rounded-lg">
-                                <h4 class="font-bold text-yellow-400">Bagi Guru & Pengelola</h4>
-                                <p class="text-sm mt-1">Efisiensi dalam pencatatan dan pelaporan, data terpusat dan aman, memudahkan evaluasi kinerja santri secara individual maupun per kelas, dan mengurangi beban administrasi manual.</p>
-                            </div>
-                            <div class="bg-gray-700 p-4 rounded-lg">
-                                <h4 class="font-bold text-yellow-400">Bagi Santri</h4>
-                                <p class="text-sm mt-1">Melihat pencapaian diri sendiri secara visual, memahami target yang harus dicapai, dan merasa lebih termotivasi karena adanya perhatian dan dukungan dari guru serta orang tua yang terhubung melalui sistem.</p>
-                            </div>
-                        </div>
-                    </section>
-                    <section>
                         <p class="text-center italic text-gray-400 pt-4 border-t border-gray-700 mt-8">
                             Kami percaya bahwa teknologi dapat menjadi alat yang ampuh untuk mendukung pendidikan Al-Qur'an. Semoga aplikasi ini dapat memberikan manfaat yang luas dan menjadi bagian dari ladang amal jariyah kita semua. Aamiin.
                         </p>
@@ -953,27 +936,6 @@
             </div>
         </div>
 
-        <!-- AI Page -->
-        <div id="ai-page" class="hidden flex-col items-center justify-center min-h-screen ai-page p-4">
-            <header class="ai-header w-full max-w-3xl rounded-xl shadow-lg p-6 mb-8 text-center">
-                <h1 class="text-3xl font-bold text-yellow-400">Akang Nahya</h1>
-                <p class="text-gray-300">"Menjawab dengan bijak, ngobrol santai."</p>
-            </header>
-            
-            <div id="chat-box" class="chat-container w-full max-w-3xl flex-grow mb-4">
-                <div id="chat-messages" class="chat-messages p-4">
-                    <div class="message ai">
-                        <p>Halo semuanya! Akang Nahya di sini. Ada yang mau curhat atau tanya-tanya? Santai aja, Akang siap dengerin dan bantu!</p>
-                    </div>
-                </div>
-                <div class="chat-input ai-chat-input-container">
-                    <input type="text" id="user-input" placeholder="Tanyakan atau ceritakan sesuatu..." class="flex-grow p-3 rounded-full border-none focus:outline-none">
-                    <button id="send-btn" class="bg-yellow-400 text-black p-3 rounded-full ml-2 flex-shrink-0 hover:bg-yellow-500">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <audio id="azan-alarm" src="https://archive.org/download/AzanMakkah/Azan%20Makkah.mp3" preload="auto"></audio>
@@ -1008,8 +970,7 @@
                 tooltip_report: "Laporan Terstruktur",
                 footer_text: "Project dibuat oleh (MUHAMMAD NAHYA FADLALLAH) © 2025 All Rights Reserved",
                 unique_code_copied: "Kode akses berhasil disalin!",
-                complaint_info: "PUSAT BANTUAN",
-                ai_welcome: "Halo semuanya! Akang Nahya di sini. Ada yang mau curhat atau tanya-tanya? Santai aja, Akang siap dengerin dan bantu!"
+                complaint_info: "PUSAT BANTUAN"
             },
             en: {
                 app_title: "Student Memorization Monitoring",
@@ -1026,8 +987,7 @@
                 tooltip_report: "Structured Reports",
                 footer_text: "Project created by the team (muhammad nahya fadlallah)",
                 unique_code_copied: "Access code copied successfully!",
-                complaint_info: "Complaint Info",
-                ai_welcome: "Hello everyone! Akang Nahya is here. Anyone want to vent or ask questions? Just chill, Akang is ready to listen and help!"
+                complaint_info: "Complaint Info"
             },
             ja: {
                 app_title: "生徒の暗記モニタリング",
@@ -1044,8 +1004,7 @@
                 tooltip_report: "構造化レポート",
                 footer_text: "プロジェクト作成者チーム (muhammad nahya fadlallah)",
                 unique_code_copied: "アクセスコードが正常にコピーされました！",
-                complaint_info: "苦情情報",
-                ai_welcome: "皆さん、こんにちは！アカンのナヒャです。おしゃべりしたり、質問したりしたいことはありますか？ Akangが聞いて助ける準備ができています！"
+                complaint_info: "苦情情報"
             },
             ar: {
                 app_title: "مراقبة حفظ الطلاب",
@@ -1062,8 +1021,7 @@
                 tooltip_report: "تقارير منظمة",
                 footer_text: "تم إنشاء المشروع بواسطة فريق (محمد نحيا فضل الله)",
                 unique_code_copied: "تم نسخ رمز الدخول بنجاح!",
-                complaint_info: "معلومات الشكوى",
-                ai_welcome: "أهلاً بالجميع! أنا أكانج ناهيا هنا. هل هناك من يريد الدردشة أو طرح الأسئلة؟ كن على طبيعتك، أنا مستعد للاستماع والمساعدة!"
+                complaint_info: "معلومات الشكوى"
             },
             ru: {
                 app_title: "Мониторинг запоминания студентов",
@@ -1080,8 +1038,7 @@
                 tooltip_report: "Структурированные отчеты",
                 footer_text: "Проект создан командой (мухаммад нахья фадлаллах)",
                 unique_code_copied: "Код доступа успешно скопирован!",
-                complaint_info: "Информация о жалобах",
-                ai_welcome: "Всем привет! Это Аканг Нахья. Кто-нибудь хочет поболтать или задать вопросы? Расслабьтесь, я готов слушать и помогать!"
+                complaint_info: "Информация о жалобах"
             },
             jw: {
                 app_title: "Monitoring Apalan Santri",
@@ -1098,8 +1055,7 @@
                 tooltip_report: "Laporan Rapi",
                 footer_text: "Proyek digarap dening tim (muhammad nahya fadlallah)",
                 unique_code_copied: "Kode akses kasil disalin!",
-                complaint_info: "Info Pengaduan",
-                ai_welcome: "Halo kabeh! Akang Nahya ning kene. Ana sing arep curhat utawa takon-takon? Santai wae, Akang siap ngrungokake lan mbantu!"
+                complaint_info: "Info Pengaduan"
             }
         };
 
@@ -1115,14 +1071,11 @@
             guruManagement: document.getElementById('guru-management-page'),
             jadwalDonasi: document.getElementById('jadwal-donasi-page'),
             about: document.getElementById('about-page'),
-            feedPage: document.getElementById('feed-page'),
-            aiPage: document.getElementById('ai-page'),
+            feedPage: document.getElementById('feed-page')
         };
 
         let appDataCache = {};
         let loginContext = null;
-        let chatHistory = [];
-        const systemPrompt = "Anda adalah Akang Nahya. Anda memiliki persona Akang-akang yang bijak dan berwibawa, namun dengan gaya bahasa yang santai, modern, dan kekinian seperti anak muda. Jawab pertanyaan dengan bijak, berikan nasihat yang menenangkan, dan ajaklah pengguna bercanda jika situasinya memungkinkan. Gunakan bahasa yang santai dan akrab. Jangan gunakan salam pembuka di awal setiap jawaban, langsung saja ke inti pembicaraan. Akhiri setiap jawaban dengan motivasi atau doa yang singkat. Gunakan emoji yang relevan untuk memperkaya respons.";
 
         function setLanguage(lang) {
             document.documentElement.lang = lang;
@@ -1204,12 +1157,6 @@
             } else {
                 showPage('roleSelection');
             }
-        }
-
-        function showAiPage() {
-            showPage('aiPage');
-            const chatMessages = document.getElementById('chat-messages');
-            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
         // --- UTILITY FUNCTIONS ---
@@ -1609,7 +1556,8 @@
                 console.error("Santri tidak ditemukan di data.");
                 return;
             }
-
+            sessionStorage.setItem('currentWaliKelas', santri.kelas);
+            
             const guru = pondokData.guru.find(g => g.mengajar_kelas === santri.kelas);
             const hafalan = pondokData.hafalan.filter(h => h.santri_id === santriId).sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
             
@@ -2526,105 +2474,6 @@
             applyTheme(newTheme);
         }
 
-        // --- AI CHAT LOGIC ---
-        async function callGeminiApi(prompt) {
-            const apiKey = "";
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-            
-            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-            
-            const payload = {
-                contents: chatHistory,
-                tools: [{ "google_search": {} }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                },
-            };
-            
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                });
-                const result = await response.json();
-                const aiResponse = result.candidates[0].content.parts[0].text;
-                
-                // Add conditional emoji logic here
-                let emoji = '';
-                const lowerCaseResponse = aiResponse.toLowerCase();
-                if (lowerCaseResponse.includes('semangat') || lowerCaseResponse.includes('motivasi') || lowerCaseResponse.includes('banget')) {
-                    emoji = '💪';
-                } else if (lowerCaseResponse.includes('syukur') || lowerCaseResponse.includes('alhamdulillah') || lowerCaseResponse.includes('makasih')) {
-                    emoji = '😊';
-                } else if (lowerCaseResponse.includes('canda') || lowerCaseResponse.includes('lucu') || lowerCaseResponse.includes('hehe')) {
-                    emoji = '😂';
-                } else if (lowerCaseResponse.includes('sedih') || lowerCaseResponse.includes('bersabar') || lowerCaseResponse.includes('berat')) {
-                    emoji = '😔';
-                } else if (lowerCaseResponse.includes('bingung') || lowerCaseResponse.includes('mikir')) {
-                    emoji = '🤔';
-                }
-
-                // Clean up any stray markdown
-                const cleanedResponse = aiResponse.replace(/\*\*\*(.*?)\*\*\*/g, '$1');
-                
-                const finalResponse = emoji ? `${emoji} ${cleanedResponse}` : cleanedResponse;
-                
-                chatHistory.push({ role: "model", parts: [{ text: finalResponse }] });
-                return finalResponse;
-            } catch (error) {
-                console.error("Error calling Gemini API:", error);
-                return "Waduh, Akang Nahya lagi offline nih. Coba lagi nanti ya!";
-            }
-        }
-        
-        async function handleChatInput() {
-            const userInput = document.getElementById('user-input');
-            const chatMessages = document.getElementById('chat-messages');
-            const sendBtn = document.getElementById('send-btn');
-            
-            const userMessageText = userInput.value.trim();
-            if (!userMessageText) return;
-
-            // Display user message
-            const userMessageEl = document.createElement('div');
-            userMessageEl.className = 'message user';
-            userMessageEl.textContent = userMessageText;
-            chatMessages.appendChild(userMessageEl);
-            userInput.value = '';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            // Display loading indicator
-            const loadingEl = document.createElement('div');
-            loadingEl.className = 'message ai';
-            loadingEl.innerHTML = `<span class="ai-loading-icon"></span>`;
-            chatMessages.appendChild(loadingEl);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            // Disable input and button
-            userInput.disabled = true;
-            sendBtn.disabled = true;
-
-            const aiResponse = await callGeminiApi(userMessageText);
-
-            // Remove loading indicator
-            loadingEl.remove();
-
-            // Display AI response
-            const aiMessageEl = document.createElement('div');
-            aiMessageEl.className = 'message ai';
-            aiMessageEl.textContent = aiResponse;
-            chatMessages.appendChild(aiMessageEl);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            // Enable input and button
-            userInput.disabled = false;
-            sendBtn.disabled = false;
-            userInput.focus();
-        }
-
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
             const savedLang = localStorage.getItem('selectedLanguage') || 'id';
@@ -2685,17 +2534,6 @@
             checkLoginState();
             requestNotificationPermission();
 
-            // Set up AI page event listeners
-            const userInput = document.getElementById('user-input');
-            const sendBtn = document.getElementById('send-btn');
-            if (userInput && sendBtn) {
-                userInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        handleChatInput();
-                    }
-                });
-                sendBtn.addEventListener('click', handleChatInput);
-            }
             
             playWelcomeAnimation();
         });
