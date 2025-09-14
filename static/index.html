@@ -1510,43 +1510,48 @@
         }
 
         function showSantriListByKelas(kelas) {
-            const pondokData = appDataCache[sessionStorage.getItem('currentPondokId')];
-            if (!pondokData) return;
-            
-            const filteredSantri = pondokData.santri.filter(s => s.kelas === kelas).sort((a, b) => a.nama.localeCompare(b.nama));
-            
-            const kelasListContainer = document.getElementById('kelas-list-container');
-            const santriListContainer = document.getElementById('santri-list-container');
-            const currentClassTitle = document.getElementById('current-class-title');
-            const santriGallery = document.getElementById('santri-gallery');
-            
-            if (kelasListContainer) kelasListContainer.classList.add('hidden');
-            if (santriListContainer) santriListContainer.classList.remove('hidden');
-            if (currentClassTitle) currentClassTitle.textContent = `Daftar Santri Kelas ${kelas}`;
-            
-            santriGallery.innerHTML = '';
-            if (filteredSantri.length === 0) {
-                santriGallery.innerHTML = '<p class="text-center text-gray-500 py-10">Tidak ada santri di kelas ini.</p>';
-            } else {
-                filteredSantri.forEach(santri => {
-                    const card = document.createElement('div');
-                    card.className = 'text-center cursor-pointer group santri-card';
-                    card.dataset.name = santri.nama;
-                    card.innerHTML = `
-                    <div class="relative">
-                        <img src="${santri.foto}" alt="Foto ${santri.nama}" class="w-full h-auto aspect-square rounded-full object-cover transition-transform duration-300 group-hover:scale-105 border-4 border-yellow-400 shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=Error';">
-                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 rounded-full transition-all duration-300 flex items-center justify-center">
-                            <span class="text-white opacity-0 group-hover:opacity-100 font-bold">Lihat Detail</span>
-                        </div>
-                    </div>
-                    <p class="mt-4 font-semibold text-gray-200">${santri.nama}</p>
-                    <p class="text-sm text-gray-400">Kelas ${santri.kelas}</p>
-                    `;
-                    card.onclick = () => showSantriDetail(santri.id);
-                    santriGallery.appendChild(card);
-                });
-            }
-        }
+    const pondokData = appDataCache[sessionStorage.getItem('currentPondokId')];
+    if (!pondokData) return;
+
+    const filteredSantri = pondokData.santri.filter(s => s.kelas === kelas).sort((a, b) => a.nama.localeCompare(b.nama));
+
+    const kelasListContainer = document.getElementById('kelas-list-container');
+    const santriListContainer = document.getElementById('santri-list-container');
+    const currentClassTitle = document.getElementById('current-class-title');
+    const santriGallery = document.getElementById('santri-gallery');
+
+    if (kelasListContainer) kelasListContainer.classList.add('hidden');
+    if (santriListContainer) santriListContainer.classList.remove('hidden');
+    if (currentClassTitle) currentClassTitle.textContent = `Daftar Santri Kelas ${kelas}`;
+    
+    // Simpan nama kelas saat ini di sessionStorage untuk navigasi kembali
+    sessionStorage.setItem('currentWaliKelas', kelas);
+
+    santriGallery.innerHTML = '';
+    if (filteredSantri.length === 0) {
+        santriGallery.innerHTML = '<p class="text-center text-gray-500 py-10">Tidak ada santri di kelas ini.</p>';
+    } else {
+        filteredSantri.forEach(santri => {
+            // Perbaikan ada di sini: Gunakan URL placeholder jika santri.foto tidak ada
+            const fotoUrl = santri.foto || 'https://placehold.co/400x400?text=No+Photo';
+            const card = document.createElement('div');
+            card.className = 'text-center cursor-pointer group santri-card';
+            card.dataset.name = santri.nama;
+            card.innerHTML = `
+            <div class="relative">
+                <img src="${fotoUrl}" alt="Foto ${santri.nama}" class="w-full h-auto aspect-square rounded-full object-cover transition-transform duration-300 group-hover:scale-105 border-4 border-yellow-400 shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=Error';">
+                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 rounded-full transition-all duration-300 flex items-center justify-center">
+                    <span class="text-white opacity-0 group-hover:opacity-100 font-bold">Lihat Detail</span>
+                </div>
+            </div>
+            <p class="mt-4 font-semibold text-gray-200">${santri.nama}</p>
+            <p class="text-sm text-gray-400">Kelas ${santri.kelas}</p>
+            `;
+            card.onclick = () => showSantriDetail(santri.id);
+            santriGallery.appendChild(card);
+        });
+    }
+}
 
         async function showSantriDetail(santriId) {
             const pondokData = await fetchData();
