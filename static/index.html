@@ -1585,19 +1585,19 @@
                 }
             }
 
-            const totalHafalanJuzEl = document.getElementById('total-hafalan-juz');
-            if (totalHafalanJuzEl) totalHafalanJuzEl.textContent = santri.total_hafalan_juz || '0';
-            const targetHarianEl = document.getElementById('target-harian');
-            if (targetHarianEl) targetHarianEl.textContent = santri.target.harian || '-';
-            const targetMingguanEl = document.getElementById('target-mingguan');
-            if (targetMingguanEl) targetMingguanEl.textContent = santri.target.mingguan || '-';
-            const targetBulananEl = document.getElementById('target-bulanan');
-            if (targetBulananEl) targetBulananEl.textContent = santri.target.bulanan || '-';
-            const targetTahunanEl = document.getElementById('target-tahunan');
-            if (targetTahunanEl) targetTahunanEl.textContent = santri.target.tahunan || '-';
-            
-            const chartsContainer = document.getElementById('progress-charts');
-            if (chartsContainer) chartsContainer.innerHTML = '';
+            const target = santri.target || {};
+        const totalHafalanJuzEl = document.getElementById('total-hafalan-juz');
+        if (totalHafalanJuzEl) totalHafalanJuzEl.textContent = santri.total_hafalan_juz || '0';
+        const targetHarianEl = document.getElementById('target-harian');
+        if (targetHarianEl) targetHarianEl.textContent = target.harian || '-';
+        const targetMingguanEl = document.getElementById('target-mingguan');
+        if (targetMingguanEl) targetMingguanEl.textContent = target.mingguan || '-';
+        const targetBulananEl = document.getElementById('target-bulanan');
+        if (targetBulananEl) targetBulananEl.textContent = target.bulanan || '-';
+        const targetTahunanEl = document.getElementById('target-tahunan');
+        if (targetTahunanEl) targetTahunanEl.textContent = target.tahunan || '-';
+        const chartsContainer = document.getElementById('progress-charts');
+        if (chartsContainer) chartsContainer.innerHTML = '';
             
             if (hafalan.length > 0) {
                 const data = {
@@ -1759,28 +1759,29 @@
                 if (currentPhotoUrl) currentPhotoUrl.value = santri.foto || '';
                 if (fotoStatus) fotoStatus.textContent = santri.foto ? 'Foto sudah ada, tidak perlu diunggah lagi.' : 'Belum ada foto. Unggah sekarang.';
 
-                const formTargetHarian = document.getElementById('form-target-harian');
-                if (formTargetHarian) formTargetHarian.value = santri.target.harian || '';
-                const formTargetMingguan = document.getElementById('form-target-mingguan');
-                if (formTargetMingguan) formTargetMingguan.value = santri.target.mingguan || '';
-                const formTargetBulanan = document.getElementById('form-target-bulanan');
-                if (formTargetBulanan) formTargetBulanan.value = santri.target.bulanan || '';
-                const formTargetTahunan = document.getElementById('form-target-tahunan');
-                if (formTargetTahunan) formTargetTahunan.value = santri.target.tahunan || '';
-                const checkedRadio = document.querySelector(`input[name="tercapai"][value="${santri.tercapai}"]`);
-                if (checkedRadio) {
-                    checkedRadio.checked = true;
-                }
-
-                if (hafalanSection) hafalanSection.classList.remove('hidden');
-                renderGuruHafalanTable(santriId);
-            } else {
-                const formTitle = document.getElementById('form-title');
-                if (formTitle) formTitle.textContent = 'Tambah Santri Baru';
-                if (fotoStatus) fotoStatus.textContent = 'Unggah foto baru untuk santri ini.';
+                const target = santri.target || {};
+            const formTargetHarian = document.getElementById('form-target-harian');
+            if (formTargetHarian) formTargetHarian.value = target.harian || '';
+            const formTargetMingguan = document.getElementById('form-target-mingguan');
+            if (formTargetMingguan) formTargetMingguan.value = target.mingguan || '';
+            const formTargetBulanan = document.getElementById('form-target-bulanan');
+            if (formTargetBulanan) formTargetBulanan.value = target.bulanan || '';
+            const formTargetTahunan = document.getElementById('form-target-tahunan');
+            if (formTargetTahunan) formTargetTahunan.value = target.tahunan || '';
+            const checkedRadio = document.querySelector(`input[name="tercapai"][value="${santri.tercapai}"]`);
+            if (checkedRadio) {
+                checkedRadio.checked = true;
             }
-            showPage('guruForm');
+
+            if (hafalanSection) hafalanSection.classList.remove('hidden');
+            renderGuruHafalanTable(santriId);
+        } else {
+            const formTitle = document.getElementById('form-title');
+            if (formTitle) formTitle.textContent = 'Tambah Santri Baru';
+            if (fotoStatus) fotoStatus.textContent = 'Unggah foto baru untuk santri ini.';
         }
+        showPage('guruForm');
+    }
 
         document.getElementById('santri-form').addEventListener('submit', async function(e) {
             e.preventDefault();
