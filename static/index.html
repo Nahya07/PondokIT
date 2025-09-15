@@ -1565,7 +1565,7 @@
       // === Isi laporan pencapaian target ===
       const target = santri.target || {};
       const totalHafalanJuzEl = document.getElementById('total-hafalan-juz');
-      if (totalHafalanJuzEl) totalHafalanJuzEl.textContent = santri.total_hafalan_juz || '0';
+      if (totalHafalanJuzEl) totalHafalanJuzEl.textContent = santri.total_hafalan_juz || '-';
       const targetHarianEl = document.getElementById('target-harian');
       if (targetHarianEl) targetHarianEl.textContent = target.harian || '-';
       const targetMingguanEl = document.getElementById('target-mingguan');
