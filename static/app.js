@@ -167,8 +167,7 @@ async function loadData() {
 
     // Render santri
     const santriList = result.data.santri;
-    const santriContainer = document.getElementById("guru-santri-list");
-    if (santriContainer) {
+    if (guruContainer) {
         santriList.forEach(s => {
             const div = document.createElement("div");
             div.className = "p-4 bg-gray-700 rounded-lg shadow text-center";
@@ -178,7 +177,7 @@ async function loadData() {
                 <button class="mt-2 px-3 py-1 bg-yellow-500 text-black rounded" onclick="editSantri(${s.id})">Edit</button>
                 <button class="mt-2 px-3 py-1 bg-red-500 text-white rounded" onclick="deleteSantri(${s.id})">Hapus</button>
             `;
-            santriContainer.appendChild(div);
+            guruContainer.appendChild(div);
         });
     }
 
@@ -260,8 +259,25 @@ if (waliForm) {
 }
 
 // ===============================
-// CRUD Guru
+// CRUD Guru (Binding Form)
 // ===============================
+const guruForm = document.getElementById("guru-form");
+if (guruForm) {
+    guruForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const nama = document.getElementById("guru-nama").value;
+        const kelas = document.getElementById("guru-kelas").value;
+
+        if (!nama || !kelas) {
+            alert("Nama dan kelas guru wajib diisi!");
+            return;
+        }
+
+        await saveGuru(nama, kelas);
+        guruForm.reset();
+    });
+}
+
 async function saveGuru(nama, kelas) {
     const pondokDbId = sessionStorage.getItem("pondokDbId");
     const result = await apiCall("/api/save-guru", {
@@ -280,8 +296,25 @@ async function deleteGuru(id) {
 }
 
 // ===============================
-// CRUD Santri
+// CRUD Santri (Binding Form)
 // ===============================
+const santriForm = document.getElementById("santri-form");
+if (santriForm) {
+    santriForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const nama = document.getElementById("santri-nama").value;
+        const kelas = document.getElementById("santri-kelas").value;
+
+        if (!nama || !kelas) {
+            alert("Nama dan kelas santri wajib diisi!");
+            return;
+        }
+
+        await saveSantri({ nama, kelas });
+        santriForm.reset();
+    });
+}
+
 async function saveSantri(data) {
     const pondokDbId = sessionStorage.getItem("pondokDbId");
     const result = await apiCall("/api/save-santri", {
