@@ -355,3 +355,98 @@ async function deleteHafalan(id) {
     alert(result.message);
     loadData();
 }
+function renderFutureChart(data) {
+    const container = d3.select("#hafalan-future-chart");
+    container.selectAll("*").remove(); // bersihkan grafik lama
+
+    if (!data || data.length === 0) {
+        container.append("p")
+            .attr("class", "text-center text-gray-400")
+            .text("Belum ada data hafalan.");
+        return;
+    }
+
+    const width = container.node().clientWidth;
+    const height = container.node().clientHeight;
+    const margin = { top: 20, right: 20, bottom: 40, left: 50 };
+
+    const svg = container.append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    const x = d3.scaleTime()
+        .domain(d3.extent(data, d => d.tanggal))
+        .range([margin.left, width - margin.right]);
+
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.nilai)]).nice()
+        .range([height - margin.bottom, margin.top]);
+
+    // Garis dengan gradient neon
+    const gradientId = "neon-gradient";
+    const defs = svg.append("defs");
+    const gradient = defs.append("linearGradient")
+        .attr("id", gradientId)
+        .attr("x1", "0%").attr("x2", "100%")
+        .attr("y1", "0%").attr("y2", "0%");
+    gradient.append("stop").attr("offset", "0%").attr("stop-color", "#00ffcc");
+    gradient.append("stop").attr("offset", "50%").attr("stop-color", "#00aaff");
+    gradient.append("stop").attr("offset", "100%").attr("stop-color", "#ff00ff");
+
+    const line = d3.line()
+        .x(d => x(d.tanggal))
+        .y(d => y(d.nilai))
+        .curve(d3.curveMonotoneX);
+
+    // Glow effect
+    svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", `url(#${gradientId})`)
+        .attr("stroke-width", 4)
+        .attr("d", line)
+        .style("filter", "url(#glow)");
+
+    // Filter glow
+    const filter = defs.append("filter").attr("id", "glow");
+    filter.append("feGaussianBlur")
+        .attr("stdDeviation", "4")
+        .attr("result", "blur");
+    filter.append("feMerge").selectAll("feMergeNode")
+        .data(["blur", "SourceGraphic"])
+        .enter().append("feMergeNode")
+        .attr("in", d => d);
+
+    // Titik interaktif dengan pulse
+    const nodes = svg.selectAll(".node")
+        .data(data)
+        .enter().append("circle")
+        .attr("class", "node")
+        .attr("cx", d => x(d.tanggal))
+        .attr("cy", d => y(d.nilai))
+        .attr("r", 6)
+        .attr("fill", "#00ffff")
+        .style("cursor", "pointer");
+
+    nodes.on("mouseover", function (event, d) {
+        d3.select(this)
+            .transition().duration(300)
+            .attr("r", 12)
+            .attr("fill", "#ff00ff");
+    }).on("mouseout", function (event, d) {
+        d3.select(this)
+            .transition().duration(300)
+            .attr("r", 6)
+            .attr("fill", "#00ffff");
+    });
+
+    // Axis
+    svg.append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(x).ticks(5).tickFormat(d3.timeFormat("%d %b")));
+
+    svg.append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y).ticks(5));
+}
+
