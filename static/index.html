@@ -1460,7 +1460,8 @@ async function renderWaliDashboard() {
 }
 
 function showSantriListByKelas(kelas) {
-    const pondokData = appDataCache[sessionStorage.getItem('currentPondokId')];
+    const pondokId = parseInt(sessionStorage.getItem('currentPondokId'));
+	const pondokData = appDataCache[pondokId];
     if (!pondokData) return;
     
     const filteredSantri = pondokData.santri.filter(s => s.kelas === kelas).sort((a, b) => a.nama.localeCompare(b.nama));
