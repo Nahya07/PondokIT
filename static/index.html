@@ -1469,7 +1469,8 @@ function showSantriListByKelas(kelas) {
     const santriListContainer = document.getElementById('santri-list-container');
     const currentClassTitle = document.getElementById('current-class-title');
     const santriGallery = document.getElementById('santri-gallery');
-    
+    const detailSantriPage = document.getElementById('detail-santri-page');
+	
     if (kelasListContainer) kelasListContainer.classList.add('hidden');
     if (santriListContainer) santriListContainer.classList.remove('hidden');
     if (currentClassTitle) currentClassTitle.textContent = `Daftar Santri Kelas ${kelas}`;
@@ -1503,6 +1504,7 @@ function showSantriListByKelas(kelas) {
     }
 }
 
+document.getElementById('santri-list-container').classList.add('hidden');
 async function showSantriDetail(santriId) {
     const pondokData = await fetchData();
     if (!pondokData || !pondokData.santri) {
