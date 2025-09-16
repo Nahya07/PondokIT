@@ -1,5 +1,4 @@
-    <script>
-      // --- TRANSLATION 
+       // --- TRANSLATION 
       const translations = {
           id: {
               app_title: "Monitoring Hafalan Santri",
@@ -1537,4 +1536,3 @@
           
           playWelcomeAnimation();
       });
-    </script>
