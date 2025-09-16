@@ -1,4 +1,3 @@
-  <script>
 // --- Semua Deklarasi Variabel dan Objek Global ---
 const translations = {
     id: {
@@ -1469,4 +1468,3 @@ document.addEventListener('DOMContentLoaded', () => {
 	// --- Panggil Fungsi Inisialisasi Aplikasi ---
 	playWelcomeAnimation();
     });
-    </script>
