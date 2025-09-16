@@ -1460,6 +1460,8 @@ async function renderWaliDashboard() {
 }
 
 function showSantriListByKelas(kelas) {
+	document.getElementById('detail-santri-page').classList.add('hidden');
+	document.getElementById('santri-list-container').classList.remove('hidden');
     const pondokId = parseInt(sessionStorage.getItem('currentPondokId'));
 	const pondokData = appDataCache[pondokId];
     if (!pondokData) return;
@@ -1505,8 +1507,10 @@ function showSantriListByKelas(kelas) {
     }
 }
 
-document.getElementById('santri-list-container').classList.add('hidden');
+
 async function showSantriDetail(santriId) {
+	document.getElementById('santri-list-container').classList.add('hidden');
+	document.getElementById('detail-santri-page').classList.remove('hidden');
     const pondokData = await fetchData();
     if (!pondokData || !pondokData.santri) {
         console.error("Gagal memuat data pondok.");
