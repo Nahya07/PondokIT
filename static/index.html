@@ -1460,8 +1460,6 @@ async function renderWaliDashboard() {
 }
 
 function showSantriListByKelas(kelas) {
-	document.getElementById('detail-santri-page').classList.add('hidden');
-	document.getElementById('santri-list-container').classList.remove('hidden');
     const pondokId = parseInt(sessionStorage.getItem('currentPondokId'));
 	const pondokData = appDataCache[pondokId];
     if (!pondokData) return;
@@ -1474,8 +1472,6 @@ function showSantriListByKelas(kelas) {
     const santriGallery = document.getElementById('santri-gallery');
     const detailSantriPage = document.getElementById('detail-santri-page');
 	
-    if (kelasListContainer) kelasListContainer.classList.add('hidden');
-    if (santriListContainer) santriListContainer.classList.remove('hidden');
     if (currentClassTitle) currentClassTitle.textContent = `Daftar Santri Kelas ${kelas}`;
     
     sessionStorage.setItem('currentWaliKelas', kelas);
@@ -1505,12 +1501,11 @@ function showSantriListByKelas(kelas) {
             });
         }
     }
+	showPage('santriListContainer')
 }
 
 
 async function showSantriDetail(santriId) {
-	document.getElementById('santri-list-container').classList.add('hidden');
-	document.getElementById('detail-santri-page').classList.remove('hidden');
     const pondokData = await fetchData();
     if (!pondokData || !pondokData.santri) {
         console.error("Gagal memuat data pondok.");
