@@ -793,7 +793,6 @@ function playWelcomeAnimation() {
     setTimeout(() => { modal.classList.add('hidden'); showPage('roleSelection'); }, 3000);
 }
 function showJadwalDonasiPage() { fetchJadwalSholat(); showPage('jadwalDonasi'); }
-let alarmInterval = null;
 let prayerTimesToday = {};
 function getCoordinates() {
     return new Promise((resolve, reject) => {
