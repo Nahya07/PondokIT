@@ -259,7 +259,6 @@ function showPage(pageName) {
         pages[pageName].classList.add('flex');
     }
 }
-
 function showHomePage() {
     showPage('roleSelection');
 }
@@ -1173,7 +1172,7 @@ document.addEventListener('DOMContentLoaded', () => {
         targetHarianSelect.innerHTML = '';
         for (let i = 1; i <= 20; i++) {
             targetHarianSelect.add(new Option(`${i} Halaman`, `${i} Halaman`));
-        });
+        }
     }
     const targetMingguanSelect = document.getElementById('form-target-mingguan');
     if (targetMingguanSelect) {
