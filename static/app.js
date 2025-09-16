@@ -259,6 +259,9 @@ function showPage(pageName) {
         pages[pageName].classList.add('flex');
     }
 }
+function showHomePage() {
+    showPage('roleSelection');
+}
 
 function checkLoginState() {
     const role = sessionStorage.getItem('role');
