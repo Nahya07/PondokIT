@@ -1773,6 +1773,55 @@
             }
             showPage('detailSantri');
         }
+        // ... (kode di atasnya)
+
+        // --- INITIALIZATION ---
+    document.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem('selectedLanguage') || 'id';
+    const languageSelector = document.getElementById('language-selector');
+    if (languageSelector) languageSelector.value = savedLang;
+    setLanguage(savedLang);
+
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    if(themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', toggleTheme);
+    }
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    applyTheme(savedTheme);
+
+    const alarmToggle = document.getElementById('alarm-toggle');
+    if (alarmToggle) {
+        alarmToggle.checked = localStorage.getItem('alarmEnabled') === 'true';
+        alarmToggle.addEventListener('change', handleAlarmToggleChange);
+    }
+    
+    const genderedKelas = [];
+    for (let i = 65; i <= 90; i++) {
+        const letter = String.fromCharCode(i);
+        genderedKelas.push(`Kelas ${letter} putra`, `Kelas ${letter} putri`);
+    }
+    
+    const kelasSelectSantri = document.getElementById('kelas');
+    const kelasSelectGuru = document.getElementById('guru-kelas');
+    if (kelasSelectSantri) {
+        kelasSelectSantri.innerHTML = '';
+        genderedKelas.forEach(kelas => {
+            kelasSelectSantri.add(new Option(kelas, kelas));
+        });
+    }
+    if (kelasSelectGuru) {
+        kelasSelectGuru.innerHTML = '';
+        genderedKelas.forEach(kelas => {
+            kelasSelectGuru.add(new Option(kelas, kelas));
+        });
+    }
+    
+    checkLoginState();
+    requestNotificationPermission();
+
+    // PERBAIKAN: Memanggil fungsi animasi dan navigasi awal
+    playWelcomeAnimation();
+});
     </script>
 </body>
 </html>
