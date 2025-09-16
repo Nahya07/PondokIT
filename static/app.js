@@ -1466,6 +1466,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Panggil Fungsi Inisialisasi Aplikasi ---
-    checkLoginState();
     playWelcomeAnimation();
 });
