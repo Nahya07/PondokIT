@@ -1,3 +1,4 @@
+  <script>
 // --- Semua Deklarasi Variabel dan Objek Global ---
 const translations = {
     id: {
@@ -704,8 +705,8 @@ async function showGuruForm(santriId) {
         if (namaInput) namaInput.value = santri.nama;
         const kelasSelect = document.getElementById('kelas');
         if (kelasSelect) kelasSelect.value = santri.kelas;
-        const totalHafalanJuzInput = document.getElementById('total-hafalan-juz');
-        if (totalHafalanJuzInput) totalHafalanJuzInput.value = santri.total_hafalan_juz || '';
+        const totalHafalanJuzInput = document.getElementById('total-hafalan-juz').value;
+        const totalHafalanJuz = totalHafalanJuzInput === '' ? null : parseInt(totalHafalanJuzInput, 10);
         
         const currentPhotoUrl = document.getElementById('current-photo-url');
         if (currentPhotoUrl) currentPhotoUrl.value = santri.foto || '';
@@ -1465,6 +1466,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Panggil Fungsi Inisialisasi Aplikasi ---
-    playWelcomeAnimation();
-});
+	// --- Panggil Fungsi Inisialisasi Aplikasi ---
+	playWelcomeAnimation();
+    });
+    </script>
