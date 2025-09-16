@@ -1536,3 +1536,116 @@
           
           playWelcomeAnimation();
       });
+function renderFutureChart(data) {
+    // 1. Hapus grafik lama untuk mencegah tumpukan
+    d3.select("#hafalan-future-chart svg").remove();
+
+    const container = d3.select("#hafalan-future-chart");
+    const width = container.node().getBoundingClientRect().width;
+    const height = 300;
+    const margin = { top: 20, right: 30, bottom: 40, left: 40 };
+
+    // 2. Buat elemen SVG baru
+    const svg = container.append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    // 3. Filter data yang valid (pastikan data ada dan formatnya benar)
+    const validData = data.filter(d => d && !isNaN(d.nilai) && d.tanggal instanceof Date);
+    if (validData.length === 0) {
+        svg.append("text")
+            .attr("x", width / 2)
+            .attr("y", height / 2)
+            .attr("text-anchor", "middle")
+            .attr("fill", "#ccc")
+            .text("Tidak ada data untuk grafik.");
+        return;
+    }
+
+    // 4. Atur skala untuk sumbu X (tanggal) dan Y (nilai)
+    const x = d3.scaleTime()
+        .domain(d3.extent(validData, d => d.tanggal))
+        .range([margin.left, width - margin.right]);
+
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(validData, d => d.nilai) + 5])
+        .nice()
+        .range([height - margin.bottom, margin.top]);
+
+    // 5. Definisikan generator grafik (area dan garis)
+    const area = d3.area()
+        .x(d => x(d.tanggal))
+        .y0(y(0))
+        .y1(d => y(d.nilai));
+
+    const line = d3.line()
+        .x(d => x(d.tanggal))
+        .y(d => y(d.nilai));
+
+    // 6. Buat gradien warna untuk area
+    const gradient = svg.append("defs").append("linearGradient")
+        .attr("id", "area-gradient")
+        .attr("x1", "0%").attr("x2", "0%")
+        .attr("y1", "0%").attr("y2", "100%");
+    gradient.append("stop").attr("offset", "0%").attr("stop-color", "#FFD700").attr("stop-opacity", 0.5);
+    gradient.append("stop").attr("offset", "100%").attr("stop-color", "#FFD700").attr("stop-opacity", 0);
+
+    // 7. Gambarkan area dan garis grafik
+    svg.append("path")
+        .datum(validData)
+        .attr("fill", "url(#area-gradient)")
+        .attr("d", area);
+
+    svg.append("path")
+        .datum(validData)
+        .attr("fill", "none")
+        .attr("stroke", "#FFD700")
+        .attr("stroke-width", 2)
+        .attr("d", line);
+
+    // 8. Tambahkan sumbu X dan Y
+    svg.append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(x).ticks(d3.timeWeek.every(1)).tickFormat(d3.timeFormat("%b %d")))
+        .attr("color", "#ccc");
+
+    svg.append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y))
+        .attr("color", "#ccc");
+
+    // 9. Tambahkan tooltip untuk interaktivitas
+    const tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("position", "absolute")
+        .style("background-color", "#333")
+        .style("border-radius", "5px")
+        .style("padding", "8px")
+        .style("color", "#fff")
+        .style("pointer-events", "none")
+        .style("opacity", 0);
+
+    // 10. Tambahkan titik-titik data dan event listener
+    svg.selectAll("circle")
+        .data(validData)
+        .enter()
+        .append("circle")
+        .attr("cx", d => x(d.tanggal))
+        .attr("cy", d => y(d.nilai))
+        .attr("r", 5)
+        .attr("fill", "#FFD700")
+        .attr("stroke", "#1a1a1a")
+        .attr("stroke-width", 2)
+        .on("mouseover", (event, d) => {
+            tooltip.style("opacity", 1)
+                .html(`
+                    <strong>Tanggal:</strong> ${d.tanggal.toLocaleDateString('id-ID')}<br>
+                    <strong>Setoran:</strong> ${d.nilai}
+                `)
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 20) + "px");
+        })
+        .on("mouseout", () => {
+            tooltip.style("opacity", 0);
+        });
+       }
