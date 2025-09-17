@@ -1098,11 +1098,6 @@ function renderFutureChart(data) {
     svg.append("path")
         .datum(validData)
         .attr("fill", "url(#area-gradient)")
-        .attr("d", area);
-
-    svg.append("path")
-        .datum(validData)
-        .attr("fill", "none")
         .attr("stroke", "#FFD700")
         .attr("stroke-width", 2)
         .attr("d", line);
@@ -2190,17 +2185,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const santriId = document.getElementById('santri-id').value ? parseInt(document.getElementById('santri-id').value) : null;
             const nama = document.getElementById('nama').value;
             const kelas = document.getElementById('kelas').value;
+            
+            // Validasi dan konversi Total Hafalan Juz
             const totalHafalanJuzInput = document.getElementById('total-hafalan-juz').value;
             const totalHafalanJuz = totalHafalanJuzInput === '' ? null : parseInt(totalHafalanJuzInput, 10);
+            if (totalHafalanJuzInput !== '' && isNaN(totalHafalanJuz)) {
+                showToast('error', "Total Hafalan Juz harus berupa angka.");
+                return;
+            }
+
             const harian = document.getElementById('form-target-harian').value;
             const mingguan = document.getElementById('form-target-mingguan').value;
             const bulanan = document.getElementById('form-target-bulanan').value;
             const tahunan = document.getElementById('form-target-tahunan').value;
             const tercapai = document.querySelector('input[name="tercapai"]:checked')?.value === 'true';
+            
             const santriData = {
                 id: santriId,
-                nama,
-                kelas,
+                nama: nama,
+                kelas: kelas,
                 foto: fotoUrl,
                 total_hafalan_juz: totalHafalanJuz,
                 target: { harian, mingguan, bulanan, tahunan, tercapai }
