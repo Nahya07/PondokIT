@@ -311,6 +311,9 @@ def save_santri():
         santri_data = data.get('santriData')
         print("📥 Data santri diterima frontend:", santri_data)
 
+        # 🔎 Baris debug paling penting
+        print("DEBUG >>> total_hafalan_juz dari frontend =", santri_data.get("total_hafalan_juz"))
+
         if not pondok_db_id or not santri_data:
             return jsonify({'success': False, 'message': 'Data tidak lengkap.'}), 400
 
@@ -328,9 +331,7 @@ def save_santri():
                 print(f"⚠️ Gagal parsing total_hafalan_juz: {value}")
                 return None
 
-        # Ambil target dengan aman (jika null → jadi dict kosong)
         target = santri_data.get('target') or {}
-        print("📦 Data target diterima:", target)
 
         santri_id = santri_data.get('id')
         if santri_id:  # Update data santri
@@ -342,7 +343,6 @@ def save_santri():
             santri_to_update.kelas = santri_data.get('kelas')
             santri_to_update.foto = santri_data.get('foto')
 
-            # Validasi dan simpan total_hafalan_juz
             total_juz = parse_total_juz(santri_data.get('total_hafalan_juz'))
             santri_to_update.total_hafalan_juz = total_juz
             print(f"✅ Update santri ID {santri_id}: total_hafalan_juz disimpan = {total_juz}")
