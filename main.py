@@ -22,11 +22,11 @@ DATABASE_URL = os.getenv(
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+print("📡 SQLALCHEMY_DATABASE_URI =", app.config['SQLALCHEMY_DATABASE_URI'])
+
 # Inisialisasi database
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-
-print("📡 SQLALCHEMY_DATABASE_URI =", app.config['SQLALCHEMY_DATABASE_URI'])
 
 # Tipe file yang diizinkan untuk diunggah
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'mp4', 'mov', 'avi'}
