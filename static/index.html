@@ -38,12 +38,16 @@
       }
       body {
       font-family: 'Inter', sans-serif;
-      background-color: #1a1a1a;
+      /* Background dihapus, menggunakan kelas Tailwind CSS (bg-gray-900) */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       color: #e0e0e0;
       transition: background-color 0.5s ease;
+      position: relative;
       }
       .main-content {
-      background-color: rgba(30, 41, 59, 0.7);
+      background: linear-gradient(135deg, rgba(0, 0, 51, 0.8), rgba(0, 0, 0, 0.8));
       backdrop-filter: blur(10px);
       border-radius: 1rem;
       border: 1px solid rgba(255, 215, 0, 0.2);
@@ -54,7 +58,7 @@
       }
       /* Modern Panel Design */
       .modern-panel {
-      background-color: #1a1a1a;
+      background: linear-gradient(135deg, rgba(0, 0, 51, 0.8), rgba(0, 0, 0, 0.8));
       border: 1px solid #333;
       box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(20px);
@@ -80,6 +84,19 @@
       to {
       transform: rotate(360deg);
       }
+      }
+      /* New Futuristic Panel Style */
+      .futuristic-panel {
+        background: linear-gradient(135deg, rgba(0, 0, 51, 0.6), rgba(0, 0, 0, 0.6));
+        border: 1px solid rgba(77, 159, 202, 0.5);
+        box-shadow: 0 0 15px rgba(77, 159, 202, 0.3);
+        backdrop-filter: blur(5px);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+      }
+      .futuristic-panel:hover {
+        box-shadow: 0 0 25px rgba(77, 159, 202, 0.6);
       }
       /* Futuristic Icons with Glowing Effect */
       .futuristic-icon-panel .icon-item {
@@ -338,12 +355,12 @@
     <div id="app" class="container mx-auto p-4 md:p-8 max-w-7xl">
       <div id="role-selection-page" class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-900">
         <div class="fixed top-8 right-8 z-50 flex items-center space-x-2">
-          <button id="theme-toggle" class="bg-gray-800 rounded-full w-10 h-10 flex items-center justify-center shadow-md">
+          <button id="theme-toggle" class="futuristic-panel !p-0 rounded-full w-10 h-10 flex items-center justify-center shadow-md">
           <i id="theme-icon" class="fas fa-moon text-gray-200"></i>
           </button>
         </div>
         <div class="fixed top-8 z-50">
-          <select id="language-selector" onchange="setLanguage(this.value)" class="bg-gray-800 text-gray-200 border border-gray-700 rounded-full shadow-md py-2 px-4 focus:ring-yellow-400 focus:border-yellow-400">
+          <select id="language-selector" onchange="setLanguage(this.value)" class="futuristic-panel text-gray-200 rounded-full shadow-md py-2 px-4 focus:ring-yellow-400 focus:border-yellow-400">
             <option value="id">Bahasa Indonesia</option>
             <option value="en">English</option>
             <option value="ja">日本語</option>
@@ -352,7 +369,7 @@
             <option value="jw">Basa Jawa</option>
           </select>
         </div>
-        <div class="w-full max-w-sm p-8 space-y-6 bg-gray-800 rounded-xl shadow-2xl text-center relative modern-panel">
+        <div class="w-full max-w-sm p-8 space-y-6 rounded-xl shadow-2xl text-center relative modern-panel">
           <h2 class="text-2xl font-bold text-gray-100">Aplikasi SantriQ Santri Al Qur'an</h2>
           <p class="text-gray-400">Silakan pilih peran Anda untuk melanjutkan:</p>
           <div class="space-y-4 pt-4">
@@ -370,19 +387,19 @@
         <div class="flex flex-col items-center mt-8 w-full max-w-sm mx-auto space-y-6">
           <div class="flex flex-wrap justify-center space-x-4 futuristic-icon-panel">
             <div class="feature-tooltip relative">
-              <div class="w-12 h-12 bg-gray-800 rounded-full shadow-md flex items-center justify-center icon-item">
+              <div class="w-12 h-12 futuristic-panel !p-0 rounded-full shadow-md flex items-center justify-center icon-item">
                 <i class="fas fa-chart-line h-6 w-6"></i>
               </div>
               <span data-translate-key="tooltip_realtime" class="tooltip-text">Monitoring Real-time</span>
             </div>
             <div class="feature-tooltip relative">
-              <div class="w-12 h-12 bg-gray-800 rounded-full shadow-md flex items-center justify-center icon-item">
+              <div class="w-12 h-12 futuristic-panel !p-0 rounded-full shadow-md flex items-center justify-center icon-item">
                 <i class="fas fa-users-cog h-6 w-6"></i>
               </div>
               <span data-translate-key="tooltip_guardian" class="tooltip-text">Akses Wali Santri</span>
             </div>
             <div class="feature-tooltip relative">
-              <div class="w-12 h-12 bg-gray-800 rounded-full shadow-md flex items-center justify-center icon-item">
+              <div class="w-12 h-12 futuristic-panel !p-0 rounded-full shadow-md flex items-center justify-center icon-item">
                 <i class="fas fa-file-alt h-6 w-6"></i>
               </div>
               <span data-translate-key="tooltip_report" class="tooltip-text">Laporan Terstruktur</span>
@@ -401,18 +418,18 @@
         </footer>
       </div>
       <div id="pondok-register-page" class="hidden flex-col items-center justify-center min-h-screen p-4 bg-gray-900">
-        <div class="w-full max-w-sm p-8 space-y-6 bg-gray-800 rounded-xl shadow-2xl relative modern-panel">
+        <div class="w-full max-w-sm p-8 space-y-6 rounded-xl shadow-2xl relative modern-panel">
           <h2 class="text-2xl font-bold text-center text-gray-100">Daftarkan Pondok Anda</h2>
           <form id="pondok-register-form" class="space-y-6">
             <div>
               <label for="register-pondok-id" class="block text-sm font-medium text-gray-300">Nama Pondok & Nomor Unik</label>
-              <input type="text" id="register-pondok-id" placeholder="Contoh: PPTI#12345" class="mt-1 w-full px-4 py-3 border border-gray-600 rounded-lg focus:ring-4 focus:ring-yellow-200 bg-gray-700 text-gray-200" required>
+              <input type="text" id="register-pondok-id" placeholder="Contoh: PPTI#12345" class="mt-1 w-full px-4 py-3 rounded-lg focus:ring-4 focus:ring-yellow-200 futuristic-panel" required>
               <p class="text-xs text-gray-500 mt-1">Gunakan tanda pagar (#) untuk memisahkan nama dan nomor unik.</p>
             </div>
             <div>
               <label for="register-password" class="block text-sm font-medium text-gray-300">Buat Kata Sandi</label>
               <div class="relative mt-1">
-                <input type="password" id="register-password" placeholder="Minimal 6 karakter" class="w-full px-4 py-3 border border-gray-600 rounded-lg focus:ring-4 focus:ring-yellow-200 bg-gray-700 text-gray-200" required>
+                <input type="password" id="register-password" placeholder="Minimal 6 karakter" class="w-full px-4 py-3 rounded-lg focus:ring-4 focus:ring-yellow-200 futuristic-panel" required>
                 <button type="button" onclick="togglePasswordVisibility('register-password', this)" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
                 <i class="fas fa-eye text-gray-500"></i>
                 </button>
@@ -432,18 +449,18 @@
         </div>
       </div>
       <div id="pondok-login-page" class="hidden flex-col items-center justify-center min-h-screen p-4 bg-gray-900">
-        <div class="w-full max-w-sm p-8 space-y-6 bg-gray-800 rounded-xl shadow-2xl relative modern-panel">
+        <div class="w-full max-w-sm p-8 space-y-6 rounded-xl shadow-2xl relative modern-panel">
           <p class="text-4xl text-yellow-400 text-center" style="font-family: 'MCS Hijaz S_U normal', serif;">بسم الله الرحمن الرحيم</p>
           <h2 class="text-2xl font-bold text-center text-gray-100">Login Pengurus / Guru</h2>
           <form id="pondok-login-form" class="space-y-6">
             <div>
               <label for="login-pondok-id" class="block text-sm font-medium text-gray-300">Nama Pondok & Nomor Unik</label>
-              <input type="text" id="login-pondok-id" placeholder="Contoh: PPTI#12345" class="mt-1 w-full px-4 py-3 border border-gray-600 rounded-lg focus:ring-4 focus:ring-yellow-200 bg-gray-700 text-gray-200" required>
+              <input type="text" id="login-pondok-id" placeholder="Contoh: PPTI#12345" class="mt-1 w-full px-4 py-3 rounded-lg focus:ring-4 focus:ring-yellow-200 futuristic-panel" required>
             </div>
             <div>
               <label for="login-password" class="block text-sm font-medium text-gray-300">Kata Sandi</label>
               <div class="relative mt-1">
-                <input type="password" id="login-password" placeholder="Kata Sandi Anda" class="w-full px-4 py-3 border border-gray-600 rounded-lg focus:ring-4 focus:ring-yellow-200 bg-gray-700 text-gray-200" required>
+                <input type="password" id="login-password" placeholder="Kata Sandi Anda" class="w-full px-4 py-3 rounded-lg focus:ring-4 focus:ring-yellow-200 futuristic-panel" required>
                 <button type="button" onclick="togglePasswordVisibility('login-password', this)" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
                 <i class="fas fa-eye text-gray-500"></i>
                 </button>
@@ -463,13 +480,13 @@
         </div>
       </div>
       <div id="access-code-page" class="hidden flex-col items-center justify-center min-h-screen p-4 bg-gray-900">
-        <div class="w-full max-w-sm p-8 space-y-6 bg-gray-800 rounded-xl shadow-2xl relative modern-panel">
+        <div class="w-full max-w-sm p-8 space-y-6 rounded-xl shadow-2xl relative modern-panel">
           <h2 class="text-2xl font-bold text-center text-gray-100">Kode Akses Wali Santri</h2>
           <p class="text-sm text-center text-gray-400">Silakan masukkan kode akses yang diberikan oleh pengurus.</p>
           <form id="access-code-form" class="space-y-6">
             <div>
               <label for="access-code" class="block text-sm font-medium text-gray-300">Kode Akses</label>
-              <input type="text" id="access-code" placeholder="Masukkan kode" class="mt-1 w-full px-4 py-3 border border-gray-600 rounded-lg focus:ring-4 focus:ring-yellow-200 bg-gray-700 text-gray-200" required>
+              <input type="text" id="access-code" placeholder="Masukkan kode" class="mt-1 w-full px-4 py-3 rounded-lg focus:ring-4 focus:ring-yellow-200 futuristic-panel" required>
             </div>
             <button type="submit" class="w-full px-4 py-3 font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">
             Masuk
@@ -544,7 +561,7 @@
           </button>
         </header>
         <!-- Konten detail santri -->
-        <div class="bg-gray-800 p-8 rounded-xl shadow-lg relative main-content">
+        <div class="p-8 rounded-xl shadow-lg relative main-content">
           <!-- Foto + info santri -->
           <div class="flex flex-col items-center md:flex-row md:items-start 
             text-center md:text-left md:space-x-8 pb-8 border-b border-gray-700">
@@ -562,28 +579,28 @@
           <!-- Grafik futuristik -->
           <div class="py-8 border-b border-gray-700">
             <h3 class="text-2xl font-bold mb-6 text-center text-yellow-400">Grafik Progres Santri</h3>
-            <div id="hafalan-future-chart" class="w-full h-80 bg-black rounded-lg p-4"></div>
+            <div id="hafalan-future-chart" class="w-full h-80 futuristic-panel p-4"></div>
           </div>
           <div class="py-8 border-b border-gray-700">
             <h3 class="text-2xl font-bold mb-6 text-center text-yellow-400">Laporan Pencapaian Target</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              <div class="bg-gray-700 p-4 rounded-lg shadow-sm">
+              <div class="futuristic-panel">
                 <p class="text-sm font-medium text-gray-400">Total Hafalan Juz</p>
                 <p id="total-hafalan-juz" class="text-lg font-bold text-yellow-400"></p>
               </div>
-              <div class="bg-gray-700 p-4 rounded-lg shadow-sm">
+              <div class="futuristic-panel">
                 <p class="text-sm font-medium text-gray-400">Target Harian</p>
                 <p id="target-harian" class="text-lg font-bold text-yellow-400"></p>
               </div>
-              <div class="bg-gray-700 p-4 rounded-lg shadow-sm">
+              <div class="futuristic-panel">
                 <p class="text-sm font-medium text-gray-400">Target Mingguan</p>
                 <p id="target-mingguan" class="text-lg font-bold text-yellow-400"></p>
               </div>
-              <div class="bg-gray-700 p-4 rounded-lg shadow-sm">
+              <div class="futuristic-panel">
                 <p class="text-sm font-medium text-gray-400">Target Bulanan</p>
                 <p id="target-bulanan" class="text-lg font-bold text-yellow-400"></p>
               </div>
-              <div class="bg-gray-700 p-4 rounded-lg shadow-sm">
+              <div class="futuristic-panel">
                 <p class="text-sm font-medium text-gray-400">Target Tahunan</p>
                 <p id="target-tahunan" class="text-lg font-bold text-yellow-400"></p>
               </div>
@@ -591,14 +608,14 @@
           </div>
           <div class="pt-8">
             <h3 class="text-2xl font-bold mb-6 text-center text-yellow-400">Riwayat Setoran Hafalan</h3>
-            <div class="overflow-x-auto">
-              <table class="min-w-full bg-gray-800">
-                <thead class="bg-gray-700">
+            <div class="overflow-x-auto futuristic-panel">
+              <table class="min-w-full">
+                <thead class="bg-gray-900">
                   <tr>
-                    <th class="py-3 px-6 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Tanggal</th>
-                    <th class="py-3 px-6 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Setoran</th>
-                    <th class="py-3 px-6 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Jenis</th>
-                    <th class="py-3 px-6 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Penilaian Guru</th>
+                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Tanggal</th>
+                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Setoran</th>
+                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Jenis</th>
+                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Penilaian Guru</th>
                   </tr>
                 </thead>
                 <tbody id="hafalan-history" class="divide-y divide-gray-700"></tbody>
@@ -616,7 +633,7 @@
             Kembali ke Dashboard
           </button>
         </header>
-        <div class="bg-gray-800 p-8 rounded-xl shadow-lg space-y-12 relative main-content">
+        <div class="p-8 rounded-xl shadow-lg space-y-12 relative main-content">
           <div>
             <h2 class="text-3xl font-bold text-center text-yellow-400 mb-2">Jadwal Solat Hari Ini</h2>
             <div class="flex flex-col md:flex-row items-center justify-center space-x-3 my-4">
@@ -632,10 +649,10 @@
           </div>
           <div>
             <h2 class="text-3xl font-bold text-center text-yellow-400 mb-6">Donasi Pengembangan Aplikasi</h2>
-            <div class="max-w-md mx-auto bg-gray-700 p-6 rounded-lg text-center shadow-sm">
+            <div class="max-w-md mx-auto futuristic-panel p-6 rounded-lg text-center shadow-sm">
               <p class="text-gray-300 mb-4">Dukungan anda sangat berarti bagi kami untuk terus mengembangkan aplikasi ini agar lebih bermanfaat bagi ummat. Salurkan donasi terbaik anda melalui e-wallet berikut:</p>
               <div class="flex items-center justify-center space-x-2 my-4">
-                <span id="donation-number" class="text-2xl font-bold text-gray-200 bg-gray-800 py-3 px-4 rounded-md border-2 border-dashed border-gray-600">0856 3777 508</span>
+                <span id="donation-number" class="text-2xl font-bold text-gray-200 p-2 rounded-md border-2 border-dashed border-gray-600">0856 3777 508</span>
                 <button onclick="copyDonationNumber()" class="px-4 py-3 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">Salin</button>
               </div>
               <div class="flex justify-center space-x-4 mt-4">
@@ -666,10 +683,10 @@
           <div id="guru-santri-list" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           </div>
         </div>
-        <div id="unique-access-code-section" class="bg-gray-700 p-6 rounded-lg shadow-inner mt-8 text-center flex-shrink-0">
+        <div id="unique-access-code-section" class="futuristic-panel mt-8 text-center flex-shrink-0">
           <h3 class="text-xl font-bold text-yellow-400 mb-4">Kode Akses Wali Santri</h3>
           <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <p id="unique-access-code" class="text-2xl font-mono tracking-widest text-gray-200 p-2 bg-gray-800 rounded-md border border-yellow-400 shadow-sm"></p>
+            <p id="unique-access-code" class="text-2xl font-mono tracking-widest text-gray-200 p-2 rounded-md border border-yellow-400 shadow-sm"></p>
             <button onclick="copyAccessCode()" class="px-4 py-2 bg-yellow-400 text-black rounded-md hover:bg-yellow-500">
             Salin Kode
             </button>
@@ -691,7 +708,7 @@
             Kembali ke Panel Guru
           </button>
         </header>
-        <div class="bg-gray-800 p-8 rounded-xl shadow-lg max-w-4xl mx-auto relative main-content">
+        <div class="p-8 rounded-xl shadow-lg max-w-4xl mx-auto relative main-content">
           <h2 id="form-title" class="text-2xl font-bold mb-6 text-yellow-400"></h2>
           <form id="santri-form" class="space-y-6" enctype="multipart/form-data">
             <input type="hidden" id="santri-id">
@@ -699,22 +716,22 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label for="nama" class="block text-sm font-medium text-gray-300">Nama Lengkap Santri</label>
-                <input type="text" id="nama" class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400 bg-gray-700 text-gray-200" required>
+                <input type="text" id="nama" class="mt-1 block w-full px-4 py-3 futuristic-panel" required>
               </div>
               <div>
                 <label for="kelas" class="block text-sm font-medium text-gray-300">Kelas</label>
-                <select id="kelas" class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400 bg-gray-700 text-gray-200" required></select>
+                <select id="kelas" class="mt-1 block w-full px-4 py-3 futuristic-panel" required></select>
               </div>
               <div>
  			   <label for="total-hafalan-juz" class="block text-sm font-medium text-gray-300">Total Hafalan Juz</label>
  			   <div class="flex items-center space-x-2">
-  		      <input type="number" id="total-hafalan-juz" placeholder="Contoh: 5" onchange="updateTotalHafalan()" class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400 bg-gray-700 text-gray-200">
+  		      <input type="number" id="total-hafalan-juz" placeholder="Contoh: 5" onchange="updateTotalHafalan()" class="mt-1 block w-full px-4 py-3 futuristic-panel">
  			  </div>
 			</div>
             </div>
             <div>
               <label for="foto" class="block text-sm font-medium text-gray-300">Unggah Foto Santri</label>
-              <input type="file" id="foto" name="file" accept="image/*" class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-gray-700 text-gray-200">
+              <input type="file" id="foto" name="file" accept="image/*" class="mt-1 block w-full px-4 py-3 futuristic-panel">
               <p id="foto-status" class="text-sm text-gray-400 mt-2"></p>
             </div>
             <div class="pt-4 border-t border-gray-700">
@@ -723,19 +740,19 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label for="form-target-harian" class="block text-sm font-medium text-gray-300">Target Harian</label>
-                <select id="form-target-harian" class="mt-1 block w-full border-gray-600 rounded-md shadow-sm py-2 px-3 bg-gray-700 text-gray-200"></select>
+                <select id="form-target-harian" class="mt-1 block w-full px-4 py-3 futuristic-panel"></select>
               </div>
               <div>
                 <label for="form-target-mingguan" class="block text-sm font-medium text-gray-300">Target Mingguan</label>
-                <select id="form-target-mingguan" class="mt-1 block w-full border-gray-600 rounded-md shadow-sm py-2 px-3 bg-gray-700 text-gray-200"></select>
+                <select id="form-target-mingguan" class="mt-1 block w-full px-4 py-3 futuristic-panel"></select>
               </div>
               <div>
                 <label for="form-target-bulanan" class="block text-sm font-medium text-gray-300">Target Bulanan</label>
-                <input type="text" id="form-target-bulanan" placeholder="Contoh: 1 Juz" class="mt-1 block w-full border-gray-600 rounded-md shadow-sm py-2 px-3 bg-gray-700 text-gray-200" required>
+                <input type="text" id="form-target-bulanan" placeholder="Contoh: 1 Juz" class="mt-1 block w-full px-4 py-3 futuristic-panel" required>
               </div>
               <div>
                 <label for="form-target-tahunan" class="block text-sm font-medium text-gray-300">Target Tahunan</label>
-                <input type="text" id="form-target-tahunan" placeholder="Contoh: 5 Juz" class="mt-1 block w-full border-gray-600 rounded-md shadow-sm py-2 px-3 bg-gray-700 text-gray-200" required>
+                <input type="text" id="form-target-tahunan" placeholder="Contoh: 5 Juz" class="mt-1 block w-full px-4 py-3 futuristic-panel" required>
               </div>
             </div>
             <div>
@@ -757,25 +774,25 @@
           </form>
           <div id="hafalan-management-section" class="hidden pt-8 border-t border-gray-700 mt-8">
             <h3 class="text-xl font-bold mb-4 text-yellow-400">Kelola Setoran Hafalan</h3>
-            <form id="hafalan-form" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end bg-gray-700 p-4 rounded-lg mb-6">
+            <form id="hafalan-form" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end futuristic-panel mb-6">
               <div>
                 <label for="hafalan-tanggal" class="block text-sm font-medium text-gray-300">Tanggal</label>
-                <input type="date" id="hafalan-tanggal" class="mt-1 w-full border-gray-600 rounded-md bg-gray-800 text-gray-200" required>
+                <input type="date" id="hafalan-tanggal" class="mt-1 w-full px-4 py-3 futuristic-panel" required>
               </div>
               <div>
                 <label for="hafalan-setoran" class="block text-sm font-medium text-gray-300">Setoran</label>
-                <input type="text" id="hafalan-setoran" placeholder="Contoh: An-Naba: 1-20" class="mt-1 w-full border-gray-600 rounded-md bg-gray-800 text-gray-200" required>
+                <input type="text" id="hafalan-setoran" placeholder="Contoh: An-Naba: 1-20" class="mt-1 w-full px-4 py-3 futuristic-panel" required>
               </div>
               <div>
                 <label for="hafalan-jenis" class="block text-sm font-medium text-gray-300">Jenis</label>
-                <select id="hafalan-jenis" class="mt-1 w-full border-gray-600 rounded-md bg-gray-800 text-gray-200">
+                <select id="hafalan-jenis" class="mt-1 w-full px-4 py-3 futuristic-panel">
                   <option>Hafalan Baru</option>
                   <option>Muroja'ah</option>
                 </select>
               </div>
               <div>
                 <label for="hafalan-penilaian" class="block text-sm font-medium text-gray-300">Penilaian</label>
-                <select id="hafalan-penilaian" class="mt-1 w-full border-gray-600 rounded-md bg-gray-800 text-gray-200">
+                <select id="hafalan-penilaian" class="mt-1 w-full px-4 py-3 futuristic-panel">
                   <option>Lancar</option>
                   <option>Perlu Diulang</option>
                 </select>
@@ -783,14 +800,14 @@
               <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700">Tambah</button>
             </form>
             <div class="overflow-x-auto">
-              <table class="min-w-full bg-gray-800">
-                <thead class="bg-gray-700">
+              <table class="min-w-full futuristic-panel">
+                <thead class="bg-gray-900">
                   <tr>
-                    <th class="py-2 px-4 text-left text-xs font-medium uppercase text-gray-400">Tanggal</th>
-                    <th class="py-2 px-4 text-left text-xs font-medium uppercase text-gray-400">Setoran</th>
-                    <th class="py-2 px-4 text-left text-xs font-medium uppercase text-gray-400">Jenis</th>
-                    <th class="py-2 px-4 text-left text-xs font-medium uppercase text-gray-400">Penilaian</th>
-                    <th class="py-2 px-4 text-left text-xs font-medium uppercase text-gray-400">Aksi</th>
+                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Tanggal</th>
+                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Setoran</th>
+                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Jenis</th>
+                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Penilaian Guru</th>
+                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Aksi</th>
                   </tr>
                 </thead>
                 <tbody id="guru-hafalan-table" class="divide-y divide-gray-700"></tbody>
@@ -808,30 +825,30 @@
             Kembali ke Panel Guru
           </button>
         </header>
-        <div class="bg-gray-800 p-8 rounded-xl shadow-lg max-w-4xl mx-auto relative main-content">
+        <div class="p-8 rounded-xl shadow-lg max-w-4xl mx-auto relative main-content">
           <h2 class="text-2xl font-bold mb-6 text-yellow-400">Kelola Data Guru</h2>
-          <form id="guru-form" class="space-y-4 bg-gray-700 p-6 rounded-lg mb-8">
+          <form id="guru-form" class="space-y-4 futuristic-panel mb-8">
             <input type="hidden" id="guru-id">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
               <div>
                 <label for="guru-nama" class="block text-sm font-medium text-gray-300">Nama Guru (Ustadz/Ustadzah)</label>
-                <input type="text" id="guru-nama" class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400 bg-gray-800 text-gray-200" required>
+                <input type="text" id="guru-nama" class="mt-1 block w-full px-4 py-3 futuristic-panel" required>
               </div>
               <div>
                 <label for="guru-kelas" class="block text-sm font-medium text-gray-300">Mengajar Kelas</label>
-                <select id="guru-kelas" class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400 bg-gray-800 text-gray-200" required></select>
+                <select id="guru-kelas" class="mt-1 block w-full px-4 py-3 futuristic-panel" required></select>
               </div>
               <button type="submit" class="px-6 py-2 bg-yellow-400 text-black rounded-md hover:bg-yellow-500 w-full">Simpan Guru</button>
             </div>
           </form>
           <h3 class="text-xl font-bold mb-4 text-yellow-400">Daftar Guru Terdaftar</h3>
           <div class="overflow-x-auto">
-            <table class="min-w-full bg-gray-800">
-              <thead class="bg-gray-700">
+            <table class="min-w-full futuristic-panel">
+              <thead class="bg-gray-900">
                 <tr>
-                  <th class="py-3 px-6 text-left text-xs font-medium text-gray-400 uppercase">Nama Guru</th>
-                  <th class="py-3 px-6 text-left text-xs font-medium text-gray-400 uppercase">Mengajar Kelas</th>
-                  <th class="py-3 px-6 text-left text-xs font-medium text-gray-400 uppercase">Aksi</th>
+                  <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase">Nama Guru</th>
+                  <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase">Mengajar Kelas</th>
+                  <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase">Aksi</th>
                 </tr>
               </thead>
               <tbody id="guru-list-table" class="divide-y divide-gray-700">
@@ -854,11 +871,11 @@
           </button>
         </header>
         <div id="post-form-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-          <div class="bg-gray-800 rounded-xl shadow-2xl p-6 w-full max-w-md">
+          <div class="rounded-xl shadow-2xl p-6 w-full max-w-md futuristic-panel">
             <h2 class="text-xl font-bold mb-4 text-yellow-400">Buat Postingan Baru</h2>
             <form id="new-post-form" class="space-y-4">
-              <textarea id="post-text" placeholder="Apa yang ingin Anda bagikan?" class="w-full h-24 p-2 border rounded-md bg-gray-700 text-gray-200"></textarea>
-              <input type="file" id="post-media" accept="image/*,video/*" class="w-full p-2 border rounded-md bg-gray-700 text-gray-200">
+              <textarea id="post-text" placeholder="Apa yang ingin Anda bagikan?" class="w-full h-24 p-2 futuristic-panel"></textarea>
+              <input type="file" id="post-media" accept="image/*,video/*" class="w-full p-2 futuristic-panel">
               <div class="flex justify-end space-x-2">
                 <button type="button" onclick="closePostForm()" class="px-4 py-2 bg-gray-600 text-gray-200 rounded-md">Batal</button>
                 <button type="submit" class="px-4 py-2 bg-yellow-400 text-black rounded-md hover:bg-yellow-500">Unggah</button>
@@ -879,7 +896,7 @@
             Kembali
           </button>
         </header>
-        <div class="bg-gray-800 p-8 rounded-xl shadow-lg max-w-4xl mx-auto relative main-content">
+        <div class="p-8 rounded-xl shadow-lg max-w-4xl mx-auto relative main-content">
           <h2 class="text-3xl font-bold text-center text-yellow-400 mb-6">Tentang Aplikasi Monitoring Hafalan</h2>
           <div class="space-y-6 text-gray-300 leading-relaxed">
             <section>
@@ -1004,7 +1021,7 @@ const translations = {
         tooltip_realtime: "Мониторинг в реальном времени",
         tooltip_guardian: "Доступ для опекунов",
         tooltip_report: "Структурированные отчеты",
-        footer_text: "Проект создан командой (мухаммад нахья фадлаллах)",
+        footer_text: "Проект создан коман-dian (muhammad nahya fadlallah)",
         unique_code_copied: "Код доступа успешно скопирован!",
         complaint_info: "Информация о жалобах"
     },
@@ -1449,7 +1466,7 @@ async function renderWaliDashboard() {
     
     uniqueKelas.forEach(kelas => {
         const card = document.createElement('div');
-        card.className = 'text-center cursor-pointer p-6 bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1';
+        card.className = 'text-center cursor-pointer p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 futuristic-panel';
         card.innerHTML = `<div class="flex items-center justify-center mb-4 text-4xl text-yellow-400"><i class="fas fa-mosque"></i></div><h3 class="text-xl font-bold text-yellow-400">Kelas ${kelas}</h3><p class="text-sm text-gray-400 mt-2">Lihat daftar santri</p>`;
         card.onclick = () => showSantriListByKelas(kelas);
         kelasGrid.appendChild(card);
@@ -1542,7 +1559,7 @@ async function renderGuruDashboard() {
         listContainer.innerHTML = '';
         pondokData.santri.sort((a, b) => a.nama.localeCompare(b.nama)).forEach(santri => {
             const item = document.createElement('div');
-            item.className = 'bg-gray-800 p-4 rounded-lg shadow-sm flex flex-col items-center text-center cursor-pointer';
+            item.className = 'p-4 rounded-lg shadow-sm flex flex-col items-center text-center cursor-pointer futuristic-panel';
             item.innerHTML = `<img src="${santri.foto}" alt="${santri.nama}" class="w-16 h-16 rounded-full object-cover mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=Error';"><p class="font-bold text-gray-100">${santri.nama}</p><p class="text-sm text-gray-400 mb-2">Kelas ${santri.kelas}</p><div class="flex space-x-2"><button onclick="showGuruForm(${santri.id})" class="px-2 py-1 text-xs font-semibold text-black bg-yellow-400 rounded-md hover:bg-yellow-500">Ubah Data</button><button onclick="deleteSantri(${santri.id})" class="px-2 py-1 text-xs font-semibold text-white bg-red-600 rounded-md hover:bg-red-700">Hapus</button></div>`;
             item.onclick = () => showGuruForm(santri.id);
             listContainer.appendChild(item);
@@ -1701,35 +1718,6 @@ async function fetchJadwalSholat() {
         } else {
             locationName = "Lokasi Anda Saat Ini";
         }
-    } catch (error) {
-        console.warn("Gagal mendapatkan lokasi GPS, menggunakan lokasi default (Jakarta).", error);
-    }
-    lokasiEl.textContent = `Untuk wilayah ${locationName} dan sekitarnya.`;
-    try {
-        const response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${locationName}&country=${locationName.split(',')[1].trim()}&method=8`);
-        if (!response.ok) throw new Error(`API Waktu Solat Error: ${response.status}`);
-        const data = await response.json();
-        const todayTimings = data.data.timings;
-        container.innerHTML = '';
-        const jadwalPenting = {
-            'Subuh': todayTimings.Fajr,
-            'Zuhur': todayTimings.Dhuhr,
-            'Asar': todayTimings.Asr,
-            'Magrib': todayTimings.Maghrib,
-            'Isya': todayTimings.Isha,
-            'Imsak': todayTimings.Imsak,
-        };
-        prayerTimesToday = {
-            'Fajr': todayTimings.Fajr.substring(0, 5),
-            'Dhuhr': todayTimings.Dhuhr.substring(0, 5),
-            'Asr': todayTimings.Asr.substring(0, 5),
-            'Maghrib': todayTimings.Maghrib.substring(0, 5),
-            'Isha': todayTimings.Isha.substring(0, 5),
-        };
-        for (const [nama, waktu] of Object.entries(jadwalPenting)) {
-            container.innerHTML += `<div class="bg-gray-700 p-4 rounded-lg shadow-sm text-center"><p class="font-semibold text-yellow-400">${nama}</p><p class="text-2xl font-bold text-white">${waktu.substring(0, 5)}</p></div>`;
-        }
-        setupPrayerAlarm();
     } catch (error) {
         container.innerHTML = `<div class="col-span-full text-center text-red-500">Gagal memuat jadwal solat. Pastikan anda mempunyai sambungan internet.</div>`;
         console.error("Error fetching prayer times:", error);
@@ -1923,7 +1911,7 @@ async function renderFeed() {
 
     allPosts.forEach(post => {
         const postEl = document.createElement('div');
-        postEl.className = 'bg-gray-800 p-4 rounded-xl shadow-lg relative';
+        postEl.className = 'p-4 rounded-xl shadow-lg relative futuristic-panel';
         
         let mediaHtml = '';
         if (post.mediaType === 'image') {
@@ -1932,7 +1920,7 @@ async function renderFeed() {
             mediaHtml = `<video src="${post.mediaUrl}" controls class="w-full rounded-lg my-4"></video>`;
         }
         
-        postEl.innerHTML = `<div class="flex items-center space-x-4 mb-4"><div class="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center font-bold text-black">${post.author.charAt(0)}</div><div><p class="font-bold text-gray-100">${post.author}</p><p class="text-xs text-gray-400">${new Date(post.timestamp).toLocaleString('id-ID')}</p></div>${sessionStorage.getItem('role') === 'guru' ? `<button onclick="deletePost(${post.id})" class="ml-auto text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>` : ''}</div><p class="text-gray-300 mb-4">${post.text}</p>${mediaHtml}<div class="flex items-center space-x-4 mt-4 text-gray-400"><button onclick="likePost(${post.id})" class="flex items-center space-x-1 hover:text-yellow-400"><i class="fa-solid fa-heart"></i><span>${post.likes}</span></button><button onclick="sharePost(${post.id})" class="flex items-center space-x-1 hover:text-yellow-400"><i class="fa-solid fa-share"></i></button><div class="flex-grow"></div><button onclick="toggleComments(${post.id})" class="flex items-center space-x-1 hover:text-yellow-400"><i class="fa-solid fa-comment"></i><span>${post.comments ? post.comments.length : 0}</span></button></div><div id="comments-container-${post.id}" class="comments-container hidden mt-4 border-t border-gray-700 pt-4"><div id="comment-list-${post.id}" class="space-y-2"></div><form onsubmit="addComment(event, ${post.id})" class="mt-4 flex space-x-2"><input type="text" id="comment-input-${post.id}" placeholder="Tulis komentar..." class="flex-grow p-2 border rounded-md bg-gray-700 text-gray-200"><button type="submit" class="bg-yellow-400 text-black px-4 py-2 rounded-md hover:bg-yellow-500">Kirim</button></form></div>`;
+        postEl.innerHTML = `<div class="flex items-center space-x-4 mb-4"><div class="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center font-bold text-black">${post.author.charAt(0)}</div><div><p class="font-bold text-gray-100">${post.author}</p><p class="text-xs text-gray-400">${new Date(post.timestamp).toLocaleString('id-ID')}</p></div>${sessionStorage.getItem('role') === 'guru' ? `<button onclick="deletePost(${post.id})" class="ml-auto text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>` : ''}</div><p class="text-gray-300 mb-4">${post.text}</p>${mediaHtml}<div class="flex items-center space-x-4 mt-4 text-gray-400"><button onclick="likePost(${post.id})" class="flex items-center space-x-1 hover:text-yellow-400"><i class="fa-solid fa-heart"></i><span>${post.likes}</span></button><button onclick="sharePost(${post.id})" class="flex items-center space-x-1 hover:text-yellow-400"><i class="fa-solid fa-share"></i></button><div class="flex-grow"></div><button onclick="toggleComments(${post.id})" class="flex items-center space-x-1 hover:text-yellow-400"><i class="fa-solid fa-comment"></i><span>${post.comments ? post.comments.length : 0}</span></button></div><div id="comments-container-${post.id}" class="comments-container hidden mt-4 border-t border-gray-700 pt-4"><div id="comment-list-${post.id}" class="space-y-2"></div><form onsubmit="addComment(event, ${post.id})" class="mt-4 flex space-x-2"><input type="text" id="comment-input-${post.id}" placeholder="Tulis komentar..." class="flex-grow p-2 rounded-md bg-gray-700 text-gray-200"><button type="submit" class="bg-yellow-400 text-black px-4 py-2 rounded-md hover:bg-yellow-500">Kirim</button></form></div>`;
         feedContainer.appendChild(postEl);
         if (post.comments) {
             renderComments(post.id, post.comments);
@@ -2229,8 +2217,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const nama = document.getElementById('nama').value;
             const kelas = document.getElementById('kelas').value;
             
-            }
-
             const harian = document.getElementById('form-target-harian').value;
             const mingguan = document.getElementById('form-target-mingguan').value;
             const bulanan = document.getElementById('form-target-bulanan').value;
