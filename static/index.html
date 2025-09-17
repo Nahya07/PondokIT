@@ -706,12 +706,11 @@
                 <select id="kelas" class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400 bg-gray-700 text-gray-200" required></select>
               </div>
               <div>
-  			<label for="total-hafalan-juz" class="block text-sm font-medium text-gray-300">Total Hafalan Juz</label>
- 			 <div class="flex items-center space-x-2">
- 			   <input type="number" id="total-hafalan-juz" placeholder="Contoh: 5" class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400 bg-gray-700 text-gray-200">
-   				 <button type="button" onclick="updateTotalHafalan()" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Simpan</button>
-				  </div>
-				</div>
+ 			   <label for="total-hafalan-juz" class="block text-sm font-medium text-gray-300">Total Hafalan Juz</label>
+ 			   <div class="flex items-center space-x-2">
+  		      <input type="number" id="total-hafalan-juz" placeholder="Contoh: 5" onchange="updateTotalHafalan()" class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400 bg-gray-700 text-gray-200">
+ 			  </div>
+			</div>
             </div>
             <div>
               <label for="foto" class="block text-sm font-medium text-gray-300">Unggah Foto Santri</label>
@@ -2018,6 +2017,47 @@ async function deletePost(postId) {
         showToast('error', 'Gagal menghapus postingan.');
     }
 }
+		// Fungsi untuk mengirim data total hafalan ke rute terbaru
+async function updateTotalHafalan() {
+    // Ambil ID santri dari input tersembunyi
+    const santriId = document.getElementById('santri-id').value;
+    // Ambil nilai total hafalan juz dari input
+    const totalHafalanJuz = document.getElementById('total-hafalan-juz').value;
+
+    // Periksa apakah ID dan nilai juz ada
+    if (!santriId || totalHafalanJuz === "") {
+        console.error("ID Santri atau total hafalan juz tidak ditemukan.");
+        // Tampilkan notifikasi ke pengguna jika perlu
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/update-total-hafalan', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                santriId: santriId,
+                total_hafalan_juz: parseInt(totalHafalanJuz)
+            })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            console.log("Total hafalan berhasil diperbarui!");
+            // Tampilkan notifikasi sukses ke pengguna
+            alert("Total hafalan berhasil diperbarui!");
+        } else {
+            console.error("Gagal memperbarui total hafalan:", result.message);
+            // Tampilkan notifikasi error
+            alert("Gagal memperbarui: " + result.message);
+        }
+    } catch (error) {
+        console.error("Error saat mengirim data:", error);
+        alert("Terjadi kesalahan saat berkomunikasi dengan server.");
+    }
+}
 
 // --- INITIALIZATION ---
 // Semua kode yang berinteraksi dengan elemen DOM harus di dalam event ini
@@ -2189,12 +2229,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const nama = document.getElementById('nama').value;
             const kelas = document.getElementById('kelas').value;
             
-            // Validasi dan konversi Total Hafalan Juz
-            const totalHafalanJuzInput = document.getElementById('total-hafalan-juz').value;
-            const totalHafalanJuz = totalHafalanJuzInput === '' ? null : parseInt(totalHafalanJuzInput, 10);
-            if (totalHafalanJuzInput !== '' && isNaN(totalHafalanJuz)) {
-                showToast('error', "Total Hafalan Juz harus berupa angka.");
-                return;
             }
 
             const harian = document.getElementById('form-target-harian').value;
@@ -2208,7 +2242,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 nama: nama,
                 kelas: kelas,
                 foto: fotoUrl,
-                total_hafalan_juz: totalHafalanJuz,
                 target: { harian, mingguan, bulanan, tahunan, tercapai }
             };
             const saveSuccess = await saveData('/api/save-santri', { pondokId: pondokId, santriData: santriData });
