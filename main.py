@@ -355,6 +355,33 @@ def save_santri():
         return jsonify({'success': True, 'message': 'Data santri berhasil disimpan!'})
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
+
+# --- Rute Khusus untuk Memperbarui Total Hafalan ---
+@app.route('/api/update-total-hafalan', methods=['POST'])
+def update_total_hafalan():
+    try:
+        data = request.json
+        santri_id = data.get('santriId')
+        total_hafalan_juz = data.get('total_hafalan_juz')
+
+        # Validasi data yang diterima
+        if not santri_id or total_hafalan_juz is None:
+            return jsonify({'success': False, 'message': 'ID Santri atau total hafalan tidak ditemukan.'}), 400
+
+        # Cari santri berdasarkan ID
+        santri = Santri.query.get(santri_id)
+        if not santri:
+            return jsonify({'success': False, 'message': 'Santri tidak ditemukan.'}), 404
+
+        # Perbarui total hafalan
+        santri.total_hafalan_juz = total_hafalan_juz
+        db.session.commit()
+
+        return jsonify({'success': True, 'message': 'Total hafalan berhasil diperbarui!'})
+
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)}), 500
+        
 @app.route('/api/delete-santri', methods=['POST'])
 def delete_santri():
     try:
