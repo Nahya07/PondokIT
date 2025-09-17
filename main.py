@@ -307,9 +307,24 @@ def save_santri():
         data = request.json
         pondok_db_id = data.get('pondokId')
         santri_data = data.get('santriData')
-        print("Data yang diterima oleh server:", santri_data)
+        print("📥 Data santri diterima frontend:", santri_data)
+
         if not pondok_db_id or not santri_data:
             return jsonify({'success': False, 'message': 'Data tidak lengkap.'}), 400
+
+        # --- fungsi helper untuk validasi total hafalan juz ---
+        def parse_total_juz(value):
+            try:
+                if value is None or value == "":
+                    return None
+                total = int(value)
+                if 0 <= total <= 30:  # batasi sesuai jumlah juz
+                    return total
+                print(f"⚠️ Nilai total_hafalan_juz {total} diabaikan (di luar range 0-30).")
+                return None
+            except (ValueError, TypeError):
+                print(f"⚠️ Gagal parsing total_hafalan_juz: {value}")
+                return None
 
         santri_id = santri_data.get('id')
         if santri_id:  # Update data santri
@@ -320,21 +335,19 @@ def save_santri():
             santri_to_update.nama = santri_data['nama']
             santri_to_update.kelas = santri_data['kelas']
             santri_to_update.foto = santri_data.get('foto')
-            
-            # Periksa dan konversi total_hafalan_juz
-            total_juz = santri_data.get('total_hafalan_juz')
-            santri_to_update.total_hafalan_juz = int(total_juz) if total_juz is not None and str(total_juz).isdigit() else None
-            
+
+            # Validasi dan simpan total_hafalan_juz
+            total_juz = parse_total_juz(santri_data.get('total_hafalan_juz'))
+            santri_to_update.total_hafalan_juz = total_juz
+            print(f"✅ Update santri ID {santri_id}: total_hafalan_juz disimpan = {total_juz}")
+
             santri_to_update.tercapai = santri_data['target']['tercapai']
             santri_to_update.target_harian = santri_data['target']['harian']
             santri_to_update.target_mingguan = santri_data['target']['mingguan']
             santri_to_update.target_bulanan = santri_data['target']['bulanan']
             santri_to_update.target_tahunan = santri_data['target']['tahunan']
         else:  # Tambah santri baru
-            # Periksa dan konversi total_hafalan_juz
-            total_juz = santri_data.get('total_hafalan_juz')
-            total_juz = int(total_juz) if total_juz is not None and str(total_juz).isdigit() else None
-            
+            total_juz = parse_total_juz(santri_data.get('total_hafalan_juz'))
             new_santri = Santri(
                 nama=santri_data['nama'],
                 kelas=santri_data['kelas'],
@@ -348,10 +361,12 @@ def save_santri():
                 pondok_id=pondok_db_id
             )
             db.session.add(new_santri)
+            print(f"✅ Santri baru ditambahkan: total_hafalan_juz disimpan = {total_juz}")
 
         db.session.commit()
         return jsonify({'success': True, 'message': 'Data santri berhasil disimpan!'})
     except Exception as e:
+        print("❌ Error saat save_santri:", str(e))
         return jsonify({'success': False, 'message': str(e)}), 500
 
 @app.route('/api/delete-santri', methods=['POST'])
