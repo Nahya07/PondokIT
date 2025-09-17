@@ -307,73 +307,38 @@ def delete_guru():
 def save_santri():
     try:
         data = request.json
-        pondok_db_id = data.get('pondokId')
-        santri_data = data.get('santriData')
-        print("📥 Data santri diterima frontend:", santri_data)
+        print("📥 Payload diterima dari frontend:", data)
 
-        # 🔎 Baris debug paling penting
-        print("DEBUG >>> total_hafalan_juz dari frontend =", santri_data.get("total_hafalan_juz"))
+        santri_id = data.get("id")
+        total_hafalan_juz = data.get("total_hafalan_juz")
 
-        if not pondok_db_id or not santri_data:
-            return jsonify({'success': False, 'message': 'Data tidak lengkap.'}), 400
+        print(f"🔎 Santri ID: {santri_id}, total_hafalan_juz diterima: {total_hafalan_juz}")
 
-        # --- fungsi helper untuk validasi total hafalan juz ---
-        def parse_total_juz(value):
+        santri = Santri.query.get(santri_id)
+        if not santri:
+            print(f"⚠️ Santri dengan ID {santri_id} tidak ditemukan.")
+            return jsonify({"success": False, "error": "Santri tidak ditemukan"}), 404
+
+        # update field total_hafalan_juz jika dikirim
+        if total_hafalan_juz is not None:
             try:
-                if value is None or value == "":
-                    return None
-                total = int(value)
-                if 0 <= total <= 30:  # batasi sesuai jumlah juz
-                    return total
-                print(f"⚠️ Nilai total_hafalan_juz {total} diabaikan (di luar range 0-30).")
-                return None
-            except (ValueError, TypeError):
-                print(f"⚠️ Gagal parsing total_hafalan_juz: {value}")
-                return None
+                santri.total_hafalan_juz = int(total_hafalan_juz)
+                print(f"✅ Update total_hafalan_juz = {total_hafalan_juz} untuk santri ID {santri_id}")
+            except ValueError:
+                print(f"❌ Gagal parsing total_hafalan_juz = {total_hafalan_juz}, bukan angka")
 
-        target = santri_data.get('target') or {}
-
-        santri_id = santri_data.get('id')
-        if santri_id:  # Update data santri
-            santri_to_update = Santri.query.get(santri_id)
-            if not santri_to_update:
-                return jsonify({'success': False, 'message': 'Santri tidak ditemukan.'}), 404
-
-            santri_to_update.nama = santri_data.get('nama')
-            santri_to_update.kelas = santri_data.get('kelas')
-            santri_to_update.foto = santri_data.get('foto')
-
-            total_juz = parse_total_juz(santri_data.get('total_hafalan_juz'))
-            santri_to_update.total_hafalan_juz = total_juz
-            print(f"✅ Update santri ID {santri_id}: total_hafalan_juz disimpan = {total_juz}")
-
-            santri_to_update.tercapai = target.get('tercapai')
-            santri_to_update.target_harian = target.get('harian')
-            santri_to_update.target_mingguan = target.get('mingguan')
-            santri_to_update.target_bulanan = target.get('bulanan')
-            santri_to_update.target_tahunan = target.get('tahunan')
-        else:  # Tambah santri baru
-            total_juz = parse_total_juz(santri_data.get('total_hafalan_juz'))
-            new_santri = Santri(
-                nama=santri_data.get('nama'),
-                kelas=santri_data.get('kelas'),
-                foto=santri_data.get('foto'),
-                tercapai=target.get('tercapai'),
-                total_hafalan_juz=total_juz,
-                target_harian=target.get('harian'),
-                target_mingguan=target.get('mingguan'),
-                target_bulanan=target.get('bulanan'),
-                target_tahunan=target.get('tahunan'),
-                pondok_id=pondok_db_id
-            )
-            db.session.add(new_santri)
-            print(f"✅ Santri baru ditambahkan: total_hafalan_juz disimpan = {total_juz}")
+        # update field lain kalau ada
+        santri.nama = data.get("nama", santri.nama)
+        santri.kelas = data.get("kelas", santri.kelas)
+        santri.tercapai = data.get("tercapai", santri.tercapai)
 
         db.session.commit()
-        return jsonify({'success': True, 'message': 'Data santri berhasil disimpan!'})
+        print(f"💾 Perubahan disimpan ke DB untuk santri ID {santri_id}")
+        return jsonify({"success": True, "message": "Data santri berhasil disimpan"})
+
     except Exception as e:
-        print("❌ Error saat save_santri:", str(e))
-        return jsonify({'success': False, 'message': str(e)}), 500
+        print(f"🔥 Error di save_santri: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route('/api/delete-santri', methods=['POST'])
 def delete_santri():
