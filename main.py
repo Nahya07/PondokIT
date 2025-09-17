@@ -326,14 +326,18 @@ def save_santri():
                 print(f"⚠️ Gagal parsing total_hafalan_juz: {value}")
                 return None
 
+        # Ambil target dengan aman (jika null → jadi dict kosong)
+        target = santri_data.get('target') or {}
+        print("📦 Data target diterima:", target)
+
         santri_id = santri_data.get('id')
         if santri_id:  # Update data santri
             santri_to_update = Santri.query.get(santri_id)
             if not santri_to_update:
                 return jsonify({'success': False, 'message': 'Santri tidak ditemukan.'}), 404
 
-            santri_to_update.nama = santri_data['nama']
-            santri_to_update.kelas = santri_data['kelas']
+            santri_to_update.nama = santri_data.get('nama')
+            santri_to_update.kelas = santri_data.get('kelas')
             santri_to_update.foto = santri_data.get('foto')
 
             # Validasi dan simpan total_hafalan_juz
@@ -341,23 +345,23 @@ def save_santri():
             santri_to_update.total_hafalan_juz = total_juz
             print(f"✅ Update santri ID {santri_id}: total_hafalan_juz disimpan = {total_juz}")
 
-            santri_to_update.tercapai = santri_data['target']['tercapai']
-            santri_to_update.target_harian = santri_data['target']['harian']
-            santri_to_update.target_mingguan = santri_data['target']['mingguan']
-            santri_to_update.target_bulanan = santri_data['target']['bulanan']
-            santri_to_update.target_tahunan = santri_data['target']['tahunan']
+            santri_to_update.tercapai = target.get('tercapai')
+            santri_to_update.target_harian = target.get('harian')
+            santri_to_update.target_mingguan = target.get('mingguan')
+            santri_to_update.target_bulanan = target.get('bulanan')
+            santri_to_update.target_tahunan = target.get('tahunan')
         else:  # Tambah santri baru
             total_juz = parse_total_juz(santri_data.get('total_hafalan_juz'))
             new_santri = Santri(
-                nama=santri_data['nama'],
-                kelas=santri_data['kelas'],
+                nama=santri_data.get('nama'),
+                kelas=santri_data.get('kelas'),
                 foto=santri_data.get('foto'),
-                tercapai=santri_data['target']['tercapai'],
+                tercapai=target.get('tercapai'),
                 total_hafalan_juz=total_juz,
-                target_harian=santri_data['target']['harian'],
-                target_mingguan=santri_data['target']['mingguan'],
-                target_bulanan=santri_data['target']['bulanan'],
-                target_tahunan=santri_data['target']['tahunan'],
+                target_harian=target.get('harian'),
+                target_mingguan=target.get('mingguan'),
+                target_bulanan=target.get('bulanan'),
+                target_tahunan=target.get('tahunan'),
                 pondok_id=pondok_db_id
             )
             db.session.add(new_santri)
