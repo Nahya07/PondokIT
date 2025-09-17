@@ -307,7 +307,7 @@ def save_santri():
         data = request.json
         pondok_db_id = data.get('pondokId')
         santri_data = data.get('santriData')
-
+        print("Data yang diterima oleh server:", santri_data)
         if not pondok_db_id or not santri_data:
             return jsonify({'success': False, 'message': 'Data tidak lengkap.'}), 400
 
