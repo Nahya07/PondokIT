@@ -307,39 +307,54 @@ def delete_guru():
 def save_santri():
     try:
         data = request.json
-        print("📥 Payload diterima dari frontend:", data)
+        pondok_db_id = data.get('pondokId')
+        santri_data = data.get('santriData')
+        print("Data yang diterima oleh server:", santri_data)
+        if not pondok_db_id or not santri_data:
+            return jsonify({'success': False, 'message': 'Data tidak lengkap.'}), 400
 
-        santri_id = data.get("id")
-        total_hafalan_juz = data.get("total_hafalan_juz")
+        santri_id = santri_data.get('id')
+        if santri_id:  # Update data santri
+            santri_to_update = Santri.query.get(santri_id)
+            if not santri_to_update:
+                return jsonify({'success': False, 'message': 'Santri tidak ditemukan.'}), 404
 
-        print(f"🔎 Santri ID: {santri_id}, total_hafalan_juz diterima: {total_hafalan_juz}")
-
-        santri = Santri.query.get(santri_id)
-        if not santri:
-            print(f"⚠️ Santri dengan ID {santri_id} tidak ditemukan.")
-            return jsonify({"success": False, "error": "Santri tidak ditemukan"}), 404
-
-        # update field total_hafalan_juz jika dikirim
-        if total_hafalan_juz is not None:
-            try:
-                santri.total_hafalan_juz = int(total_hafalan_juz)
-                print(f"✅ Update total_hafalan_juz = {total_hafalan_juz} untuk santri ID {santri_id}")
-            except ValueError:
-                print(f"❌ Gagal parsing total_hafalan_juz = {total_hafalan_juz}, bukan angka")
-
-        # update field lain kalau ada
-        santri.nama = data.get("nama", santri.nama)
-        santri.kelas = data.get("kelas", santri.kelas)
-        santri.tercapai = data.get("tercapai", santri.tercapai)
+            santri_to_update.nama = santri_data['nama']
+            santri_to_update.kelas = santri_data['kelas']
+            santri_to_update.foto = santri_data.get('foto')
+            
+            # Periksa dan konversi total_hafalan_juz
+            total_juz = santri_data.get('total_hafalan_juz')
+            santri_to_update.total_hafalan_juz = int(total_juz) if total_juz is not None and str(total_juz).isdigit() else None
+            
+            santri_to_update.tercapai = santri_data['target']['tercapai']
+            santri_to_update.target_harian = santri_data['target']['harian']
+            santri_to_update.target_mingguan = santri_data['target']['mingguan']
+            santri_to_update.target_bulanan = santri_data['target']['bulanan']
+            santri_to_update.target_tahunan = santri_data['target']['tahunan']
+        else:  # Tambah santri baru
+            # Periksa dan konversi total_hafalan_juz
+            total_juz = santri_data.get('total_hafalan_juz')
+            total_juz = int(total_juz) if total_juz is not None and str(total_juz).isdigit() else None
+            
+            new_santri = Santri(
+                nama=santri_data['nama'],
+                kelas=santri_data['kelas'],
+                foto=santri_data.get('foto'),
+                tercapai=santri_data['target']['tercapai'],
+                total_hafalan_juz=total_juz,
+                target_harian=santri_data['target']['harian'],
+                target_mingguan=santri_data['target']['mingguan'],
+                target_bulanan=santri_data['target']['bulanan'],
+                target_tahunan=santri_data['target']['tahunan'],
+                pondok_id=pondok_db_id
+            )
+            db.session.add(new_santri)
 
         db.session.commit()
-        print(f"💾 Perubahan disimpan ke DB untuk santri ID {santri_id}")
-        return jsonify({"success": True, "message": "Data santri berhasil disimpan"})
-
+        return jsonify({'success': True, 'message': 'Data santri berhasil disimpan!'})
     except Exception as e:
-        print(f"🔥 Error di save_santri: {e}")
-        return jsonify({"success": False, "error": str(e)}), 500
-
+        return jsonify({'success': False, 'message': str(e)}), 500
 @app.route('/api/delete-santri', methods=['POST'])
 def delete_santri():
     try:
