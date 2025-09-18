@@ -215,6 +215,9 @@ def get_data():
                 }
             } for s in santri_list
         ]
+
+        print("Data santri yang dikirim ke frontend:", santri_json)
+        
         guru_json = [
             {"id": g.id, "nama": g.nama, "mengajar_kelas": g.mengajar_kelas} for g in guru_list
         ]
