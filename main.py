@@ -379,6 +379,7 @@ def update_total_hafalan():
         # Perbarui total hafalan
         santri.total_hafalan_juz = total_hafalan_juz
         db.session.commit()
+        db.session.refresh(santri)
 
         return jsonify({'success': True, 'message': 'Total hafalan berhasil diperbarui!'})
 
