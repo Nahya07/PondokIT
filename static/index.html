@@ -30,12 +30,6 @@
       --color-text-secondary-light: #6b7280;
       --color-accent-gold: #FFD700;
       }
-      .dark {
-      --color-primary-dark: #1a202c;
-      --color-secondary-dark: #111827;
-      --color-text-dark: #f3f4f6;
-      --color-text-secondary-dark: #9ca3af;
-      }
       body {
       font-family: 'Inter', sans-serif;
       /* Background dihapus, menggunakan kelas Tailwind CSS (bg-gray-900) */
@@ -52,9 +46,6 @@
       border-radius: 1rem;
       border: 1px solid rgba(255, 215, 0, 0.2);
       box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
-      }
-      .dark .main-content {
-      background-color: rgba(17, 24, 32, 0.7);
       }
       /* Modern Panel Design */
       .modern-panel {
@@ -116,21 +107,12 @@
       ::-webkit-scrollbar-track {
       background: #2d3748;
       }
-      .dark ::-webkit-scrollbar-track {
-      background: #334155;
-      }
       ::-webkit-scrollbar-thumb {
       background: #64748b;
       border-radius: 4px;
       }
-      .dark ::-webkit-scrollbar-thumb {
-      background: #94a3b8;
-      }
       ::-webkit-scrollbar-thumb:hover {
       background: #4a5568;
-      }
-      .dark ::-webkit-scrollbar-thumb:hover {
-      background: #64748b;
       }
       .fade-in {
       animation: fadeIn 0.5s ease-in-out;
@@ -179,43 +161,6 @@
       background-color: #FFD700;
       }
       /* Dark mode toggle switch */
-      .dark-mode-toggle-label {
-      position: relative;
-      display: inline-block;
-      width: 48px;
-      height: 24px;
-      cursor: pointer;
-      }
-      .dark-mode-toggle-label input {
-      display: none;
-      }
-      .dark-mode-toggle-label .slider {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #4b5563;
-      transition: .4s;
-      border-radius: 24px;
-      }
-      .dark-mode-toggle-label .slider:before {
-      position: absolute;
-      content: "";
-      height: 16px;
-      width: 16px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      transition: .4s;
-      border-radius: 50%;
-      }
-      input:checked + .slider {
-      background-color: #FFD700;
-      }
-      input:checked + .slider:before {
-      transform: translateX(24px);
-      }
       .quiz-option {
       transition: all 0.2s ease-in-out;
       }
@@ -354,11 +299,6 @@
     <!-- Main App Container -->
     <div id="app" class="container mx-auto p-4 md:p-8 max-w-7xl">
       <div id="role-selection-page" class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-900">
-        <div class="fixed top-8 right-8 z-50 flex items-center space-x-2">
-          <button id="theme-toggle" class="futuristic-panel !p-0 rounded-full w-10 h-10 flex items-center justify-center shadow-md">
-          <i id="theme-icon" class="fas fa-moon text-gray-200"></i>
-          </button>
-        </div>
         <div class="fixed top-8 z-50">
           <select id="language-selector" onchange="setLanguage(this.value)" class="futuristic-panel text-gray-200 rounded-full shadow-md py-2 px-4 focus:ring-yellow-400 focus:border-yellow-400">
             <option value="id">Bahasa Indonesia</option>
@@ -1774,23 +1714,6 @@ function dismissAlarm() {
     const notification = document.getElementById('alarm-notification');
     notification.classList.add('hidden');
 }
-function applyTheme(theme) {
-    const body = document.body;
-    const themeIcon = document.getElementById('theme-icon');
-    if (theme === 'dark') {
-        body.classList.add('dark');
-        if (themeIcon) { themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun'); }
-    } else {
-        body.classList.remove('dark');
-        if (themeIcon) { themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon'); }
-    }
-    localStorage.setItem('theme', theme);
-}
-function toggleTheme() {
-    const currentTheme = localStorage.getItem('theme') || 'light';
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    applyTheme(newTheme);
-}
 function showSantriListByKelas(kelas) {
     // 1. Ambil data dengan kunci yang sudah diubah ke angka
     const pondokId = sessionStorage.getItem('currentPondokId');
@@ -2019,26 +1942,7 @@ async function deletePost(postId) {
     // Periksa apakah ID santri dan nilai total hafalan juz ada
     if (!santriId || totalHafalanJuzInput === "") {
         console.error("ID Santri atau total hafalan juz tidak ditemukan.");
-        alert("ID Santri atau total hafalan juz tidak ditemukan.");
-        return;
-    }
-    
-    // Pastikan nilai yang dimasukkan adalah angka
-// >>> KODE JAVASCRIPT YANG BENAR <<<
-async function updateTotalHafalan() {
-    // Ambil ID santri dari input tersembunyi
-    const santriId = document.getElementById('santri-id').value;
-    
-    // Ambil nilai total hafalan juz dari input
-    const totalHafalanJuzInput = document.getElementById('total-hafalan-juz').value;
-
-    console.log("ID Santri saat ini:", santriId);
-    console.log("Total Hafalan Juz:", totalHafalanJuzInput);
-
-    // Periksa apakah ID santri dan nilai total hafalan juz ada
-    if (!santriId || totalHafalanJuzInput === "") {
-        console.error("ID Santri atau total hafalan juz tidak ditemukan.");
-        alert("ID Santri atau total hafalan juz tidak ditemukan.");
+        showToast('error', "ID Santri atau total hafalan juz tidak ditemukan.");
         return;
     }
     
@@ -2046,7 +1950,7 @@ async function updateTotalHafalan() {
     const totalHafalanJuz = parseInt(totalHafalanJuzInput);
     if (isNaN(totalHafalanJuz)) {
         console.error("Total Hafalan Juz harus berupa angka.");
-        alert("Total Hafalan Juz harus berupa angka.");
+        showToast('error', "Total Hafalan Juz harus berupa angka.");
         return;
     }
 
@@ -2065,18 +1969,21 @@ async function updateTotalHafalan() {
         const result = await response.json();
         if (result.success) {
             console.log("Total hafalan berhasil diperbarui!");
-            alert("Total hafalan berhasil diperbarui!");
+            showToast('success', "Total hafalan berhasil diperbarui!");
+            // Perbarui cache data setelah perubahan
+            await fetchData();
+            renderWaliDashboard();
         } else {
             console.error("Gagal memperbarui total hafalan:", result.message);
-            alert("Gagal memperbarui: " + result.message);
+            showToast('error', "Gagal memperbarui: " + result.message);
         }
     } catch (error) {
         console.error("Error saat mengirim data:", error);
-        alert("Terjadi kesalahan saat berkomunikasi dengan server.");
+        showToast('error', "Terjadi kesalahan saat berkomunikasi dengan server.");
     }
 }
+
 // --- INITIALIZATION ---
-// Semua kode yang berinteraksi dengan elemen DOM harus di dalam event ini
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- Inisialisasi awal
@@ -2084,11 +1991,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const languageSelector = document.getElementById('language-selector');
     if (languageSelector) languageSelector.value = savedLang;
     setLanguage(savedLang);
-
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    if(themeToggleBtn) { themeToggleBtn.addEventListener('click', toggleTheme); }
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    applyTheme(savedTheme);
 
     const alarmToggle = document.getElementById('alarm-toggle');
     if (alarmToggle) {
@@ -2418,7 +2320,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// --- Panggil Fungsi Inisialisasi Aplikasi ---
 	playWelcomeAnimation();
-    });
+});
 </script>
   </body>
 </html>
