@@ -673,8 +673,8 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 			<div>
-   				 <label for="total-hafalan-juz" class="block text-sm font-medium text-gray-300">Total Hafalan Juz</label>
-    			   <input type="number" id="total-hafalan-juz" placeholder="Contoh: 5" class="mt-1 block w-full px-4 py-3 futuristic-panel">
+   				 <label for="total-hafalan-juz-guru" class="block text-sm font-medium text-gray-300">Total Hafalan Juz</label>
+    			   <input type="number" id="total-hafalan-juz-guru" placeholder="Contoh: 5" class="mt-1 block w-full px-4 py-3 futuristic-panel">
 				</div>
               <div>
                 <label for="form-target-harian" class="block text-sm font-medium text-gray-300">Target Harian</label>
@@ -1550,7 +1550,7 @@ async function showGuruForm(santriId) {
         if (fotoStatus) fotoStatus.textContent = santri.foto ? 'Foto sudah ada, tidak perlu diunggah lagi.' : 'Belum ada foto. Unggah sekarang.';
 
         const target = santri.target || {};
-        const totalHafalanJuzInput = document.getElementById('total-hafalan-juz');
+        const totalHafalanJuzInput = document.getElementById('total-hafalan-juz-guru');
         if (totalHafalanJuzInput) totalHafalanJuzInput.value = santri.total_hafalan_juz || '';
         const formTargetHarian = document.getElementById('form-target-harian');
         if (formTargetHarian) formTargetHarian.value = target.harian || '';
@@ -1571,7 +1571,7 @@ async function showGuruForm(santriId) {
         const formTitle = document.getElementById('form-title');
         if (formTitle) formTitle.textContent = 'Tambah Santri Baru';
         if (fotoStatus) fotoStatus.textContent = 'Unggah foto baru untuk santri ini.';
-        const totalHafalanJuzInput = document.getElementById('total-hafalan-juz');
+        const totalHafalanJuzInput = document.getElementById('total-hafalan-juz-guru');
         if (totalHafalanJuzInput) totalHafalanJuzInput.value = '';
     }
     showPage('guruForm');
@@ -1944,7 +1944,7 @@ async function deletePost(postId) {
     const santriId = document.getElementById('santri-id').value;
     
     // Ambil nilai total hafalan juz dari input
-    const totalHafalanJuzInput = document.getElementById('total-hafalan-juz').value;
+    const totalHafalanJuzInput = document.getElementById('total-hafalan-juz-guru').value;
 
     console.log("ID Santri saat ini:", santriId);
     console.log("Total Hafalan Juz:", totalHafalanJuzInput);
@@ -1984,7 +1984,7 @@ async function deletePost(postId) {
         await fetchData();
     } else {
         console.error("Gagal memperbarui total hafalan.");
-        showToast('error', "Gagal memperbarui total hafalan: " + result.message);
+        showToast('error', "Gagal memperbarui total hafalan.");
     }
 }
 
@@ -2152,7 +2152,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const nama = document.getElementById('nama').value;
             const kelas = document.getElementById('kelas').value;
             
-            const totalHafalanJuz = document.getElementById('total-hafalan-juz').value;
+            const totalHafalanJuz = document.getElementById('total-hafalan-juz-guru').value;
             const harian = document.getElementById('form-target-harian').value;
             const mingguan = document.getElementById('form-target-mingguan').value;
             const bulanan = document.getElementById('form-target-bulanan').value;
