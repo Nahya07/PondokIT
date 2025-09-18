@@ -722,11 +722,11 @@
                 <label for="kelas" class="block text-sm font-medium text-gray-300">Kelas</label>
                 <select id="kelas" class="mt-1 block w-full px-4 py-3 futuristic-panel" required></select>
               </div>
-              <div>
-   			 <label for="total-hafalan-juz" class="block text-sm font-medium text-gray-300">Total Hafalan Juz</label>
- 			   <div class="flex items-center space-x-2">
-  			      <input type="number" id="total-hafalan-juz" placeholder="Contoh: 5" class="mt-1 block w-full px-4 py-3 futuristic-panel">
-   				     <button type="button" onclick="updateTotalHafalan()" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Simpan</button>
+        	 <div>
+   				 <label for="total-hafalan-juz" class="block text-sm font-medium text-gray-300">Total Hafalan Juz</label>
+   				  <div class="flex items-center space-x-2">
+    			   <input type="number" id="total-hafalan-juz" placeholder="Contoh: 5" class="mt-1 block w-full px-4 py-3 futuristic-panel">
+     				   <button type="button" onclick="updateTotalHafalan()" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Simpan</button>
  				   </div>
 				</div>
             </div>
@@ -2007,6 +2007,25 @@ async function deletePost(postId) {
     }
 }
 		async function updateTotalHafalan() {
+    // Ambil ID santri dari input tersembunyi
+    const santriId = document.getElementById('santri-id').value;
+    
+    // Ambil nilai total hafalan juz dari input
+    const totalHafalanJuzInput = document.getElementById('total-hafalan-juz').value;
+
+    console.log("ID Santri saat ini:", santriId);
+    console.log("Total Hafalan Juz:", totalHafalanJuzInput);
+
+    // Periksa apakah ID santri dan nilai total hafalan juz ada
+    if (!santriId || totalHafalanJuzInput === "") {
+        console.error("ID Santri atau total hafalan juz tidak ditemukan.");
+        alert("ID Santri atau total hafalan juz tidak ditemukan.");
+        return;
+    }
+    
+    // Pastikan nilai yang dimasukkan adalah angka
+// >>> KODE JAVASCRIPT YANG BENAR <<<
+async function updateTotalHafalan() {
     // Ambil ID santri dari input tersembunyi
     const santriId = document.getElementById('santri-id').value;
     
