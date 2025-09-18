@@ -2007,20 +2007,23 @@ async function deletePost(postId) {
     }
 }
 		async function updateTotalHafalan() {
+    // Ambil ID santri dari input tersembunyi
     const santriId = document.getElementById('santri-id').value;
+    
     // Ambil nilai total hafalan juz dari input
     const totalHafalanJuzInput = document.getElementById('total-hafalan-juz').value;
 
     console.log("ID Santri saat ini:", santriId);
     console.log("Total Hafalan Juz:", totalHafalanJuzInput);
 
-    // Periksa apakah ID dan nilai juz ada
+    // Periksa apakah ID santri dan nilai total hafalan juz ada
     if (!santriId || totalHafalanJuzInput === "") {
         console.error("ID Santri atau total hafalan juz tidak ditemukan.");
         alert("ID Santri atau total hafalan juz tidak ditemukan.");
         return;
     }
     
+    // Pastikan nilai yang dimasukkan adalah angka
     const totalHafalanJuz = parseInt(totalHafalanJuzInput);
     if (isNaN(totalHafalanJuz)) {
         console.error("Total Hafalan Juz harus berupa angka.");
@@ -2053,7 +2056,6 @@ async function deletePost(postId) {
         alert("Terjadi kesalahan saat berkomunikasi dengan server.");
     }
 }
-
 // --- INITIALIZATION ---
 // Semua kode yang berinteraksi dengan elemen DOM harus di dalam event ini
 document.addEventListener('DOMContentLoaded', () => {
