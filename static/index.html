@@ -322,6 +322,7 @@
             <button onclick="handleRoleSelection('guru')" class="w-full px-4 py-3 font-semibold text-gray-900 bg-yellow-100 rounded-lg hover:bg-yellow-200">
             Saya Pengurus / Guru
             </button>
+            <button onclick="openAkangNahyaChat()" class="w-full px-4 py-3 font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700">Ngobrol dengan Akang Nahya</button>
           </div>
         </div>
         <div class="flex flex-col items-center mt-8 w-full max-w-sm mx-auto space-y-6">
@@ -616,6 +617,7 @@
             <button onclick="showGuruForm(null)" class="px-3 py-2 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">
             + Tambah Santri Baru
             </button>
+            <button onclick="openAkangNahyaChat()" class="px-3 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700">Ngobrol dengan Akang Nahya</button>
             <button onclick="logout()" class="px-3 py-2 text-sm font-semibold text-red-600 bg-red-100 rounded-lg hover:bg-red-200">Keluar</button>
           </div>
         </header>
@@ -875,6 +877,28 @@
     </div>
     <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed top-5 right-5 z-50"></div>
+
+    <!-- Modal for Akang Nahya AI Chat -->
+    <div id="akang-nahya-chat-modal" class="fixed inset-0 bg-black bg-opacity-80 z-50 hidden flex items-center justify-center p-4">
+      <div class="relative w-full max-w-xl text-center">
+        <div class="chat-container">
+          <div class="flex items-center justify-between p-4 bg-gray-800 border-b border-gray-700">
+            <h3 class="text-lg font-bold text-white">Ngobrol bareng Akang Nahya!</h3>
+            <button onclick="closeAkangNahyaChat()" class="text-gray-400 hover:text-white">&times;</button>
+          </div>
+          <div class="chat-messages" id="chat-messages">
+            <!-- Pesan chat akan dimuat di sini -->
+          </div>
+          <form class="chat-input" id="chat-form">
+            <input type="text" id="chat-input" placeholder="Ketik pesan..." autocomplete="off">
+            <button type="submit" class="bg-yellow-400 text-black rounded-full p-2 h-10 w-10 flex items-center justify-center hover:bg-yellow-500">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <script>
 // --- Semua Deklarasi Variabel dan Objek Global ---
 const translations = {
@@ -1027,12 +1051,19 @@ function renderFutureChart(data) {
         return;
     }
 
+    // Menggunakan data hafalan kumulatif
+    let cumulativeScore = 0;
+    const cumulativeData = validData.map(d => {
+        cumulativeScore += d.nilai;
+        return { tanggal: d.tanggal, nilai: cumulativeScore, penilaian: d.penilaian };
+    });
+
     const x = d3.scaleTime()
-        .domain(d3.extent(validData, d => d.tanggal))
+        .domain(d3.extent(cumulativeData, d => d.tanggal))
         .range([margin.left, width - margin.right]);
 
     const y = d3.scaleLinear()
-        .domain([0, d3.max(validData, d => d.nilai) + 5])
+        .domain([0, d3.max(cumulativeData, d => d.nilai) + 5])
         .nice()
         .range([height - margin.bottom, margin.top]);
 
@@ -1053,7 +1084,7 @@ function renderFutureChart(data) {
     gradient.append("stop").attr("offset", "100%").attr("stop-color", "#FFD700").attr("stop-opacity", 0);
 
     svg.append("path")
-        .datum(validData)
+        .datum(cumulativeData)
         .attr("fill", "url(#area-gradient)")
         .attr("stroke", "#FFD700")
         .attr("stroke-width", 2)
@@ -1080,18 +1111,18 @@ function renderFutureChart(data) {
         .style("opacity", 0);
 
     svg.selectAll("circle")
-        .data(validData)
+        .data(cumulativeData)
         .enter()
         .append("circle")
         .attr("cx", d => x(d.tanggal))
         .attr("cy", d => y(d.nilai))
         .attr("r", 5)
-        .attr("fill", "#FFD700")
+        .attr("fill", d => d.penilaian === 'Lancar' ? 'green' : 'red')
         .attr("stroke", "#1a1a1a")
         .attr("stroke-width", 2)
         .on("mouseover", (event, d) => {
             tooltip.style("opacity", 1)
-                .html(`<strong>Tanggal:</strong> ${d.tanggal.toLocaleDateString('id-ID')}<br><strong>Setoran:</strong> ${d.nilai}`)
+                .html(`<strong>Tanggal:</strong> ${d.tanggal.toLocaleDateString('id-ID')}<br><strong>Penilaian:</strong> ${d.penilaian}`)
                 .style("left", (event.pageX + 10) + "px")
                 .style("top", (event.pageY - 20) + "px");
         })
@@ -1460,10 +1491,15 @@ async function showSantriDetail(santriId) {
     const targetTahunanEl = document.getElementById('target-tahunan');
     if (targetTahunanEl) targetTahunanEl.textContent = target.tahunan || '-';
     
-    const chartData = hafalan.map(h => ({
-        tanggal: new Date(h.tanggal),
-        nilai: h.setoran.length // Anda mungkin perlu menyesuaikan ini
-    }));
+    // Perbaikan utama untuk grafik: menggunakan penilaian untuk nilai
+    const chartData = hafalan.map(h => {
+        const score = h.penilaian === 'Lancar' ? 2 : 1;
+        return {
+            tanggal: new Date(h.tanggal),
+            nilai: score,
+            penilaian: h.penilaian // Menambahkan penilaian untuk tooltip
+        };
+    });
     renderFutureChart(chartData);
     
     const historyBody = document.getElementById('hafalan-history');
@@ -1987,6 +2023,92 @@ async function deletePost(postId) {
         showToast('error', "Gagal memperbarui total hafalan.");
     }
 }
+
+// ======================================
+// Fitur AI Akang Nahya
+// ======================================
+const akangNahyaChatModal = document.getElementById('akang-nahya-chat-modal');
+const chatMessagesEl = document.getElementById('chat-messages');
+const chatFormEl = document.getElementById('chat-form');
+let akangNahyaChatHistory = [{ role: "model", parts: [{ text: "Yo, bro! Aku Akang Nahya. Mau nanya apa nih? Santai aja, kek lagi ngobrol sama temen." }] }];
+
+function openAkangNahyaChat() {
+    akangNahyaChatModal.classList.remove('hidden');
+    chatMessagesEl.innerHTML = '';
+    akangNahyaChatHistory.forEach(msg => {
+      appendChatMessage(msg.role, msg.parts[0].text);
+    });
+    chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+}
+
+function closeAkangNahyaChat() {
+    akangNahyaChatModal.classList.add('hidden');
+}
+
+function appendChatMessage(role, text) {
+    const messageEl = document.createElement('div');
+    messageEl.className = `message ${role}`;
+    messageEl.innerHTML = text;
+    chatMessagesEl.appendChild(messageEl);
+    chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+}
+
+async function callAkangNahyaAI(prompt) {
+    const systemPrompt = "Kamu adalah Akang Nahya, seorang AI dengan kepribadian anak jaman sekarang. Gunakan bahasa gaul yang santai dan akrab. Jawablah pertanyaan dengan singkat, jelas, dan tetap sopan. Sesekali berikan emoji dan tawa seperti 'wkwkwk' atau 'hehehe'.";
+    
+    // Tampilkan loading indicator
+    const loadingEl = document.createElement('div');
+    loadingEl.className = 'message ai';
+    loadingEl.innerHTML = '<span class="ai-loading-icon"></span>';
+    chatMessagesEl.appendChild(loadingEl);
+    chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+
+    akangNahyaChatHistory.push({ role: "user", parts: [{ text: prompt }] });
+    
+    const payload = {
+        contents: akangNahyaChatHistory,
+        systemInstruction: {
+            parts: [{ text: systemPrompt }]
+        },
+    };
+    const apiKey = "";
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        const aiMessage = result.candidates?.[0]?.content?.parts?.[0]?.text;
+        
+        akangNahyaChatHistory.push({ role: "model", parts: [{ text: aiMessage }] });
+        
+        loadingEl.remove();
+        appendChatMessage('ai', aiMessage);
+    } catch (error) {
+        loadingEl.remove();
+        appendChatMessage('ai', 'Duh, ada error nih. Coba lagi ya, bro.');
+        console.error('Error calling Gemini API:', error);
+    }
+}
+
+chatFormEl.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const inputEl = document.getElementById('chat-input');
+    const prompt = inputEl.value;
+    if (!prompt) return;
+
+    appendChatMessage('user', prompt);
+    inputEl.value = '';
+    
+    await callAkangNahyaAI(prompt);
+});
+// ======================================
+// Akhir Fitur AI
+// ======================================
+
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
