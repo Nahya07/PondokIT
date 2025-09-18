@@ -2005,17 +2005,25 @@ async function deletePost(postId) {
         showToast('error', 'Gagal menghapus postingan.');
     }
 }
-		// Fungsi untuk mengirim data total hafalan ke rute terbaru
-async function updateTotalHafalan() {
-    // Ambil ID santri dari input tersembunyi
+		async function updateTotalHafalan() {
     const santriId = document.getElementById('santri-id').value;
     // Ambil nilai total hafalan juz dari input
-    const totalHafalanJuz = document.getElementById('total-hafalan-juz').value;
+    const totalHafalanJuzInput = document.getElementById('total-hafalan-juz').value;
+
+    console.log("ID Santri saat ini:", santriId);
+    console.log("Total Hafalan Juz:", totalHafalanJuzInput);
 
     // Periksa apakah ID dan nilai juz ada
-    if (!santriId || totalHafalanJuz === "") {
+    if (!santriId || totalHafalanJuzInput === "") {
         console.error("ID Santri atau total hafalan juz tidak ditemukan.");
-        // Tampilkan notifikasi ke pengguna jika perlu
+        alert("ID Santri atau total hafalan juz tidak ditemukan.");
+        return;
+    }
+    
+    const totalHafalanJuz = parseInt(totalHafalanJuzInput);
+    if (isNaN(totalHafalanJuz)) {
+        console.error("Total Hafalan Juz harus berupa angka.");
+        alert("Total Hafalan Juz harus berupa angka.");
         return;
     }
 
@@ -2027,18 +2035,16 @@ async function updateTotalHafalan() {
             },
             body: JSON.stringify({
                 santriId: santriId,
-                total_hafalan_juz: parseInt(totalHafalanJuz)
+                total_hafalan_juz: totalHafalanJuz
             })
         });
 
         const result = await response.json();
         if (result.success) {
             console.log("Total hafalan berhasil diperbarui!");
-            // Tampilkan notifikasi sukses ke pengguna
             alert("Total hafalan berhasil diperbarui!");
         } else {
             console.error("Gagal memperbarui total hafalan:", result.message);
-            // Tampilkan notifikasi error
             alert("Gagal memperbarui: " + result.message);
         }
     } catch (error) {
