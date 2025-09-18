@@ -1455,7 +1455,7 @@ async function showSantriDetail(santriId) {
     if (targetHarianEl) targetHarianEl.textContent = target.harian || '-';
     const targetMingguanEl = document.getElementById('target-mingguan');
     if (targetMingguanEl) targetMingguanEl.textContent = target.mingguan || '-';
-    const targetBulananEl = document.getElementById('form-target-bulanan');
+    const targetBulananEl = document.getElementById('target-bulanan');
     if (targetBulananEl) targetBulananEl.textContent = target.bulanan || '-';
     const targetTahunanEl = document.getElementById('target-tahunan');
     if (targetTahunanEl) targetTahunanEl.textContent = target.tahunan || '-';
@@ -1571,6 +1571,8 @@ async function showGuruForm(santriId) {
         const formTitle = document.getElementById('form-title');
         if (formTitle) formTitle.textContent = 'Tambah Santri Baru';
         if (fotoStatus) fotoStatus.textContent = 'Unggah foto baru untuk santri ini.';
+        const totalHafalanJuzInput = document.getElementById('total-hafalan-juz');
+        if (totalHafalanJuzInput) totalHafalanJuzInput.value = '';
     }
     showPage('guruForm');
 }
@@ -2322,6 +2324,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+	const updateTotalHafalanBtn = document.getElementById('update-total-hafalan-btn');
+	if(updateTotalHafalanBtn){
+		updateTotalHafalanBtn.addEventListener('click', function(e){
+			e.preventDefault();
+			updateTotalHafalan();
+		});
+	}
 
 	// --- Panggil Fungsi Inisialisasi Aplikasi ---
 	playWelcomeAnimation();
