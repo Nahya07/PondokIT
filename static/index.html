@@ -777,7 +777,7 @@
                 .attr("height", height);
 
             // Memfilter data yang valid dan mengurutkannya
-            const validData = data.filter(d => d && d.tanggal && d.penilaian);
+            const validData = data.filter(d => d && d.tanggal && d.penilaian && !isNaN(d.tanggal.getTime()));
             if (validData.length === 0) {
                 svg.append("text")
                     .attr("x", width / 2)
@@ -1235,12 +1235,21 @@
             // Perbaikan utama untuk grafik: menggunakan penilaian untuk nilai
             const chartData = hafalan.map(h => {
                 const score = h.penilaian === 'Lancar' ? 2 : 1;
+                let dateObject = new Date(h.tanggal);
+                if (isNaN(dateObject.getTime())) {
+                    // Coba parsing manual untuk format "dd/mm/yyyy"
+                    const parts = h.tanggal.split('/');
+                    if (parts.length === 3) {
+                        dateObject = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+                    }
+                }
                 return {
-                    tanggal: new Date(h.tanggal), // Pastikan ini adalah objek Date
+                    tanggal: dateObject,
                     nilai: score,
                     penilaian: h.penilaian // Menambahkan penilaian untuk tooltip
                 };
-            });
+            }).filter(d => !isNaN(d.tanggal.getTime())); // Filter data dengan tanggal yang tidak valid
+            
             renderFutureChart(chartData);
             
             const historyBody = document.getElementById('hafalan-history');
