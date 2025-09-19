@@ -808,8 +808,10 @@
     <div id="toast-container" class="fixed top-5 right-5 z-50"></div>
     <audio id="nahya-ding" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
     <audio id="nahya-reply" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" preload="auto"></audio>
+	  
     <script type="module">
-        // --- Semua Deklarasi Variabel dan Objek Global ---
+        import { pipeline } from "https://cdn.jsdelivr.net/npm/@xenova/transformers";
+
         const translations = {
             id: {
                 app_title: "Monitoring Hafalan Santri",
@@ -927,14 +929,15 @@
             guruManagement: document.getElementById('guru-management-page'),
             jadwalDonasi: document.getElementById('jadwal-donasi-page'),
             about: document.getElementById('about-page'),
-            feedPage: document.getElementById('feed-page')
-			akangNahya: document.getElementById('akang-nahya-page'),
+            feedPage: document.getElementById('feed-page'),
+            akangNahya: document.getElementById('akang-nahya-page'),
         };
 
         let appDataCache = {};
         let loginContext = null;
         let alarmInterval = null;
         let prayerTimesToday = {};
+        let akangNahya = null;
 
         // --- Semua Fungsi-Fungsi Aplikasi Anda ---
         // Fungsi renderFutureChart yang sudah diperbaiki
@@ -1268,16 +1271,10 @@
                 return null;
             }
         }
-
-      function showPage(pageName) {
-        Object.values(pages).forEach(p => { p.classList.add('hidden'); });
-        pages[pageName].classList.remove('hidden');
-        pages[pageName].classList.add('flex');
-      }
-
-      function openNahyaPage() { showPage('akangNahya'); }
-      function backToRoleSelection() { showPage('roleSelection'); }
-		
+        
+        function openNahyaPage() { showPage('akangNahya'); }
+        function backToRoleSelection() { showPage('roleSelection'); }
+        
         function requestNotificationPermission() {
             if (!("Notification" in window)) {
                 console.log("Browser ini tidak mendukung notifikasi desktop");
@@ -1351,7 +1348,6 @@
             kelasGrid.innerHTML = '';
             
             const uniqueKelas = [...new Set(pondokData.santri.map(s => s.kelas))].sort();
-            
             uniqueKelas.forEach(kelas => {
                 const card = document.createElement('div');
                 card.className = 'text-center cursor-pointer p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 futuristic-panel';
@@ -1383,7 +1379,6 @@
             const hafalan = pondokData.hafalan
                 .filter(h => h.santri_id === santriId)
                 .sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
-            
             document.getElementById('detail-foto').src = santri.foto || 'https://placehold.co/400x400?text=No+Photo';
             document.getElementById('detail-nama').textContent = santri.nama;
             document.getElementById('detail-kelas').textContent = `Kelas ${santri.kelas}`;
@@ -1671,31 +1666,27 @@
             const pondokData = appDataCache[pondokId];
             if (!pondokData) {
                 // Jika data tidak ada, kembali ke halaman utama
-                showPage('waliDashboard'); 
+                showPage('waliDashboard');
                 return;
             }
             
             //  Tangani navigasi antar halaman utama
             //    showPage akan menyembunyikan halaman detail dan menampilkan dashboard wali
-            showPage('waliDashboard'); 
-
+            showPage('waliDashboard');
             //  Tangani navigasi antar sub-halaman
             //    Ini yang membedakan tampilan kelas dan tampilan daftar santri
             const kelasListContainer = document.getElementById('kelas-list-container');
             const santriListContainer = document.getElementById('santri-list-container');
             if (kelasListContainer) kelasListContainer.classList.add('hidden');
             if (santriListContainer) santriListContainer.classList.remove('hidden');
-
             const filteredSantri = pondokData.santri.filter(s => s.kelas === kelas).sort((a, b) => a.nama.localeCompare(b.nama));
             const currentClassTitle = document.getElementById('current-class-title');
             const santriGallery = document.getElementById('santri-gallery');
-
             if (currentClassTitle) {
             currentClassTitle.textContent = `Daftar Santri Kelas ${kelas}`;
             }
 
             sessionStorage.setItem('currentWaliKelas', kelas);
-
             if (santriGallery) {
                 santriGallery.innerHTML = '';
                 if (filteredSantri.length === 0) {
@@ -1839,7 +1830,6 @@
                 text: commentText,
                 timestamp: new Date().toISOString()
             };
-
             const success = await saveData('/api/add-comment', commentData);
             if (success) {
                 renderFeed();
@@ -2266,59 +2256,52 @@
                     }
                 });
             }
-	import { pipeline } from "https://cdn.jsdelivr.net/npm/@xenova/transformers";
-	let akangNahya = null;
-	window.startAkangNahya = async function() {
-	const statusEl = document.getElementById("nahya-status");
-	const startBtn = document.getElementById("nahya-start-btn");
-	const chatBox = document.getElementById("nahya-chat-box");
-	const spinner = document.getElementById("nahya-spinner");
-	const ding = document.getElementById("nahya-ding");
 
-
-	statusEl.innerText = "Mohon maaf Akang Nahya butuh waktu 5 menit agar bisa berubah, kalau jaringan kamu lancar hehe 🙏";
-	startBtn.disabled = true;
-	spinner.classList.remove("hidden");
-
-
-	akangNahya = await pipeline("text-generation", "Xenova/phi-3-mini-4k-instruct");
-
-
-	spinner.classList.add("hidden");
-	statusEl.innerText = "Hey, Akang Nahya sudah di sini, kita mau bahas apa nih? 😉";
-	chatBox.classList.remove("hidden");
-
-
-	if (document.getElementById("toggle-sound").checked) {
-	ding.play();
-		}
-	}
-
-
-	window.sendToNahya = async function() {
-	const input = document.getElementById("akang-input").value;
-	const responseEl = document.getElementById("akang-response");
-	const replySound = document.getElementById("nahya-reply");
-
-
-	if (!akangNahya) {
-	responseEl.innerText = "⚠️ Akang Nahya belum siap, tunggu sebentar ya...";
-	return;
-	}
-
-
-	responseEl.innerText = "⏳ Sedang dipikirkan Akang Nahya...";
-	const output = await akangNahya(input, { max_new_tokens: 200 });
-	responseEl.innerText = output[0].generated_text;
-
-
-	if (document.getElementById("toggle-sound").checked) {
-	replySound.play();
-		}
-	}
             // --- Panggil Fungsi Inisialisasi Aplikasi ---
             playWelcomeAnimation();
         });
-	</script>
+
+        // Kode untuk Akang Nahya (Modul)
+        window.startAkangNahya = async function() {
+            const statusEl = document.getElementById("nahya-status");
+            const startBtn = document.getElementById("nahya-start-btn");
+            const chatBox = document.getElementById("nahya-chat-box");
+            const spinner = document.getElementById("nahya-spinner");
+            const ding = document.getElementById("nahya-ding");
+
+            statusEl.innerText = "Mohon maaf Akang Nahya butuh waktu 5 menit agar bisa berubah, kalau jaringan kamu lancar hehe 🙏";
+            startBtn.disabled = true;
+            spinner.classList.remove("hidden");
+
+            akangNahya = await pipeline("text-generation", "Xenova/phi-3-mini-4k-instruct");
+
+            spinner.classList.add("hidden");
+            statusEl.innerText = "Hey, Akang Nahya sudah di sini, kita mau bahas apa nih? 😉";
+            chatBox.classList.remove("hidden");
+
+            if (document.getElementById("toggle-sound").checked) {
+                ding.play();
+            }
+        };
+
+        window.sendToNahya = async function() {
+            const input = document.getElementById("akang-input").value;
+            const responseEl = document.getElementById("akang-response");
+            const replySound = document.getElementById("nahya-reply");
+
+            if (!akangNahya) {
+                responseEl.innerText = "⚠️ Akang Nahya belum siap, tunggu sebentar ya...";
+                return;
+            }
+
+            responseEl.innerText = "⏳ Sedang dipikirkan Akang Nahya...";
+            const output = await akangNahya(input, { max_new_tokens: 200 });
+            responseEl.innerText = output[0].generated_text;
+
+            if (document.getElementById("toggle-sound").checked) {
+                replySound.play();
+            }
+        };
+    </script>
   </body>
 </html>
