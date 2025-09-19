@@ -1444,7 +1444,7 @@
                     const fotoUrl = santri.foto || 'https://placehold.co/400x400?text=No+Photo';
                     const card = document.createElement('div');
                     card.className = 'text-center cursor-pointer group santri-card futuristic-panel p-4 rounded-lg shadow-md';
-                    card.onclick = () => window.showGuruForm(santri.id);
+                    card.onclick = () => window.showGuruForm(`${santri.id}`);
                     card.innerHTML = `
                         <div class="relative">
                             <img src="${fotoUrl}" alt="Foto ${santri.nama}" class="w-full h-auto aspect-square rounded-full object-cover transition-transform duration-300 group-hover:scale-105 border-4 border-yellow-400 shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=Error';">
@@ -1452,8 +1452,8 @@
                         <p class="mt-4 font-semibold text-gray-200">${santri.nama}</p>
                         <p class="text-sm text-gray-400">${santri.kelas}</p>
                         <div class="flex space-x-2 mt-4 justify-center">
-                            <button onclick="event.stopPropagation(); window.showGuruForm(${santri.id})" class="px-2 py-1 text-xs font-semibold text-black bg-yellow-400 rounded-md hover:bg-yellow-500">Ubah Data</button>
-                            <button onclick="event.stopPropagation(); window.deleteSantri(${santri.id})" class="px-2 py-1 text-xs font-semibold text-white bg-red-600 rounded-md hover:bg-red-700">Hapus</button>
+                            <button onclick="event.stopPropagation(); window.showGuruForm('${santri.id}')" class="px-2 py-1 text-xs font-semibold text-black bg-yellow-400 rounded-md hover:bg-yellow-500">Ubah Data</button>
+                            <button onclick="event.stopPropagation(); window.deleteSantri('${santri.id}')" class="px-2 py-1 text-xs font-semibold text-white bg-red-600 rounded-md hover:bg-red-700">Hapus</button>
                         </div>
                     `;
                     listContainer.appendChild(card);
@@ -1461,7 +1461,8 @@
             }
         }
 
-        window.showGuruForm = async function(santriId) {
+        window.showGuruForm = async function(santriIdString) {
+            const santriId = santriIdString === 'null' ? null : parseInt(santriIdString);
             const pondokData = await fetchData();
             if (!pondokData || !pondokData.santri) {
                 console.error("Data pondok tidak ditemukan atau tidak memiliki properti 'santri'.");
@@ -1522,7 +1523,8 @@
             showPage('guruForm');
         }
 
-        window.deleteSantri = async function(santriId) {
+        window.deleteSantri = async function(santriIdString) {
+            const santriId = parseInt(santriIdString);
             if (!confirm('Apakah Anda yakin ingin menghapus data santri ini? Semua data hafalan yang terkait juga akan dihapus.')) {
                 return;
             }
@@ -1552,7 +1554,7 @@
             tableBody.innerHTML = '';
             pondokData.guru.sort((a, b) => a.nama.localeCompare(b.nama)).forEach(guru => {
                 const row = tableBody.insertRow();
-                row.innerHTML = `<td class="py-4 px-6 text-sm font-medium text-gray-100">${guru.nama}</td><td class="py-4 px-6 text-sm text-gray-400">${guru.mengajar_kelas}</td><td class="py-4 px-6 text-sm font-medium space-x-2"><button onclick="window.editGuru(${guru.id})" class="text-yellow-400 hover:text-yellow-500">Ubah</button><button onclick="window.deleteGuru(${guru.id})" class="text-red-600 hover:text-red-700">Hapus</button></td>`;
+                row.innerHTML = `<td class="py-4 px-6 text-sm font-medium text-gray-100">${guru.nama}</td><td class="py-4 px-6 text-sm text-gray-400">${guru.mengajar_kelas}</td><td class="py-4 px-6 text-sm font-medium space-x-2"><button onclick="window.editGuru('${guru.id}')" class="text-yellow-400 hover:text-yellow-500">Ubah</button><button onclick="window.deleteGuru('${guru.id}')" class="text-red-600 hover:text-red-700">Hapus</button></td>`;
             });
         }
 
@@ -1706,7 +1708,8 @@
                 }
             }
         }
-        window.editGuru = async function(guruId) {
+        window.editGuru = async function(guruIdString) {
+            const guruId = parseInt(guruIdString);
             const pondokData = await window.fetchData();
             if (!pondokData || !pondokData.guru) return;
             const guru = pondokData.guru.find(g => g.id === guruId);
@@ -1718,7 +1721,8 @@
             }
         }
 
-        window.deleteGuru = async function(guruId) {
+        window.deleteGuru = async function(guruIdString) {
+            const guruId = parseInt(guruIdString);
             if (!confirm('Apakah Anda yakin ingin menghapus data guru ini?')) {
                 return;
             }
@@ -1745,10 +1749,12 @@
             }
             hafalanList.forEach(h => {
                 const row = tableBody.insertRow();
-                row.innerHTML = `<td class="py-2 px-4">${h.tanggal}</td><td class="py-2 px-4 font-medium">${h.setoran}</td><td class="py-2 px-4">${h.jenis}</td><td class="py-2 px-4">${h.penilaian}</td><td class="py-2 px-4"><button onclick="window.deleteHafalan(${h.id}, ${santriId})" class="text-red-500 hover:text-red-700">Hapus</button></td>`;
+                row.innerHTML = `<td class="py-2 px-4">${h.tanggal}</td><td class="py-2 px-4 font-medium">${h.setoran}</td><td class="py-2 px-4">${h.jenis}</td><td class="py-2 px-4">${h.penilaian}</td><td class="py-2 px-4"><button onclick="window.deleteHafalan('${h.id}', '${santriId}')" class="text-red-500 hover:text-red-700">Hapus</button></td>`;
             });
         }
-        window.deleteHafalan = async function(hafalanId, santriId) {
+        window.deleteHafalan = async function(hafalanIdString, santriIdString) {
+            const hafalanId = parseInt(hafalanIdString);
+            const santriId = parseInt(santriIdString);
             if (!confirm('Apakah Anda yakin ingin menghapus setoran hafalan ini?')) {
                 return;
             }
@@ -1790,7 +1796,7 @@
                     mediaHtml = `<video src="${post.mediaUrl}" controls class="w-full rounded-lg my-4"></video>`;
                 }
                 
-                postEl.innerHTML = `<div class="flex items-center space-x-4 mb-4"><div class="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center font-bold text-black">${post.author.charAt(0)}</div><div><p class="font-bold text-gray-100">${post.author}</p><p class="text-xs text-gray-400">${new Date(post.timestamp).toLocaleString('id-ID')}</p></div>${sessionStorage.getItem('role') === 'guru' ? `<button onclick="window.deletePost(${post.id})" class="ml-auto text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>` : ''}</div><p class="text-gray-300 mb-4">${post.text}</p>${mediaHtml}<div class="flex items-center space-x-4 mt-4 text-gray-400"><button onclick="window.likePost(${post.id})" class="flex items-center space-x-1 hover:text-yellow-400"><i class="fa-solid fa-heart"></i><span>${post.likes}</span></button><button onclick="window.sharePost(${post.id})" class="flex items-center space-x-1 hover:text-yellow-400"><i class="fa-solid fa-share"></i></button><div class="flex-grow"></div><button onclick="window.toggleComments(${post.id})" class="flex items-center space-x-1 hover:text-yellow-400"><i class="fa-solid fa-comment"></i><span>${post.comments ? post.comments.length : 0}</span></button></div><div id="comments-container-${post.id}" class="comments-container hidden mt-4 border-t border-gray-700 pt-4"><div id="comment-list-${post.id}" class="space-y-2"></div><form onsubmit="window.addComment(event, ${post.id})" class="mt-4 flex space-x-2"><input type="text" id="comment-input-${post.id}" placeholder="Tulis komentar..." class="flex-grow p-2 rounded-md bg-gray-700 text-gray-200"><button type="submit" class="bg-yellow-400 text-black px-4 py-2 rounded-md hover:bg-yellow-500">Kirim</button></form></div>`;
+                postEl.innerHTML = `<div class="flex items-center space-x-4 mb-4"><div class="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center font-bold text-black">${post.author.charAt(0)}</div><div><p class="font-bold text-gray-100">${post.author}</p><p class="text-xs text-gray-400">${new Date(post.timestamp).toLocaleString('id-ID')}</p></div>${sessionStorage.getItem('role') === 'guru' ? `<button onclick="window.deletePost('${post.id}')" class="ml-auto text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>` : ''}</div><p class="text-gray-300 mb-4">${post.text}</p>${mediaHtml}<div class="flex items-center space-x-4 mt-4 text-gray-400"><button onclick="window.likePost('${post.id}')" class="flex items-center space-x-1 hover:text-yellow-400"><i class="fa-solid fa-heart"></i><span>${post.likes}</span></button><button onclick="window.sharePost('${post.id}')" class="flex items-center space-x-1 hover:text-yellow-400"><i class="fa-solid fa-share"></i></button><div class="flex-grow"></div><button onclick="window.toggleComments('${post.id}')" class="flex items-center space-x-1 hover:text-yellow-400"><i class="fa-solid fa-comment"></i><span>${post.comments ? post.comments.length : 0}</span></button></div><div id="comments-container-${post.id}" class="comments-container hidden mt-4 border-t border-gray-700 pt-4"><div id="comment-list-${post.id}" class="space-y-2"></div><form onsubmit="window.addComment(event, '${post.id}')" class="mt-4 flex space-x-2"><input type="text" id="comment-input-${post.id}" placeholder="Tulis komentar..." class="flex-grow p-2 rounded-md bg-gray-700 text-gray-200"><button type="submit" class="bg-yellow-400 text-black px-4 py-2 rounded-md hover:bg-yellow-500">Kirim</button></form></div>`;
                 feedContainer.appendChild(postEl);
                 if (post.comments) {
                     window.renderComments(post.id, post.comments);
@@ -2275,13 +2281,13 @@
             const spinner = document.getElementById("nahya-spinner");
             const ding = document.getElementById("nahya-ding");
 
-            statusEl.innerText = "Mohon maaf Akang Nahya butuh waktu 5 menit agar bisa berubah, kalau jaringan kamu lancar hehe 🙏";
+            statusEl.innerText = "Mohon maaf Akang Nahya butuh waktu 5 menit agar bisa berubah, kondisikan jaringan kamu lancar ya.. hehe 🙏";
             startBtn.disabled = true;
             spinner.classList.remove("hidden");
             
             try {
-                // Menggunakan model yang dijamin dapat diakses
-                akangNahya = await pipeline("text-generation", "Xenova/phi-3-mini-4k-instruct");
+                // Menggunakan model distilgpt2 yang lebih umum
+                akangNahya = await pipeline("text-generation", "Xenova/distilgpt2");
                 spinner.classList.add("hidden");
                 statusEl.innerText = "Hey, Akang Nahya sudah di sini, kita mau bahas apa nih? 😉";
                 chatBox.classList.remove("hidden");
