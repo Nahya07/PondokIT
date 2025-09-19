@@ -928,6 +928,7 @@
             jadwalDonasi: document.getElementById('jadwal-donasi-page'),
             about: document.getElementById('about-page'),
             feedPage: document.getElementById('feed-page')
+			akangNahya: document.getElementById('akang-nahya-page'),
         };
 
         let appDataCache = {};
@@ -1267,10 +1268,6 @@
                 return null;
             }
         }
-		 const pages = {
-        roleSelection: document.getElementById('role-selection-page'),
-        akangNahya: document.getElementById('akang-nahya-page'),
-      };
 
       function showPage(pageName) {
         Object.values(pages).forEach(p => { p.classList.add('hidden'); });
