@@ -195,31 +195,15 @@
     <!-- Main App Container -->
     <div id="app" class="container mx-auto p-4 md:p-8 max-w-7xl">
       <div id="role-selection-page" class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-900">
-        <div class="fixed top-8 z-50">
-          <select id="language-selector" onchange="window.setLanguage(this.value)" class="futuristic-panel text-gray-200 rounded-full shadow-md py-2 px-4 focus:ring-yellow-400 focus:border-yellow-400">
-            <option value="id">Bahasa Indonesia</option>
-            <option value="en">English</option>
-            <option value="ja">日本語</option>
-            <option value="ar">العربية</option>
-            <option value="ru">Русский</option>
-            <option value="jw">Basa Jawa</option>
-          </select>
-        </div>
         <div class="w-full max-w-sm p-8 space-y-6 rounded-xl shadow-2xl text-center relative modern-panel">
           <h2 class="text-4xl font-bold text-gray-100">SantriQ</h2>
           <p class="text-gray-400">Silakan pilih peran Anda untuk melanjutkan:</p>
           <div class="space-y-4 pt-4">
-            <button onclick="window.showPage('feedPage'); window.renderFeed();" class="w-full px-4 py-3 font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">
-            Beranda
-            </button>
             <button onclick="window.handleRoleSelection('wali')" class="w-full px-4 py-3 font-semibold text-white bg-teal-700 rounded-lg hover:bg-teal-800">
             Saya Wali Santri
             </button>
             <button onclick="window.handleRoleSelection('guru')" class="w-full px-4 py-3 font-semibold text-gray-900 bg-yellow-100 rounded-lg hover:bg-yellow-200">
             Saya Pengurus / Guru
-            </button>
-			<button onclick="window.openNahyaPage()" class="w-full px-4 py-3 font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
-             AI Akang Nahya Menjawab 🤖
             </button>
           </div>
         </div>
@@ -229,30 +213,30 @@
               <div class="w-12 h-12 futuristic-panel !p-0 rounded-full shadow-md flex items-center justify-center icon-item">
                 <i class="fas fa-chart-line h-6 w-6"></i>
               </div>
-              <span data-translate-key="tooltip_realtime" class="tooltip-text">Monitoring Real-time</span>
+              <span class="tooltip-text">Monitoring Real-time</span>
             </div>
             <div class="feature-tooltip relative">
               <div class="w-12 h-12 futuristic-panel !p-0 rounded-full shadow-md flex items-center justify-center icon-item">
                 <i class="fas fa-users-cog h-6 w-6"></i>
               </div>
-              <span data-translate-key="tooltip_guardian" class="tooltip-text">Akses Wali Santri</span>
+              <span class="tooltip-text">Akses Wali Santri</span>
             </div>
             <div class="feature-tooltip relative">
               <div class="w-12 h-12 futuristic-panel !p-0 rounded-full shadow-md flex items-center justify-center icon-item">
                 <i class="fas fa-file-alt h-6 w-6"></i>
               </div>
-              <span data-translate-key="tooltip_report" class="tooltip-text">Laporan Terstruktur</span>
+              <span class="tooltip-text">Laporan Terstruktur</span>
             </div>
           </div>
           <div class="text-left text-center">
-            <p data-translate-key="hadith_text" class="text-sm italic text-gray-400 mt-2">"Sebaik-baik kalian adalah orang<br>yang belajar Al-Qur'an dan mengajarkannya."</p>
+            <p class="text-sm italic text-gray-400 mt-2">"Sebaik-baik kalian adalah orang<br>yang belajar Al-Qur'an dan mengajarkannya."</p>
           </div>
         </div>
         <footer class="mt-8 text-center text-sm text-gray-500">
           <button onclick="window.showAboutPage()" class="text-yellow-400 hover:text-yellow-500 underline mb-2">Tentang Aplikasi</button>
-          <p data-translate-key="footer_text">Project dibuat oleh (MUHAMMAD NAHYA FADLALLAH) ©2025 All Rights Reserved</p>
+          <p>Project dibuat oleh (MUHAMMAD NAHYA FADLALLAH) ©2025 All Rights Reserved</p>
           <a href="https://wa.me/6285520767908" target="_blank" class="block mt-4 text-center">
-          <span data-translate-key="complaint_info" class="text-sm font-semibold text-gray-400">PUSAT BANTUAN</span>
+          <span class="text-sm font-semibold text-gray-400">PUSAT BANTUAN</span>
           </a>
         </footer>
       </div>
@@ -335,37 +319,6 @@
           <p class="text-center text-sm mt-4 text-gray-500">
             <button onclick="window.showPage('roleSelection')" class="hover:underline">Kembali ke pilihan peran</button>
           </p>
-        </div>
-      </div>
-		 <!-- ================== HALAMAN AKANG NAHYA ================== -->
-      <div id="akang-nahya-page" class="hidden flex-col items-center justify-center min-h-screen p-4 bg-gray-900">
-        <div class="w-full max-w-2xl p-8 space-y-6 rounded-xl shadow-2xl futuristic-panel">
-          <h2 class="text-3xl font-bold text-yellow-400 text-center">🤖 Akang Nahya</h2>
-          <p id="nahya-status" class="text-center text-gray-400">Klik mulai untuk mengaktifkan Akang Nahya.</p>
-
-          <!-- Spinner Loading -->
-          <div id="nahya-spinner" class="hidden">
-            <div class="spinner"></div>
-            <p class="text-center text-gray-400">Sedang menyiapkan Akang Nahya...</p>
-          </div>
-
-          <button onclick="window.startAkangNahya()" id="nahya-start-btn"
-            class="w-full px-4 py-3 font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">
-            Mulai Akang Nahya
-          </button>
-
-          <!-- Opsi Notifikasi Suara -->
-          <div class="flex items-center justify-center space-x-2 mt-4">
-            <input type="checkbox" id="toggle-sound" checked class="w-5 h-5">
-            <label for="toggle-sound" class="text-gray-300">Aktifkan Suara Notifikasi</label>
-          </div>
-
-          <div id="nahya-chat-box" class="hidden">
-            <textarea id="akang-input" class="w-full p-3 rounded-lg futuristic-panel" rows="3" placeholder="Tulis pertanyaan kamu di sini..."></textarea>
-            <button onclick="window.sendToNahya()" class="mt-3 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Kirim</button>
-            <div id="akang-response" class="mt-6 p-4 futuristic-panel text-gray-200 min-h-[100px]"></div>
-            <button onclick="window.backToRoleSelection()" class="mt-4 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600">Kembali</button>
-          </div>
         </div>
       </div>
 	 </div>
@@ -726,36 +679,6 @@
           </div>
         </div>
       </div>
-      <div id="feed-page" class="hidden fade-in main-content p-8 rounded-xl shadow-lg flex flex-col h-screen">
-        <header class="flex-shrink-0 mb-6 flex justify-between items-center">
-          <button onclick="window.backFromFeed()" class="flex items-center text-yellow-400 hover:text-yellow-500 font-semibold">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-            </svg>
-            Kembali
-          </button>
-          <h1 class="text-3xl font-bold text-yellow-400 text-center flex-grow">Beranda Publik</h1>
-          <button onclick="window.showPostForm()" class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500">
-          Buat Postingan
-          </button>
-        </header>
-        <div id="post-form-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-          <div class="rounded-xl shadow-2xl p-6 w-full max-w-md futuristic-panel">
-            <h2 class="text-xl font-bold mb-4 text-yellow-400">Buat Postingan Baru</h2>
-            <form id="new-post-form" class="space-y-4">
-              <textarea id="post-text" placeholder="Apa yang ingin Anda bagikan?" class="w-full h-24 p-2 futuristic-panel"></textarea>
-              <input type="file" id="post-media" accept="image/*,video/*" class="w-full p-2 futuristic-panel">
-              <div class="flex justify-end space-x-2">
-                <button type="button" onclick="window.closePostForm()" class="px-4 py-2 bg-gray-600 text-gray-200 rounded-md">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-yellow-400 text-black rounded-md hover:bg-yellow-500">Unggah</button>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div id="feed-container" class="overflow-y-auto flex-grow px-2 space-y-6">
-          <!-- Posts will be rendered here -->
-        </div>
-      </div>
       <div id="about-page" class="hidden fade-in p-4 bg-gray-900">
         <header class="mb-4">
           <button onclick="window.showPage('roleSelection')" class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold">
@@ -806,118 +729,9 @@
     </div>
     <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed top-5 right-5 z-50"></div>
-    <audio id="nahya-ding" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
-    <audio id="nahya-reply" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" preload="auto"></audio>
     <audio id="success-ding" src="https://actions.google.com/sounds/v1/foley/ding_a_ling.ogg" preload="auto"></audio>
 	  
     <script type="module">
-        import { pipeline } from "https://cdn.jsdelivr.net/npm/@xenova/transformers";
-
-        const translations = {
-            id: {
-                app_title: "Monitoring Hafalan Santri",
-                login_welcome: "السلام عليكم ورحمة الله وبركاته<br>Selamat Datang!",
-                login_welcome_text: "Terima kasih sudah mengunjungi aplikasi monitoring hafalan kami. Semoga bermanfaat.",
-                login_title: "Sistem Monitoring Hafalan",
-                login_subtitle: "Silakan masukkan kode akses untuk melanjutkan.",
-                access_code_placeholder: "Kode Akses Anda",
-                login_button: "Masuk",
-                login_error: "Kode yang Anda masukkan salah.",
-                hadith_text: "\"Sebaik-baik kalian adalah orang<br>yang belajar Al-Qur'an dan mengajarkannya.\"",
-                tooltip_realtime: "Monitoring Real-time",
-                tooltip_guardian: "Akses Wali Santri",
-                tooltip_report: "Laporan Terstruktur",
-                footer_text: "Project dibuat oleh (MUHAMMAD NAHYA FADLALLAH) © 2025 All Rights Reserved",
-                unique_code_copied: "Kode akses berhasil disalin!",
-                complaint_info: "PUSAT BANTUAN"
-            },
-            en: {
-                app_title: "Student Memorization Monitoring",
-                login_welcome: "السلام عليكم ورحمة الله وبركاته<br>Welcome!",
-                login_welcome_text: "Thank you for visiting our memorization monitoring application. We hope you find it useful.",
-                login_title: "Memorization Monitoring System",
-                login_subtitle: "Please enter the access code to continue.",
-                access_code_placeholder: "Your Access Code",
-                login_button: "Login",
-                login_error: "The code you entered is incorrect.",
-                hadith_text: "\"The best of you are those<br>who learn the Qur'an and teach it.\"",
-                tooltip_realtime: "Real-time Monitoring",
-                tooltip_guardian: "Guardian Access",
-                tooltip_report: "Structured Reports",
-                footer_text: "Project created by the team (muhammad nahya fadlallah)",
-                unique_code_copied: "Access code copied successfully!",
-                complaint_info: "Complaint Info"
-            },
-            ja: {
-                app_title: "生徒の暗記モニタリング",
-                login_welcome: "السلام عليكم ورحمة الله وبركاته<br>ようこそ！",
-                login_welcome_text: "私たちの暗記モニタリングアプリケーションをご覧いただきありがとうございます。お役に立てば幸いです。",
-                login_title: "暗記モニタリングシステム",
-                login_subtitle: "続行するにはアクセスコードを入力してください。",
-                access_code_placeholder: "アクセスコード",
-                login_button: "ログイン",
-                login_error: "入力したコードが間違っています。",
-                hadith_text: "「あなた方の中で最も優れた者は<br>クルアーンを学び、それを教える者である。」",
-                tooltip_realtime: "リアルタイムモニタリング",
-                tooltip_guardian: "保護者アクセス",
-                tooltip_report: "構造化レポート",
-                footer_text: "プロジェクト作成者チーム (muhammad nahya fadlallah)",
-                unique_code_copied: "アクセスコードが正常にコピーされました！",
-                complaint_info: "苦情情報"
-            },
-            ar: {
-                app_title: "مراقبة حفظ الطلاب",
-                login_welcome: "السلام عليكم ورحمة الله وبركاته<br>أهلاً وسهلاً!",
-                login_welcome_text: "شكراً لزيارتكم تطبيقنا لمراقبة الحفظ. نأمل أن يكون مفيداً لكم.",
-                login_title: "نظام مراقبة الحفظ",
-                login_subtitle: "الرجاء إدخال رمز الدخول للمتابعة.",
-                access_code_placeholder: "رمز الدخول الخاص بك",
-                login_button: "دخول",
-                login_error: "الرمز الذي أدخلته غير صحيح.",
-                hadith_text: "خيركم من تعلم القرآن وعلمه",
-                tooltip_realtime: "مراقبة فورية",
-                tooltip_guardian: "وصول ولي الأمر",
-                tooltip_report: "تقارير منظمة",
-                footer_text: "تم إنشاء المشروع بواسطة فريق (محمد نحيا فضل الله)",
-                unique_code_copied: "تم نسخ رمز الدخول بنجاح!",
-                complaint_info: "معلومات الشكوى"
-            },
-            ru: {
-                app_title: "Мониторинг запоминания студентов",
-                login_welcome: "السلام عليكم ورحمة الله وبركاته<br>Добро пожаловать!",
-                login_welcome_text: "Спасибо, что посетили наше приложение для мониторинга запоминания. Надеемся, оно будет вам полезно.",
-                login_title: "Система мониторинга запоминания",
-                login_subtitle: "Пожалуйста, введите код доступа, чтобы продолжить.",
-                access_code_placeholder: "Ваш код доступа",
-                login_button: "Войти",
-                login_error: "Вы ввели неверный код.",
-                hadith_text: "\"Лучшими из вас являются те,<br>кто изучает Коран и учит ему других.\"",
-                tooltip_realtime: "Мониторинг в реальном времени",
-                tooltip_guardian: "Доступ для опекунов",
-                tooltip_report: "Структурированные отчеты",
-                footer_text: "Проект создан коман-dian (muhammad nahya fadlallah)",
-                unique_code_copied: "Код доступа успешно скопирован!",
-                complaint_info: "Информация о жалобах"
-            },
-            jw: {
-                app_title: "Monitoring Apalan Santri",
-                login_welcome: "السلام عليكم ورحمة الله وبركاته<br>Sugeng Rawuh!",
-                login_welcome_text: "Matur nuwun sampun ngunjungi aplikasi monitoring apalan kita. Mugi-mugi mupangati.",
-                login_title: "Sistem Monitoring Apalan",
-                login_subtitle: "Monggo ketik kode akses kangge nglanjutaken.",
-                access_code_placeholder: "Kode Akses Panjenengan",
-                login_button: "Mlebet",
-                login_error: "Kode ingkang panjenengan ketik salah.",
-                hadith_text: "\"Sak apik-apike sliramu yaiku wong<br>sing sinau Al-Qur'an lan ngajarake.\"",
-                tooltip_realtime: "Monitoring Real-time",
-                tooltip_guardian: "Akses Wali Santri",
-                tooltip_report: "Laporan Rapi",
-                footer_text: "Proyek digarap dening tim (muhammad nahya fadlallah)",
-                unique_code_copied: "Kode akses kasil disalin!",
-                complaint_info: "Info Pengaduan"
-            }
-        };
-
         const pages = {
             roleSelection: document.getElementById('role-selection-page'),
             pondokRegister: document.getElementById('pondok-register-page'),
@@ -930,22 +744,27 @@
             guruManagement: document.getElementById('guru-management-page'),
             jadwalDonasi: document.getElementById('jadwal-donasi-page'),
             about: document.getElementById('about-page'),
-            feedPage: document.getElementById('feed-page'),
-            akangNahya: document.getElementById('akang-nahya-page'),
         };
 
         let appDataCache = {};
         let loginContext = null;
         let alarmInterval = null;
         let prayerTimesToday = {};
-        let akangNahya = null;
+        let resizeTimeout;
 
         // --- Semua Fungsi-Fungsi Aplikasi Anda ---
-        // Fungsi renderFutureChart yang sudah diperbaiki
+        /**
+         * Fungsi untuk menggambar grafik progres hafalan santri menggunakan D3.js.
+         * Grafik ini menampilkan perkembangan kumulatif hafalan dari waktu ke waktu.
+         * @param {Array<Object>} data - Array objek hafalan, setiap objek harus memiliki `tanggal` dan `penilaian`.
+         */
         window.renderFutureChart = function(data) {
+            console.log("Mencoba menggambar grafik dengan data:", data);
+            
             d3.select("#hafalan-future-chart svg").remove();
             const container = d3.select("#hafalan-future-chart");
             if (!container.node()) return; // Tambahkan pengecekan null
+            
             const width = container.node().getBoundingClientRect().width;
             const height = 300;
             const margin = { top: 20, right: 30, bottom: 40, left: 40 };
@@ -954,23 +773,29 @@
                 .attr("width", width)
                 .attr("height", height);
 
-            const validData = data.filter(d => d && !isNaN(d.nilai) && d.tanggal instanceof Date);
+            const validData = data.filter(d => d && d.tanggal && d.penilaian);
             if (validData.length === 0) {
                 svg.append("text")
                     .attr("x", width / 2)
                     .attr("y", height / 2)
                     .attr("text-anchor", "middle")
                     .attr("fill", "#ccc")
-                    .text("Tidak ada data untuk grafik.");
+                    .text("Tidak ada data setoran untuk menampilkan grafik.");
+                console.log("Data tidak valid atau kosong. Gagal menggambar grafik.");
                 return;
             }
+            
+            // Urutkan data berdasarkan tanggal
+            validData.sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
 
             // Menggunakan data hafalan kumulatif
             let cumulativeScore = 0;
             const cumulativeData = validData.map(d => {
-                cumulativeScore += d.nilai;
-                return { tanggal: d.tanggal, nilai: cumulativeScore, penilaian: d.penilaian };
+                const score = d.penilaian === 'Lancar' ? 2 : 1;
+                cumulativeScore += score;
+                return { tanggal: new Date(d.tanggal), nilai: cumulativeScore, penilaian: d.penilaian };
             });
+            console.log("Data kumulatif untuk grafik:", cumulativeData);
 
             const x = d3.scaleTime()
                 .domain(d3.extent(cumulativeData, d => d.tanggal))
@@ -1044,26 +869,28 @@
                     tooltip.style("opacity", 0);
                 });
         }
-
-        window.setLanguage = function(lang) {
-            document.documentElement.lang = lang;
-            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-            const elements = document.querySelectorAll('[data-translate-key]');
-            elements.forEach(el => {
-                const key = el.getAttribute('data-translate-key');
-                if (translations[lang] && translations[lang][key]) {
-                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-                        el.placeholder = translations[lang][key];
-                    } else {
-                        el.innerHTML = translations[lang][key];
-                    }
+        
+        /**
+         * Fungsi untuk menyesuaikan ukuran grafik saat jendela browser diubah ukurannya.
+         * Menggunakan debounce untuk mencegah panggilan berlebihan saat mengubah ukuran.
+         */
+        function resizeChart() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                const currentPage = Object.keys(pages).find(key => !pages[key].classList.contains('hidden'));
+                if (currentPage === 'detailSantri' && appDataCache.hafalan) {
+                    const santriId = sessionStorage.getItem('currentSantriId');
+                    const hafalan = appDataCache.hafalan.filter(h => h.santri_id === parseInt(santriId));
+                    const chartData = hafalan.map(h => {
+                        const score = h.penilaian === 'Lancar' ? 2 : 1;
+                        return { tanggal: h.tanggal, nilai: score, penilaian: h.penilaian };
+                    });
+                    window.renderFutureChart(chartData);
                 }
-            });
-            if (translations[lang] && translations[lang].app_title) {
-                document.title = translations[lang].app_title;
-            }
-            localStorage.setItem('selectedLanguage', lang);
+            }, 250); // Debounce time
         }
+        window.addEventListener('resize', resizeChart);
+
 
         window.showPage = function(pageName) {
             Object.values(pages).forEach(page => {
@@ -1118,17 +945,6 @@
             showPage('guruDashboard');
         }
 
-        window.backFromFeed = function() {
-            const role = sessionStorage.getItem('role');
-            if (role === 'guru') {
-                showPage('guruDashboard');
-            } else if (role === 'wali') {
-                showPage('waliDashboard');
-            } else {
-                showPage('roleSelection');
-            }
-        }
-
         window.showToast = function(type, message) {
             const toastContainer = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -1170,7 +986,7 @@
             try {
                 const successful = document.execCommand('copy');
                 if (successful) {
-                    showToast('success', translations[localStorage.getItem('selectedLanguage') || 'id'].unique_code_copied);
+                    showToast('success', "Kode akses berhasil disalin!");
                 }
             } catch (err) {
                 console.error('Failed to copy text:', err);
@@ -1278,9 +1094,6 @@
             }
         }
         
-        window.openNahyaPage = function() { showPage('akangNahya'); }
-        window.backToRoleSelection = function() { showPage('roleSelection'); }
-        
         window.requestNotificationPermission = function() {
             if (!("Notification" in window)) {
                 console.log("Browser ini tidak mendukung notifikasi desktop");
@@ -1313,10 +1126,6 @@
 
         window.sendNotificationToGuardian = function(santriName, setoran, penilaian) {
             sendNotification("Update Hafalan Santri", `${santriName} telah selesai menyetorkan hafalannya. Setoran: ${setoran}. Penilaian: ${penilaian}.`);
-        }
-
-        window.sendNewPostNotification = function(author, mediaType) {
-            sendNotification("Postingan Baru", `Postingan baru dari ${author} telah ditambahkan. Yuk, cek sekarang!`);
         }
 
         window.handleRoleSelection = function(role) {
@@ -1381,10 +1190,13 @@
             }
             
             sessionStorage.setItem('currentWaliKelas', santri.kelas);
+            sessionStorage.setItem('currentSantriId', santriId);
+            
             const guru = pondokData.guru.find(g => g.mengajar_kelas === santri.kelas);
             const hafalan = pondokData.hafalan
                 .filter(h => h.santri_id === santriId)
                 .sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
+            
             document.getElementById('detail-foto').src = santri.foto || 'https://placehold.co/400x400?text=No+Photo';
             document.getElementById('detail-nama').textContent = santri.nama;
             document.getElementById('detail-kelas').textContent = `Kelas ${santri.kelas}`;
@@ -1773,120 +1585,6 @@
                 window.showToast('error', "Gagal menghapus setoran hafalan.");
             }
         }
-        window.showPostForm = function() { document.getElementById('post-form-modal').classList.remove('hidden'); }
-        window.closePostForm = function() {
-            document.getElementById('post-form-modal').classList.add('hidden');
-            document.getElementById('new-post-form').reset();
-        }
-        window.renderFeed = async function() {
-            const feedContainer = document.getElementById('feed-container');
-            if (!feedContainer) return;
-            feedContainer.innerHTML = '';
-            
-            const allPondokData = appDataCache;
-            const allPosts = Object.values(allPondokData).flatMap(data => data.posts || []).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-            
-            if (allPosts.length === 0) {
-                feedContainer.innerHTML = '<p class="text-center text-gray-400 py-10">Belum ada postingan. Jadilah yang pertama membuat postingan!</p>';
-                return;
-            }
-
-            allPosts.forEach(post => {
-                const postEl = document.createElement('div');
-                postEl.className = 'p-4 rounded-xl shadow-lg relative futuristic-panel';
-                
-                let mediaHtml = '';
-                if (post.mediaType === 'image') {
-                    mediaHtml = `<img src="${post.mediaUrl}" alt="Post Media" class="w-full rounded-lg my-4">`;
-                } else if (post.mediaType === 'video') {
-                    mediaHtml = `<video src="${post.mediaUrl}" controls class="w-full rounded-lg my-4"></video>`;
-                }
-                
-                postEl.innerHTML = `<div class="flex items-center space-x-4 mb-4"><div class="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center font-bold text-black">${post.author.charAt(0)}</div><div><p class="font-bold text-gray-100">${post.author}</p><p class="text-xs text-gray-400">${new Date(post.timestamp).toLocaleString('id-ID')}</p></div>${sessionStorage.getItem('role') === 'guru' ? `<button onclick="window.deletePost('${post.id}')" class="ml-auto text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>` : ''}</div><p class="text-gray-300 mb-4">${post.text}</p>${mediaHtml}<div class="flex items-center space-x-4 mt-4 text-gray-400"><button onclick="window.likePost('${post.id}')" class="flex items-center space-x-1 hover:text-yellow-400"><i class="fa-solid fa-heart"></i><span>${post.likes}</span></button><button onclick="window.sharePost('${post.id}')" class="flex items-center space-x-1 hover:text-yellow-400"><i class="fa-solid fa-share"></i></button><div class="flex-grow"></div><button onclick="window.toggleComments('${post.id}')" class="flex items-center space-x-1 hover:text-yellow-400"><i class="fa-solid fa-comment"></i><span>${post.comments ? post.comments.length : 0}</span></button></div><div id="comments-container-${post.id}" class="comments-container hidden mt-4 border-t border-gray-700 pt-4"><div id="comment-list-${post.id}" class="space-y-2"></div><form onsubmit="window.addComment(event, '${post.id}')" class="mt-4 flex space-x-2"><input type="text" id="comment-input-${post.id}" placeholder="Tulis komentar..." class="flex-grow p-2 rounded-md bg-gray-700 text-gray-200"><button type="submit" class="bg-yellow-400 text-black px-4 py-2 rounded-md hover:bg-yellow-500">Kirim</button></form></div>`;
-                feedContainer.appendChild(postEl);
-                if (post.comments) {
-                    window.renderComments(post.id, post.comments);
-                }
-            });
-        }
-        window.renderComments = function(postId, comments) {
-            const commentList = document.getElementById(`comment-list-${postId}`);
-            if (!commentList) return;
-            commentList.innerHTML = '';
-            comments.forEach(comment => {
-                const commentEl = document.createElement('div');
-                commentEl.className = 'p-2 bg-gray-700 rounded-lg';
-                commentEl.innerHTML = `<p class="font-semibold text-sm text-gray-100">${comment.author}</p><p class="text-sm text-gray-300">${comment.text}</p>`;
-                commentList.appendChild(commentEl);
-            });
-        }
-        window.toggleComments = function(postId) {
-            const commentsContainer = document.getElementById(`comments-container-${postId}`);
-            if (commentsContainer) {
-                commentsContainer.classList.toggle('hidden');
-            }
-        }
-        window.likePost = async function(postId) {
-            const success = await window.saveData('/api/like-post', { postId });
-            if (success) {
-                window.renderFeed();
-            } else {
-                window.showToast('error', 'Gagal menyukai postingan.');
-            }
-        }
-        window.addComment = async function(event, postId) {
-            event.preventDefault();
-            const commentInput = document.getElementById(`comment-input-${postId}`);
-            const commentText = commentInput.value;
-            if (!commentText) return;
-            
-            const commentData = {
-                postId: postId,
-                author: sessionStorage.getItem('pondokName') || 'Wali Santri',
-                text: commentText,
-                timestamp: new Date().toISOString()
-            };
-            const success = await window.saveData('/api/add-comment', commentData);
-            if (success) {
-                window.renderFeed();
-                commentInput.value = '';
-            } else {
-                window.showToast('error', 'Gagal menambahkan komentar.');
-            }
-        }
-        window.sharePost = function(postId) {
-            const pondokData = appDataCache[sessionStorage.getItem('currentPondokId')];
-            const post = pondokData.posts.find(p => p.id === postId);
-            if (!post) return;
-            
-            const shareText = `Lihat postingan terbaru dari ${post.author} di Aplikasi SantriQ!\n\n"${post.text}"\n\n${post.mediaUrl || ''}`;
-            const shareUrl = `https://santriq.app/post/${postId}`;
-            
-            if (navigator.share) {
-                navigator.share({ title: 'Postingan SantriQ', text: shareText, url: shareUrl }).catch(error => console.error('Error sharing:', error));
-            } else {
-                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`, '_blank');
-            }
-        }
-        window.deletePost = async function(postId) {
-            const role = sessionStorage.getItem('role');
-            if (role !== 'guru') {
-                window.showToast('error', 'Anda tidak memiliki izin untuk menghapus postingan.');
-                return;
-            }
-            
-            if (!confirm('Apakah Anda yakin ingin menghapus postingan ini?')) {
-                return;
-            }
-            
-            const success = await window.saveData('/api/delete-post', { postId });
-            if (success) {
-                window.showToast('success', 'Postingan berhasil dihapus!');
-                window.renderFeed();
-            } else {
-                window.showToast('error', 'Gagal menghapus postingan.');
-            }
-        }
         
         window.updateTotalHafalan = async function() {
             // Ambil ID santri dari input tersembunyi
@@ -1940,12 +1638,6 @@
 
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
-
-            // --- Inisialisasi awal
-            const savedLang = localStorage.getItem('selectedLanguage') || 'id';
-            const languageSelector = document.getElementById('language-selector');
-            if (languageSelector) languageSelector.value = savedLang;
-            window.setLanguage(savedLang);
 
             const alarmToggle = document.getElementById('alarm-toggle');
             if (alarmToggle) {
@@ -2177,160 +1869,10 @@
                     }
                 });
             }
-            
-            const newPostForm = document.getElementById('new-post-form');
-            if (newPostForm) {
-                newPostForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    const text = document.getElementById('post-text').value;
-                    const mediaFile = document.getElementById('post-media').files[0];
-                    
-                    if (!text && !mediaFile) {
-                        window.showToast('error', 'Postingan tidak boleh kosong.');
-                        return;
-                    }
-                    
-                    let mediaUrl = null;
-                    let mediaType = null;
-                    
-                    if (mediaFile) {
-                        if (mediaFile.type.startsWith('video/')) {
-                            const video = document.createElement('video');
-                            video.preload = 'metadata';
-                            video.onloadedmetadata = async () => {
-                                window.URL.revokeObjectURL(video.src);
-                                if (video.duration > 120) {
-                                    window.showToast('error', 'Durasi video tidak boleh lebih dari 2 menit.');
-                                    return;
-                                }
-                                mediaUrl = await window.uploadFile(mediaFile);
-                                if (!mediaUrl) return;
-                                mediaType = 'video';
-                                const postData = {
-                                    author: sessionStorage.getItem('pondokName') || 'Wali Santri',
-                                    authorRole: sessionStorage.getItem('role'),
-                                    text: text,
-                                    mediaUrl: mediaUrl,
-                                    mediaType: mediaType,
-                                    timestamp: new Date().toISOString(),
-                                    likes: 0,
-                                    comments: []
-                                };
-                                const success = await window.saveData('/api/add-post', postData);
-                                if (success) {
-                                    window.showToast('success', 'Postingan berhasil diunggah!');
-                                    window.sendNewPostNotification(postData.author, postData.mediaType);
-                                    window.closePostForm();
-                                    window.renderFeed();
-                                } else {
-                                    window.showToast('error', 'Gagal mengunggah postingan.');
-                                }
-                            };
-                            video.src = URL.createObjectURL(mediaFile);
-                        } else {
-                            mediaUrl = await window.uploadFile(mediaFile);
-                            if (!mediaUrl) return;
-                            mediaType = 'image';
-                            const postData = {
-                                author: sessionStorage.getItem('pondokName') || 'Wali Santri',
-                                authorRole: sessionStorage.getItem('role'),
-                                text: text,
-                                mediaUrl: mediaUrl,
-                                mediaType: mediaType,
-                                timestamp: new Date().toISOString(),
-                                likes: 0,
-                                comments: []
-                            };
-                            const success = await window.saveData('/api/add-post', postData);
-                            if (success) {
-                                window.showToast('success', 'Postingan berhasil diunggah!');
-                                window.sendNewPostNotification(postData.author, postData.mediaType);
-                                window.closePostForm();
-                                window.renderFeed();
-                            } else {
-                                window.showToast('error', 'Gagal mengunggah postingan.');
-                            }
-                        }
-                    } else {
-                        const postData = {
-                            author: sessionStorage.getItem('pondokName') || 'Wali Santri',
-                            authorRole: sessionStorage.getItem('role'),
-                            text: text,
-                            mediaUrl: mediaUrl,
-                            mediaType: mediaType,
-                            timestamp: new Date().toISOString(),
-                            likes: 0,
-                            comments: []
-                        };
-                        const success = await window.saveData('/api/add-post', postData);
-                        if (success) {
-                            window.showToast('success', 'Postingan berhasil diunggah!');
-                            window.sendNewPostNotification(postData.author, postData.mediaType);
-                            window.closePostForm();
-                            window.renderFeed();
-                        } else {
-                            window.showToast('error', 'Gagal mengunggah postingan.');
-                        }
-                    }
-                });
-            }
 
             // --- Panggil Fungsi Inisialisasi Aplikasi ---
             window.playWelcomeAnimation();
         });
-
-        // Kode untuk Akang Nahya (Modul)
-        window.startAkangNahya = async function() {
-            const statusEl = document.getElementById("nahya-status");
-            const startBtn = document.getElementById("nahya-start-btn");
-            const chatBox = document.getElementById("nahya-chat-box");
-            const spinner = document.getElementById("nahya-spinner");
-            const ding = document.getElementById("nahya-ding");
-
-            statusEl.innerText = "Akang Nahya butuh waktu 1 menit,kamu jangan pergi dulu, kondisikan jaringan kamu lancar ya.. hehe 🙏";
-            startBtn.disabled = true;
-            spinner.classList.remove("hidden");
-            
-            try {
-                // Menggunakan model distilgpt2 yang lebih umum
-                akangNahya = await pipeline("text-generation", "Xenova/distilgpt2");
-                spinner.classList.add("hidden");
-                statusEl.innerText = "Hey, Akang Nahya sudah di sini, kita mau bahas apa nih? 😉";
-                chatBox.classList.remove("hidden");
-                if (document.getElementById("toggle-sound").checked) {
-                    ding.play();
-                }
-            } catch (error) {
-                console.error("Failed to load AI model:", error);
-                spinner.classList.add("hidden");
-                statusEl.innerText = "Gagal memuat Akang Nahya. Silakan coba lagi nanti.";
-                startBtn.disabled = false;
-            }
-        };
-
-        window.sendToNahya = async function() {
-            const input = document.getElementById("akang-input").value;
-            const responseEl = document.getElementById("akang-response");
-            const replySound = document.getElementById("nahya-reply");
-
-            if (!akangNahya) {
-                responseEl.innerText = "⚠️ Akang Nahya belum siap, tunggu sebentar ya...";
-                return;
-            }
-
-            responseEl.innerText = "⏳ Sedang dipikirkan Akang Nahya...";
-            try {
-                const output = await akangNahya(input, { max_new_tokens: 200 });
-                responseEl.innerText = output[0].generated_text;
-
-                if (document.getElementById("toggle-sound").checked) {
-                    replySound.play();
-                }
-            } catch (error) {
-                console.error("Failed to generate response:", error);
-                responseEl.innerText = "Terjadi kesalahan saat memproses permintaan. Mohon coba lagi.";
-            }
-        };
     </script>
   </body>
 </html>
