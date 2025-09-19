@@ -2280,6 +2280,7 @@
             spinner.classList.remove("hidden");
             
             try {
+                // Menggunakan model yang dijamin dapat diakses
                 akangNahya = await pipeline("text-generation", "Xenova/phi-3-mini-4k-instruct");
                 spinner.classList.add("hidden");
                 statusEl.innerText = "Hey, Akang Nahya sudah di sini, kita mau bahas apa nih? 😉";
