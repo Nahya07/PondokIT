@@ -808,6 +808,7 @@
     <div id="toast-container" class="fixed top-5 right-5 z-50"></div>
     <audio id="nahya-ding" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
     <audio id="nahya-reply" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" preload="auto"></audio>
+    <audio id="success-ding" src="https://actions.google.com/sounds/v1/foley/ding_a_ling.ogg" preload="auto"></audio>
 	  
     <script type="module">
         import { pipeline } from "https://cdn.jsdelivr.net/npm/@xenova/transformers";
@@ -1238,6 +1239,11 @@
                 const result = await response.json();
                 if (result.success) {
                     appDataCache = {};
+                    // Play a success sound for the guru when data is saved
+                    const successDing = document.getElementById('success-ding');
+                    if (successDing) {
+                        successDing.play().catch(e => console.error("Error playing success sound:", e));
+                    }
                     return true;
                 } else {
                     console.error("Gagal menyimpan data:", result.message);
@@ -2281,7 +2287,7 @@
             const spinner = document.getElementById("nahya-spinner");
             const ding = document.getElementById("nahya-ding");
 
-            statusEl.innerText = "Mohon maaf Akang Nahya butuh waktu 5 menit agar bisa berubah, kondisikan jaringan kamu lancar ya.. hehe 🙏";
+            statusEl.innerText = "Akang Nahya butuh waktu 1 menit,kamu jangan pergi dulu, kondisikan jaringan kamu lancar ya.. hehe 🙏";
             startBtn.disabled = true;
             spinner.classList.remove("hidden");
             
