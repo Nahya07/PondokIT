@@ -187,6 +187,9 @@
         <p class="text-xl sm:text-2xl text-white italic mb-4 transition-all duration-1000 ease-in-out transform translate-y-10 opacity-0" id="welcome-subtitle">
           Selamat Datang di Aplikasi SantriQ
         </p>
+        <p class="text-lg text-white transition-all duration-1000 ease-in-out transform translate-y-10 opacity-0" id="welcome-message">
+         SANTRI AL-QUR'AN.
+        </p>
       </div>
     </div>
     <!-- Main App Container -->
@@ -773,6 +776,7 @@
                 .attr("width", width)
                 .attr("height", height);
 
+            // Memfilter data yang valid dan mengurutkannya
             const validData = data.filter(d => d && d.tanggal && d.penilaian);
             if (validData.length === 0) {
                 svg.append("text")
@@ -785,18 +789,19 @@
                 return;
             }
             
-            // Urutkan data berdasarkan tanggal
-            validData.sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
+            validData.sort((a, b) => a.tanggal - b.tanggal);
 
-            // Menggunakan data hafalan kumulatif
+            // Menghitung skor kumulatif
             let cumulativeScore = 0;
             const cumulativeData = validData.map(d => {
-                const score = d.penilaian === 'Lancar' ? 2 : 1;
+                // Memberikan skor berdasarkan penilaian
+                const score = d.penilaian === 'Lancar' ? 2 : 1; 
                 cumulativeScore += score;
-                return { tanggal: new Date(d.tanggal), nilai: cumulativeScore, penilaian: d.penilaian };
+                return { tanggal: d.tanggal, nilai: cumulativeScore, penilaian: d.penilaian };
             });
             console.log("Data kumulatif untuk grafik:", cumulativeData);
 
+            // Membuat skala untuk sumbu X dan Y
             const x = d3.scaleTime()
                 .domain(d3.extent(cumulativeData, d => d.tanggal))
                 .range([margin.left, width - margin.right]);
@@ -806,15 +811,18 @@
                 .nice()
                 .range([height - margin.bottom, margin.top]);
 
+            // Membuat path area di bawah garis
             const area = d3.area()
                 .x(d => x(d.tanggal))
                 .y0(y(0))
                 .y1(d => y(d.nilai));
 
+            // Membuat path garis
             const line = d3.line()
                 .x(d => x(d.tanggal))
                 .y(d => y(d.nilai));
 
+            // Menambahkan gradient ke area
             const gradient = svg.append("defs").append("linearGradient")
                 .attr("id", "area-gradient")
                 .attr("x1", "0%").attr("x2", "0%")
@@ -822,6 +830,7 @@
             gradient.append("stop").attr("offset", "0%").attr("stop-color", "#FFD700").attr("stop-opacity", 0.5);
             gradient.append("stop").attr("offset", "100%").attr("stop-color", "#FFD700").attr("stop-opacity", 0);
 
+            // Menggambar area dan garis
             svg.append("path")
                 .datum(cumulativeData)
                 .attr("fill", "url(#area-gradient)")
@@ -829,11 +838,13 @@
                 .attr("stroke-width", 2)
                 .attr("d", line);
 
+            // Menambahkan sumbu X
             svg.append("g")
                 .attr("transform", `translate(0,${height - margin.bottom})`)
                 .call(d3.axisBottom(x).ticks(d3.timeWeek.every(1)).tickFormat(d3.timeFormat("%b %d")))
                 .attr("color", "#ccc");
 
+            // Menambahkan sumbu Y
             svg.append("g")
                 .attr("transform", `translate(${margin.left},0)`)
                 .call(d3.axisLeft(y))
@@ -862,7 +873,7 @@
                 .attr("stroke-width", 2)
                 .on("mouseover", (event, d) => {
                     tooltip.style("opacity", 1)
-                        .html(`<strong>Tanggal:</strong> ${d.tanggal.toLocaleDateString('id-ID')}<br><strong>Penilaian:</strong> ${d.penilaian}`)
+                        .html(`<strong>Tanggal:</strong> ${d.tanggal.toLocaleDateString('id-ID')}<br><strong>Penilaian:</strong> ${d.penilaian}<br><strong>Skor Kumulatif:</strong> ${d.nilai}`)
                         .style("left", (event.pageX + 10) + "px")
                         .style("top", (event.pageY - 20) + "px");
                 })
@@ -885,7 +896,7 @@
                         const hafalan = appDataCache.hafalan.filter(h => h.santri_id === parseInt(santriId));
                         const chartData = hafalan.map(h => {
                             const score = h.penilaian === 'Lancar' ? 2 : 1;
-                            return { tanggal: h.tanggal, nilai: score, penilaian: h.penilaian };
+                            return { tanggal: new Date(h.tanggal), nilai: score, penilaian: h.penilaian };
                         });
                         window.renderFutureChart(chartData);
                     }
