@@ -808,7 +808,7 @@
     <div id="toast-container" class="fixed top-5 right-5 z-50"></div>
     <audio id="nahya-ding" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
     <audio id="nahya-reply" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" preload="auto"></audio>
-    <script>
+    <script type="module">
         // --- Semua Deklarasi Variabel dan Objek Global ---
         const translations = {
             id: {
@@ -2269,19 +2269,8 @@
                     }
                 });
             }
-
-            // --- Panggil Fungsi Inisialisasi Aplikasi ---
-            playWelcomeAnimation();
-        });
-	</script>
-
-	<script type="module">
 	import { pipeline } from "https://cdn.jsdelivr.net/npm/@xenova/transformers";
-
-
 	let akangNahya = null;
-
-
 	window.startAkangNahya = async function() {
 	const statusEl = document.getElementById("nahya-status");
 	const startBtn = document.getElementById("nahya-start-btn");
@@ -2330,7 +2319,9 @@
 	replySound.play();
 		}
 	}
-	
-    </script>
+            // --- Panggil Fungsi Inisialisasi Aplikasi ---
+            playWelcomeAnimation();
+        });
+	</script>
   </body>
 </html>
