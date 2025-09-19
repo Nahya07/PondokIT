@@ -778,14 +778,14 @@
 
             // Memfilter data yang valid dan mengurutkannya
             const validData = data.filter(d => d && d.tanggal && d.penilaian && !isNaN(d.tanggal.getTime()));
-            if (validData.length === 0) {
+            if (validData.length < 2) { // Minimal 2 titik data untuk menggambar garis
                 svg.append("text")
                     .attr("x", width / 2)
                     .attr("y", height / 2)
                     .attr("text-anchor", "middle")
                     .attr("fill", "#ccc")
-                    .text("Tidak ada data setoran untuk menampilkan grafik.");
-                console.log("Data tidak valid atau kosong. Gagal menggambar grafik.");
+                    .text(validData.length === 0 ? "Tidak ada data setoran untuk menampilkan grafik." : "Tambahkan lebih dari satu setoran untuk melihat grafik.");
+                console.log("Data tidak valid atau kurang dari 2. Gagal menggambar grafik.");
                 return;
             }
             
@@ -794,7 +794,6 @@
             // Menghitung skor kumulatif
             let cumulativeScore = 0;
             const cumulativeData = validData.map(d => {
-                // Memberikan skor berdasarkan penilaian
                 const score = d.penilaian === 'Lancar' ? 2 : 1; 
                 cumulativeScore += score;
                 return { tanggal: d.tanggal, nilai: cumulativeScore, penilaian: d.penilaian };
