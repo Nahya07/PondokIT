@@ -187,9 +187,6 @@
         <p class="text-xl sm:text-2xl text-white italic mb-4 transition-all duration-1000 ease-in-out transform translate-y-10 opacity-0" id="welcome-subtitle">
           Selamat Datang di Aplikasi SantriQ
         </p>
-        <p class="text-lg text-white transition-all duration-1000 ease-in-out transform translate-y-10 opacity-0" id="welcome-message">
-         SANTRI AL-QUR'AN.
-        </p>
       </div>
     </div>
     <!-- Main App Container -->
@@ -763,7 +760,10 @@
             
             d3.select("#hafalan-future-chart svg").remove();
             const container = d3.select("#hafalan-future-chart");
-            if (!container.node()) return; // Tambahkan pengecekan null
+            if (!container.node()) {
+                console.error("Elemen container untuk grafik tidak ditemukan.");
+                return;
+            }
             
             const width = container.node().getBoundingClientRect().width;
             const height = 300;
@@ -838,7 +838,8 @@
                 .attr("transform", `translate(${margin.left},0)`)
                 .call(d3.axisLeft(y))
                 .attr("color", "#ccc");
-
+                
+            // Menambahkan tooltip untuk interaksi
             const tooltip = d3.select("body").append("div")
                 .attr("class", "tooltip")
                 .style("position", "absolute")
@@ -880,12 +881,14 @@
                 const currentPage = Object.keys(pages).find(key => !pages[key].classList.contains('hidden'));
                 if (currentPage === 'detailSantri' && appDataCache.hafalan) {
                     const santriId = sessionStorage.getItem('currentSantriId');
-                    const hafalan = appDataCache.hafalan.filter(h => h.santri_id === parseInt(santriId));
-                    const chartData = hafalan.map(h => {
-                        const score = h.penilaian === 'Lancar' ? 2 : 1;
-                        return { tanggal: h.tanggal, nilai: score, penilaian: h.penilaian };
-                    });
-                    window.renderFutureChart(chartData);
+                    if (santriId) {
+                        const hafalan = appDataCache.hafalan.filter(h => h.santri_id === parseInt(santriId));
+                        const chartData = hafalan.map(h => {
+                            const score = h.penilaian === 'Lancar' ? 2 : 1;
+                            return { tanggal: h.tanggal, nilai: score, penilaian: h.penilaian };
+                        });
+                        window.renderFutureChart(chartData);
+                    }
                 }
             }, 250); // Debounce time
         }
@@ -1222,7 +1225,7 @@
             const chartData = hafalan.map(h => {
                 const score = h.penilaian === 'Lancar' ? 2 : 1;
                 return {
-                    tanggal: new Date(h.tanggal),
+                    tanggal: new Date(h.tanggal), // Pastikan ini adalah objek Date
                     nilai: score,
                     penilaian: h.penilaian // Menambahkan penilaian untuk tooltip
                 };
