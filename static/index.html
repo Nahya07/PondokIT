@@ -177,110 +177,6 @@
       background-color: #631717;
       border: 2px solid #EF4444;
       }
-      /* AI Chat styling */
-      .chat-container {
-      display: flex;
-      flex-direction: column;
-      height: calc(100vh - 120px);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      background-color: #111827; /* Dark background */
-      color: #f3f4f6;
-      }
-      .chat-messages {
-      flex-grow: 1;
-      padding: 1.5rem;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      background-color: #1f2937; /* Slightly lighter dark background */
-      }
-      .message {
-      max-width: 80%;
-      padding: 0.75rem 1rem;
-      border-radius: 1rem;
-      font-size: 0.875rem;
-      }
-      .message.user {
-      align-self: flex-end;
-      background-color: #FFD700;
-      color: #000;
-      border-bottom-right-radius: 0.25rem;
-      }
-      .message.ai {
-      align-self: flex-start;
-      background-color: #4b5563; /* Gray for AI messages */
-      color: #f3f4f6;
-      border-bottom-left-radius: 0.25rem;
-      }
-      .chat-input {
-      padding: 1rem;
-      background-color: #1f2937;
-      border-top: 1px solid #374151;
-      display: flex;
-      align-items: center;
-      }
-      .chat-input input {
-      flex-grow: 1;
-      padding: 0.75rem;
-      border-radius: 9999px; /* Pill shape */
-      border: 1px solid #4b5563;
-      background-color: #374151;
-      color: #f3f4f6;
-      }
-      .chat-input button {
-      padding: 0.75rem 1rem;
-      background-color: #FFD700;
-      color: black;
-      border-radius: 9999px;
-      margin-left: 0.5rem;
-      cursor: pointer;
-      }
-      .ai-loading-icon {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 2px solid #ccc;
-      border-top-color: #FFD700;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      }
-      @keyframes spin {
-      to { transform: rotate(360deg); }
-      }
-      /* AI Page Styles */
-      .ai-page {
-      background: #111827;
-      min-height: 100vh;
-      color: #f3f4f6;
-      }
-      .ai-header {
-      background-color: rgba(30, 41, 59, 0.5);
-      backdrop-filter: blur(5px);
-      border: 1px solid rgba(255, 215, 0, 0.2);
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
-      }
-      .chat-bubble {
-      background-color: rgba(55, 65, 81, 0.7);
-      backdrop-filter: blur(3px);
-      }
-      .ai-icon-container {
-      animation: pulse 2s infinite;
-      }
-      @keyframes pulse {
-      0%, 100% {
-      transform: scale(1);
-      }
-      50% {
-      transform: scale(1.1);
-      }
-      }
-      .ai-chat-input-container {
-      background-color: rgba(30, 41, 59, 0.7);
-      backdrop-filter: blur(5px);
-      }
     </style>
   </head>
   <body class="bg-gray-900 text-gray-200 transition-colors duration-500">
@@ -322,7 +218,9 @@
             <button onclick="handleRoleSelection('guru')" class="w-full px-4 py-3 font-semibold text-gray-900 bg-yellow-100 rounded-lg hover:bg-yellow-200">
             Saya Pengurus / Guru
             </button>
-            <button onclick="openAkangNahyaChat()" class="w-full px-4 py-3 font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700">Ngobrol dengan Akang Nahya</button>
+			<button onclick="openNahyaPage()" class="w-full px-4 py-3 font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+             AI Akang Nahya Menjawab 🤖
+            </button>
           </div>
         </div>
         <div class="flex flex-col items-center mt-8 w-full max-w-sm mx-auto space-y-6">
@@ -439,6 +337,38 @@
           </p>
         </div>
       </div>
+		 <!-- ================== HALAMAN AKANG NAHYA ================== -->
+      <div id="akang-nahya-page" class="hidden flex-col items-center justify-center min-h-screen p-4 bg-gray-900">
+        <div class="w-full max-w-2xl p-8 space-y-6 rounded-xl shadow-2xl futuristic-panel">
+          <h2 class="text-3xl font-bold text-yellow-400 text-center">🤖 Akang Nahya</h2>
+          <p id="nahya-status" class="text-center text-gray-400">Klik mulai untuk mengaktifkan Akang Nahya.</p>
+
+          <!-- Spinner Loading -->
+          <div id="nahya-spinner" class="hidden">
+            <div class="spinner"></div>
+            <p class="text-center text-gray-400">Sedang menyiapkan Akang Nahya...</p>
+          </div>
+
+          <button onclick="startAkangNahya()" id="nahya-start-btn"
+            class="w-full px-4 py-3 font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">
+            Mulai Akang Nahya
+          </button>
+
+          <!-- Opsi Notifikasi Suara -->
+          <div class="flex items-center justify-center space-x-2 mt-4">
+            <input type="checkbox" id="toggle-sound" checked class="w-5 h-5">
+            <label for="toggle-sound" class="text-gray-300">Aktifkan Suara Notifikasi</label>
+          </div>
+
+          <div id="nahya-chat-box" class="hidden">
+            <textarea id="akang-input" class="w-full p-3 rounded-lg futuristic-panel" rows="3" placeholder="Tulis pertanyaan kamu di sini..."></textarea>
+            <button onclick="sendToNahya()" class="mt-3 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">Kirim</button>
+            <div id="akang-response" class="mt-6 p-4 futuristic-panel text-gray-200 min-h-[100px]"></div>
+            <button onclick="backToRoleSelection()" class="mt-4 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600">Kembali</button>
+          </div>
+        </div>
+      </div>
+	 </div>
       <!-- ================== WALI DASHBOARD ================== -->
       <div id="wali-dashboard-page" 
         class="hidden fade-in main-content p-8 rounded-xl shadow-lg flex flex-col h-screen">
@@ -617,7 +547,6 @@
             <button onclick="showGuruForm(null)" class="px-3 py-2 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">
             + Tambah Santri Baru
             </button>
-            <button onclick="openAkangNahyaChat()" class="px-3 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700">Ngobrol dengan Akang Nahya</button>
             <button onclick="logout()" class="px-3 py-2 text-sm font-semibold text-red-600 bg-red-100 rounded-lg hover:bg-red-200">Keluar</button>
           </div>
         </header>
@@ -877,42 +806,9 @@
     </div>
     <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed top-5 right-5 z-50"></div>
-    
-    <!-- Modal untuk loading model AI -->
-    <div id="ai-loading-modal" class="fixed inset-0 bg-black bg-opacity-80 z-50 hidden flex items-center justify-center p-4 text-center">
-      <div class="flex flex-col items-center">
-        <div class="ai-loading-icon !w-20 !h-20 !border-4 mb-4"></div>
-        <p class="text-white text-lg font-semibold">Mohon Maaf Akang Nahya butuh penyesuaian untuk kamu, sebentar ko cuman 5 menit kalo jaringan kamu lancar hehe</p>
-      </div>
-    </div>
-
-    <!-- Modal for Akang Nahya AI Chat -->
-    <div id="akang-nahya-chat-modal" class="fixed inset-0 bg-black bg-opacity-80 z-50 hidden flex items-center justify-center p-4">
-      <div class="relative w-full max-w-xl text-center">
-        <div class="chat-container">
-          <div class="flex items-center justify-between p-4 bg-gray-800 border-b border-gray-700">
-            <h3 class="text-lg font-bold text-white">Ngobrol bareng Akang Nahya!</h3>
-            <button onclick="closeAkangNahyaChat()" class="text-gray-400 hover:text-white">&times;</button>
-          </div>
-          <div class="chat-messages" id="chat-messages">
-            <!-- Pesan chat akan dimuat di sini -->
-          </div>
-          <form class="chat-input" id="chat-form">
-            <input type="text" id="chat-input" placeholder="Ketik pesan..." autocomplete="off">
-            <button type="submit" class="bg-yellow-400 text-black rounded-full p-2 h-10 w-10 flex items-center justify-center hover:bg-yellow-500">
-              <i class="fas fa-paper-plane"></i>
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-    <script type="module">
-        import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.0';
-
-        // Set environment variables for Xenova
-        env.backends.onnx.wasm.numThreads = 1;
-        env.localModelPath = '/models/'; // Specify local path for models
-
+    <audio id="nahya-ding" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
+    <audio id="nahya-reply" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" preload="auto"></audio>
+    <script>
         // --- Semua Deklarasi Variabel dan Objek Global ---
         const translations = {
             id: {
@@ -1144,16 +1040,6 @@
                 });
         }
 
-        // Fungsi untuk merender ulang grafik saat jendela diubah ukurannya
-        function handleResize() {
-            const currentSantriId = document.getElementById('santri-id').value;
-            if (currentSantriId) {
-                showSantriDetail(parseInt(currentSantriId));
-            }
-        }
-        window.addEventListener('resize', handleResize);
-
-
         function setLanguage(lang) {
             document.documentElement.lang = lang;
             document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
@@ -1381,7 +1267,20 @@
                 return null;
             }
         }
+		 const pages = {
+        roleSelection: document.getElementById('role-selection-page'),
+        akangNahya: document.getElementById('akang-nahya-page'),
+      };
 
+      function showPage(pageName) {
+        Object.values(pages).forEach(p => { p.classList.add('hidden'); });
+        pages[pageName].classList.remove('hidden');
+        pages[pageName].classList.add('flex');
+      }
+
+      function openNahyaPage() { showPage('akangNahya'); }
+      function backToRoleSelection() { showPage('roleSelection'); }
+		
         function requestNotificationPermission() {
             if (!("Notification" in window)) {
                 console.log("Browser ini tidak mendukung notifikasi desktop");
@@ -1616,9 +1515,9 @@
                 const formTargetMingguan = document.getElementById('form-target-mingguan');
                 if (formTargetMingguan) formTargetMingguan.value = target.mingguan || '';
                 const formTargetBulanan = document.getElementById('form-target-bulanan');
-                if (formTargetBulanan) formTargetBulanan.value = target.bulanan || '';
+                if (formTargetBulanan) formTargetBulanan.value = target.bulanan || '-';
                 const formTargetTahunan = document.getElementById('form-target-tahunan');
-                if (formTargetTahunan) formTargetTahunan.value = target.tahunan || '';
+                if (formTargetTahunan) formTargetTahunan.value = target.tahunan || '-';
                 const checkedRadio = document.querySelector(`input[name="tercapai"][value="${santri.tercapai}"]`);
                 if (checkedRadio) {
                     checkedRadio.checked = true;
@@ -1763,20 +1662,6 @@
             }
         }
         function playAlarm(prayerName) {
-            const audio = document.getElementById('azan-alarm');
-            audio.play().catch(e => {
-                console.error("Gagal memutar audio alarm:", e);
-                const notification = document.getElementById('alarm-notification');
-                document.getElementById('alarm-text').textContent = `Waktu Salat ${prayerName} telah tiba.`;
-                notification.classList.remove('hidden');
-                setTimeout(() => dismissAlarm(), 5000);
-            });
-            const notification = document.getElementById('alarm-notification');
-            document.getElementById('alarm-text').textContent = `Telah Masuk Waktu Salat ${prayerName}`;
-            notification.classList.remove('hidden');
-            setTimeout(() => dismissAlarm(), 300000);
-        }
-        function dismissAlarm() {
             const audio = document.getElementById('azan-alarm');
             audio.pause();
             audio.currentTime = 0;
@@ -1998,7 +1883,7 @@
                 showToast('error', 'Gagal menghapus postingan.');
             }
         }
-        async function updateTotalHafalan() {
+                async function updateTotalHafalan() {
             // Ambil ID santri dari input tersembunyi
             const santriId = document.getElementById('santri-id').value;
             
@@ -2046,106 +1931,6 @@
                 showToast('error', "Gagal memperbarui total hafalan.");
             }
         }
-
-        // ======================================
-        // Fitur AI Akang Nahya
-        // ======================================
-        const akangNahyaChatModal = document.getElementById('akang-nahya-chat-modal');
-        const aiLoadingModal = document.getElementById('ai-loading-modal');
-        const chatMessagesEl = document.getElementById('chat-messages');
-        const chatFormEl = document.getElementById('chat-form');
-
-        // Tambahkan cache untuk pipeline AI
-        let generator = null; 
-
-        async function openAkangNahyaChat() {
-            aiLoadingModal.classList.remove('hidden');
-            akangNahyaChatModal.classList.add('hidden');
-
-            try {
-                if (generator === null) {
-                    // Memuat model Xenova/phi-3-mini-4k-instruct
-                    env.backends.onnx.wasm.numThreads = 1;
-                    generator = await pipeline('text-generation', 'Xenova/phi-3-mini-4k-instruct', {
-                        quantized: false,
-                        progress_callback: (details) => {
-                            console.log('Progress:', details.progress, details.file);
-                        }
-                    });
-                }
-                
-                aiLoadingModal.classList.add('hidden');
-                akangNahyaChatModal.classList.remove('hidden');
-
-                // Pesan Selamat Datang
-                const welcomeMessage = "hay, akang nahya sudah ada disini";
-                appendChatMessage('ai', welcomeMessage);
-                chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
-            } catch (e) {
-                aiLoadingModal.classList.add('hidden');
-                akangNahyaChatModal.classList.remove('hidden');
-                appendChatMessage('ai', "Duh, ada masalah nih. Gagal muat modelnya. Coba refresh lagi ya, bro.");
-                console.error('Error loading AI model:', e);
-            }
-        }
-
-        function closeAkangNahyaChat() {
-            akangNahyaChatModal.classList.add('hidden');
-        }
-
-        function appendChatMessage(role, text) {
-            const messageEl = document.createElement('div');
-            messageEl.className = `message ${role}`;
-            messageEl.innerHTML = text;
-            chatMessagesEl.appendChild(messageEl);
-            chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
-        }
-
-        async function callAkangNahyaAI(prompt) {
-            if (generator === null) {
-                appendChatMessage('ai', 'Model belum siap, coba buka lagi chatnya ya.');
-                return;
-            }
-
-            const systemPrompt = "Kamu adalah Akang Nahya, seorang AI dengan kepribadian anak jaman sekarang. Gunakan bahasa gaul yang santai dan akrab. Jawablah pertanyaan dengan singkat, jelas, dan tetap sopan. Sesekali berikan emoji dan tawa seperti 'wkwkwk' atau 'hehehe'.";
-            
-            // Tampilkan loading indicator
-            const loadingEl = document.createElement('div');
-            loadingEl.className = 'message ai';
-            loadingEl.innerHTML = '<span class="ai-loading-icon"></span>';
-            chatMessagesEl.appendChild(loadingEl);
-            chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
-
-            try {
-                const output = await generator(prompt, {
-                    maxLength: 500, // Batasi panjang respons
-                    systemPrompt: systemPrompt
-                });
-                
-                loadingEl.remove();
-                appendChatMessage('ai', output.generated_text);
-
-            } catch (error) {
-                loadingEl.remove();
-                appendChatMessage('ai', 'Duh, ada error nih. Coba lagi ya, bro.');
-                console.error('Error calling AI:', error);
-            }
-        }
-
-        chatFormEl.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const inputEl = document.getElementById('chat-input');
-            const prompt = inputEl.value;
-            if (!prompt) return;
-
-            appendChatMessage('user', prompt);
-            inputEl.value = '';
-            
-            await callAkangNahyaAI(prompt);
-        });
-        // ======================================
-        // Akhir Fitur AI
-        // ======================================
 
 
         // --- INITIALIZATION ---
@@ -2488,6 +2273,64 @@
             // --- Panggil Fungsi Inisialisasi Aplikasi ---
             playWelcomeAnimation();
         });
+	</script>
+
+	<script type="module">
+	import { pipeline } from "https://cdn.jsdelivr.net/npm/@xenova/transformers";
+
+
+	let akangNahya = null;
+
+
+	window.startAkangNahya = async function() {
+	const statusEl = document.getElementById("nahya-status");
+	const startBtn = document.getElementById("nahya-start-btn");
+	const chatBox = document.getElementById("nahya-chat-box");
+	const spinner = document.getElementById("nahya-spinner");
+	const ding = document.getElementById("nahya-ding");
+
+
+	statusEl.innerText = "Mohon maaf Akang Nahya butuh waktu 5 menit agar bisa berubah, kalau jaringan kamu lancar hehe 🙏";
+	startBtn.disabled = true;
+	spinner.classList.remove("hidden");
+
+
+	akangNahya = await pipeline("text-generation", "Xenova/phi-3-mini-4k-instruct");
+
+
+	spinner.classList.add("hidden");
+	statusEl.innerText = "Hey, Akang Nahya sudah di sini, kita mau bahas apa nih? 😉";
+	chatBox.classList.remove("hidden");
+
+
+	if (document.getElementById("toggle-sound").checked) {
+	ding.play();
+		}
+	}
+
+
+	window.sendToNahya = async function() {
+	const input = document.getElementById("akang-input").value;
+	const responseEl = document.getElementById("akang-response");
+	const replySound = document.getElementById("nahya-reply");
+
+
+	if (!akangNahya) {
+	responseEl.innerText = "⚠️ Akang Nahya belum siap, tunggu sebentar ya...";
+	return;
+	}
+
+
+	responseEl.innerText = "⏳ Sedang dipikirkan Akang Nahya...";
+	const output = await akangNahya(input, { max_new_tokens: 200 });
+	responseEl.innerText = output[0].generated_text;
+
+
+	if (document.getElementById("toggle-sound").checked) {
+	replySound.play();
+		}
+	}
+	
     </script>
   </body>
 </html>
