@@ -235,9 +235,14 @@
     </style>
   </head>
   <body class="transition-colors duration-500">
-    <button id="theme-toggle" class="fixed bottom-4 right-4 p-3 rounded-full shadow-lg z-50 transition-colors duration-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-yellow-400">
+    <button id="theme-toggle" class="fixed top-4 right-4 p-3 rounded-full shadow-lg z-50 transition-colors duration-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-yellow-400">
       <span id="theme-icon" class="text-xl">🌞</span>
     </button>
+    <div class="fixed top-20 right-4 flex flex-col space-y-2 z-50">
+      <button id="lang-id" class="lang-btn p-2 rounded-full shadow-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200" data-lang="id">🇮🇩</button>
+      <button id="lang-jv" class="lang-btn p-2 rounded-full shadow-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200" data-lang="jv">🇯🇴</button>
+      <button id="lang-ar" class="lang-btn p-2 rounded-full shadow-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200" data-lang="ar">🇸🇦</button>
+    </div>
     <!-- Welcome Modal with Elegant Visuals (Only shown once at app start) -->
     <div id="welcome-modal" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4">
       <div class="relative w-full max-w-xl text-center">
@@ -255,15 +260,18 @@
       <div id="role-selection-page" class="flex flex-col items-center justify-center min-h-screen p-4">
         
         <div class="w-full max-w-sm p-8 space-y-6 rounded-xl shadow-2xl text-center relative modern-panel">
-          <h2 class="text-4xl font-bold text-theme shimmer-text">SantriQ</h2>
-          <p class="text-theme-secondary">Silakan pilih peran Anda untuk melanjutkan:</p>
+          <h2 class="text-4xl font-bold text-theme shimmer-text" id="app-title">SantriQ</h2>
+          <p class="text-theme-secondary" id="select-role-text">Silakan pilih peran Anda untuk melanjutkan:</p>
           <div class="space-y-4 pt-4">
             
-            <button onclick="window.handleRoleSelection('wali')" class="w-full px-4 py-3 font-semibold text-white bg-teal-700 rounded-lg hover:bg-teal-800">
+            <button onclick="window.handleRoleSelection('wali')" class="w-full px-4 py-3 font-semibold text-white bg-teal-700 rounded-lg hover:bg-teal-800" id="wali-button">
             Saya Wali Santri
             </button>
-            <button onclick="window.handleRoleSelection('guru')" class="w-full px-4 py-3 font-semibold text-gray-900 bg-yellow-100 rounded-lg hover:bg-yellow-200">
+            <button onclick="window.handleRoleSelection('guru')" class="w-full px-4 py-3 font-semibold text-gray-900 bg-yellow-100 rounded-lg hover:bg-yellow-200" id="guru-button">
             Saya Pengurus / Guru
+            </button>
+            <button onclick="window.showPage('menghafal')" class="w-full px-4 py-3 font-semibold text-white bg-gray-600 rounded-lg hover:bg-gray-700" id="menghafal-button">
+            Metode Menghafal Al-Qur'an 30 Juz
             </button>
           </div>
         </div>
@@ -273,44 +281,44 @@
               <div class="w-12 h-12 futuristic-panel !p-0 rounded-full shadow-md flex items-center justify-center icon-item">
                 <i class="fas fa-chart-line h-6 w-6"></i>
               </div>
-              <span class="tooltip-text">Monitoring Real-time</span>
+              <span class="tooltip-text" id="tooltip-realtime">Monitoring Real-time</span>
             </div>
             <div class="feature-tooltip relative">
               <div class="w-12 h-12 futuristic-panel !p-0 rounded-full shadow-md flex items-center justify-center icon-item">
                 <i class="fas fa-users-cog h-6 w-6"></i>
               </div>
-              <span class="tooltip-text">Akses Wali Santri</span>
+              <span class="tooltip-text" id="tooltip-access">Akses Wali Santri</span>
             </div>
             <div class="feature-tooltip relative">
               <div class="w-12 h-12 futuristic-panel !p-0 rounded-full shadow-md flex items-center justify-center icon-item">
                 <i class="fas fa-file-alt h-6 w-6"></i>
               </div>
-              <span class="tooltip-text">Laporan Terstruktur</span>
+              <span class="tooltip-text" id="tooltip-report">Laporan Terstruktur</span>
             </div>
           </div>
           <div class="text-left text-center">
-            <p class="text-sm italic text-theme-secondary mt-2">"Sebaik-baik kalian adalah orang<br>yang belajar Al-Qur'an dan mengajarkannya."</p>
+            <p class="text-sm italic text-theme-secondary mt-2" id="quote-text">"Sebaik-baik kalian adalah orang<br>yang belajar Al-Qur'an dan mengajarkannya."</p>
           </div>
         </div>
         <footer class="mt-8 text-center text-sm text-theme-secondary">
-          <button onclick="window.showAboutPage()" class="text-yellow-400 hover:text-yellow-500 underline mb-2">Tentang Aplikasi</button>
-          <p>Project dibuat oleh (MUHAMMAD NAHYA FADLALLAH) ©2025 All Rights Reserved</p>
+          <button onclick="window.showAboutPage()" class="text-yellow-400 hover:text-yellow-500 underline mb-2" id="about-button">Tentang Aplikasi</button>
+          <p id="copyright-text">Project dibuat oleh (MUHAMMAD NAHYA FADLALLAH) ©2025 All Rights Reserved</p>
           <a href="https://wa.me/6285520767908" target="_blank" class="block mt-4 text-center">
-          <span class="text-sm font-semibold text-theme-secondary">PUSAT BANTUAN</span>
+          <span class="text-sm font-semibold text-theme-secondary" id="help-center-text">PUSAT BANTUAN</span>
           </a>
         </footer>
       </div>
       <div id="pondok-register-page" class="hidden flex-col items-center justify-center min-h-screen p-4">
         <div class="w-full max-w-sm p-8 space-y-6 rounded-xl shadow-2xl relative modern-panel">
-          <h2 class="text-2xl font-bold text-center text-theme">Daftarkan Pondok Anda</h2>
+          <h2 class="text-2xl font-bold text-center text-theme" id="register-title">Daftarkan Pondok Anda</h2>
           <form id="pondok-register-form" class="space-y-6">
             <div>
-              <label for="register-pondok-id" class="block text-sm font-medium text-theme">Nama Pondok & Nomor Unik</label>
+              <label for="register-pondok-id" class="block text-sm font-medium text-theme" id="register-pondok-label">Nama Pondok & Nomor Unik</label>
               <input type="text" id="register-pondok-id" placeholder="Contoh: PPTI#12345" class="mt-1 w-full px-4 py-3 rounded-lg focus:ring-4 focus:ring-yellow-200 futuristic-panel" required>
-              <p class="text-xs text-theme-secondary mt-1">Gunakan tanda pagar (#) untuk memisahkan nama dan nomor unik.</p>
+              <p class="text-xs text-theme-secondary mt-1" id="register-pondok-hint">Gunakan tanda pagar (#) untuk memisahkan nama dan nomor unik.</p>
             </div>
             <div>
-              <label for="register-password" class="block text-sm font-medium text-theme">Buat Kata Sandi</label>
+              <label for="register-password" class="block text-sm font-medium text-theme" id="register-password-label">Buat Kata Sandi</label>
               <div class="relative mt-1">
                 <input type="password" id="register-password" placeholder="Minimal 6 karakter" class="w-full px-4 py-3 rounded-lg focus:ring-4 focus:ring-yellow-200 futuristic-panel" required>
                 <button type="button" onclick="window.togglePasswordVisibility('register-password', this)" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
@@ -318,30 +326,30 @@
                 </button>
               </div>
             </div>
-            <button type="submit" class="w-full px-4 py-3 font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">
+            <button type="submit" class="w-full px-4 py-3 font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500" id="register-button">
             Daftar
             </button>
           </form>
           <p id="register-error" class="text-red-500 text-sm mt-2 hidden text-center"></p>
           <p class="text-center text-sm text-theme-secondary">
-            Sudah punya akun? <button onclick="window.showPage('pondokLogin')" class="font-semibold text-yellow-400 hover:underline">Masuk di sini</button>
+            <span id="have-account-text">Sudah punya akun?</span> <button onclick="window.showPage('pondokLogin')" class="font-semibold text-yellow-400 hover:underline" id="login-link-1">Masuk di sini</button>
           </p>
           <p class="text-center text-sm mt-4 text-theme-secondary">
-            <button onclick="window.showPage('roleSelection')" class="hover:underline">Kembali ke pilihan peran</button>
+            <button onclick="window.showPage('roleSelection')" class="hover:underline" id="back-to-role-1">Kembali ke pilihan peran</button>
           </p>
         </div>
       </div>
       <div id="pondok-login-page" class="hidden flex-col items-center justify-center min-h-screen p-4">
         <div class="w-full max-w-sm p-8 space-y-6 rounded-xl shadow-2xl relative modern-panel">
           <p class="text-4xl text-yellow-400 text-center" style="font-family: 'MCS Hijaz S_U normal', serif;">بسم الله الرحمن الرحيم</p>
-          <h2 class="text-2xl font-bold text-center text-theme">Login Pengurus / Guru</h2>
+          <h2 class="text-2xl font-bold text-center text-theme" id="login-title">Login Pengurus / Guru</h2>
           <form id="pondok-login-form" class="space-y-6">
             <div>
-              <label for="login-pondok-id" class="block text-sm font-medium text-theme">Nama Pondok & Nomor Unik</label>
+              <label for="login-pondok-id" class="block text-sm font-medium text-theme" id="login-pondok-label">Nama Pondok & Nomor Unik</label>
               <input type="text" id="login-pondok-id" placeholder="Contoh: PPTI#12345" class="mt-1 w-full px-4 py-3 rounded-lg focus:ring-4 focus:ring-yellow-200 futuristic-panel" required>
             </div>
             <div>
-              <label for="login-password" class="block text-sm font-medium text-theme">Kata Sandi</label>
+              <label for="login-password" class="block text-sm font-medium text-theme" id="login-password-label">Kata Sandi</label>
               <div class="relative mt-1">
                 <input type="password" id="login-password" placeholder="Kata Sandi Anda" class="w-full px-4 py-3 rounded-lg focus:ring-4 focus:ring-yellow-200 futuristic-panel" required>
                 <button type="button" onclick="window.togglePasswordVisibility('login-password', this)" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
@@ -349,35 +357,35 @@
                 </button>
               </div>
             </div>
-            <button type="submit" class="w-full px-4 py-3 font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">
+            <button type="submit" class="w-full px-4 py-3 font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500" id="login-button">
             Login
             </button>
           </form>
           <p id="pondok-login-error" class="text-red-500 text-sm mt-2 hidden text-center"></p>
           <p class="text-center text-sm text-theme-secondary">
-            Belum punya akun? <button onclick="window.showPage('pondokRegister')" class="font-semibold text-yellow-400 hover:underline">Daftar di sini</button>
+            <span id="no-account-text">Belum punya akun?</span> <button onclick="window.showPage('pondokRegister')" class="font-semibold text-yellow-400 hover:underline" id="register-link-2">Daftar di sini</button>
           </p>
           <p class="text-center text-sm mt-4 text-theme-secondary">
-            <button onclick="window.showPage('roleSelection')" class="hover:underline">Kembali ke pilihan peran</button>
+            <button onclick="window.showPage('roleSelection')" class="hover:underline" id="back-to-role-2">Kembali ke pilihan peran</button>
           </p>
         </div>
       </div>
       <div id="access-code-page" class="hidden flex-col items-center justify-center min-h-screen p-4">
         <div class="w-full max-w-sm p-8 space-y-6 rounded-xl shadow-2xl relative modern-panel">
-          <h2 class="text-2xl font-bold text-center text-theme">Kode Akses Wali Santri</h2>
-          <p class="text-sm text-center text-theme-secondary">Silakan masukkan kode akses yang diberikan oleh pengurus.</p>
+          <h2 class="text-2xl font-bold text-center text-theme" id="access-code-title">Kode Akses Wali Santri</h2>
+          <p class="text-sm text-center text-theme-secondary" id="access-code-subtitle">Silakan masukkan kode akses yang diberikan oleh pengurus.</p>
           <form id="access-code-form" class="space-y-6">
             <div>
-              <label for="access-code" class="block text-sm font-medium text-theme">Kode Akses</label>
+              <label for="access-code" class="block text-sm font-medium text-theme" id="access-code-label">Kode Akses</label>
               <input type="text" id="access-code" placeholder="Masukkan kode" class="mt-1 w-full px-4 py-3 rounded-lg focus:ring-4 focus:ring-yellow-200 futuristic-panel" required>
             </div>
-            <button type="submit" class="w-full px-4 py-3 font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">
+            <button type="submit" class="w-full px-4 py-3 font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500" id="access-code-button">
             Masuk
             </button>
           </form>
           <p id="access-code-error" class="text-red-500 text-sm mt-2 hidden text-center"></p>
           <p class="text-center text-sm mt-4 text-theme-secondary">
-            <button onclick="window.showPage('roleSelection')" class="hover:underline">Kembali ke pilihan peran</button>
+            <button onclick="window.showPage('roleSelection')" class="hover:underline" id="back-to-role-3">Kembali ke pilihan peran</button>
           </p>
         </div>
       </div>
@@ -387,15 +395,15 @@
         class="hidden fade-in main-content p-8 rounded-xl shadow-lg flex flex-col h-screen">
         <!-- Header -->
         <header class="flex flex-col items-center justify-center text-center mb-8 pb-4 border-b border-border-color flex-shrink-0">
-          <h1 class="text-3xl font-bold text-yellow-400">Dashboard Wali Santri</h1>
-          <p class="text-theme-secondary">Pilih kelas anak Anda untuk melihat detail progres hafalan.</p>
+          <h1 class="text-3xl font-bold text-yellow-400" id="wali-dashboard-title">Dashboard Wali Santri</h1>
+          <p class="text-theme-secondary" id="wali-dashboard-subtitle">Pilih kelas anak Anda untuk melihat detail progres hafalan.</p>
           <div class="w-full md:w-auto mt-4 md:mt-0 flex flex-wrap justify-center items-center space-x-2 space-y-2 md:space-x-4 md:space-y-0">
             <button onclick="window.showJadwalDonasiPage()" 
-              class="px-4 py-2 font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">
+              class="px-4 py-2 font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500" id="jadwal-donasi-btn">
             Jadwal & Donasi
             </button>
             <button onclick="window.logout()" 
-              class="px-4 py-2 font-semibold text-white bg-gray-700 rounded-lg hover:bg-gray-600">
+              class="px-4 py-2 font-semibold text-white bg-gray-700 rounded-lg hover:bg-gray-600" id="logout-btn-1">
             Keluar
             </button>
           </div>
@@ -410,7 +418,7 @@
         <!-- Daftar Santri -->
         <div id="santri-list-container" class="hidden overflow-y-auto flex-grow px-2 py-4">
           <button onclick="window.renderWaliDashboard()" 
-            class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold">
+            class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold" id="back-to-dashboard-btn">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" 
               viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" 
@@ -434,7 +442,7 @@
         <!-- Header -->
         <header class="mb-4">
          <button onclick="window.showSantriListByKelas(sessionStorage.getItem('currentWaliKelas'))"
-            class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold">
+            class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold" id="back-to-santri-list-btn">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" 
               viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" 
@@ -463,26 +471,26 @@
           <!-- Grafik futuristik -->
           
           <div class="py-8 border-b border-border-color">
-            <h3 class="text-2xl font-bold mb-6 text-center text-yellow-400">Laporan Pencapaian Target</h3>
+            <h3 class="text-2xl font-bold mb-6 text-center text-yellow-400" id="report-title">Laporan Pencapaian Target</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center">
               <div class="futuristic-panel">
-                <p class="text-sm font-medium text-theme-secondary">Total Hafalan Juz</p>
+                <p class="text-sm font-medium text-theme-secondary" id="total-juz-label">Total Hafalan Juz</p>
                 <p id="total-hafalan-juz" class="text-lg font-bold text-yellow-400"></p>
               </div>
               <div class="futuristic-panel">
-                <p class="text-sm font-medium text-theme-secondary">Target Harian</p>
+                <p class="text-sm font-medium text-theme-secondary" id="daily-target-label">Target Harian</p>
                 <p id="target-harian" class="text-lg font-bold text-yellow-400"></p>
               </div>
               <div class="futuristic-panel">
-                <p class="text-sm font-medium text-theme-secondary">Target Mingguan</p>
+                <p class="text-sm font-medium text-theme-secondary" id="weekly-target-label">Target Mingguan</p>
                 <p id="target-mingguan" class="text-lg font-bold text-yellow-400"></p>
               </div>
               <div class="futuristic-panel">
-                <p class="text-sm font-medium text-theme-secondary">Target Bulanan</p>
+                <p class="text-sm font-medium text-theme-secondary" id="monthly-target-label">Target Bulanan</p>
                 <p id="target-bulanan" class="text-lg font-bold text-yellow-400"></p>
               </div>
               <div class="futuristic-panel">
-                <p class="text-sm font-medium text-theme-secondary">Target Tahunan</p>
+                <p class="text-sm font-medium text-theme-secondary" id="yearly-target-label">Target Tahunan</p>
                 <p id="target-tahunan" class="text-lg font-bold text-yellow-400"></p>
               </div>
             </div>
@@ -490,7 +498,7 @@
 
           <!-- Bagian Grafik -->
           <div class="pt-8 border-b border-border-color">
-            <h3 class="text-2xl font-bold mb-4 text-center text-yellow-400">Progres Hafalan</h3>
+            <h3 class="text-2xl font-bold mb-4 text-center text-yellow-400" id="progress-chart-title">Progres Hafalan</h3>
             <div class="bg-panel-bg p-4 rounded-lg">
                 <canvas id="hafalan-progres-chart"></canvas>
             </div>
@@ -498,15 +506,15 @@
           <!-- Akhir Bagian Grafik -->
 
           <div class="pt-8">
-            <h3 class="text-2xl font-bold mb-6 text-center text-yellow-400">Riwayat Setoran Hafalan</h3>
+            <h3 class="text-2xl font-bold mb-6 text-center text-yellow-400" id="history-title">Riwayat Setoran Hafalan</h3>
             <div class="overflow-x-auto futuristic-panel">
               <table class="min-w-full">
                 <thead class="bg-gray-900">
                   <tr>
-                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Tanggal</th>
-                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Setoran</th>
-                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Jenis</th>
-                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Penilaian Guru</th>
+                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider" id="table-date-label">Tanggal</th>
+                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider" id="table-setoran-label">Setoran</th>
+                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider" id="table-type-label">Jenis</th>
+                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider" id="table-grade-label">Penilaian Guru</th>
                   </tr>
                 </thead>
                 <tbody id="hafalan-history" class="divide-y divide-border-color"></tbody>
@@ -517,7 +525,7 @@
       </div>
       <div id="jadwal-donasi-page" class="hidden fade-in p-4">
         <header class="mb-4">
-          <button onclick="window.goBackFromJadwal()" class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold">
+          <button onclick="window.goBackFromJadwal()" class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold" id="back-to-dashboard-btn-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
             </svg>
@@ -526,9 +534,9 @@
         </header>
         <div class="p-8 rounded-xl shadow-lg space-y-12 relative main-content">
           <div>
-            <h2 class="text-3xl font-bold text-center text-yellow-400 mb-2">Jadwal Solat Hari Ini</h2>
+            <h2 class="text-3xl font-bold text-center text-yellow-400 mb-2" id="prayer-schedule-title">Jadwal Solat Hari Ini</h2>
             <div class="flex flex-col md:flex-row items-center justify-center space-x-3 my-4">
-              <label for="alarm-toggle" class="font-semibold text-theme">Alarm Azan:</label>
+              <label for="alarm-toggle" class="font-semibold text-theme" id="azan-alarm-label">Alarm Azan:</label>
               <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
                 <input type="checkbox" name="alarm-toggle" id="alarm-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
                 <label for="alarm-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-700 cursor-pointer"></label>
@@ -539,35 +547,35 @@
             </div>
           </div>
           <div>
-            <h2 class="text-3xl font-bold text-center text-yellow-400 mb-6">Donasi Pengembangan Aplikasi</h2>
+            <h2 class="text-3xl font-bold text-center text-yellow-400 mb-6" id="donation-title">Donasi Pengembangan Aplikasi</h2>
             <div class="max-w-md mx-auto futuristic-panel p-6 rounded-lg text-center shadow-sm">
-              <p class="text-theme-secondary mb-4">Dukungan anda sangat berarti bagi kami untuk terus mengembangkan aplikasi ini agar lebih bermanfaat bagi ummat. Salurkan donasi terbaik anda melalui e-wallet berikut:</p>
+              <p class="text-theme-secondary mb-4" id="donation-text">Dukungan anda sangat berarti bagi kami untuk terus mengembangkan aplikasi ini agar lebih bermanfaat bagi ummat. Salurkan donasi terbaik anda melalui e-wallet berikut:</p>
               <div class="flex items-center justify-center space-x-2 my-4">
                 <span id="donation-number" class="text-2xl font-bold text-theme p-2 rounded-md border-2 border-dashed border-border-color">0856 3777 508</span>
-                <button onclick="window.copyDonationNumber()" class="px-4 py-3 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">Salin</button>
+                <button onclick="window.copyDonationNumber()" class="px-4 py-3 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500" id="copy-btn">Salin</button>
               </div>
               <div class="flex justify-center space-x-4 mt-4">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="DANA" class="h-8">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_ovo_purple.svg" alt="OVO" class="h-8">
               </div>
-              <p class="text-sm text-theme-secondary mt-4">a.n. Tim Pengembang MUHAMMAD NAHYA FADLALLAH</p>
+              <p class="text-sm text-theme-secondary mt-4" id="donation-name">a.n. Tim Pengembang MUHAMMAD NAHYA FADLALLAH</p>
             </div>
           </div>
         </div>
       </div>
       <div id="guru-dashboard-page" class="hidden fade-in main-content p-8 rounded-xl shadow-lg flex flex-col h-screen">
         <header class="flex flex-col items-center justify-center text-center mb-8 pb-4 border-b border-border-color flex-shrink-0">
-          <h1 class="text-3xl font-bold text-yellow-400">Panel Guru</h1>
-          <p class="text-theme-secondary mb-4">Kelola data hafalan santri.</p>
+          <h1 class="text-3xl font-bold text-yellow-400" id="guru-dashboard-title">Panel Guru</h1>
+          <p class="text-theme-secondary mb-4" id="guru-dashboard-subtitle">Kelola data hafalan santri.</p>
           <div class="flex items-center space-x-2 mt-2 flex-wrap justify-center">
-            <button onclick="window.showJadwalDonasiPage()" class="px-3 py-2 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">Jadwal & Donasi</button>
-            <button onclick="window.showGuruManagementPage()" class="px-3 py-2 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">
+            <button onclick="window.showJadwalDonasiPage()" class="px-3 py-2 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500" id="jadwal-donasi-btn-2">Jadwal & Donasi</button>
+            <button onclick="window.showGuruManagementPage()" class="px-3 py-2 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500" id="manage-guru-btn">
             Kelola Data Guru
             </button>
-            <button onclick="window.showGuruForm(null)" class="px-3 py-2 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">
+            <button onclick="window.showGuruForm(null)" class="px-3 py-2 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500" id="add-santri-btn">
             + Tambah Santri Baru
             </button>
-            <button onclick="window.logout()" class="px-3 py-2 text-sm font-semibold text-red-600 bg-red-100 rounded-lg hover:bg-red-200">Keluar</button>
+            <button onclick="window.logout()" class="px-3 py-2 text-sm font-semibold text-red-600 bg-red-100 rounded-lg hover:bg-red-200" id="logout-btn-2">Keluar</button>
           </div>
         </header>
         <div id="santri-grid-container" class="overflow-y-auto flex-grow px-2">
@@ -575,24 +583,24 @@
           </div>
         </div>
         <div id="unique-access-code-section" class="futuristic-panel mt-8 text-center flex-shrink-0">
-          <h3 class="text-xl font-bold text-yellow-400 mb-4">Kode Akses Wali Santri</h3>
+          <h3 class="text-xl font-bold text-yellow-400 mb-4" id="access-code-section-title">Kode Akses Wali Santri</h3>
           <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
             <p id="unique-access-code" class="text-2xl font-mono tracking-widest text-theme p-2 rounded-md border border-yellow-400 shadow-sm"></p>
-            <button onclick="window.copyAccessCode()" class="px-4 py-2 bg-yellow-400 text-black rounded-md hover:bg-yellow-500">
+            <button onclick="window.copyAccessCode()" class="px-4 py-2 bg-yellow-400 text-black rounded-md hover:bg-yellow-500" id="copy-access-code-btn">
             Salin Kode
             </button>
             <a id="whatsapp-link" href="#" target="_blank" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12.04 2.167c-5.495 0-9.96 4.465-9.96 9.96 0 1.634.437 3.275 1.258 4.71L2.16 21.84l4.966-1.306c1.37.78 2.912 1.185 4.914 1.185 5.494 0 9.96-4.465 9.96-9.96 0-5.495-4.466-9.96-9.96-9.96zM17.47 16.32c-.156.467-.936.463-1.603.224-.666-.238-2.618-1.01-3.036-1.166-.418-.157-.723-.235-1.028.235-.305.47-.936 1.165-1.14 1.413-.204.248-.408.27-.76.092-.352-.178-1.464-.539-2.79-1.722-1.028-.9-1.714-2.28-1.92-2.65-.204-.37-.02-.574.156-.76.155-.178.303-.306.46-.539.155-.234.204-.418.305-.652.102-.234.05-.438-.02-.652-.07-.215-.65-.585-.898-.82-.248-.235-.497-.196-.701-.196-.205 0-.46-.079-.708-.079-.247 0-.666.236-.936.63-.27.394-.97 1.173-.97 2.858 0 1.685 1.002 3.308 1.142 3.556.14.248 1.968 3.018 4.8 4.228 2.834 1.21 2.834.814 3.33 1.05.496.236.936.204 1.306.027.37-.177 1.092-.497 1.248-.73.155-.233.223-.448.33-.63z" />
               </svg>
-              Bagikan di WhatsApp
+              <span id="whatsapp-share-text">Bagikan di WhatsApp</span>
             </a>
           </div>
         </div>
       </div>
       <div id="guru-form-page" class="hidden fade-in p-4">
         <header class="mb-4">
-          <button onclick="window.backToGuruDashboard()" class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold">
+          <button onclick="window.backToGuruDashboard()" class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold" id="back-to-guru-dashboard-btn">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
             </svg>
@@ -606,97 +614,97 @@
             <input type="hidden" id="current-photo-url">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label for="nama" class="block text-sm font-medium text-theme">Nama Lengkap Santri</label>
+                <label for="nama" class="block text-sm font-medium text-theme" id="santri-name-label">Nama Lengkap Santri</label>
                 <input type="text" id="nama" class="mt-1 block w-full px-4 py-3 futuristic-panel" required>
               </div>
               <div>
-                <label for="kelas" class="block text-sm font-medium text-theme">Kelas</label>
+                <label for="kelas" class="block text-sm font-medium text-theme" id="class-label">Kelas</label>
                 <select id="kelas" class="mt-1 block w-full px-4 py-3 futuristic-panel" required></select>
               </div>
             </div>
             <div>
-              <label for="foto" class="block text-sm font-medium text-theme">Unggah Foto Santri</label>
+              <label for="foto" class="block text-sm font-medium text-theme" id="upload-photo-label">Unggah Foto Santri</label>
               <input type="file" id="foto" name="file" accept="image/*" class="mt-1 block w-full px-4 py-3 futuristic-panel">
               <p id="foto-status" class="text-sm text-theme-secondary mt-2"></p>
             </div>
             <div class="pt-4 border-t border-border-color">
-              <h3 class="text-lg font-medium text-theme">Data Target Hafalan</h3>
+              <h3 class="text-lg font-medium text-theme" id="target-data-title">Data Target Hafalan</h3>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 			<div>
-   				 <label for="total-hafalan-juz-guru" class="block text-sm font-medium text-theme">Total Hafalan Juz</label>
+   				 <label for="total-hafalan-juz-guru" class="block text-sm font-medium text-theme" id="total-juz-guru-label">Total Hafalan Juz</label>
     			   <input type="number" id="total-hafalan-juz-guru" placeholder="Contoh: 5" class="mt-1 block w-full px-4 py-3 futuristic-panel">
 				</div>
               <div>
-                <label for="form-target-harian" class="block text-sm font-medium text-theme">Target Harian</label>
+                <label for="form-target-harian" class="block text-sm font-medium text-theme" id="daily-target-label-form">Target Harian</label>
                 <select id="form-target-harian" class="mt-1 block w-full px-4 py-3 futuristic-panel"></select>
               </div>
               <div>
-                <label for="form-target-mingguan" class="block text-sm font-medium text-theme">Target Mingguan</label>
+                <label for="form-target-mingguan" class="block text-sm font-medium text-theme" id="weekly-target-label-form">Target Mingguan</label>
                 <select id="form-target-mingguan" class="mt-1 block w-full px-4 py-3 futuristic-panel"></select>
               </div>
               <div>
-                <label for="form-target-bulanan" class="block text-sm font-medium text-theme">Target Bulanan</label>
+                <label for="form-target-bulanan" class="block text-sm font-medium text-theme" id="monthly-target-label-form">Target Bulanan</label>
                 <input type="text" id="form-target-bulanan" placeholder="Contoh: 1 Juz" class="mt-1 block w-full px-4 py-3 futuristic-panel" required>
               </div>
               <div>
-                <label for="form-target-tahunan" class="block text-sm font-medium text-theme">Target Tahunan</label>
+                <label for="form-target-tahunan" class="block text-sm font-medium text-theme" id="yearly-target-label-form">Target Tahunan</label>
                 <input type="text" id="form-target-tahunan" placeholder="Contoh: 5 Juz" class="mt-1 block w-full px-4 py-3 futuristic-panel" required>
               </div>
             </div>
             <div>
-              <label class="block text-sm font-medium text-theme">Status Pencapaian Target</label>
+              <label class="block text-sm font-medium text-theme" id="target-status-label">Status Pencapaian Target</label>
               <div class="mt-2 flex items-center space-x-4">
                 <label class="inline-flex items-center">
                 <input type="radio" name="tercapai" value="true" class="form-radio h-4 w-4 text-yellow-400">
-                <span class="ml-2 text-theme">Mencapai Target</span>
+                <span class="ml-2 text-theme" id="achieved-label">Mencapai Target</span>
                 </label>
                 <label class="inline-flex items-center">
                 <input type="radio" name="tercapai" value="false" class="form-radio h-4 w-4 text-yellow-400">
-                <span class="ml-2 text-theme">Belum Mencapai Target</span>
+                <span class="ml-2 text-theme" id="not-achieved-label">Belum Mencapai Target</span>
                 </label>
               </div>
             </div>
             <div class="flex justify-end pt-2">
-              <button type="submit" class="px-6 py-2 bg-yellow-400 text-black rounded-md hover:bg-yellow-500">Simpan Data Santri</button>
+              <button type="submit" class="px-6 py-2 bg-yellow-400 text-black rounded-md hover:bg-yellow-500" id="save-santri-btn">Simpan Data Santri</button>
             </div>
           </form>
           <div id="hafalan-management-section" class="hidden pt-8 border-t border-border-color mt-8">
-            <h3 class="text-xl font-bold mb-4 text-yellow-400">Kelola Setoran Hafalan</h3>
+            <h3 class="text-xl font-bold mb-4 text-yellow-400" id="manage-hafalan-title">Kelola Setoran Hafalan</h3>
             <form id="hafalan-form" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end futuristic-panel mb-6">
               <div>
-                <label for="hafalan-tanggal" class="block text-sm font-medium text-theme">Tanggal</label>
+                <label for="hafalan-tanggal" class="block text-sm font-medium text-theme" id="hafalan-date-label">Tanggal</label>
                 <input type="date" id="hafalan-tanggal" class="mt-1 w-full px-4 py-3 futuristic-panel" required>
               </div>
               <div>
-                <label for="hafalan-setoran" class="block text-sm font-medium text-theme">Setoran</label>
+                <label for="hafalan-setoran" class="block text-sm font-medium text-theme" id="hafalan-setoran-label">Setoran</label>
                 <input type="text" id="hafalan-setoran" placeholder="Contoh: An-Naba: 1-20" class="mt-1 w-full px-4 py-3 futuristic-panel" required>
               </div>
               <div>
-                <label for="hafalan-jenis" class="block text-sm font-medium text-theme">Jenis</label>
+                <label for="hafalan-jenis" class="block text-sm font-medium text-theme" id="hafalan-type-label">Jenis</label>
                 <select id="hafalan-jenis" class="mt-1 w-full px-4 py-3 futuristic-panel">
-                  <option>Hafalan Baru</option>
-                  <option>Muroja'ah</option>
+                  <option id="new-hafalan-option">Hafalan Baru</option>
+                  <option id="murojaah-option">Muroja'ah</option>
                 </select>
               </div>
               <div>
-                <label for="hafalan-penilaian" class="block text-sm font-medium text-theme">Penilaian</label>
+                <label for="hafalan-penilaian" class="block text-sm font-medium text-theme" id="hafalan-grade-label">Penilaian</label>
                 <select id="hafalan-penilaian" class="mt-1 w-full px-4 py-3 futuristic-panel">
-                  <option>Lancar</option>
-                  <option>Perlu Diulang</option>
+                  <option id="lancar-option">Lancar</option>
+                  <option id="ulang-option">Perlu Diulang</option>
                 </select>
               </div>
-              <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700">Tambah</button>
+              <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700" id="add-hafalan-btn">Tambah</button>
             </form>
             <div class="overflow-x-auto">
               <table class="min-w-full futuristic-panel">
                 <thead class="bg-gray-900">
                   <tr>
-                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Tanggal</th>
-                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Setoran</th>
-                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Jenis</th>
-                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Penilaian Guru</th>
-                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Aksi</th>
+                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider" id="table-date-label-2">Tanggal</th>
+                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider" id="table-setoran-label-2">Setoran</th>
+                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider" id="table-type-label-2">Jenis</th>
+                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider" id="table-grade-label-2">Penilaian Guru</th>
+                    <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider" id="table-action-label">Aksi</th>
                   </tr>
                 </thead>
                 <tbody id="guru-hafalan-table" class="divide-y divide-border-color"></tbody>
@@ -707,7 +715,7 @@
       </div>
       <div id="guru-management-page" class="hidden fade-in p-4">
         <header class="mb-4">
-          <button onclick="window.backToGuruDashboard()" class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold">
+          <button onclick="window.backToGuruDashboard()" class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold" id="back-to-guru-dashboard-btn-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
             </svg>
@@ -715,29 +723,29 @@
           </button>
         </header>
         <div class="p-8 rounded-xl shadow-lg max-w-4xl mx-auto relative main-content">
-          <h2 class="text-2xl font-bold mb-6 text-yellow-400">Kelola Data Guru</h2>
+          <h2 class="text-2xl font-bold mb-6 text-yellow-400" id="manage-guru-title">Kelola Data Guru</h2>
           <form id="guru-form" class="space-y-4 futuristic-panel mb-8">
             <input type="hidden" id="guru-id">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
               <div>
-                <label for="guru-nama" class="block text-sm font-medium text-theme">Nama Guru (Ustadz/Ustadzah)</label>
+                <label for="guru-nama" class="block text-sm font-medium text-theme" id="guru-name-label">Nama Guru (Ustadz/Ustadzah)</label>
                 <input type="text" id="guru-nama" class="mt-1 block w-full px-4 py-3 futuristic-panel" required>
               </div>
               <div>
-                <label for="guru-kelas" class="block text-sm font-medium text-theme">Mengajar Kelas</label>
+                <label for="guru-kelas" class="block text-sm font-medium text-theme" id="guru-class-label">Mengajar Kelas</label>
                 <select id="guru-kelas" class="mt-1 block w-full px-4 py-3 futuristic-panel" required></select>
               </div>
-              <button type="submit" class="px-6 py-2 bg-yellow-400 text-black rounded-md hover:bg-yellow-500 w-full">Simpan Guru</button>
+              <button type="submit" class="px-6 py-2 bg-yellow-400 text-black rounded-md hover:bg-yellow-500 w-full" id="save-guru-btn">Simpan Guru</button>
             </div>
           </form>
-          <h3 class="text-xl font-bold mb-4 text-yellow-400">Daftar Guru Terdaftar</h3>
+          <h3 class="text-xl font-bold mb-4 text-yellow-400" id="registered-guru-list">Daftar Guru Terdaftar</h3>
           <div class="overflow-x-auto">
             <table class="min-w-full futuristic-panel">
               <thead class="bg-gray-900">
                 <tr>
-                  <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase">Nama Guru</th>
-                  <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase">Mengajar Kelas</th>
-                  <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase">Aksi</th>
+                  <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase" id="guru-table-name">Nama Guru</th>
+                  <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase" id="guru-table-class">Mengajar Kelas</th>
+                  <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase" id="guru-table-action">Aksi</th>
                 </tr>
               </thead>
               <tbody id="guru-list-table" class="divide-y divide-border-color">
@@ -746,10 +754,9 @@
           </div>
         </div>
       </div>
-      
-      <div id="about-page" class="hidden fade-in p-4">
+      <div id="menghafal-page" class="hidden fade-in p-4">
         <header class="mb-4">
-          <button onclick="window.showPage('roleSelection')" class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold">
+          <button onclick="window.showPage('roleSelection')" class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold" id="back-to-role-4">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
             </svg>
@@ -757,27 +764,254 @@
           </button>
         </header>
         <div class="p-8 rounded-xl shadow-lg max-w-4xl mx-auto relative main-content">
-          <h2 class="text-3xl font-bold text-center text-yellow-400 mb-6">Tentang Aplikasi Monitoring Hafalan</h2>
-          <div class="space-y-6 text-theme-secondary leading-relaxed">
+          <h2 class="text-3xl font-bold text-center text-yellow-400 mb-6" id="menghafal-title">Keistimewaan dan Metode Menghafal Al-Qur'an</h2>
+          <div class="space-y-8 text-theme-secondary leading-relaxed" id="menghafal-content">
+            
+            <p>
+              Inti dari perjalanan ini terletak pada pemahaman bahwa Al-Qur'an diturunkan bukan hanya untuk dilafalkan, tetapi juga untuk direnungkan dan diamalkan. Merujuk pada firman Allah dalam Surah Shad ayat 29, Al-Qur'an adalah kitab yang diturunkan agar orang-orang yang berakal sehat dapat merenungi ayat-ayatnya dan mengambil pelajaran darinya. Perjalanan hafalan, oleh karena itu, merupakan upaya holistik yang menyatukan hati, akal, dan lidah. Semangat untuk mengkhatamkan hafalan tanpa berusaha memahami maknanya dapat mengikis kelezatan spiritual yang seharusnya dirasakan, sebagaimana disampaikan oleh Al-Hasan Al-Bashriy. Dengan demikian, laporan ini akan mengintegrasikan aspek spiritual dan teknis secara harmonis, mengakui bahwa fondasi keikhlasan adalah prasyarat untuk setiap rutinitas hafalan.
+            </p>
+            
+            ---
+            
             <section>
-              <h3 class="text-xl font-semibold text-yellow-400 mb-2">Latar Belakang Pembuatan</h3>
+              <h3 class="text-2xl font-bold text-yellow-400 mb-4">II. Fondasi Utama: Pilar Keberhasilan Menghafal</h3>
+              <p>Sebelum merancang jadwal atau memilih metode, terdapat pilar-pilar fundamental yang harus ditegakkan untuk memastikan proses hafalan berjalan dengan lancar dan penuh berkah. Pilar-pilar ini mencakup aspek spiritual dan teknis.</p>
+              
+              <h4 class="text-xl font-semibold text-yellow-400 mt-6 mb-2">Pilar Spiritual</h4>
+              <ul class="list-disc list-inside pl-4 space-y-2">
+                <li>
+                  (Niat yang Ikhlas) Semua amal perbuatan dalam Islam dimulai dengan niat yang tulus. Dalam konteks menghafal Al-Qur'an, niat harus sepenuhnya diarahkan untuk mencari ridha Allah semata, bukan untuk meraih pengakuan, popularitas, atau gelar. Rasulullah SAW bersabda, “Sesungguhnya segala perbuatan itu bergantung pada niatnya, dan setiap orang akan mendapatkan apa yang diniatkannya.” Niat yang lurus adalah fondasi spiritual yang menumbuhkan keyakinan, mengurangi rasa lelah, dan membantu menjaga konsistensi (istiqomah) dalam menghadapi berbagai rintangan. Tanpa fondasi ini, rutinitas teknis apa pun akan mudah goyah saat dihadapkan pada tantangan.
+                </li>
+                <li>
+                  (Peran Guru Pembimbing) Kehadiran seorang guru (muhaffizh/muhaffizhah) merupakan elemen yang tak tergantikan dalam proses hafalan. Guru tidak hanya berfungsi sebagai tempat setoran hafalan, tetapi juga sebagai korektor, pembimbing, dan motivator. Tugas utama seorang guru adalah mengoreksi bacaan (makhraj dan tajwid), yang sangat krusial karena kesalahan dalam pengucapan dapat mengubah makna ayat. Sebuah studi perbandingan antara metode Wahdah (dengan bimbingan langsung) dan Sima'i (mengandalkan rekaman audio) menemukan bahwa bimbingan guru secara langsung jauh lebih efektif dalam menghasilkan hafalan yang "melekat kuat". Hal ini terjadi karena media audio tidak dapat memberikan koreksi instan. Kesalahan dalam pelafalan yang diulang-ulang akan terekam dalam memori, sehingga sulit untuk diperbaiki di kemudian hari. Oleh karena itu, kehadiran seorang guru bukan sekadar pilihan, melainkan prasyarat penting untuk mencapai hafalan yang mutqin (sempurna dan tidak mudah lupa).
+                </li>
+              </ul>
+              
+              <h4 class="text-xl font-semibold text-yellow-400 mt-6 mb-2">Pilar Teknis Awal</h4>
+              <ul class="list-disc list-inside pl-4 space-y-2">
+                <li>
+                  (Memperbaiki Bacaan Tahsin) Sebelum memulai hafalan, sangat dianjurkan untuk terlebih dahulu membenahi kualitas bacaan. Memastikan penguasaan tajwid dan makhraj adalah langkah fundamental agar hafalan yang dibangun tidak cacat. Memperbaiki bacaan tidak hanya meningkatkan kualitas hafalan, tetapi juga menambah keberkahan dalam prosesnya.
+                </li>
+                <li>
+                  (Menggunakan Satu Jenis Mushaf) Disarankan untuk selalu menggunakan satu jenis mushaf yang sama sepanjang perjalanan hafalan. Hal ini bertujuan untuk memanfaatkan daya ingat visual. Otak manusia cenderung merekam "peta visual" atau letak spesifik ayat-ayat pada halaman mushaf. Perubahan mushaf akan mengganggu "peta" ini, sehingga dapat memperlambat dan mempersulit proses menghafal.
+                </li>
+              </ul>
+            </section>
+            
+            ---
+
+            <section>
+              <h3 class="text-2xl font-bold text-yellow-400 mb-4">III. Model Jadwal Komprehensif: Pilihan Jalur Hafalan</h3>
+              <p>Keberhasilan dalam menghafal Al-Qur'an sangat bergantung pada kesesuaian jadwal dengan kapasitas dan kondisi individu. Tidak ada satu jadwal tunggal yang cocok untuk semua orang. Laporan ini menyajikan beberapa model jadwal yang dapat disesuaikan, dengan menekankan bahwa istiqomah (konsistensi) lebih berharga daripada kecepatan semata.</p>
+              
+              <div class="overflow-x-auto my-4">
+                <table class="min-w-full futuristic-panel">
+                  <thead>
+                    <tr class="bg-gray-900">
+                      <th class="py-2 px-4 text-left text-xs font-medium text-yellow-400 uppercase">Model Jalur</th>
+                      <th class="py-2 px-4 text-left text-xs font-medium text-yellow-400 uppercase">Jangka Waktu</th>
+                      <th class="py-2 px-4 text-left text-xs font-medium text-yellow-400 uppercase">Target Hafalan Harian</th>
+                      <th class="py-2 px-4 text-left text-xs font-medium text-yellow-400 uppercase">Catatan</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="py-2 px-4 border-b border-border-color">Ekspres (Tidak Sibuk)</td>
+                      <td class="py-2 px-4 border-b border-border-color">1-2 Tahun</td>
+                      <td class="py-2 px-4 border-b border-border-color">5-10 halaman</td>
+                      <td class="py-2 px-4 border-b border-border-color">Membutuhkan fokus penuh dan komitmen tinggi.</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2 px-4 border-b border-border-color">Ideal (Setengah Sibuk)</td>
+                      <td class="py-2 px-4 border-b border-border-color">2-4 Tahun</td>
+                      <td class="py-2 px-4 border-b border-border-color">2-4 halaman</td>
+                      <td class="py-2 px-4 border-b border-border-color">Jadwal yang realistis, memberikan ruang untuk muraja'ah.</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2 px-4">Fleksibel (Sangat Sibuk)</td>
+                      <td class="py-2 px-4">8-10 Tahun</td>
+                      <td class="py-2 px-4">1-2 halaman</td>
+                      <td class="py-2 px-4">Menekankan konsistensi (istiqomah) di atas kecepatan.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            ---
+
+            <section>
+              <h3 class="text-2xl font-bold text-yellow-400 mb-4">IV. Membangun Rutinitas Harian yang Efektif</h3>
+              <p>Inti dari rutinitas harian yang efektif adalah sistem muraja'ah atau pengulangan. Pepatah lama mengatakan, "menghafal Al-Qur'an lebih mudah daripada menjaganya." Tanpa pengulangan yang ketat, hafalan akan mudah hilang. Rasulullah SAW menggambarkan hafalan Al-Qur'an seperti unta yang diikat. Jika pemiliknya terus memegang tali, ia akan tetap miliknya, tetapi jika dilepaskan, ia akan pergi. Sistem muraja'ah yang terbukti efektif membagi pengulangan menjadi tiga jenis utama:</p>
+
+              <ul class="list-disc list-inside pl-4 mt-4 space-y-2">
+                <li>
+                  Sabaq: Merupakan hafalan baru yang disetorkan pada hari itu. Bagian ini wajib diulang berkali-kali untuk "menanamkan" ayat-ayat ke dalam memori.
+                </li>
+                <li>
+                  Sabqi: Merupakan hafalan dari beberapa hari terakhir. Pengulangan harian dari hafalan ini bertujuan untuk memperkuat transisi dari memori jangka pendek ke memori jangka panjang.
+                </li>
+                <li>
+                  Manzil/Maqra': Merupakan hafalan lama yang sudah jauh. Pengulangan Manzil berfungsi untuk menjaga kualitas hafalan keseluruhan dan memastikan tidak ada bagian yang terlupakan.
+                </li>
+              </ul>
+              
+              <div class="overflow-x-auto my-4">
+                <table class="min-w-full futuristic-panel">
+                  <thead>
+                    <tr class="bg-gray-900">
+                      <th class="py-2 px-4 text-left text-xs font-medium text-yellow-400 uppercase">Waktu</th>
+                      <th class="py-2 px-4 text-left text-xs font-medium text-yellow-400 uppercase">Aktivitas Utama</th>
+                      <th class="py-2 px-4 text-left text-xs font-medium text-yellow-400 uppercase">Jenis Muraja'ah</th>
+                      <th class="py-2 px-4 text-left text-xs font-medium text-yellow-400 uppercase">Tujuan</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="py-2 px-4 border-b border-border-color">Pagi (Ba'da Subuh)</td>
+                      <td class="py-2 px-4 border-b border-border-color">Hafalan Baru (Sabaq)</td>
+                      <td class="py-2 px-4 border-b border-border-color">Tikrar & Setoran Sabaq</td>
+                      <td class="py-2 px-4 border-b border-border-color">Menambahkan hafalan baru pada waktu optimal dengan pikiran yang segar.</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2 px-4 border-b border-border-color">Siang/Sore</td>
+                      <td class="py-2 px-4 border-b border-border-color">Muraja'ah Sabqi & Manzil</td>
+                      <td class="py-2 px-4 border-b border-border-color">Pengulangan Hafalan 1-7 Hari Terakhir & Hafalan Lama</td>
+                      <td class="py-2 px-4 border-b border-border-color">Menguatkan hafalan jangka pendek dan menjaga hafalan jangka panjang.</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2 px-4">Malam (Ba'da Maghrib/Isya)</td>
+                      <td class="py-2 px-4">Muraja'ah Intensif</td>
+                      <td class="py-2 px-4">Pengulangan Total Hafalan Hari Ini & Sebelumnya</td>
+                      <td class="py-2 px-4">Memperkuat memori sebelum tidur, mengulang kembali seluruh capaian harian.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            ---
+
+            <section>
+              <h3 class="text-2xl font-bold text-yellow-400 mb-4">V. Analisis Mendalam Metode dan Teknik Hafalan</h3>
+              <p>Setiap individu memiliki gaya belajar yang berbeda, oleh karena itu, penting untuk memahami berbagai metode hafalan yang populer untuk menemukan yang paling sesuai. Berikut adalah perbandingan beberapa metode yang telah terbukti efektif: </p>
+              
+              <div class="overflow-x-auto my-4">
+                <table class="min-w-full futuristic-panel">
+                  <thead>
+                    <tr class="bg-gray-900">
+                      <th class="py-2 px-4 text-left text-xs font-medium text-yellow-400 uppercase">Metode</th>
+                      <th class="py-2 px-4 text-left text-xs font-medium text-yellow-400 uppercase">Prinsip Utama</th>
+                      <th class="py-2 px-4 text-left text-xs font-medium text-yellow-400 uppercase">Keunggulan</th>
+                      <th class="py-2 px-4 text-left text-xs font-medium text-yellow-400 uppercase">Kekurangan & Catatan</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="py-2 px-4 border-b border-border-color">3T+1M</td>
+                      <td class="py-2 px-4 border-b border-border-color">Talqin, Tafahhum, Tikrar, Muraja'ah</td>
+                      <td class="py-2 px-4 border-b border-border-color">Komprehensif, mencakup aspek pengajaran, pemahaman, dan pengulangan.</td>
+                      <td class="py-2 px-4 border-b border-border-color">Memerlukan bimbingan guru dan konsistensi tinggi.</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2 px-4 border-b border-border-color">Wahdah</td>
+                      <td class="py-2 px-4 border-b border-border-color">Membaca & menghafal dengan satu mushaf.</td>
+                      <td class="py-2 px-4 border-b border-border-color">Efektif untuk memori visual, menghasilkan hafalan yang lebih "melekat."</td>
+                      <td class="py-2 px-4 border-b border-border-color">Kurang cocok untuk audial learner, tanpa guru rawan kesalahan.</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2 px-4 border-b border-border-color">Sima'i</td>
+                      <td class="py-2 px-4 border-b border-border-color">Mendengarkan rekaman audio.</td>
+                      <td class="py-2 px-4 border-b border-border-color">Fleksibel, dapat dilakukan di mana saja, membantu penguasaan irama.</td>
+                      <td class="py-2 px-4 border-b border-border-color">Kurang efektif tanpa bimbingan guru karena tidak ada koreksi langsung.</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2 px-4">Talaqqi</td>
+                      <td class="py-2 px-4">Guru membacakan, murid menirukan.</td>
+                      <td class="py-2 px-4">Metode asli dari Rasulullah, sangat akurat untuk tajwid & makhraj.</td>
+                      <td class="py-2 px-4">Kurang mandiri, membutuhkan bimbingan intensif dari guru.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>Metode **3T+1M** (Talqin, Tafahhum, Tikrar, Muroja'ah) merupakan pendekatan yang sangat holistik. **Talqin dan Tasmi'** memastikan bacaan benar melalui bimbingan guru. **Tafahhum** (pemahaman makna) membantu mempercepat hafalan karena otak dapat menciptakan koneksi kognitif dengan isi ayat. **Tikrar** (pengulangan) yang terstruktur, seperti membaca satu ayat 10-20 kali lalu menggabungkannya dengan ayat lain, memperkuat memori. Sementara itu, metode **Wahdah** menonjolkan kekuatan memori visual dengan menggunakan satu jenis mushaf, yang secara empiris terbukti menghasilkan hafalan yang lebih kuat dan tidak mudah hilang.
+              </p>
+            </section>
+            
+            ---
+
+            <section>
+              <h3 class="text-2xl font-bold text-yellow-400 mb-4">VI. Tadabbur: Kunci Penguat Hafalan dan Kedekatan Hati</h3>
+              <p>Tadabbur, yang secara harfiah berarti merenungkan, adalah tujuan utama dari membaca dan menghafal Al-Qur'an. Tanpa tadabbur, hafalan cenderung menjadi hafalan lisan belaka yang tidak menyentuh hati. Para ulama, seperti Ibnu Jarir ath-Thabariy, merasa takjub pada orang yang menghafal Al-Qur'an tetapi tidak mengetahui tafsirnya, bertanya-tanya bagaimana mereka dapat merasakan kelezatan dari bacaan mereka.</p>
+              <p>Proses tadabbur memiliki hubungan timbal balik yang penting dengan kualitas hafalan. Ketika seseorang memahami makna sebuah ayat, ia menciptakan koneksi emosional dan intelektual dengan ayat tersebut. Koneksi ini secara signifikan memperkuat daya ingat, membuat hafalan menjadi lebih solid dan tidak mudah hilang. Hal ini mengubah hafalan dari tugas kognitif menjadi pengalaman spiritual yang menyenangkan dan bermakna.</p>
+            </section>
+            
+            ---
+            
+            <section>
+              <h3 class="text-2xl font-bold text-yellow-400 mb-4">VII. Kiat-Kiat Penunjang dan Menjaga Konsistensi Jangka Panjang</h3>
+              <p>Beberapa kiat praktis dapat membantu Anda dalam perjalanan menghafal:</p>
+              <ul class="list-disc list-inside pl-4 mt-4 space-y-2">
+                <li>
+                  (Memanfaatkan Teknologi) Aplikasi Al-Qur'an, audio murattal, dan video pembelajaran dapat membantu dalam familiarisasi dengan ayat-ayat dan memperkuat irama bacaan.
+                </li>
+                <li>
+                 (Dukungan Sosial dan Lingkungan) Bergabung dengan kelompok hafalan atau komunitas yang sejalan dapat meningkatkan semangat dan memberikan kesempatan untuk saling menyimak dan mengoreksi hafalan.
+                </li>
+                <li>
+                  (Mengatasi Tantangan) Seseorang dapat menerapkan "Aturan Dua Menit," yaitu memulai aktivitas hafalan minimal 2 menit. Biasanya, setelah memulai, akan lebih mudah untuk melanjutkan.
+                </li>
+              </ul>
+            </section>
+
+            ---
+
+            <section>
+              <h3 class="text-2xl font-bold text-yellow-400 mb-4">VIII. Kesimpulan</h3>
+              <p>
+                Perjalanan menghafal Al-Qur'an 30 juz adalah sebuah komitmen seumur hidup yang melampaui sekadar hafalan lisan. Keberhasilan dalam perjalanan ini didasarkan pada fondasi yang kokoh, terdiri dari niat yang ikhlas, bimbingan guru yang kompeten, dan konsistensi yang teguh. Pemilihan jadwal yang sesuai dengan kapasitas pribadi, dengan memprioritaskan istiqomah di atas kecepatan, adalah kunci untuk mencapai tujuan tanpa kehilangan momentum.
+              </p>
+              <p>
+                Analisis mendalam terhadap sistem muraja'ah harian (Sabaq, Sabqi, Manzil) menunjukkan bahwa pengulangan yang terstruktur adalah nafas dari setiap hafalan. Pada akhirnya, tadabbur menjadi esensi yang menghubungkan hafalan dengan hati, mengubahnya dari sekadar tugas menjadi ibadah yang bermakna dan menyenangkan. Dengan memadukan semua pilar ini, seseorang dapat menapaki jalan hafalan dengan ilmu dan keyakinan, menjadikannya sebuah pengalaman spiritual yang memperkuat iman dan membawa keberkahan.
+              </p>
+            </section>
+
+          </div>
+        </div>
+      </div>
+      <div id="about-page" class="hidden fade-in p-4">
+        <header class="mb-4">
+          <button onclick="window.showPage('roleSelection')" class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold" id="back-to-role-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            Kembali
+          </button>
+        </header>
+        <div class="p-8 rounded-xl shadow-lg max-w-4xl mx-auto relative main-content">
+          <h2 class="text-3xl font-bold text-center text-yellow-400 mb-6" id="about-title">Tentang Aplikasi Monitoring Hafalan</h2>
+          <div class="space-y-6 text-theme-secondary leading-relaxed" id="about-content">
+            <section>
+              <h3 class="text-xl font-semibold text-yellow-400 mb-2" id="about-background-title">Latar Belakang Pembuatan</h3>
               <p>
                 Dalam dunia pendidikan Islam, khususnya di pondok pesantren tahfidz, proses memonitor perkembangan hafalan Al-Qur'an setiap santri adalah sebuah tugas yang krusial namun seringkali menantang. Guru (Ustadz/Ustadzah) harus mencatat setiap setoran, mengidentifikasi kelemahan, dan melaporkannya kepada wali santri. Di sisi lain, wali santri seringkali merasa kesulitan untuk mendapatkan informasi yang real-time dan terstruktur mengenai progres anak-anak mereka. Proses yang masih manual menggunakan buku atau catatan terpisah rentan terhadap kesalahan, kehilangan data, dan memakan waktu. Aplikasi ini lahir dari kebutuhan untuk menjembatani kesenjangan komunikasi tersebut dan mendigitalisasi proses monitoring agar lebih efisien, transparan, dan akurat.
               </p>
             </section>
             <section>
-              <h3 class="text-xl font-semibold text-yellow-400 mb-2">Tujuan Utama Aplikasi</h3>
+              <h3 class="text-xl font-semibold text-yellow-400 mb-2" id="about-goal-title">Tujuan Utama Aplikasi</h3>
               <p>
                 Tujuan utama kami mengembangkan platform ini adalah untuk menciptakan sebuah ekosistem digital yang terintegrasi bagi pondok pesantren, yang berfokus pada tiga pilar utama:
               </p>
               <ul class="list-disc list-inside pl-4 mt-2 space-y-1">
-                <li><strong>Memudahkan Guru:</strong> Menyediakan alat yang praktis bagi para guru untuk mencatat, mengelola, dan menganalisis data hafalan santri dengan cepat dan mudah, sehingga mereka dapat lebih fokus pada proses pengajaran.</li>
-                <li><strong>Memberikan Ketenangan bagi Wali Santri:</strong> Memberikan akses langsung kepada wali santri untuk memantau pencapaian, riwayat setoran, dan target hafalan anak mereka kapan saja dan di mana saja.</li>
-                <li><strong>Meningkatkan Motivasi Santri:</strong> Dengan adanya target yang jelas dan progres yang dapat dilihat secara visual, kami berharap para santri akan lebih termotivasi untuk mencapai target hafalan mereka.</li>
+                <li><strong id="goal-1-title">Memudahkan Guru:</strong> <span id="goal-1-text">Menyediakan alat yang praktis bagi para guru untuk mencatat, mengelola, dan menganalisis data hafalan santri dengan cepat dan mudah, sehingga mereka dapat lebih fokus pada proses pengajaran.</span></li>
+                <li><strong id="goal-2-title">Memberikan Ketenangan bagi Wali Santri:</strong> <span id="goal-2-text">Memberikan akses langsung kepada wali santri untuk memantau pencapaian, riwayat setoran, dan target hafalan anak mereka kapan saja dan di mana saja.</span></li>
+                <li><strong id="goal-3-title">Meningkatkan Motivasi Santri:</strong> <span id="goal-3-text">Dengan adanya target yang jelas dan progres yang dapat dilihat secara visual, kami berharap para santri akan lebih termotivasi untuk mencapai target hafalan mereka.</span></li>
+                <br>
+                
               </ul>
             </section>
             <section>
-              <p class="text-center italic text-theme-secondary pt-4 border-t border-border-color mt-8">
+              <p class="text-center italic text-theme-secondary pt-4 border-t border-border-color mt-8" id="about-quote">
                 Kami percaya bahwa teknologi dapat menjadi alat yang ampuh untuk mendukung pendidikan Al-Qur'an. Semoga aplikasi ini dapat memberikan manfaat yang luas dan menjadi bagian dari ladang amal jariyah kita semua. Aamiin.
               </p>
             </section>
@@ -811,8 +1045,470 @@
             guruForm: document.getElementById('guru-form-page'),
             guruManagement: document.getElementById('guru-management-page'),
             jadwalDonasi: document.getElementById('jadwal-donasi-page'),
+            menghafal: document.getElementById('menghafal-page'),
             about: document.getElementById('about-page'),
             
+        };
+        const translations = {
+          id: {
+            // Halaman Awal
+            appTitle: "SantriQ",
+            selectRoleText: "Silakan pilih peran Anda untuk melanjutkan:",
+            waliButton: "Saya Wali Santri",
+            guruButton: "Saya Pengurus / Guru",
+            menghafalButton: "Metode Menghafal Al-Qur'an 30 Juz",
+            tooltipRealtime: "Monitoring Real-time",
+            tooltipAccess: "Akses Wali Santri",
+            tooltipReport: "Laporan Terstruktur",
+            quoteText: "\"Sebaik-baik kalian adalah orang yang belajar Al-Qur'an dan mengajarkannya.\"",
+            aboutButton: "Tentang Aplikasi",
+            copyrightText: "Project dibuat oleh (MUHAMMAD NAHYA FADLALLAH) ©2025 All Rights Reserved",
+            helpCenterText: "PUSAT BANTUAN",
+            // Halaman Pendaftaran Pondok
+            registerTitle: "Daftarkan Pondok Anda",
+            registerPondokLabel: "Nama Pondok & Nomor Unik",
+            registerPondokHint: "Gunakan tanda pagar (#) untuk memisahkan nama dan nomor unik.",
+            registerPasswordLabel: "Buat Kata Sandi",
+            registerButton: "Daftar",
+            haveAccountText: "Sudah punya akun?",
+            loginLink1: "Masuk di sini",
+            backToRole1: "Kembali ke pilihan peran",
+            // Halaman Login Pondok
+            loginTitle: "Login Pengurus / Guru",
+            loginPondokLabel: "Nama Pondok & Nomor Unik",
+            loginPasswordLabel: "Kata Sandi",
+            loginButton: "Login",
+            noAccountText: "Belum punya akun?",
+            registerLink2: "Daftar di sini",
+            backToRole2: "Kembali ke pilihan peran",
+            // Halaman Kode Akses Wali
+            accessCodeTitle: "Kode Akses Wali Santri",
+            accessCodeSubtitle: "Silakan masukkan kode akses yang diberikan oleh pengurus.",
+            accessCodeLabel: "Kode Akses",
+            accessCodeButton: "Masuk",
+            backToRole3: "Kembali ke pilihan peran",
+            // Halaman Wali Dashboard
+            waliDashboardTitle: "Dashboard Wali Santri",
+            waliDashboardSubtitle: "Pilih kelas anak Anda untuk melihat detail progres hafalan.",
+            jadwalDonasiBtn: "Jadwal & Donasi",
+            logoutBtn1: "Keluar",
+            backToDashboardBtn: "Kembali",
+            // Halaman Detail Santri
+            reportTitle: "Laporan Pencapaian Target",
+            totalJuzLabel: "Total Hafalan Juz",
+            dailyTargetLabel: "Target Harian",
+            weeklyTargetLabel: "Target Mingguan",
+            monthlyTargetLabel: "Target Bulanan",
+            yearlyTargetLabel: "Target Tahunan",
+            progressChartTitle: "Progres Hafalan",
+            historyTitle: "Riwayat Setoran Hafalan",
+            tableDateLabel: "Tanggal",
+            tableSetoranLabel: "Setoran",
+            tableTypeLabel: "Jenis",
+            tableGradeLabel: "Penilaian Guru",
+            // Halaman Jadwal & Donasi
+            prayerScheduleTitle: "Jadwal Solat Hari Ini",
+            azanAlarmLabel: "Alarm Azan:",
+            donationTitle: "Donasi Pengembangan Aplikasi",
+            donationText: "Dukungan anda sangat berarti bagi kami untuk terus mengembangkan aplikasi ini agar lebih bermanfaat bagi ummat. Salurkan donasi terbaik anda melalui e-wallet berikut:",
+            copyBtn: "Salin",
+            donationName: "a.n. Tim Pengembang MUHAMMAD NAHYA FADLALLAH",
+            backToDashboardBtn2: "Kembali ke Dashboard",
+            // Halaman Guru Dashboard
+            guruDashboardTitle: "Panel Guru",
+            guruDashboardSubtitle: "Kelola data hafalan santri.",
+            jadwalDonasiBtn2: "Jadwal & Donasi",
+            manageGuruBtn: "Kelola Data Guru",
+            addSantriBtn: "+ Tambah Santri Baru",
+            logoutBtn2: "Keluar",
+            accessCodeSectionTitle: "Kode Akses Wali Santri",
+            copyAccessCodeBtn: "Salin Kode",
+            whatsappShareText: "Bagikan di WhatsApp",
+            // Halaman Guru Form
+            backToGuruDashboardBtn: "Kembali ke Panel Guru",
+            santriNameLabel: "Nama Lengkap Santri",
+            classLabel: "Kelas",
+            uploadPhotoLabel: "Unggah Foto Santri",
+            targetDataTitle: "Data Target Hafalan",
+            totalJuzGuruLabel: "Total Hafalan Juz",
+            dailyTargetLabelForm: "Target Harian",
+            weeklyTargetLabelForm: "Target Mingguan",
+            monthlyTargetLabelForm: "Target Bulanan",
+            yearlyTargetLabelForm: "Target Tahunan",
+            targetStatusLabel: "Status Pencapaian Target",
+            achievedLabel: "Mencapai Target",
+            notAchievedLabel: "Belum Mencapai Target",
+            saveSantriBtn: "Simpan Data Santri",
+            manageHafalanTitle: "Kelola Setoran Hafalan",
+            hafalanDateLabel: "Tanggal",
+            hafalanSetoranLabel: "Setoran",
+            hafalanTypeLabel: "Jenis",
+            newHafalanOption: "Hafalan Baru",
+            murojaahOption: "Muroja'ah",
+            hafalanGradeLabel: "Penilaian",
+            lancarOption: "Lancar",
+            ulangOption: "Perlu Diulang",
+            addHafalanBtn: "Tambah",
+            tableDateLabel2: "Tanggal",
+            tableSetoranLabel2: "Setoran",
+            tableTypeLabel2: "Jenis",
+            tableGradeLabel2: "Penilaian Guru",
+            tableActionLabel: "Aksi",
+            // Halaman Guru Management
+            backToGuruDashboardBtn2: "Kembali ke Panel Guru",
+            manageGuruTitle: "Kelola Data Guru",
+            guruNameLabel: "Nama Guru (Ustadz/Ustadzah)",
+            guruClassLabel: "Mengajar Kelas",
+            saveGuruBtn: "Simpan Guru",
+            registeredGuruList: "Daftar Guru Terdaftar",
+            guruTableName: "Nama Guru",
+            guruTableClass: "Mengajar Kelas",
+            guruTableAction: "Aksi",
+            // Halaman Metode Menghafal
+            menghafalTitle: "Keistimewaan dan Metode Menghafal Al-Qur'an",
+            // Halaman Tentang Aplikasi
+            backToRole5: "Kembali",
+            aboutTitle: "Tentang Aplikasi Monitoring Hafalan",
+            aboutBackgroundTitle: "Latar Belakang Pembuatan",
+            aboutGoalTitle: "Tujuan Utama Aplikasi",
+            goal1Title: "Memudahkan Guru:",
+            goal1Text: "Menyediakan alat yang praktis bagi para guru untuk mencatat, mengelola, dan menganalisis data hafalan santri dengan cepat dan mudah, sehingga mereka dapat lebih fokus pada proses pengajaran.",
+            goal2Title: "Memberikan Ketenangan bagi Wali Santri:",
+            goal2Text: "Memberikan akses langsung kepada wali santri untuk memantau pencapaian, riwayat setoran, dan target hafalan anak mereka kapan saja dan di mana saja.",
+            goal3Title: "Meningkatkan Motivasi Santri:",
+            goal3Text: "Dengan adanya target yang jelas dan progres yang dapat dilihat secara visual, kami berharap para santri akan lebih termotivasi untuk mencapai target hafalan mereka.",
+            aboutQuote: "Kami percaya bahwa teknologi dapat menjadi alat yang ampuh untuk mendukung pendidikan Al-Qur'an. Semoga aplikasi ini dapat memberikan manfaat yang luas dan menjadi bagian dari ladang amal jariyah kita semua. Aamiin."
+          },
+          jv: {
+            // Halaman Awal
+            appTitle: "SantriQ",
+            selectRoleText: "Sumangga milih peran panjenengan:",
+            waliButton: "Kula Wali Santri",
+            guruButton: "Kula Pangurus / Guru",
+            menghafalButton: "Cara Ngapalaken Al-Qur'an 30 Juz",
+            tooltipRealtime: "Ngawasi Langsung",
+            tooltipAccess: "Akses Wali Santri",
+            tooltipReport: "Laporan Terstruktur",
+            quoteText: "\"Sing paling apik saka sampeyan kabeh yaiku sing sinau Al-Qur'an lan mulangake.\"",
+            aboutButton: "Bab Aplikasi",
+            copyrightText: "Projek digawe dening (MUHAMMAD NAHYA FADLALLAH) ©2025 All Rights Reserved",
+            helpCenterText: "Pusat Pitulungan",
+            // Halaman Pendaftaran Pondok
+            registerTitle: "Ndhaftarken Pondhok Panjenengan",
+            registerPondokLabel: "Nama Pondhok & Nomor Unik",
+            registerPondokHint: "Gunakaken tanda pager (#) kagem misahaken nama lan nomor unik.",
+            registerPasswordLabel: "Dameli Sandi",
+            registerButton: "Ndhaftar",
+            haveAccountText: "Sampun gadhah akun?",
+            loginLink1: "Mlebet ing mriki",
+            backToRole1: "Wangsul menyang pilihan peran",
+            // Halaman Login Pondok
+            loginTitle: "Mlebet Pangurus / Guru",
+            loginPondokLabel: "Nama Pondhok & Nomor Unik",
+            loginPasswordLabel: "Sandi",
+            loginButton: "Mlebet",
+            noAccountText: "Dereng gadhah akun?",
+            registerLink2: "Ndhaftar ing mriki",
+            backToRole2: "Wangsul menyang pilihan peran",
+            // Halaman Kode Akses Wali
+            accessCodeTitle: "Kode Akses Wali Santri",
+            accessCodeSubtitle: "Sumangga mlebetaken kode akses saking pangurus.",
+            accessCodeLabel: "Kode Akses",
+            accessCodeButton: "Mlebet",
+            backToRole3: "Wangsul menyang pilihan peran",
+            // Halaman Wali Dashboard
+            waliDashboardTitle: "Dashboard Wali Santri",
+            waliDashboardSubtitle: "Pilih kelas putra panjenengan kagem ningali kemajuan hafalan.",
+            jadwalDonasiBtn: "Jadwal & Donasi",
+            logoutBtn1: "Medal",
+            backToDashboardBtn: "Wangsul",
+            // Halaman Detail Santri
+            reportTitle: "Laporan Pencapaian Target",
+            totalJuzLabel: "Total Hafalan Juz",
+            dailyTargetLabel: "Target Dinten",
+            weeklyTargetLabel: "Target Minggu",
+            monthlyTargetLabel: "Target Wulan",
+            yearlyTargetLabel: "Target Taunan",
+            progressChartTitle: "Kemajuan Hafalan",
+            historyTitle: "Riwayat Setoran Hafalan",
+            tableDateLabel: "Tanggal",
+            tableSetoranLabel: "Setoran",
+            tableTypeLabel: "Jinis",
+            tableGradeLabel: "Penilaian Guru",
+            // Halaman Jadwal & Donasi
+            prayerScheduleTitle: "Jadwal Solat Dinten Punika",
+            azanAlarmLabel: "Alarm Azan:",
+            donationTitle: "Donasi Pengembangan Aplikasi",
+            donationText: "Panyengkuyung panjenengan ageng sanget mumpangatipun kagem pangrembakanipun aplikasi punika. Sumangga donasi ing e-wallet punika:",
+            copyBtn: "Salin",
+            donationName: "a.n. Tim Pengembang MUHAMMAD NAHYA FADLALLAH",
+            backToDashboardBtn2: "Wangsul menyang Dashboard",
+            // Halaman Guru Dashboard
+            guruDashboardTitle: "Panel Guru",
+            guruDashboardSubtitle: "Ngatur data hafalan santri.",
+            jadwalDonasiBtn2: "Jadwal & Donasi",
+            manageGuruBtn: "Ngatur Data Guru",
+            addSantriBtn: "+ Nambah Santri Enggal",
+            logoutBtn2: "Medal",
+            accessCodeSectionTitle: "Kode Akses Wali Santri",
+            copyAccessCodeBtn: "Salin Kode",
+            whatsappShareText: "Nuduhaken ing WhatsApp",
+            // Halaman Guru Form
+            backToGuruDashboardBtn: "Wangsul menyang Panel Guru",
+            santriNameLabel: "Nama Lengkap Santri",
+            classLabel: "Kelas",
+            uploadPhotoLabel: "Unggah Foto Santri",
+            targetDataTitle: "Data Target Hafalan",
+            totalJuzGuruLabel: "Total Hafalan Juz",
+            dailyTargetLabelForm: "Target Dinten",
+            weeklyTargetLabelForm: "Target Minggu",
+            monthlyTargetLabelForm: "Target Wulan",
+            yearlyTargetLabelForm: "Target Taunan",
+            targetStatusLabel: "Status Pencapaian Target",
+            achievedLabel: "Nggayuh Target",
+            notAchievedLabel: "Dereng Nggayuh Target",
+            saveSantriBtn: "Simpan Data Santri",
+            manageHafalanTitle: "Ngatur Setoran Hafalan",
+            hafalanDateLabel: "Tanggal",
+            hafalanSetoranLabel: "Setoran",
+            hafalanTypeLabel: "Jinis",
+            newHafalanOption: "Hafalan Enggal",
+            murojaahOption: "Muroja'ah",
+            hafalanGradeLabel: "Penilaian",
+            lancarOption: "Lancar",
+            ulangOption: "Perlu Diwangsul",
+            addHafalanBtn: "Tambah",
+            tableDateLabel2: "Tanggal",
+            tableSetoranLabel2: "Setoran",
+            tableTypeLabel2: "Jinis",
+            tableGradeLabel2: "Penilaian Guru",
+            tableActionLabel: "Aksi",
+            // Halaman Guru Management
+            backToGuruDashboardBtn2: "Wangsul menyang Panel Guru",
+            manageGuruTitle: "Ngatur Data Guru",
+            guruNameLabel: "Nama Guru (Ustadz/Ustadzah)",
+            guruClassLabel: "Ngajar Kelas",
+            saveGuruBtn: "Simpen Guru",
+            registeredGuruList: "Daftar Guru sing Kadhaftar",
+            guruTableName: "Nama Guru",
+            guruTableClass: "Ngajar Kelas",
+            guruTableAction: "Aksi",
+            // Halaman Metode Menghafal
+            menghafalTitle: "Keistimewaan lan Cara Ngapalaken Al-Qur'an",
+            // Halaman Tentang Aplikasi
+            backToRole5: "Wangsul",
+            aboutTitle: "Bab Aplikasi Ngawasi Hafalan",
+            aboutBackgroundTitle: "Latar Belakang Damel",
+            aboutGoalTitle: "Tujuan Utama Aplikasi",
+            goal1Title: "Gampilaken Guru:",
+            goal1Text: "Nyedhiyakaken piranti praktis kagem para guru kagem nyatet, ngatur, lan nganalisis data hafalan santri kanthi cepet lan gampil, saengga saged langkung fokus ing proses mulang.",
+            goal2Title: "Maringi Ayem kagem Wali Santri:",
+            goal2Text: "Marang wali santri akses langsung kagem ngawasi pencapaian, riwayat setoran, lan target hafalan putra-putranipun kapan lan ing pundi kemawon.",
+            goal3Title: "Nambah Semangat Santri:",
+            goal3Text: "Kanthi wontenipun target ingkang jelas lan kemajuan ingkang saged dipuntingali kanthi visual, dipunajeng-ajeng para santri saged langkung semangat kagem nggayuh target hafalnipun.",
+            aboutQuote: "Kula pitados bilih teknologi saged dados piranti ingkang ampuh kagem nyengkuyung pendidikan Al-Qur'an. Mugi-mugi aplikasi punika saged paring mumpangat ingkang ageng lan dados bagean saking ladang amal jariyah kita sedaya. Aamiin."
+          },
+          ar: {
+            // Halaman Awal
+            appTitle: "تطبيق سنتري كيو",
+            selectRoleText: "الرجاء اختيار دورك للمتابعة:",
+            waliButton: "أنا ولي أمر الطالب",
+            guruButton: "أنا مدير / معلم",
+            menghafalButton: "طريقة حفظ القرآن الكريم 30 جزءاً",
+            tooltipRealtime: "مراقبة فورية",
+            tooltipAccess: "وصول ولي الأمر",
+            tooltipReport: "تقارير منظمة",
+            quoteText: "“خيركم من تعلم القرآن وعلمه.”",
+            aboutButton: "حول التطبيق",
+            copyrightText: "تم تطوير المشروع بواسطة (محمد ناهيا فاضلالله) ©2025 جميع الحقوق محفوظة",
+            helpCenterText: "مركز المساعدة",
+            // Halaman Pendaftaran Pondok
+            registerTitle: "سجل معهدا",
+            registerPondokLabel: "اسم المعهد والرقم الفريد",
+            registerPondokHint: "استخدم علامة (#) للفصل بين الاسم والرقم.",
+            registerPasswordLabel: "إنشاء كلمة مرور",
+            registerButton: "تسجيل",
+            haveAccountText: "هل لديك حساب بالفعل؟",
+            loginLink1: "تسجيل الدخول هنا",
+            backToRole1: "العودة إلى اختيار الدور",
+            // Halaman Login Pondok
+            loginTitle: "تسجيل دخول المدير / المعلم",
+            loginPondokLabel: "اسم المعهد والرقم الفريد",
+            loginPasswordLabel: "كلمة المرور",
+            loginButton: "دخول",
+            noAccountText: "ليس لديك حساب؟",
+            registerLink2: "سجل هنا",
+            backToRole2: "العودة إلى اختيار الدور",
+            // Halaman Kode Akses Wali
+            accessCodeTitle: "رمز وصول ولي الأمر",
+            accessCodeSubtitle: "الرجاء إدخال رمز الوصول الذي قدمه المدير.",
+            accessCodeLabel: "رمز الوصول",
+            accessCodeButton: "دخول",
+            backToRole3: "العودة إلى اختيار الدور",
+            // Halaman Wali Dashboard
+            waliDashboardTitle: "لوحة تحكم ولي الأمر",
+            waliDashboardSubtitle: "اختر فصل ابنك لرؤية تقدم الحفظ.",
+            jadwalDonasiBtn: "الجدول والتبرع",
+            logoutBtn1: "خروج",
+            backToDashboardBtn: "عودة",
+            // Halaman Detail Santri
+            reportTitle: "تقرير إنجاز الأهداف",
+            totalJuzLabel: "إجمالي أجزاء الحفظ",
+            dailyTargetLabel: "الهدف اليومي",
+            weeklyTargetLabel: "الهدف الأسبوعي",
+            monthlyTargetLabel: "الهدف الشهري",
+            yearlyTargetLabel: "الهدف السنوي",
+            progressChartTitle: "تقدم الحفظ",
+            historyTitle: "سجل مراجعة الحفظ",
+            tableDateLabel: "التاريخ",
+            tableSetoranLabel: "التلاوة",
+            tableTypeLabel: "النوع",
+            tableGradeLabel: "تقييم المعلم",
+            // Halaman Jadwal & Donasi
+            prayerScheduleTitle: "مواقيت الصلاة اليوم",
+            azanAlarmLabel: "منبه الأذان:",
+            donationTitle: "تبرع لتطوير التطبيق",
+            donationText: "دعمك له أهمية كبيرة لنا لمواصلة تطوير هذا التطبيق ليكون أكثر فائدة للأمة. يمكنك التبرع عبر المحافظ الإلكترونية التالية:",
+            copyBtn: "نسخ",
+            donationName: "باسم: فريق التطوير محمد ناهيا فاضلالله",
+            backToDashboardBtn2: "العودة إلى لوحة التحكم",
+            // Halaman Guru Dashboard
+            guruDashboardTitle: "لوحة المعلم",
+            guruDashboardSubtitle: "إدارة بيانات حفظ الطلاب.",
+            jadwalDonasiBtn2: "الجدول والتبرع",
+            manageGuruBtn: "إدارة بيانات المعلمين",
+            addSantriBtn: "+ إضافة طالب جديد",
+            logoutBtn2: "خروج",
+            accessCodeSectionTitle: "رمز وصول ولي الأمر",
+            copyAccessCodeBtn: "نسخ الرمز",
+            whatsappShareText: "شارك عبر الواتساب",
+            // Halaman Guru Form
+            backToGuruDashboardBtn: "العودة إلى لوحة المعلم",
+            santriNameLabel: "الاسم الكامل للطالب",
+            classLabel: "الفصل",
+            uploadPhotoLabel: "تحميل صورة الطالب",
+            targetDataTitle: "بيانات أهداف الحفظ",
+            totalJuzGuruLabel: "إجمالي أجزاء الحفظ",
+            dailyTargetLabelForm: "الهدف اليومي",
+            weeklyTargetLabelForm: "الهدف الأسبوعي",
+            monthlyTargetLabelForm: "الهدف الشهري",
+            yearlyTargetLabelForm: "الهدف السنوي",
+            targetStatusLabel: "حالة إنجاز الهدف",
+            achievedLabel: "تم تحقيق الهدف",
+            notAchievedLabel: "لم يتم تحقيق الهدف",
+            saveSantriBtn: "حفظ بيانات الطالب",
+            manageHafalanTitle: "إدارة مراجعة الحفظ",
+            hafalanDateLabel: "التاريخ",
+            hafalanSetoranLabel: "التلاوة",
+            hafalanTypeLabel: "النوع",
+            newHafalanOption: "حفظ جديد",
+            murojaahOption: "مراجعة",
+            hafalanGradeLabel: "التقييم",
+            lancarOption: "ممتاز",
+            ulangOption: "يحتاج إلى مراجعة",
+            addHafalanBtn: "إضافة",
+            tableDateLabel2: "التاريخ",
+            tableSetoranLabel2: "التلاوة",
+            tableTypeLabel2: "النوع",
+            tableGradeLabel2: "تقييم المعلم",
+            tableActionLabel: "العمل",
+            // Halaman Guru Management
+            backToGuruDashboardBtn2: "العودة إلى لوحة المعلم",
+            manageGuruTitle: "إدارة بيانات المعلمين",
+            guruNameLabel: "اسم المعلم (أستاذ/أستاذة)",
+            guruClassLabel: "يدرس الفصل",
+            saveGuruBtn: "حفظ المعلم",
+            registeredGuruList: "قائمة المعلمين المسجلين",
+            guruTableName: "اسم المعلم",
+            guruTableClass: "الفصل",
+            guruTableAction: "العمل",
+            // Halaman Metode Menghafal
+            menghafalTitle: "أهمية وطريقة حفظ القرآن",
+            // Halaman Tentang Aplikasi
+            backToRole5: "عودة",
+            aboutTitle: "حول تطبيق مراقبة الحفظ",
+            aboutBackgroundTitle: "خلفية التطبيق",
+            aboutGoalTitle: "الهدف الرئيسي للتطبيق",
+            goal1Title: "تسهيل مهمة المعلم:",
+            goal1Text: "توفير أداة عملية للمعلمين لتسجيل وإدارة وتحليل بيانات حفظ الطلاب بسرعة وسهولة، مما يسمح لهم بالتركيز أكثر على عملية التدريس.",
+            goal2Title: "توفير الطمأنينة لولي الأمر:",
+            goal2Text: "منح أولياء الأمور وصولاً مباشراً لمراقبة إنجازات أبنائهم، وتاريخ مراجعتهم، وأهداف حفظهم في أي وقت ومكان.",
+            goal3Title: "زيادة تحفيز الطالب:",
+            goal3Text: "من خلال تحديد أهداف واضحة وعرض التقدم بشكل بصري، نأمل أن يصبح الطلاب أكثر تحفيزًا لتحقيق أهدافهم في الحفظ.",
+            aboutQuote: "نؤمن بأن التكنولوجيا يمكن أن تكون أداة قوية لدعم تعليم القرآن. نأمل أن يكون هذا التطبيق مفيدًا على نطاق واسع وأن يكون جزءًا من أعمالنا الصالحة الجارية. آمين."
+          }
+        };
+        let currentLang = 'id';
+        
+        // Fungsi helper untuk mengkonversi kebab-case ke camelCase
+        function kebabToCamelCase(str) {
+            return str.replace(/-./g, match => match.charAt(1).toUpperCase());
+        }
+
+        window.setLanguage = function(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            const elements = document.querySelectorAll('[id]');
+            elements.forEach(el => {
+                const translationKey = kebabToCamelCase(el.id);
+                if (translations[lang] && translations[lang][translationKey]) {
+                    el.textContent = translations[lang][translationKey];
+                }
+            });
+            // Handle placeholders and special cases
+            const placeholders = {
+                'register-pondok-id': 'Contoh: PPTI#12345',
+                'register-password': 'Minimal 6 karakter',
+                'login-pondok-id': 'Contoh: PPTI#12345',
+                'login-password': 'Kata Sandi Anda',
+                'access-code': 'Masukkan kode',
+                'santri-name-label': 'Nama Lengkap Santri',
+                'total-juz-guru-label': 'Total Hafalan Juz',
+                'monthly-target-label-form': 'Target Bulanan',
+                'yearly-target-label-form': 'Target Tahunan',
+                'hafalan-setoran-label': 'Setoran',
+                'guru-name-label': 'Nama Guru (Ustadz/Ustadzah)'
+            };
+            for (const id in placeholders) {
+                const el = document.getElementById(id);
+                if (el && el.tagName === 'INPUT') {
+                    if (lang === 'id') {
+                        el.placeholder = placeholders[id];
+                    } else if (lang === 'jv') {
+                        // Tambahkan placeholder Jawa jika ada
+                        const jvPlaceholder = {
+                            'register-pondok-id': 'Contoh: PPTI#12345',
+                            'register-password': 'Minimal 6 karakter',
+                            'login-pondok-id': 'Contoh: PPTI#12345',
+                            'login-password': 'Sandi Panjenengan',
+                            'access-code': 'Mlebetaken kode',
+                            'santri-name-label': 'Nama Lengkap Santri',
+                            'total-juz-guru-label': 'Total Hafalan Juz',
+                            'monthly-target-label-form': 'Target Wulan',
+                            'yearly-target-label-form': 'Target Taunan',
+                            'hafalan-setoran-label': 'Setoran',
+                            'guru-name-label': 'Nama Guru (Ustadz/Ustadzah)'
+                        };
+                        el.placeholder = jvPlaceholder[id] || placeholders[id];
+                    } else if (lang === 'ar') {
+                        // Tambahkan placeholder Arab jika ada
+                        const arPlaceholder = {
+                            'register-pondok-id': 'مثال: PPTI#12345',
+                            'register-password': '6 حروف على الأقل',
+                            'login-pondok-id': 'مثال: PPTI#12345',
+                            'login-password': 'كلمة المرور الخاصة بك',
+                            'access-code': 'أدخل الرمز',
+                            'santri-name-label': 'الاسم الكامل للطالب',
+                            'total-juz-guru-label': 'إجمالي أجزاء الحفظ',
+                            'monthly-target-label-form': 'الهدف الشهري',
+                            'yearly-target-label-form': 'الهدف السنوي',
+                            'hafalan-setoran-label': 'مثال: النبأ: 1-20',
+                            'guru-name-label': 'اسم المعلم (أستاذ/أستاذة)'
+                        };
+                        el.placeholder = arPlaceholder[id] || placeholders[id];
+                    }
+                }
+            }
         };
 
         let appDataCache = {};
@@ -1677,9 +2373,21 @@
                     myChart.update();
                 }
             });
-
             setInitialTheme();
             // End Dark/Light Mode
+
+            // Language Selection
+            const langButtons = document.querySelectorAll('.lang-btn');
+            langButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const lang = btn.dataset.lang;
+                    setLanguage(lang);
+                    localStorage.setItem('lang', lang);
+                });
+            });
+            const savedLang = localStorage.getItem('lang') || 'id';
+            setLanguage(savedLang);
+            // End Language Selection
 
             // --- Inisialisasi awal
             
