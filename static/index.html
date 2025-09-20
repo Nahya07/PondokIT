@@ -235,29 +235,18 @@
     </style>
   </head>
   <body class="transition-colors duration-500">
-    <button id="theme-toggle" class="fixed top-4 right-4 p-3 rounded-full shadow-lg z-50 transition-colors duration-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-yellow-400">
-      <span id="theme-icon" class="text-xl">🌞</span>
-    </button>
-    <div class="fixed top-20 right-4 flex flex-col space-y-2 z-50">
-      <button id="lang-id" class="lang-btn p-2 rounded-full shadow-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200" data-lang="id">🇮🇩</button>
-      <button id="lang-jv" class="lang-btn p-2 rounded-full shadow-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200" data-lang="jv">🇯🇴</button>
-      <button id="lang-ar" class="lang-btn p-2 rounded-full shadow-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200" data-lang="ar">🇸🇦</button>
-    </div>
-    <!-- Welcome Modal with Elegant Visuals (Only shown once at app start) -->
-    <div id="welcome-modal" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4">
-      <div class="relative w-full max-w-xl text-center">
-        <h3 class="text-4xl sm:text-5xl font-bold text-white mb-8 transition-all duration-1000 ease-in-out transform -translate-y-10 opacity-0 shimmer-arabic" id="welcome-title">السلام عليكم ورحمة الله وبركاته</h3>
-        <p class="text-xl sm:text-2xl text-white italic mb-4 transition-all duration-1000 ease-in-out transform translate-y-10 opacity-0" id="welcome-subtitle">
-          Selamat Datang di Aplikasi SantriQ
-        </p>
-        <p class="text-lg text-white transition-all duration-1000 ease-in-out transform translate-y-10 opacity-0" id="welcome-message">
-         SANTRI AL-QUR'AN.
-        </p>
-      </div>
-    </div>
-    <!-- Main App Container -->
     <div id="app" class="container mx-auto p-4 md:p-8 max-w-7xl">
       <div id="role-selection-page" class="flex flex-col items-center justify-center min-h-screen p-4">
+        
+        <div class="fixed top-4 right-4 flex flex-col space-y-2 z-50">
+          <button id="theme-toggle" class="p-3 rounded-full shadow-lg transition-colors duration-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-yellow-400">
+            <span id="theme-icon" class="text-xl">🌞</span>
+          </button>
+          <div class="flex flex-col space-y-2">
+            <button id="lang-id" class="lang-btn p-2 rounded-full shadow-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200" data-lang="id">🇮🇩</button>
+            <button id="lang-ar" class="lang-btn p-2 rounded-full shadow-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200" data-lang="ar">🇸🇦</button>
+          </div>
+        </div>
         
         <div class="w-full max-w-sm p-8 space-y-6 rounded-xl shadow-2xl text-center relative modern-panel">
           <h2 class="text-4xl font-bold text-theme shimmer-text" id="app-title">SantriQ</h2>
@@ -1179,135 +1168,6 @@
             goal3Text: "Dengan adanya target yang jelas dan progres yang dapat dilihat secara visual, kami berharap para santri akan lebih termotivasi untuk mencapai target hafalan mereka.",
             aboutQuote: "Kami percaya bahwa teknologi dapat menjadi alat yang ampuh untuk mendukung pendidikan Al-Qur'an. Semoga aplikasi ini dapat memberikan manfaat yang luas dan menjadi bagian dari ladang amal jariyah kita semua. Aamiin."
           },
-          jv: {
-            // Halaman Awal
-            appTitle: "SantriQ",
-            selectRoleText: "Sumangga milih peran panjenengan:",
-            waliButton: "Kula Wali Santri",
-            guruButton: "Kula Pangurus / Guru",
-            menghafalButton: "Cara Ngapalaken Al-Qur'an 30 Juz",
-            tooltipRealtime: "Ngawasi Langsung",
-            tooltipAccess: "Akses Wali Santri",
-            tooltipReport: "Laporan Terstruktur",
-            quoteText: "\"Sing paling apik saka sampeyan kabeh yaiku sing sinau Al-Qur'an lan mulangake.\"",
-            aboutButton: "Bab Aplikasi",
-            copyrightText: "Projek digawe dening (MUHAMMAD NAHYA FADLALLAH) ©2025 All Rights Reserved",
-            helpCenterText: "Pusat Pitulungan",
-            // Halaman Pendaftaran Pondok
-            registerTitle: "Ndhaftarken Pondhok Panjenengan",
-            registerPondokLabel: "Nama Pondhok & Nomor Unik",
-            registerPondokHint: "Gunakaken tanda pager (#) kagem misahaken nama lan nomor unik.",
-            registerPasswordLabel: "Dameli Sandi",
-            registerButton: "Ndhaftar",
-            haveAccountText: "Sampun gadhah akun?",
-            loginLink1: "Mlebet ing mriki",
-            backToRole1: "Wangsul menyang pilihan peran",
-            // Halaman Login Pondok
-            loginTitle: "Mlebet Pangurus / Guru",
-            loginPondokLabel: "Nama Pondhok & Nomor Unik",
-            loginPasswordLabel: "Sandi",
-            loginButton: "Mlebet",
-            noAccountText: "Dereng gadhah akun?",
-            registerLink2: "Ndhaftar ing mriki",
-            backToRole2: "Wangsul menyang pilihan peran",
-            // Halaman Kode Akses Wali
-            accessCodeTitle: "Kode Akses Wali Santri",
-            accessCodeSubtitle: "Sumangga mlebetaken kode akses saking pangurus.",
-            accessCodeLabel: "Kode Akses",
-            accessCodeButton: "Mlebet",
-            backToRole3: "Wangsul menyang pilihan peran",
-            // Halaman Wali Dashboard
-            waliDashboardTitle: "Dashboard Wali Santri",
-            waliDashboardSubtitle: "Pilih kelas putra panjenengan kagem ningali kemajuan hafalan.",
-            jadwalDonasiBtn: "Jadwal & Donasi",
-            logoutBtn1: "Medal",
-            backToDashboardBtn: "Wangsul",
-            // Halaman Detail Santri
-            reportTitle: "Laporan Pencapaian Target",
-            totalJuzLabel: "Total Hafalan Juz",
-            dailyTargetLabel: "Target Dinten",
-            weeklyTargetLabel: "Target Minggu",
-            monthlyTargetLabel: "Target Wulan",
-            yearlyTargetLabel: "Target Taunan",
-            progressChartTitle: "Kemajuan Hafalan",
-            historyTitle: "Riwayat Setoran Hafalan",
-            tableDateLabel: "Tanggal",
-            tableSetoranLabel: "Setoran",
-            tableTypeLabel: "Jinis",
-            tableGradeLabel: "Penilaian Guru",
-            // Halaman Jadwal & Donasi
-            prayerScheduleTitle: "Jadwal Solat Dinten Punika",
-            azanAlarmLabel: "Alarm Azan:",
-            donationTitle: "Donasi Pengembangan Aplikasi",
-            donationText: "Panyengkuyung panjenengan ageng sanget mumpangatipun kagem pangrembakanipun aplikasi punika. Sumangga donasi ing e-wallet punika:",
-            copyBtn: "Salin",
-            donationName: "a.n. Tim Pengembang MUHAMMAD NAHYA FADLALLAH",
-            backToDashboardBtn2: "Wangsul menyang Dashboard",
-            // Halaman Guru Dashboard
-            guruDashboardTitle: "Panel Guru",
-            guruDashboardSubtitle: "Ngatur data hafalan santri.",
-            jadwalDonasiBtn2: "Jadwal & Donasi",
-            manageGuruBtn: "Ngatur Data Guru",
-            addSantriBtn: "+ Nambah Santri Enggal",
-            logoutBtn2: "Medal",
-            accessCodeSectionTitle: "Kode Akses Wali Santri",
-            copyAccessCodeBtn: "Salin Kode",
-            whatsappShareText: "Nuduhaken ing WhatsApp",
-            // Halaman Guru Form
-            backToGuruDashboardBtn: "Wangsul menyang Panel Guru",
-            santriNameLabel: "Nama Lengkap Santri",
-            classLabel: "Kelas",
-            uploadPhotoLabel: "Unggah Foto Santri",
-            targetDataTitle: "Data Target Hafalan",
-            totalJuzGuruLabel: "Total Hafalan Juz",
-            dailyTargetLabelForm: "Target Dinten",
-            weeklyTargetLabelForm: "Target Minggu",
-            monthlyTargetLabelForm: "Target Wulan",
-            yearlyTargetLabelForm: "Target Taunan",
-            targetStatusLabel: "Status Pencapaian Target",
-            achievedLabel: "Nggayuh Target",
-            notAchievedLabel: "Dereng Nggayuh Target",
-            saveSantriBtn: "Simpan Data Santri",
-            manageHafalanTitle: "Ngatur Setoran Hafalan",
-            hafalanDateLabel: "Tanggal",
-            hafalanSetoranLabel: "Setoran",
-            hafalanTypeLabel: "Jinis",
-            newHafalanOption: "Hafalan Enggal",
-            murojaahOption: "Muroja'ah",
-            hafalanGradeLabel: "Penilaian",
-            lancarOption: "Lancar",
-            ulangOption: "Perlu Diwangsul",
-            addHafalanBtn: "Tambah",
-            tableDateLabel2: "Tanggal",
-            tableSetoranLabel2: "Setoran",
-            tableTypeLabel2: "Jinis",
-            tableGradeLabel2: "Penilaian Guru",
-            tableActionLabel: "Aksi",
-            // Halaman Guru Management
-            backToGuruDashboardBtn2: "Wangsul menyang Panel Guru",
-            manageGuruTitle: "Ngatur Data Guru",
-            guruNameLabel: "Nama Guru (Ustadz/Ustadzah)",
-            guruClassLabel: "Ngajar Kelas",
-            saveGuruBtn: "Simpen Guru",
-            registeredGuruList: "Daftar Guru sing Kadhaftar",
-            guruTableName: "Nama Guru",
-            guruTableClass: "Ngajar Kelas",
-            guruTableAction: "Aksi",
-            // Halaman Metode Menghafal
-            menghafalTitle: "Keistimewaan lan Cara Ngapalaken Al-Qur'an",
-            // Halaman Tentang Aplikasi
-            backToRole5: "Wangsul",
-            aboutTitle: "Bab Aplikasi Ngawasi Hafalan",
-            aboutBackgroundTitle: "Latar Belakang Damel",
-            aboutGoalTitle: "Tujuan Utama Aplikasi",
-            goal1Title: "Gampilaken Guru:",
-            goal1Text: "Nyedhiyakaken piranti praktis kagem para guru kagem nyatet, ngatur, lan nganalisis data hafalan santri kanthi cepet lan gampil, saengga saged langkung fokus ing proses mulang.",
-            goal2Title: "Maringi Ayem kagem Wali Santri:",
-            goal2Text: "Marang wali santri akses langsung kagem ngawasi pencapaian, riwayat setoran, lan target hafalan putra-putranipun kapan lan ing pundi kemawon.",
-            goal3Title: "Nambah Semangat Santri:",
-            goal3Text: "Kanthi wontenipun target ingkang jelas lan kemajuan ingkang saged dipuntingali kanthi visual, dipunajeng-ajeng para santri saged langkung semangat kagem nggayuh target hafalnipun.",
-            aboutQuote: "Kula pitados bilih teknologi saged dados piranti ingkang ampuh kagem nyengkuyung pendidikan Al-Qur'an. Mugi-mugi aplikasi punika saged paring mumpangat ingkang ageng lan dados bagean saking ladang amal jariyah kita sedaya. Aamiin."
-          },
           ar: {
             // Halaman Awal
             appTitle: "تطبيق سنتري كيو",
@@ -1452,10 +1312,25 @@
             elements.forEach(el => {
                 const translationKey = kebabToCamelCase(el.id);
                 if (translations[lang] && translations[lang][translationKey]) {
-                    el.textContent = translations[lang][translationKey];
+                    if(el.tagName === 'INPUT' || el.tagName === 'SELECT') {
+                        // For select options, you might need special handling
+                        const placeholderKey = el.getAttribute('placeholder');
+                        if (placeholderKey && translations[lang][kebabToCamelCase(placeholderKey)]) {
+                            el.placeholder = translations[lang][kebabToCamelCase(placeholderKey)];
+                        }
+                    } else if (el.tagName === 'BUTTON' && el.id.includes('button')) {
+                        // Do not change button text if it is a flag
+                        if (el.dataset.lang) return;
+                        el.textContent = translations[lang][translationKey];
+                    } else if (el.tagName === 'P' && el.id === 'quote-text') {
+                        // special handling for quote
+                        el.innerHTML = translations[lang][translationKey];
+                    } else {
+                        el.textContent = translations[lang][translationKey];
+                    }
                 }
             });
-            // Handle placeholders and special cases
+            // Handle placeholders manually since they aren't 'textContent'
             const placeholders = {
                 'register-pondok-id': 'Contoh: PPTI#12345',
                 'register-password': 'Minimal 6 karakter',
@@ -1469,43 +1344,27 @@
                 'hafalan-setoran-label': 'Setoran',
                 'guru-name-label': 'Nama Guru (Ustadz/Ustadzah)'
             };
+            const arPlaceholders = {
+                'register-pondok-id': 'مثال: PPTI#12345',
+                'register-password': '6 حروف على الأقل',
+                'login-pondok-id': 'مثال: PPTI#12345',
+                'login-password': 'كلمة المرور الخاصة بك',
+                'access-code': 'أدخل الرمز',
+                'santri-name-label': 'الاسم الكامل للطالب',
+                'total-juz-guru-label': 'إجمالي أجزاء الحفظ',
+                'monthly-target-label-form': 'الهدف الشهري',
+                'yearly-target-label-form': 'الهدف السنوي',
+                'hafalan-setoran-label': 'مثال: النبأ: 1-20',
+                'guru-name-label': 'اسم المعلم (أستاذ/أستاذة)'
+            };
+            
             for (const id in placeholders) {
                 const el = document.getElementById(id);
                 if (el && el.tagName === 'INPUT') {
-                    if (lang === 'id') {
+                    if (lang === 'ar') {
+                        el.placeholder = arPlaceholders[id] || placeholders[id];
+                    } else {
                         el.placeholder = placeholders[id];
-                    } else if (lang === 'jv') {
-                        // Tambahkan placeholder Jawa jika ada
-                        const jvPlaceholder = {
-                            'register-pondok-id': 'Contoh: PPTI#12345',
-                            'register-password': 'Minimal 6 karakter',
-                            'login-pondok-id': 'Contoh: PPTI#12345',
-                            'login-password': 'Sandi Panjenengan',
-                            'access-code': 'Mlebetaken kode',
-                            'santri-name-label': 'Nama Lengkap Santri',
-                            'total-juz-guru-label': 'Total Hafalan Juz',
-                            'monthly-target-label-form': 'Target Wulan',
-                            'yearly-target-label-form': 'Target Taunan',
-                            'hafalan-setoran-label': 'Setoran',
-                            'guru-name-label': 'Nama Guru (Ustadz/Ustadzah)'
-                        };
-                        el.placeholder = jvPlaceholder[id] || placeholders[id];
-                    } else if (lang === 'ar') {
-                        // Tambahkan placeholder Arab jika ada
-                        const arPlaceholder = {
-                            'register-pondok-id': 'مثال: PPTI#12345',
-                            'register-password': '6 حروف على الأقل',
-                            'login-pondok-id': 'مثال: PPTI#12345',
-                            'login-password': 'كلمة المرور الخاصة بك',
-                            'access-code': 'أدخل الرمز',
-                            'santri-name-label': 'الاسم الكامل للطالب',
-                            'total-juz-guru-label': 'إجمالي أجزاء الحفظ',
-                            'monthly-target-label-form': 'الهدف الشهري',
-                            'yearly-target-label-form': 'الهدف السنوي',
-                            'hafalan-setoran-label': 'مثال: النبأ: 1-20',
-                            'guru-name-label': 'اسم المعلم (أستاذ/أستاذة)'
-                        };
-                        el.placeholder = arPlaceholder[id] || placeholders[id];
                     }
                 }
             }
@@ -2097,15 +1956,32 @@
         window.showAboutPage = function() { showPage('about'); }
         window.playWelcomeAnimation = function() {
             const modal = document.getElementById('welcome-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
             const title = document.getElementById('welcome-title');
             const subtitle = document.getElementById('welcome-subtitle');
             const message = document.getElementById('welcome-message');
-            setTimeout(() => { title.classList.remove('-translate-y-10', 'opacity-0'); title.classList.add('translate-y-0', 'opacity-100'); }, 100);
-            setTimeout(() => { subtitle.classList.remove('translate-y-10', 'opacity-0'); subtitle.classList.add('translate-y-0', 'opacity-100'); }, 600);
-            setTimeout(() => { message.classList.remove('translate-y-10', 'opacity-0'); message.classList.add('translate-y-0', 'opacity-100'); }, 1100);
-            setTimeout(() => { modal.classList.add('hidden'); showPage('roleSelection'); }, 3000);
+
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+
+                if (title) {
+                    setTimeout(() => { title.classList.remove('-translate-y-10', 'opacity-0'); title.classList.add('translate-y-0', 'opacity-100'); }, 100);
+                }
+                if (subtitle) {
+                    setTimeout(() => { subtitle.classList.remove('translate-y-10', 'opacity-0'); subtitle.classList.add('translate-y-0', 'opacity-100'); }, 600);
+                }
+                if (message) {
+                    setTimeout(() => { message.classList.remove('translate-y-10', 'opacity-0'); message.classList.add('translate-y-0', 'opacity-100'); }, 1100);
+                }
+                
+                setTimeout(() => { 
+                    modal.classList.add('hidden'); 
+                    showPage('roleSelection'); 
+                }, 3000);
+            } else {
+                // If modal is not found, just show the role selection page
+                showPage('roleSelection');
+            }
         }
         window.showJadwalDonasiPage = function() { window.fetchJadwalSholat(); showPage('jadwalDonasi'); }
         window.getCoordinates = function() {
