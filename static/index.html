@@ -9,8 +9,8 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="manifest" href="/static/manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
@@ -24,166 +24,224 @@
     </script>
     <style>
       :root {
-      --color-primary-light: #f0f4f8;
-      --color-secondary-light: #ffffff;
-      --color-text-light: #1f2937;
-      --color-text-secondary-light: #6b7280;
-      --color-accent-gold: #FFD700;
+        --bg-color: #f0f4f8;
+        --text-color: #1f2937;
+        --text-color-secondary: #6b7280;
+        --panel-bg: #ffffff;
+        --border-color: #e2e8f0;
+        --shadow-color: rgba(0, 0, 0, 0.1);
+        --accent-color: #FFD700;
+        --graph-line-color: #2563eb;
+        --graph-fill-color: rgba(37, 99, 235, 0.2);
+        --graph-grid-color: rgba(0, 0, 0, 0.1);
+        --graph-text-color: #4b5563;
+      }
+      .dark-mode {
+        --bg-color: #1a202c;
+        --text-color: #e2e8f0;
+        --text-color-secondary: #9ca3af;
+        --panel-bg: #2d3748;
+        --border-color: #4a5568;
+        --shadow-color: rgba(0, 0, 0, 0.5);
+        --accent-color: #FFD700;
+        --graph-line-color: #FFD700;
+        --graph-fill-color: rgba(255, 215, 0, 0.2);
+        --graph-grid-color: rgba(255, 255, 255, 0.1);
+        --graph-text-color: #d1d5db;
       }
       body {
-      font-family: 'Inter', sans-serif;
-      /* Background dihapus, menggunakan kelas Tailwind CSS (bg-gray-900) */
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      color: #e0e0e0;
-      transition: background-color 0.5s ease;
-      position: relative;
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.5s ease, color 0.5s ease;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        position: relative;
       }
       .main-content {
-      background: linear-gradient(135deg, rgba(0, 0, 51, 0.8), rgba(0, 0, 0, 0.8));
-      backdrop-filter: blur(10px);
-      border-radius: 1rem;
-      border: 1px solid rgba(255, 215, 0, 0.2);
-      box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
+        background: var(--panel-bg);
+        border: 1px solid var(--border-color);
+        box-shadow: 0 0 30px var(--shadow-color);
+        backdrop-filter: blur(10px);
+        border-radius: 1rem;
+        transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
       }
-      /* Modern Panel Design */
-      .modern-panel {
-      background: linear-gradient(135deg, rgba(0, 0, 51, 0.8), rgba(0, 0, 0, 0.8));
-      border: 1px solid #333;
-      box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(20px);
-      position: relative;
-      overflow: hidden;
-      border-radius: 1rem;
+      .modern-panel, .futuristic-panel {
+        background: var(--panel-bg);
+        border: 1px solid var(--border-color);
+        box-shadow: 0 4px 60px var(--shadow-color);
+        backdrop-filter: blur(20px);
+        position: relative;
+        overflow: hidden;
+        border-radius: 1rem;
+        transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+      }
+      .dark-mode .modern-panel, .dark-mode .futuristic-panel {
+        background: linear-gradient(135deg, rgba(0, 0, 51, 0.8), rgba(0, 0, 0, 0.8));
+        border: 1px solid rgba(255, 215, 0, 0.2);
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
       }
       .modern-panel::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(from 0deg, rgba(255, 255, 255, 0) 0%, rgba(255, 215, 0, 0.5) 10%, rgba(255, 215, 0, 0) 20%);
-      animation: rotate-border 6s linear infinite;
-      z-index: -1;
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: conic-gradient(from 0deg, rgba(255, 255, 255, 0) 0%, rgba(255, 215, 0, 0.5) 10%, rgba(255, 215, 0, 0) 20%);
+        animation: rotate-border 6s linear infinite;
+        z-index: -1;
       }
       @keyframes rotate-border {
-      from {
-      transform: rotate(0deg);
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
       }
-      to {
-      transform: rotate(360deg);
-      }
-      }
-      /* New Futuristic Panel Style */
       .futuristic-panel {
-        background: linear-gradient(135deg, rgba(0, 0, 51, 0.6), rgba(0, 0, 0, 0.6));
-        border: 1px solid rgba(77, 159, 202, 0.5);
-        box-shadow: 0 0 15px rgba(77, 159, 202, 0.3);
-        backdrop-filter: blur(5px);
-        border-radius: 0.75rem;
         padding: 1.5rem;
-        transition: all 0.3s ease;
       }
       .futuristic-panel:hover {
         box-shadow: 0 0 25px rgba(77, 159, 202, 0.6);
       }
-      /* Futuristic Icons with Glowing Effect */
+      .dark-mode .futuristic-panel:hover {
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+      }
       .futuristic-icon-panel .icon-item {
-      position: relative;
-      color: #ccc;
-      transition: all 0.3s ease;
+        position: relative;
+        color: var(--text-color);
+        transition: all 0.3s ease;
       }
       .futuristic-icon-panel .icon-item:hover {
-      color: var(--color-accent-gold);
-      transform: scale(1.1);
-      text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.6);
+        color: var(--accent-color);
+        transform: scale(1.1);
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.6);
       }
-      /* Custom scrollbar */
+      .shimmer-text {
+        background: linear-gradient(90deg, var(--text-color), var(--accent-color), var(--text-color));
+        background-size: 200% auto;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shimmer 5s linear infinite;
+      }
+      @keyframes shimmer {
+        to {
+          background-position: 200% center;
+        }
+      }
+
+      /* CSS untuk efek kilau pada tulisan Arab */
+      .shimmer-arabic {
+        font-family: 'MCS Hijaz S_U normal', serif; /* Mempertahankan font yang asli */
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), #fff, rgba(255, 255, 255, 0.2));
+        background-size: 200% auto;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shimmer-arabic-anim 3s linear infinite;
+      }
+      @keyframes shimmer-arabic-anim {
+        from {
+          background-position: -200% center;
+        }
+        to {
+          background-position: 200% center;
+        }
+      }
+
+      /* New CSS classes for theme-aware text colors */
+      .text-theme {
+        color: var(--text-color);
+      }
+      .text-theme-secondary {
+        color: var(--text-color-secondary);
+      }
       ::-webkit-scrollbar {
-      width: 8px;
+        width: 8px;
       }
       ::-webkit-scrollbar-track {
-      background: #2d3748;
+        background: var(--panel-bg);
       }
       ::-webkit-scrollbar-thumb {
-      background: #64748b;
-      border-radius: 4px;
+        background: var(--border-color);
+        border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
-      background: #4a5568;
+        background: var(--accent-color);
       }
       .fade-in {
-      animation: fadeIn 0.5s ease-in-out;
+        animation: fadeIn 0.5s ease-in-out;
       }
       @keyframes fadeIn {
-      from {
-      opacity: 0;
-      transform: translateY(10px);
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
-      to {
-      opacity: 1;
-      transform: translateY(0);
-      }
-      }
-      /* Tooltip for features */
       .feature-tooltip .tooltip-text {
-      visibility: hidden;
-      width: 160px;
-      background-color: #334155;
-      color: #fff;
-      text-align: center;
-      border-radius: 6px;
-      padding: 8px;
-      position: absolute;
-      z-index: 1;
-      bottom: 125%;
-      left: 50%;
-      margin-left: -80px;
-      opacity: 0;
-      transition: opacity 0.3s;
+        visibility: hidden;
+        width: 160px;
+        background-color: var(--panel-bg);
+        color: var(--text-color);
+        text-align: center;
+        border-radius: 6px;
+        padding: 8px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -80px;
+        opacity: 0;
+        transition: opacity 0.3s;
       }
       .feature-tooltip:hover .tooltip-text {
-      visibility: visible;
-      opacity: 1;
+        visibility: visible;
+        opacity: 1;
       }
-      /* Video Modal */
       #welcome-modal {
-      transition: opacity 0.3s ease;
+        transition: opacity 0.3s ease;
       }
-      /* Custom toggle switch for alarm */
       .toggle-checkbox:checked {
-      right: 0;
-      border-color: #FFD700;
+        right: 0;
+        border-color: var(--accent-color);
       }
       .toggle-checkbox:checked + .toggle-label {
-      background-color: #FFD700;
+        background-color: var(--accent-color);
       }
-      /* Dark mode toggle switch */
       .quiz-option {
-      transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
       }
       .quiz-option.selected {
-      border: 2px solid #FFD700;
-      background-color: #3b3a2e;
-      font-weight: 600;
+        border: 2px solid var(--accent-color);
+        background-color: #3b3a2e;
+        font-weight: 600;
       }
       .quiz-option.correct {
-      background-color: #1a533c;
-      border: 2px solid #10B981;
+        background-color: #1a533c;
+        border: 2px solid #10B981;
       }
       .quiz-option.incorrect {
-      background-color: #631717;
-      border: 2px solid #EF4444;
+        background-color: #631717;
+        border: 2px solid #EF4444;
       }
     </style>
   </head>
-  <body class="bg-gray-900 text-gray-200 transition-colors duration-500">
+  <body class="transition-colors duration-500">
+    <button id="theme-toggle" class="fixed bottom-4 right-4 p-3 rounded-full shadow-lg z-50 transition-colors duration-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-yellow-400">
+      <span id="theme-icon" class="text-xl">🌞</span>
+    </button>
     <!-- Welcome Modal with Elegant Visuals (Only shown once at app start) -->
     <div id="welcome-modal" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4">
       <div class="relative w-full max-w-xl text-center">
-        <h3 class="text-4xl sm:text-5xl font-bold text-white mb-8 transition-all duration-1000 ease-in-out transform -translate-y-10 opacity-0" id="welcome-title" style="font-family: 'MCS Hijaz S_U normal', serif;">السلام عليكم ورحمة الله وبركاته</h3>
+        <h3 class="text-4xl sm:text-5xl font-bold text-white mb-8 transition-all duration-1000 ease-in-out transform -translate-y-10 opacity-0 shimmer-arabic" id="welcome-title">السلام عليكم ورحمة الله وبركاته</h3>
         <p class="text-xl sm:text-2xl text-white italic mb-4 transition-all duration-1000 ease-in-out transform translate-y-10 opacity-0" id="welcome-subtitle">
           Selamat Datang di Aplikasi SantriQ
         </p>
@@ -194,11 +252,13 @@
     </div>
     <!-- Main App Container -->
     <div id="app" class="container mx-auto p-4 md:p-8 max-w-7xl">
-      <div id="role-selection-page" class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-900">
+      <div id="role-selection-page" class="flex flex-col items-center justify-center min-h-screen p-4">
+        
         <div class="w-full max-w-sm p-8 space-y-6 rounded-xl shadow-2xl text-center relative modern-panel">
-          <h2 class="text-4xl font-bold text-gray-100">SantriQ</h2>
-          <p class="text-gray-400">Silakan pilih peran Anda untuk melanjutkan:</p>
+          <h2 class="text-4xl font-bold text-theme shimmer-text">SantriQ</h2>
+          <p class="text-theme-secondary">Silakan pilih peran Anda untuk melanjutkan:</p>
           <div class="space-y-4 pt-4">
+            
             <button onclick="window.handleRoleSelection('wali')" class="w-full px-4 py-3 font-semibold text-white bg-teal-700 rounded-lg hover:bg-teal-800">
             Saya Wali Santri
             </button>
@@ -229,32 +289,32 @@
             </div>
           </div>
           <div class="text-left text-center">
-            <p class="text-sm italic text-gray-400 mt-2">"Sebaik-baik kalian adalah orang<br>yang belajar Al-Qur'an dan mengajarkannya."</p>
+            <p class="text-sm italic text-theme-secondary mt-2">"Sebaik-baik kalian adalah orang<br>yang belajar Al-Qur'an dan mengajarkannya."</p>
           </div>
         </div>
-        <footer class="mt-8 text-center text-sm text-gray-500">
+        <footer class="mt-8 text-center text-sm text-theme-secondary">
           <button onclick="window.showAboutPage()" class="text-yellow-400 hover:text-yellow-500 underline mb-2">Tentang Aplikasi</button>
           <p>Project dibuat oleh (MUHAMMAD NAHYA FADLALLAH) ©2025 All Rights Reserved</p>
           <a href="https://wa.me/6285520767908" target="_blank" class="block mt-4 text-center">
-          <span class="text-sm font-semibold text-gray-400">PUSAT BANTUAN</span>
+          <span class="text-sm font-semibold text-theme-secondary">PUSAT BANTUAN</span>
           </a>
         </footer>
       </div>
-      <div id="pondok-register-page" class="hidden flex-col items-center justify-center min-h-screen p-4 bg-gray-900">
+      <div id="pondok-register-page" class="hidden flex-col items-center justify-center min-h-screen p-4">
         <div class="w-full max-w-sm p-8 space-y-6 rounded-xl shadow-2xl relative modern-panel">
-          <h2 class="text-2xl font-bold text-center text-gray-100">Daftarkan Pondok Anda</h2>
+          <h2 class="text-2xl font-bold text-center text-theme">Daftarkan Pondok Anda</h2>
           <form id="pondok-register-form" class="space-y-6">
             <div>
-              <label for="register-pondok-id" class="block text-sm font-medium text-gray-300">Nama Pondok & Nomor Unik</label>
+              <label for="register-pondok-id" class="block text-sm font-medium text-theme">Nama Pondok & Nomor Unik</label>
               <input type="text" id="register-pondok-id" placeholder="Contoh: PPTI#12345" class="mt-1 w-full px-4 py-3 rounded-lg focus:ring-4 focus:ring-yellow-200 futuristic-panel" required>
-              <p class="text-xs text-gray-500 mt-1">Gunakan tanda pagar (#) untuk memisahkan nama dan nomor unik.</p>
+              <p class="text-xs text-theme-secondary mt-1">Gunakan tanda pagar (#) untuk memisahkan nama dan nomor unik.</p>
             </div>
             <div>
-              <label for="register-password" class="block text-sm font-medium text-gray-300">Buat Kata Sandi</label>
+              <label for="register-password" class="block text-sm font-medium text-theme">Buat Kata Sandi</label>
               <div class="relative mt-1">
                 <input type="password" id="register-password" placeholder="Minimal 6 karakter" class="w-full px-4 py-3 rounded-lg focus:ring-4 focus:ring-yellow-200 futuristic-panel" required>
                 <button type="button" onclick="window.togglePasswordVisibility('register-password', this)" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                <i class="fas fa-eye text-gray-500"></i>
+                <i class="fas fa-eye text-theme-secondary"></i>
                 </button>
               </div>
             </div>
@@ -263,29 +323,29 @@
             </button>
           </form>
           <p id="register-error" class="text-red-500 text-sm mt-2 hidden text-center"></p>
-          <p class="text-center text-sm text-gray-400">
+          <p class="text-center text-sm text-theme-secondary">
             Sudah punya akun? <button onclick="window.showPage('pondokLogin')" class="font-semibold text-yellow-400 hover:underline">Masuk di sini</button>
           </p>
-          <p class="text-center text-sm mt-4 text-gray-500">
+          <p class="text-center text-sm mt-4 text-theme-secondary">
             <button onclick="window.showPage('roleSelection')" class="hover:underline">Kembali ke pilihan peran</button>
           </p>
         </div>
       </div>
-      <div id="pondok-login-page" class="hidden flex-col items-center justify-center min-h-screen p-4 bg-gray-900">
+      <div id="pondok-login-page" class="hidden flex-col items-center justify-center min-h-screen p-4">
         <div class="w-full max-w-sm p-8 space-y-6 rounded-xl shadow-2xl relative modern-panel">
           <p class="text-4xl text-yellow-400 text-center" style="font-family: 'MCS Hijaz S_U normal', serif;">بسم الله الرحمن الرحيم</p>
-          <h2 class="text-2xl font-bold text-center text-gray-100">Login Pengurus / Guru</h2>
+          <h2 class="text-2xl font-bold text-center text-theme">Login Pengurus / Guru</h2>
           <form id="pondok-login-form" class="space-y-6">
             <div>
-              <label for="login-pondok-id" class="block text-sm font-medium text-gray-300">Nama Pondok & Nomor Unik</label>
+              <label for="login-pondok-id" class="block text-sm font-medium text-theme">Nama Pondok & Nomor Unik</label>
               <input type="text" id="login-pondok-id" placeholder="Contoh: PPTI#12345" class="mt-1 w-full px-4 py-3 rounded-lg focus:ring-4 focus:ring-yellow-200 futuristic-panel" required>
             </div>
             <div>
-              <label for="login-password" class="block text-sm font-medium text-gray-300">Kata Sandi</label>
+              <label for="login-password" class="block text-sm font-medium text-theme">Kata Sandi</label>
               <div class="relative mt-1">
                 <input type="password" id="login-password" placeholder="Kata Sandi Anda" class="w-full px-4 py-3 rounded-lg focus:ring-4 focus:ring-yellow-200 futuristic-panel" required>
                 <button type="button" onclick="window.togglePasswordVisibility('login-password', this)" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                <i class="fas fa-eye text-gray-500"></i>
+                <i class="fas fa-eye text-theme-secondary"></i>
                 </button>
               </div>
             </div>
@@ -294,21 +354,21 @@
             </button>
           </form>
           <p id="pondok-login-error" class="text-red-500 text-sm mt-2 hidden text-center"></p>
-          <p class="text-center text-sm text-gray-400">
+          <p class="text-center text-sm text-theme-secondary">
             Belum punya akun? <button onclick="window.showPage('pondokRegister')" class="font-semibold text-yellow-400 hover:underline">Daftar di sini</button>
           </p>
-          <p class="text-center text-sm mt-4 text-gray-500">
+          <p class="text-center text-sm mt-4 text-theme-secondary">
             <button onclick="window.showPage('roleSelection')" class="hover:underline">Kembali ke pilihan peran</button>
           </p>
         </div>
       </div>
-      <div id="access-code-page" class="hidden flex-col items-center justify-center min-h-screen p-4 bg-gray-900">
+      <div id="access-code-page" class="hidden flex-col items-center justify-center min-h-screen p-4">
         <div class="w-full max-w-sm p-8 space-y-6 rounded-xl shadow-2xl relative modern-panel">
-          <h2 class="text-2xl font-bold text-center text-gray-100">Kode Akses Wali Santri</h2>
-          <p class="text-sm text-center text-gray-400">Silakan masukkan kode akses yang diberikan oleh pengurus.</p>
+          <h2 class="text-2xl font-bold text-center text-theme">Kode Akses Wali Santri</h2>
+          <p class="text-sm text-center text-theme-secondary">Silakan masukkan kode akses yang diberikan oleh pengurus.</p>
           <form id="access-code-form" class="space-y-6">
             <div>
-              <label for="access-code" class="block text-sm font-medium text-gray-300">Kode Akses</label>
+              <label for="access-code" class="block text-sm font-medium text-theme">Kode Akses</label>
               <input type="text" id="access-code" placeholder="Masukkan kode" class="mt-1 w-full px-4 py-3 rounded-lg focus:ring-4 focus:ring-yellow-200 futuristic-panel" required>
             </div>
             <button type="submit" class="w-full px-4 py-3 font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">
@@ -316,7 +376,7 @@
             </button>
           </form>
           <p id="access-code-error" class="text-red-500 text-sm mt-2 hidden text-center"></p>
-          <p class="text-center text-sm mt-4 text-gray-500">
+          <p class="text-center text-sm mt-4 text-theme-secondary">
             <button onclick="window.showPage('roleSelection')" class="hover:underline">Kembali ke pilihan peran</button>
           </p>
         </div>
@@ -326,9 +386,9 @@
       <div id="wali-dashboard-page" 
         class="hidden fade-in main-content p-8 rounded-xl shadow-lg flex flex-col h-screen">
         <!-- Header -->
-        <header class="flex flex-col items-center justify-center text-center mb-8 pb-4 border-b border-gray-700 flex-shrink-0">
+        <header class="flex flex-col items-center justify-center text-center mb-8 pb-4 border-b border-border-color flex-shrink-0">
           <h1 class="text-3xl font-bold text-yellow-400">Dashboard Wali Santri</h1>
-          <p class="text-gray-400">Pilih kelas anak Anda untuk melihat detail progres hafalan.</p>
+          <p class="text-theme-secondary">Pilih kelas anak Anda untuk melihat detail progres hafalan.</p>
           <div class="w-full md:w-auto mt-4 md:mt-0 flex flex-wrap justify-center items-center space-x-2 space-y-2 md:space-x-4 md:space-y-0">
             <button onclick="window.showJadwalDonasiPage()" 
               class="px-4 py-2 font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">
@@ -360,17 +420,17 @@
             Kembali
           </button>
           <h2 id="current-class-title" 
-            class="text-2xl font-bold mb-4 text-gray-100 text-center"></h2>
+            class="text-2xl font-bold mb-4 text-theme text-center"></h2>
           <div id="santri-gallery" 
             class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
           </div>
-          <p id="no-results" class="text-center text-gray-500 py-10 hidden">
+          <p id="no-results" class="text-center text-theme-secondary py-10 hidden">
             Santri tidak ditemukan.
           </p>
         </div>
       </div>
       <!-- ================== DETAIL SANTRI ================== -->
-      <div id="detail-santri-page" class="hidden fade-in p-4 bg-gray-900">
+      <div id="detail-santri-page" class="hidden fade-in p-4">
         <!-- Header -->
         <header class="mb-4">
          <button onclick="window.showSantriListByKelas(sessionStorage.getItem('currentWaliKelas'))"
@@ -388,48 +448,55 @@
         <div class="p-8 rounded-xl shadow-lg relative main-content">
           <!-- Foto + info santri -->
           <div class="flex flex-col items-center md:flex-row md:items-start 
-            text-center md:text-left md:space-x-8 pb-8 border-b border-gray-700">
+            text-center md:text-left md:space-x-8 pb-8 border-b border-border-color">
             <img id="detail-foto" src="" alt="Foto Santri" 
               class="w-32 h-32 rounded-full object-cover border-4 border-yellow-400 shadow-md mb-4 md:mb-0" 
               onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=Error';">
             <div class="flex flex-col items-center md:items-start">
-              <h2 id="detail-nama" class="text-3xl font-bold text-gray-100"></h2>
-              <p id="detail-kelas" class="text-xl text-gray-400"></p>
+              <h2 id="detail-nama" class="text-3xl font-bold text-theme"></h2>
+              <p id="detail-kelas" class="text-xl text-theme-secondary"></p>
               <p id="detail-pengajar" class="text-md text-yellow-400 font-semibold mt-1"></p>
               <div id="detail-status-target" 
                 class="mt-4 inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold"></div>
             </div>
           </div>
           <!-- Grafik futuristik -->
-          <div class="py-8 border-b border-gray-700">
-            <h3 class="text-2xl font-bold mb-6 text-center text-yellow-400">Grafik Progres Santri</h3>
-            <div id="hafalan-future-chart" class="w-full h-80 futuristic-panel p-4"></div>
-          </div>
-          <div class="py-8 border-b border-gray-700">
+          
+          <div class="py-8 border-b border-border-color">
             <h3 class="text-2xl font-bold mb-6 text-center text-yellow-400">Laporan Pencapaian Target</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center">
               <div class="futuristic-panel">
-                <p class="text-sm font-medium text-gray-400">Total Hafalan Juz</p>
+                <p class="text-sm font-medium text-theme-secondary">Total Hafalan Juz</p>
                 <p id="total-hafalan-juz" class="text-lg font-bold text-yellow-400"></p>
               </div>
               <div class="futuristic-panel">
-                <p class="text-sm font-medium text-gray-400">Target Harian</p>
+                <p class="text-sm font-medium text-theme-secondary">Target Harian</p>
                 <p id="target-harian" class="text-lg font-bold text-yellow-400"></p>
               </div>
               <div class="futuristic-panel">
-                <p class="text-sm font-medium text-gray-400">Target Mingguan</p>
+                <p class="text-sm font-medium text-theme-secondary">Target Mingguan</p>
                 <p id="target-mingguan" class="text-lg font-bold text-yellow-400"></p>
               </div>
               <div class="futuristic-panel">
-                <p class="text-sm font-medium text-gray-400">Target Bulanan</p>
+                <p class="text-sm font-medium text-theme-secondary">Target Bulanan</p>
                 <p id="target-bulanan" class="text-lg font-bold text-yellow-400"></p>
               </div>
               <div class="futuristic-panel">
-                <p class="text-sm font-medium text-gray-400">Target Tahunan</p>
+                <p class="text-sm font-medium text-theme-secondary">Target Tahunan</p>
                 <p id="target-tahunan" class="text-lg font-bold text-yellow-400"></p>
               </div>
             </div>
           </div>
+
+          <!-- Bagian Grafik -->
+          <div class="pt-8 border-b border-border-color">
+            <h3 class="text-2xl font-bold mb-4 text-center text-yellow-400">Progres Hafalan</h3>
+            <div class="bg-panel-bg p-4 rounded-lg">
+                <canvas id="hafalan-progres-chart"></canvas>
+            </div>
+          </div>
+          <!-- Akhir Bagian Grafik -->
+
           <div class="pt-8">
             <h3 class="text-2xl font-bold mb-6 text-center text-yellow-400">Riwayat Setoran Hafalan</h3>
             <div class="overflow-x-auto futuristic-panel">
@@ -442,13 +509,13 @@
                     <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Penilaian Guru</th>
                   </tr>
                 </thead>
-                <tbody id="hafalan-history" class="divide-y divide-gray-700"></tbody>
+                <tbody id="hafalan-history" class="divide-y divide-border-color"></tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
-      <div id="jadwal-donasi-page" class="hidden fade-in p-4 bg-gray-900">
+      <div id="jadwal-donasi-page" class="hidden fade-in p-4">
         <header class="mb-4">
           <button onclick="window.goBackFromJadwal()" class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -461,37 +528,37 @@
           <div>
             <h2 class="text-3xl font-bold text-center text-yellow-400 mb-2">Jadwal Solat Hari Ini</h2>
             <div class="flex flex-col md:flex-row items-center justify-center space-x-3 my-4">
-              <label for="alarm-toggle" class="font-semibold text-gray-300">Alarm Azan:</label>
+              <label for="alarm-toggle" class="font-semibold text-theme">Alarm Azan:</label>
               <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
                 <input type="checkbox" name="alarm-toggle" id="alarm-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
                 <label for="alarm-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-700 cursor-pointer"></label>
               </div>
             </div>
-            <p id="jadwal-lokasi" class="text-center text-gray-400 mb-6">Memuat data untuk lokasi anda...</p>
+            <p id="jadwal-lokasi" class="text-center text-theme-secondary mb-6">Memuat data untuk lokasi anda...</p>
             <div id="jadwal-sholat-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
             </div>
           </div>
           <div>
             <h2 class="text-3xl font-bold text-center text-yellow-400 mb-6">Donasi Pengembangan Aplikasi</h2>
             <div class="max-w-md mx-auto futuristic-panel p-6 rounded-lg text-center shadow-sm">
-              <p class="text-gray-300 mb-4">Dukungan anda sangat berarti bagi kami untuk terus mengembangkan aplikasi ini agar lebih bermanfaat bagi ummat. Salurkan donasi terbaik anda melalui e-wallet berikut:</p>
+              <p class="text-theme-secondary mb-4">Dukungan anda sangat berarti bagi kami untuk terus mengembangkan aplikasi ini agar lebih bermanfaat bagi ummat. Salurkan donasi terbaik anda melalui e-wallet berikut:</p>
               <div class="flex items-center justify-center space-x-2 my-4">
-                <span id="donation-number" class="text-2xl font-bold text-gray-200 p-2 rounded-md border-2 border-dashed border-gray-600">0856 3777 508</span>
+                <span id="donation-number" class="text-2xl font-bold text-theme p-2 rounded-md border-2 border-dashed border-border-color">0856 3777 508</span>
                 <button onclick="window.copyDonationNumber()" class="px-4 py-3 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">Salin</button>
               </div>
               <div class="flex justify-center space-x-4 mt-4">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="DANA" class="h-8">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_ovo_purple.svg" alt="OVO" class="h-8">
               </div>
-              <p class="text-sm text-gray-400 mt-4">a.n. Tim Pengembang MUHAMMAD NAHYA FADLALLAH</p>
+              <p class="text-sm text-theme-secondary mt-4">a.n. Tim Pengembang MUHAMMAD NAHYA FADLALLAH</p>
             </div>
           </div>
         </div>
       </div>
       <div id="guru-dashboard-page" class="hidden fade-in main-content p-8 rounded-xl shadow-lg flex flex-col h-screen">
-        <header class="flex flex-col items-center justify-center text-center mb-8 pb-4 border-b border-gray-700 flex-shrink-0">
+        <header class="flex flex-col items-center justify-center text-center mb-8 pb-4 border-b border-border-color flex-shrink-0">
           <h1 class="text-3xl font-bold text-yellow-400">Panel Guru</h1>
-          <p class="text-gray-400 mb-4">Kelola data hafalan santri.</p>
+          <p class="text-theme-secondary mb-4">Kelola data hafalan santri.</p>
           <div class="flex items-center space-x-2 mt-2 flex-wrap justify-center">
             <button onclick="window.showJadwalDonasiPage()" class="px-3 py-2 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">Jadwal & Donasi</button>
             <button onclick="window.showGuruManagementPage()" class="px-3 py-2 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500">
@@ -510,7 +577,7 @@
         <div id="unique-access-code-section" class="futuristic-panel mt-8 text-center flex-shrink-0">
           <h3 class="text-xl font-bold text-yellow-400 mb-4">Kode Akses Wali Santri</h3>
           <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <p id="unique-access-code" class="text-2xl font-mono tracking-widest text-gray-200 p-2 rounded-md border border-yellow-400 shadow-sm"></p>
+            <p id="unique-access-code" class="text-2xl font-mono tracking-widest text-theme p-2 rounded-md border border-yellow-400 shadow-sm"></p>
             <button onclick="window.copyAccessCode()" class="px-4 py-2 bg-yellow-400 text-black rounded-md hover:bg-yellow-500">
             Salin Kode
             </button>
@@ -523,7 +590,7 @@
           </div>
         </div>
       </div>
-      <div id="guru-form-page" class="hidden fade-in p-4 bg-gray-900">
+      <div id="guru-form-page" class="hidden fade-in p-4">
         <header class="mb-4">
           <button onclick="window.backToGuruDashboard()" class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -539,54 +606,54 @@
             <input type="hidden" id="current-photo-url">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label for="nama" class="block text-sm font-medium text-gray-300">Nama Lengkap Santri</label>
+                <label for="nama" class="block text-sm font-medium text-theme">Nama Lengkap Santri</label>
                 <input type="text" id="nama" class="mt-1 block w-full px-4 py-3 futuristic-panel" required>
               </div>
               <div>
-                <label for="kelas" class="block text-sm font-medium text-gray-300">Kelas</label>
+                <label for="kelas" class="block text-sm font-medium text-theme">Kelas</label>
                 <select id="kelas" class="mt-1 block w-full px-4 py-3 futuristic-panel" required></select>
               </div>
             </div>
             <div>
-              <label for="foto" class="block text-sm font-medium text-gray-300">Unggah Foto Santri</label>
+              <label for="foto" class="block text-sm font-medium text-theme">Unggah Foto Santri</label>
               <input type="file" id="foto" name="file" accept="image/*" class="mt-1 block w-full px-4 py-3 futuristic-panel">
-              <p id="foto-status" class="text-sm text-gray-400 mt-2"></p>
+              <p id="foto-status" class="text-sm text-theme-secondary mt-2"></p>
             </div>
-            <div class="pt-4 border-t border-gray-700">
-              <h3 class="text-lg font-medium text-gray-100">Data Target Hafalan</h3>
+            <div class="pt-4 border-t border-border-color">
+              <h3 class="text-lg font-medium text-theme">Data Target Hafalan</h3>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 			<div>
-   				 <label for="total-hafalan-juz-guru" class="block text-sm font-medium text-gray-300">Total Hafalan Juz</label>
+   				 <label for="total-hafalan-juz-guru" class="block text-sm font-medium text-theme">Total Hafalan Juz</label>
     			   <input type="number" id="total-hafalan-juz-guru" placeholder="Contoh: 5" class="mt-1 block w-full px-4 py-3 futuristic-panel">
 				</div>
               <div>
-                <label for="form-target-harian" class="block text-sm font-medium text-gray-300">Target Harian</label>
+                <label for="form-target-harian" class="block text-sm font-medium text-theme">Target Harian</label>
                 <select id="form-target-harian" class="mt-1 block w-full px-4 py-3 futuristic-panel"></select>
               </div>
               <div>
-                <label for="form-target-mingguan" class="block text-sm font-medium text-gray-300">Target Mingguan</label>
+                <label for="form-target-mingguan" class="block text-sm font-medium text-theme">Target Mingguan</label>
                 <select id="form-target-mingguan" class="mt-1 block w-full px-4 py-3 futuristic-panel"></select>
               </div>
               <div>
-                <label for="form-target-bulanan" class="block text-sm font-medium text-gray-300">Target Bulanan</label>
+                <label for="form-target-bulanan" class="block text-sm font-medium text-theme">Target Bulanan</label>
                 <input type="text" id="form-target-bulanan" placeholder="Contoh: 1 Juz" class="mt-1 block w-full px-4 py-3 futuristic-panel" required>
               </div>
               <div>
-                <label for="form-target-tahunan" class="block text-sm font-medium text-gray-300">Target Tahunan</label>
+                <label for="form-target-tahunan" class="block text-sm font-medium text-theme">Target Tahunan</label>
                 <input type="text" id="form-target-tahunan" placeholder="Contoh: 5 Juz" class="mt-1 block w-full px-4 py-3 futuristic-panel" required>
               </div>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-300">Status Pencapaian Target</label>
+              <label class="block text-sm font-medium text-theme">Status Pencapaian Target</label>
               <div class="mt-2 flex items-center space-x-4">
                 <label class="inline-flex items-center">
                 <input type="radio" name="tercapai" value="true" class="form-radio h-4 w-4 text-yellow-400">
-                <span class="ml-2 text-gray-300">Mencapai Target</span>
+                <span class="ml-2 text-theme">Mencapai Target</span>
                 </label>
                 <label class="inline-flex items-center">
                 <input type="radio" name="tercapai" value="false" class="form-radio h-4 w-4 text-yellow-400">
-                <span class="ml-2 text-gray-300">Belum Mencapai Target</span>
+                <span class="ml-2 text-theme">Belum Mencapai Target</span>
                 </label>
               </div>
             </div>
@@ -594,26 +661,26 @@
               <button type="submit" class="px-6 py-2 bg-yellow-400 text-black rounded-md hover:bg-yellow-500">Simpan Data Santri</button>
             </div>
           </form>
-          <div id="hafalan-management-section" class="hidden pt-8 border-t border-gray-700 mt-8">
+          <div id="hafalan-management-section" class="hidden pt-8 border-t border-border-color mt-8">
             <h3 class="text-xl font-bold mb-4 text-yellow-400">Kelola Setoran Hafalan</h3>
             <form id="hafalan-form" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end futuristic-panel mb-6">
               <div>
-                <label for="hafalan-tanggal" class="block text-sm font-medium text-gray-300">Tanggal</label>
+                <label for="hafalan-tanggal" class="block text-sm font-medium text-theme">Tanggal</label>
                 <input type="date" id="hafalan-tanggal" class="mt-1 w-full px-4 py-3 futuristic-panel" required>
               </div>
               <div>
-                <label for="hafalan-setoran" class="block text-sm font-medium text-gray-300">Setoran</label>
+                <label for="hafalan-setoran" class="block text-sm font-medium text-theme">Setoran</label>
                 <input type="text" id="hafalan-setoran" placeholder="Contoh: An-Naba: 1-20" class="mt-1 w-full px-4 py-3 futuristic-panel" required>
               </div>
               <div>
-                <label for="hafalan-jenis" class="block text-sm font-medium text-gray-300">Jenis</label>
+                <label for="hafalan-jenis" class="block text-sm font-medium text-theme">Jenis</label>
                 <select id="hafalan-jenis" class="mt-1 w-full px-4 py-3 futuristic-panel">
                   <option>Hafalan Baru</option>
                   <option>Muroja'ah</option>
                 </select>
               </div>
               <div>
-                <label for="hafalan-penilaian" class="block text-sm font-medium text-gray-300">Penilaian</label>
+                <label for="hafalan-penilaian" class="block text-sm font-medium text-theme">Penilaian</label>
                 <select id="hafalan-penilaian" class="mt-1 w-full px-4 py-3 futuristic-panel">
                   <option>Lancar</option>
                   <option>Perlu Diulang</option>
@@ -632,13 +699,13 @@
                     <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase tracking-wider">Aksi</th>
                   </tr>
                 </thead>
-                <tbody id="guru-hafalan-table" class="divide-y divide-gray-700"></tbody>
+                <tbody id="guru-hafalan-table" class="divide-y divide-border-color"></tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
-      <div id="guru-management-page" class="hidden fade-in p-4 bg-gray-900">
+      <div id="guru-management-page" class="hidden fade-in p-4">
         <header class="mb-4">
           <button onclick="window.backToGuruDashboard()" class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -653,11 +720,11 @@
             <input type="hidden" id="guru-id">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
               <div>
-                <label for="guru-nama" class="block text-sm font-medium text-gray-300">Nama Guru (Ustadz/Ustadzah)</label>
+                <label for="guru-nama" class="block text-sm font-medium text-theme">Nama Guru (Ustadz/Ustadzah)</label>
                 <input type="text" id="guru-nama" class="mt-1 block w-full px-4 py-3 futuristic-panel" required>
               </div>
               <div>
-                <label for="guru-kelas" class="block text-sm font-medium text-gray-300">Mengajar Kelas</label>
+                <label for="guru-kelas" class="block text-sm font-medium text-theme">Mengajar Kelas</label>
                 <select id="guru-kelas" class="mt-1 block w-full px-4 py-3 futuristic-panel" required></select>
               </div>
               <button type="submit" class="px-6 py-2 bg-yellow-400 text-black rounded-md hover:bg-yellow-500 w-full">Simpan Guru</button>
@@ -673,13 +740,14 @@
                   <th class="py-3 px-6 text-left text-xs font-medium text-yellow-400 uppercase">Aksi</th>
                 </tr>
               </thead>
-              <tbody id="guru-list-table" class="divide-y divide-gray-700">
+              <tbody id="guru-list-table" class="divide-y divide-border-color">
               </tbody>
             </table>
           </div>
         </div>
       </div>
-      <div id="about-page" class="hidden fade-in p-4 bg-gray-900">
+      
+      <div id="about-page" class="hidden fade-in p-4">
         <header class="mb-4">
           <button onclick="window.showPage('roleSelection')" class="mb-4 flex items-center text-yellow-400 hover:text-yellow-500 font-semibold">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -690,7 +758,7 @@
         </header>
         <div class="p-8 rounded-xl shadow-lg max-w-4xl mx-auto relative main-content">
           <h2 class="text-3xl font-bold text-center text-yellow-400 mb-6">Tentang Aplikasi Monitoring Hafalan</h2>
-          <div class="space-y-6 text-gray-300 leading-relaxed">
+          <div class="space-y-6 text-theme-secondary leading-relaxed">
             <section>
               <h3 class="text-xl font-semibold text-yellow-400 mb-2">Latar Belakang Pembuatan</h3>
               <p>
@@ -709,7 +777,7 @@
               </ul>
             </section>
             <section>
-              <p class="text-center italic text-gray-400 pt-4 border-t border-gray-700 mt-8">
+              <p class="text-center italic text-theme-secondary pt-4 border-t border-border-color mt-8">
                 Kami percaya bahwa teknologi dapat menjadi alat yang ampuh untuk mendukung pendidikan Al-Qur'an. Semoga aplikasi ini dapat memberikan manfaat yang luas dan menjadi bagian dari ladang amal jariyah kita semua. Aamiin.
               </p>
             </section>
@@ -744,168 +812,18 @@
             guruManagement: document.getElementById('guru-management-page'),
             jadwalDonasi: document.getElementById('jadwal-donasi-page'),
             about: document.getElementById('about-page'),
+            
         };
 
         let appDataCache = {};
         let loginContext = null;
         let alarmInterval = null;
         let prayerTimesToday = {};
-        let resizeTimeout;
-
-        // --- Semua Fungsi-Fungsi Aplikasi Anda ---
-        /**
-         * Fungsi untuk menggambar grafik progres hafalan santri menggunakan D3.js.
-         * Grafik ini menampilkan perkembangan kumulatif hafalan dari waktu ke waktu.
-         * @param {Array<Object>} data - Array objek hafalan, setiap objek harus memiliki `tanggal` dan `penilaian`.
-         */
-        window.renderFutureChart = function(data) {
-            console.log("Mencoba menggambar grafik dengan data:", data);
-            
-            d3.select("#hafalan-future-chart svg").remove();
-            const container = d3.select("#hafalan-future-chart");
-            if (!container.node()) {
-                console.error("Elemen container untuk grafik tidak ditemukan.");
-                return;
-            }
-            
-            const width = container.node().getBoundingClientRect().width;
-            const height = 300;
-            const margin = { top: 20, right: 30, bottom: 40, left: 40 };
-
-            const svg = container.append("svg")
-                .attr("width", width)
-                .attr("height", height)
-                .append("g")
-                .attr("transform", `translate(${margin.left},${margin.top})`);
-
-            // Memfilter data yang valid dan mengurutkannya
-            const validData = data.filter(d => d && d.tanggal && d.penilaian && !isNaN(d.tanggal.getTime()));
-            if (validData.length < 2) { // Minimal 2 titik data untuk menggambar garis
-                d3.select("#hafalan-future-chart svg").append("text")
-                    .attr("x", width / 2)
-                    .attr("y", height / 2)
-                    .attr("text-anchor", "middle")
-                    .attr("fill", "#ccc")
-                    .text(validData.length === 0 ? "Tidak ada data setoran untuk menampilkan grafik." : "Tambahkan lebih dari satu setoran untuk melihat grafik.");
-                console.log("Data tidak valid atau kurang dari 2. Gagal menggambar grafik.");
-                return;
-            }
-            
-            validData.sort((a, b) => a.tanggal - b.tanggal);
-
-            // Menghitung skor kumulatif
-            let cumulativeScore = 0;
-            const cumulativeData = validData.map(d => {
-                const score = d.penilaian === 'Lancar' ? 2 : 1; 
-                cumulativeScore += score;
-                return { tanggal: d.tanggal, nilai: cumulativeScore, penilaian: d.penilaian };
-            });
-            console.log("Data kumulatif untuk grafik:", cumulativeData);
-
-            // Membuat skala untuk sumbu X dan Y
-            const x = d3.scaleTime()
-                .domain(d3.extent(cumulativeData, d => d.tanggal))
-                .range([0, width - margin.left - margin.right]);
-
-            const y = d3.scaleLinear()
-                .domain([0, d3.max(cumulativeData, d => d.nilai) + 5])
-                .nice()
-                .range([height - margin.top - margin.bottom, 0]);
-
-            // Membuat path area di bawah garis
-            const area = d3.area()
-                .x(d => x(d.tanggal))
-                .y0(y(0))
-                .y1(d => y(d.nilai));
-
-            // Membuat path garis
-            const line = d3.line()
-                .x(d => x(d.tanggal))
-                .y(d => y(d.nilai));
-
-            // Menambahkan gradient ke area
-            const gradient = d3.select("#hafalan-future-chart svg").append("defs").append("linearGradient")
-                .attr("id", "area-gradient")
-                .attr("x1", "0%").attr("x2", "0%")
-                .attr("y1", "0%").attr("y2", "100%");
-            gradient.append("stop").attr("offset", "0%").attr("stop-color", "#FFD700").attr("stop-opacity", 0.5);
-            gradient.append("stop").attr("offset", "100%").attr("stop-color", "#FFD700").attr("stop-opacity", 0);
-
-            // Menggambar area dan garis
-            svg.append("path")
-                .datum(cumulativeData)
-                .attr("fill", "url(#area-gradient)")
-                .attr("stroke", "#FFD700")
-                .attr("stroke-width", 2)
-                .attr("d", line);
-
-            // Menambahkan sumbu X
-            svg.append("g")
-                .attr("transform", `translate(0,${height - margin.top - margin.bottom})`)
-                .call(d3.axisBottom(x).ticks(d3.timeWeek.every(1)).tickFormat(d3.timeFormat("%b %d")))
-                .attr("color", "#ccc");
-
-            // Menambahkan sumbu Y
-            svg.append("g")
-                .call(d3.axisLeft(y))
-                .attr("color", "#ccc");
-                
-            // Menambahkan tooltip untuk interaksi
-            const tooltip = d3.select("body").append("div")
-                .attr("class", "tooltip")
-                .style("position", "absolute")
-                .style("background-color", "#333")
-                .style("border-radius", "5px")
-                .style("padding", "8px")
-                .style("color", "#fff")
-                .style("pointer-events", "none")
-                .style("opacity", 0);
-
-            svg.selectAll("circle")
-                .data(cumulativeData)
-                .enter()
-                .append("circle")
-                .attr("cx", d => x(d.tanggal))
-                .attr("cy", d => y(d.nilai))
-                .attr("r", 5)
-                .attr("fill", d => d.penilaian === 'Lancar' ? 'green' : 'red')
-                .attr("stroke", "#1a1a1a")
-                .attr("stroke-width", 2)
-                .on("mouseover", (event, d) => {
-                    tooltip.style("opacity", 1)
-                        .html(`<strong>Tanggal:</strong> ${d.tanggal.toLocaleDateString('id-ID')}<br><strong>Penilaian:</strong> ${d.penilaian}<br><strong>Skor Kumulatif:</strong> ${d.nilai}`)
-                        .style("left", (event.pageX + 10) + "px")
-                        .style("top", (event.pageY - 20) + "px");
-                })
-                .on("mouseout", () => {
-                    tooltip.style("opacity", 0);
-                });
-        }
+        let myChart = null;
         
-        /**
-         * Fungsi untuk menyesuaikan ukuran grafik saat jendela browser diubah ukurannya.
-         * Menggunakan debounce untuk mencegah panggilan berlebihan saat mengubah ukuran.
-         */
-        function resizeChart() {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                const currentPage = Object.keys(pages).find(key => !pages[key].classList.contains('hidden'));
-                if (currentPage === 'detailSantri' && appDataCache.hafalan) {
-                    const santriId = sessionStorage.getItem('currentSantriId');
-                    if (santriId) {
-                        const hafalan = appDataCache.hafalan.filter(h => h.santri_id === parseInt(santriId));
-                        const chartData = hafalan.map(h => {
-                            const score = h.penilaian === 'Lancar' ? 2 : 1;
-                            return { tanggal: new Date(h.tanggal), nilai: score, penilaian: h.penilaian };
-                        });
-                        window.renderFutureChart(chartData);
-                    }
-                }
-            }, 250); // Debounce time
-        }
-        window.addEventListener('resize', resizeChart);
-
-
+        // --- Semua Fungsi-Fungsi Aplikasi Anda ---
+        // Fungsi renderFutureChart yang sudah diperbaiki
+        
         window.showPage = function(pageName) {
             Object.values(pages).forEach(page => {
                 if (page) {
@@ -959,6 +877,8 @@
             showPage('guruDashboard');
         }
 
+        
+
         window.showToast = function(type, message) {
             const toastContainer = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -1000,7 +920,7 @@
             try {
                 const successful = document.execCommand('copy');
                 if (successful) {
-                    showToast('success', "Kode akses berhasil disalin!");
+                    showToast('success', 'Kode akses berhasil disalin!');
                 }
             } catch (err) {
                 console.error('Failed to copy text:', err);
@@ -1142,6 +1062,8 @@
             sendNotification("Update Hafalan Santri", `${santriName} telah selesai menyetorkan hafalannya. Setoran: ${setoran}. Penilaian: ${penilaian}.`);
         }
 
+        
+
         window.handleRoleSelection = function(role) {
             loginContext = role;
             if (role === 'wali') {
@@ -1180,7 +1102,7 @@
             uniqueKelas.forEach(kelas => {
                 const card = document.createElement('div');
                 card.className = 'text-center cursor-pointer p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 futuristic-panel';
-                card.innerHTML = `<div class="flex items-center justify-center mb-4 text-4xl text-yellow-400"><i class="fas fa-mosque"></i></div><h3 class="text-xl font-bold text-yellow-400">Kelas ${kelas}</h3><p class="text-sm text-gray-400 mt-2">Lihat daftar santri</p>`;
+                card.innerHTML = `<div class="flex items-center justify-center mb-4 text-4xl text-yellow-400"><i class="fas fa-mosque"></i></div><h3 class="text-xl font-bold text-yellow-400">Kelas ${kelas}</h3><p class="text-sm text-theme-secondary mt-2">Lihat daftar santri</p>`;
                 card.onclick = () => window.showSantriListByKelas(kelas);
                 kelasGrid.appendChild(card);
             });
@@ -1204,13 +1126,10 @@
             }
             
             sessionStorage.setItem('currentWaliKelas', santri.kelas);
-            sessionStorage.setItem('currentSantriId', santriId);
-            
             const guru = pondokData.guru.find(g => g.mengajar_kelas === santri.kelas);
             const hafalan = pondokData.hafalan
                 .filter(h => h.santri_id === santriId)
                 .sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
-            
             document.getElementById('detail-foto').src = santri.foto || 'https://placehold.co/400x400?text=No+Photo';
             document.getElementById('detail-nama').textContent = santri.nama;
             document.getElementById('detail-kelas').textContent = `Kelas ${santri.kelas}`;
@@ -1232,25 +1151,92 @@
             document.getElementById('target-bulanan').textContent = target.bulanan || '-';
             document.getElementById('target-tahunan').textContent = target.tahunan || '-';
             
-            // Perbaikan utama untuk grafik: menggunakan penilaian untuk nilai
-            const chartData = hafalan.map(h => {
-                const score = h.penilaian === 'Lancar' ? 2 : 1;
-                let dateObject = new Date(h.tanggal);
-                if (isNaN(dateObject.getTime())) {
-                    // Coba parsing manual untuk format "dd/mm/yyyy"
-                    const parts = h.tanggal.split('/');
-                    if (parts.length === 3) {
-                        dateObject = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
-                    }
-                }
-                return {
-                    tanggal: dateObject,
-                    nilai: score,
-                    penilaian: h.penilaian // Menambahkan penilaian untuk tooltip
-                };
-            }).filter(d => !isNaN(d.tanggal.getTime())); // Filter data dengan tanggal yang tidak valid
+            // Render the progress chart
+            const progressData = hafalan.filter(h => h.jenis === 'Hafalan Baru' && h.penilaian === 'Lancar')
+                                        .map(h => ({ date: h.tanggal, setoran: h.setoran }));
+
+            const labels = progressData.map(d => d.date);
+            const data = progressData.map((d, i) => {
+                // A simple way to represent progress is to count each entry
+                return i + 1;
+            });
+
+            // Destroy old chart if it exists
+            const existingChart = Chart.getChart("hafalan-progres-chart");
+            if (existingChart) {
+                existingChart.destroy();
+            }
             
-            renderFutureChart(chartData);
+            const chartCtx = document.getElementById('hafalan-progres-chart');
+            if (chartCtx) {
+                myChart = new Chart(chartCtx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Jumlah Setoran Hafalan Baru',
+                            data: data,
+                            borderColor: 'var(--graph-line-color)',
+                            backgroundColor: 'var(--graph-fill-color)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'var(--graph-text-color)'
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    title: (context) => {
+                                        return `Tanggal: ${context[0].label}`;
+                                    },
+                                    label: (context) => {
+                                        return `Jumlah Setoran: ${context.raw}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Tanggal',
+                                    color: 'var(--graph-text-color)'
+                                },
+                                ticks: {
+                                    color: 'var(--graph-text-color)'
+                                },
+                                grid: {
+                                    color: 'var(--graph-grid-color)'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Jumlah Setoran',
+                                    color: 'var(--graph-text-color)'
+                                },
+                                ticks: {
+                                    color: 'var(--graph-text-color)',
+                                    stepSize: 1
+                                },
+                                grid: {
+                                    color: 'var(--graph-grid-color)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+
             
             const historyBody = document.getElementById('hafalan-history');
             if (historyBody) {
@@ -1258,10 +1244,10 @@
                 if (hafalan.length > 0) {
                     hafalan.forEach(h => {
                         const row = historyBody.insertRow();
-                        row.innerHTML = `<td class="py-4 px-6 text-sm text-gray-200">${new Date(h.tanggal).toLocaleDateString('id-ID')}</td><td class="py-4 px-6 text-sm text-gray-200 font-medium">${h.setoran}</td><td class="py-4 px-6 text-sm text-gray-400">${h.jenis}</td><td class="py-4 px-6 text-sm"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${h.penilaian === 'Lancar' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${h.penilaian}</span></td>`;
+                        row.innerHTML = `<td class="py-4 px-6 text-sm text-theme">${new Date(h.tanggal).toLocaleDateString('id-ID')}</td><td class="py-4 px-6 text-sm text-theme font-medium">${h.setoran}</td><td class="py-4 px-6 text-sm text-theme-secondary">${h.jenis}</td><td class="py-4 px-6 text-sm"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${h.penilaian === 'Lancar' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${h.penilaian}</span></td>`;
                     });
                 } else {
-                    historyBody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-gray-400">Belum ada riwayat setoran.</td></tr>';
+                    historyBody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-theme-secondary">Belum ada riwayat setoran.</td></tr>';
                 }
             }
             showPage('detailSantri');
@@ -1290,8 +1276,8 @@
                         <div class="relative">
                             <img src="${fotoUrl}" alt="Foto ${santri.nama}" class="w-full h-auto aspect-square rounded-full object-cover transition-transform duration-300 group-hover:scale-105 border-4 border-yellow-400 shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=Error';">
                         </div>
-                        <p class="mt-4 font-semibold text-gray-200">${santri.nama}</p>
-                        <p class="text-sm text-gray-400">${santri.kelas}</p>
+                        <p class="mt-4 font-semibold text-theme">${santri.nama}</p>
+                        <p class="text-sm text-theme-secondary">${santri.kelas}</p>
                         <div class="flex space-x-2 mt-4 justify-center">
                             <button onclick="event.stopPropagation(); window.showGuruForm('${santri.id}')" class="px-2 py-1 text-xs font-semibold text-black bg-yellow-400 rounded-md hover:bg-yellow-500">Ubah Data</button>
                             <button onclick="event.stopPropagation(); window.deleteSantri('${santri.id}')" class="px-2 py-1 text-xs font-semibold text-white bg-red-600 rounded-md hover:bg-red-700">Hapus</button>
@@ -1347,11 +1333,10 @@
                 if (formTargetBulanan) formTargetBulanan.value = target.bulanan || '-';
                 const formTargetTahunan = document.getElementById('form-target-tahunan');
                 if (formTargetTahunan) formTargetTahunan.value = target.tahunan || '-';
-                const checkedRadio = document.querySelector(`input[name="tercapai"]:checked`);
+                const checkedRadio = document.querySelector(`input[name="tercapai"]:checked`)?.value === 'true';
                 if (checkedRadio) {
-                    checkedRadio.checked = santri.tercapai;
+                    checkedRadio.checked = true;
                 }
-                document.querySelector(`input[name="tercapai"][value="${santri.tercapai}"]`).checked = true;
 
                 if (hafalanSection) hafalanSection.classList.remove('hidden');
                 window.renderGuruHafalanTable(santriId);
@@ -1396,15 +1381,15 @@
             tableBody.innerHTML = '';
             pondokData.guru.sort((a, b) => a.nama.localeCompare(b.nama)).forEach(guru => {
                 const row = tableBody.insertRow();
-                row.innerHTML = `<td class="py-4 px-6 text-sm font-medium text-gray-100">${guru.nama}</td><td class="py-4 px-6 text-sm text-gray-400">${guru.mengajar_kelas}</td><td class="py-4 px-6 text-sm font-medium space-x-2"><button onclick="window.editGuru('${guru.id}')" class="text-yellow-400 hover:text-yellow-500">Ubah</button><button onclick="window.deleteGuru('${guru.id}')" class="text-red-600 hover:text-red-700">Hapus</button></td>`;
+                row.innerHTML = `<td class="py-4 px-6 text-sm font-medium text-theme">${guru.nama}</td><td class="py-4 px-6 text-sm text-theme-secondary">${guru.mengajar_kelas}</td><td class="py-4 px-6 text-sm font-medium space-x-2"><button onclick="window.editGuru('${guru.id}')" class="text-yellow-400 hover:text-yellow-500">Ubah</button><button onclick="window.deleteGuru('${guru.id}')" class="text-red-600 hover:text-red-700">Hapus</button></td>`;
             });
         }
 
         // Tambahkan kode fungsi-fungsi ini di sini
         window.togglePasswordVisibility = function(inputId, toggleButton) {
             const input = document.getElementById(inputId);
-            const eyeIcon = `<i class="fas fa-eye text-gray-500"></i>`;
-            const eyeSlashIcon = `<i class="fas fa-eye-slash text-gray-500"></i>`;
+            const eyeIcon = `<i class="fas fa-eye text-theme-secondary"></i>`;
+            const eyeSlashIcon = `<i class="fas fa-eye-slash text-theme-secondary"></i>`;
             if (input.type === "password") {
                 input.type = "text";
                 toggleButton.innerHTML = eyeSlashIcon;
@@ -1443,7 +1428,7 @@
             const container = document.getElementById('jadwal-sholat-container');
             const lokasiEl = document.getElementById('jadwal-lokasi');
             if (!container || !lokasiEl) return;
-            container.innerHTML = `<div class="col-span-full text-center">Memuat...</div>`;
+            container.innerHTML = `<div class="col-span-full text-center text-theme-secondary">Memuat...</div>`;
             let latitude = -6.2088;
             let longitude = 106.8456;
             let locationName = "Jakarta, Indonesia";
@@ -1536,14 +1521,14 @@
             if (santriGallery) {
                 santriGallery.innerHTML = '';
                 if (filteredSantri.length === 0) {
-                    santriGallery.innerHTML = '<p class="text-center text-gray-500 py-10">Tidak ada santri di kelas ini.</p>';
+                    santriGallery.innerHTML = '<p class="text-center text-theme-secondary py-10">Tidak ada santri di kelas ini.</p>';
                 } else {
                     filteredSantri.forEach(santri => {
                         const fotoUrl = santri.foto || 'https://placehold.co/400x400?text=No+Photo';
                         const card = document.createElement('div');
                         card.className = 'text-center cursor-pointer group santri-card';
                         card.dataset.name = santri.nama;
-                        card.innerHTML = `<div class="relative"><img src="${fotoUrl}" alt="Foto ${santri.nama}" class="w-full h-auto aspect-square rounded-full object-cover transition-transform duration-300 group-hover:scale-105 border-4 border-yellow-400 shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=Error';"><div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 rounded-full transition-all duration-300 flex items-center justify-center"><span class="text-white opacity-0 group-hover:opacity-100 font-bold">Lihat Detail</span></div></div><p class="mt-4 font-semibold text-gray-200">${santri.nama}</p><p class="text-sm text-gray-400">Kelas ${santri.kelas}</p>`;
+                        card.innerHTML = `<div class="relative"><img src="${fotoUrl}" alt="Foto ${santri.nama}" class="w-full h-auto aspect-square rounded-full object-cover transition-transform duration-300 group-hover:scale-105 border-4 border-yellow-400 shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=Error';"><div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 rounded-full transition-all duration-300 flex items-center justify-center"><span class="text-white opacity-0 group-hover:opacity-100 font-bold">Lihat Detail</span></div></div><p class="mt-4 font-semibold text-theme">${santri.nama}</p><p class="text-sm text-theme-secondary">Kelas ${santri.kelas}</p>`;
                         card.onclick = () => window.showSantriDetail(santri.id);
                         santriGallery.appendChild(card);
                     });
@@ -1586,12 +1571,12 @@
             tableBody.innerHTML = '';
             const hafalanList = pondokData.hafalan.filter(h => h.santri_id === santriId).sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
             if (hafalanList.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-gray-500">Belum ada setoran.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-theme-secondary">Belum ada setoran.</td></tr>';
                 return;
             }
             hafalanList.forEach(h => {
                 const row = tableBody.insertRow();
-                row.innerHTML = `<td class="py-2 px-4">${h.tanggal}</td><td class="py-2 px-4 font-medium">${h.setoran}</td><td class="py-2 px-4">${h.jenis}</td><td class="py-2 px-4">${h.penilaian}</td><td class="py-2 px-4"><button onclick="window.deleteHafalan('${h.id}', '${santriId}')" class="text-red-500 hover:text-red-700">Hapus</button></td>`;
+                row.innerHTML = `<td class="py-2 px-4 text-theme">${h.tanggal}</td><td class="py-2 px-4 font-medium text-theme">${h.setoran}</td><td class="py-2 px-4 text-theme">${h.jenis}</td><td class="py-2 px-4 text-theme">${h.penilaian}</td><td class="py-2 px-4"><button onclick="window.deleteHafalan('${h.id}', '${santriId}')" class="text-red-500 hover:text-red-700">Hapus</button></td>`;
             });
         }
         window.deleteHafalan = async function(hafalanIdString, santriIdString) {
@@ -1662,7 +1647,42 @@
 
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
+            // Dark/Light Mode
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 
+            const setInitialTheme = () => {
+                let theme = localStorage.getItem('theme');
+                if (!theme) {
+                    theme = prefersDark.matches ? 'dark' : 'light';
+                }
+                document.body.classList.toggle('dark-mode', theme === 'dark');
+                themeIcon.textContent = theme === 'dark' ? '🌙' : '🌞';
+            };
+
+            themeToggleBtn.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+                themeIcon.textContent = isDarkMode ? '🌙' : '🌞';
+                if(myChart) {
+                    myChart.options.scales.x.ticks.color = getComputedStyle(document.body).getPropertyValue('--graph-text-color');
+                    myChart.options.scales.y.ticks.color = getComputedStyle(document.body).getPropertyValue('--graph-text-color');
+                    myChart.options.scales.x.grid.color = getComputedStyle(document.body).getPropertyValue('--graph-grid-color');
+                    myChart.options.scales.y.grid.color = getComputedStyle(document.body).getPropertyValue('--graph-grid-color');
+                    myChart.options.plugins.legend.labels.color = getComputedStyle(document.body).getPropertyValue('--graph-text-color');
+                    myChart.data.datasets[0].borderColor = getComputedStyle(document.body).getPropertyValue('--graph-line-color');
+                    myChart.data.datasets[0].backgroundColor = getComputedStyle(document.body).getPropertyValue('--graph-fill-color');
+                    myChart.update();
+                }
+            });
+
+            setInitialTheme();
+            // End Dark/Light Mode
+
+            // --- Inisialisasi awal
+            
             const alarmToggle = document.getElementById('alarm-toggle');
             if (alarmToggle) {
                 alarmToggle.checked = localStorage.getItem('alarmEnabled') === 'true';
@@ -1879,7 +1899,7 @@
                         setoran: document.getElementById('hafalan-setoran').value,
                         jenis: document.getElementById('hafalan-jenis').value,
                         penilaian: document.getElementById('hafalan-penilaian').value,
-                        santriId: santriId,
+                        santriId: santriId
                     };
                     const saveSuccess = await window.saveData('/api/save-hafalan', { pondokId, hafalanData: newHafalan });
                     if (saveSuccess) {
@@ -1893,6 +1913,8 @@
                     }
                 });
             }
+            
+            
 
             // --- Panggil Fungsi Inisialisasi Aplikasi ---
             window.playWelcomeAnimation();
