@@ -216,21 +216,21 @@
       .toggle-checkbox:checked + .toggle-label {
         background-color: var(--accent-color);
       }
-      .quiz-option {
-        transition: all 0.2s ease-in-out;
+      .progress-container {
+        width: 100%;
+        background-color: #e2e8f0;
+        border-radius: 9999px;
+        overflow: hidden;
       }
-      .quiz-option.selected {
-        border: 2px solid var(--accent-color);
-        background-color: #3b3a2e;
-        font-weight: 600;
-      }
-      .quiz-option.correct {
-        background-color: #1a533c;
-        border: 2px solid #10B981;
-      }
-      .quiz-option.incorrect {
-        background-color: #631717;
-        border: 2px solid #EF4444;
+      .progress-bar {
+        height: 1.5rem;
+        background-color: #FFD700;
+        transition: width 0.5s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: black;
       }
     </style>
   </head>
@@ -242,10 +242,6 @@
           <button id="theme-toggle" class="p-3 rounded-full shadow-lg transition-colors duration-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-yellow-400">
             <span id="theme-icon" class="text-xl">🌞</span>
           </button>
-          <div class="flex flex-col space-y-2">
-            <button id="lang-id" class="lang-btn p-2 rounded-full shadow-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200" data-lang="id">🇮🇩</button>
-            <button id="lang-ar" class="lang-btn p-2 rounded-full shadow-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200" data-lang="ar">🇸🇦</button>
-          </div>
         </div>
         
         <div class="w-full max-w-sm p-8 space-y-6 rounded-xl shadow-2xl text-center relative modern-panel">
@@ -536,18 +532,31 @@
             </div>
           </div>
           <div>
-            <h2 class="text-3xl font-bold text-center text-yellow-400 mb-6" id="donation-title">Donasi Pengembangan Aplikasi</h2>
+            <h2 class="text-3xl font-bold text-center text-yellow-400 mb-6">Infaq Jariyah untuk Generasi Penghafal Qur'an</h2>
             <div class="max-w-md mx-auto futuristic-panel p-6 rounded-lg text-center shadow-sm">
-              <p class="text-theme-secondary mb-4" id="donation-text">Dukungan anda sangat berarti bagi kami untuk terus mengembangkan aplikasi ini agar lebih bermanfaat bagi ummat. Salurkan donasi terbaik anda melalui e-wallet berikut:</p>
+              <p class="text-theme-secondary mb-4">Dukungan Anda memastikan SantriQ tetap menjadi jembatan amal saleh. Bantu kami menjaga data hafalan santri tetap aman dan real-time.</p>
+              <p class="text-yellow-400 font-semibold italic mb-2">Jadikan donasi Anda sebagai saham akhirat!</p>
+              <p class="text-sm text-theme-secondary mb-4">Kami mempunyai tanggungan biaya per-bulan sebesar Rp 450.000 untuk biaya hosting, domain, save data & pengembangan fitur tadabbur sebesar Rp 150.000.</p>
+              
+              <!-- Progress Bar Section -->
+              <div class="space-y-2 mt-4">
+                <div class="progress-container">
+                  <div class="progress-bar" style="width: 10%;" id="infaq-progress-bar">10%</div>
+                </div>
+                <p class="text-sm text-theme-secondary">Target Bulanan: Rp 600.000</p>
+              </div>
+
               <div class="flex items-center justify-center space-x-2 my-4">
                 <span id="donation-number" class="text-2xl font-bold text-theme p-2 rounded-md border-2 border-dashed border-border-color">0856 3777 508</span>
-                <button onclick="window.copyDonationNumber()" class="px-4 py-3 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500" id="copy-btn">Salin</button>
+                <button onclick="window.copyDonationNumber()" class="px-4 py-3 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500 flex items-center">
+                  Salin <i class="ml-2 fas fa-copy"></i>
+                </button>
               </div>
               <div class="flex justify-center space-x-4 mt-4">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="DANA" class="h-8">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_ovo_purple.svg" alt="OVO" class="h-8">
               </div>
-              <p class="text-sm text-theme-secondary mt-4" id="donation-name">a.n. Tim Pengembang MUHAMMAD NAHYA FADLALLAH</p>
+              <p class="text-sm text-theme-secondary mt-4">Amanah Anda kami jaga. a.n. Tim Pengembang: [M.Nahya Fadlallah]</p>
             </div>
           </div>
         </div>
@@ -1038,338 +1047,6 @@
             about: document.getElementById('about-page'),
             
         };
-        const translations = {
-          id: {
-            // Halaman Awal
-            appTitle: "SantriQ",
-            selectRoleText: "Silakan pilih peran Anda untuk melanjutkan:",
-            waliButton: "Saya Wali Santri",
-            guruButton: "Saya Pengurus / Guru",
-            menghafalButton: "Metode Menghafal Al-Qur'an 30 Juz",
-            tooltipRealtime: "Monitoring Real-time",
-            tooltipAccess: "Akses Wali Santri",
-            tooltipReport: "Laporan Terstruktur",
-            quoteText: "\"Sebaik-baik kalian adalah orang yang belajar Al-Qur'an dan mengajarkannya.\"",
-            aboutButton: "Tentang Aplikasi",
-            copyrightText: "Project dibuat oleh (MUHAMMAD NAHYA FADLALLAH) ©2025 All Rights Reserved",
-            helpCenterText: "PUSAT BANTUAN",
-            // Halaman Pendaftaran Pondok
-            registerTitle: "Daftarkan Pondok Anda",
-            registerPondokLabel: "Nama Pondok & Nomor Unik",
-            registerPondokHint: "Gunakan tanda pagar (#) untuk memisahkan nama dan nomor unik.",
-            registerPasswordLabel: "Buat Kata Sandi",
-            registerButton: "Daftar",
-            haveAccountText: "Sudah punya akun?",
-            loginLink1: "Masuk di sini",
-            backToRole1: "Kembali ke pilihan peran",
-            // Halaman Login Pondok
-            loginTitle: "Login Pengurus / Guru",
-            loginPondokLabel: "Nama Pondok & Nomor Unik",
-            loginPasswordLabel: "Kata Sandi",
-            loginButton: "Login",
-            noAccountText: "Belum punya akun?",
-            registerLink2: "Daftar di sini",
-            backToRole2: "Kembali ke pilihan peran",
-            // Halaman Kode Akses Wali
-            accessCodeTitle: "Kode Akses Wali Santri",
-            accessCodeSubtitle: "Silakan masukkan kode akses yang diberikan oleh pengurus.",
-            accessCodeLabel: "Kode Akses",
-            accessCodeButton: "Masuk",
-            backToRole3: "Kembali ke pilihan peran",
-            // Halaman Wali Dashboard
-            waliDashboardTitle: "Dashboard Wali Santri",
-            waliDashboardSubtitle: "Pilih kelas anak Anda untuk melihat detail progres hafalan.",
-            jadwalDonasiBtn: "Jadwal & Donasi",
-            logoutBtn1: "Keluar",
-            backToDashboardBtn: "Kembali",
-            // Halaman Detail Santri
-            reportTitle: "Laporan Pencapaian Target",
-            totalJuzLabel: "Total Hafalan Juz",
-            dailyTargetLabel: "Target Harian",
-            weeklyTargetLabel: "Target Mingguan",
-            monthlyTargetLabel: "Target Bulanan",
-            yearlyTargetLabel: "Target Tahunan",
-            progressChartTitle: "Progres Hafalan",
-            historyTitle: "Riwayat Setoran Hafalan",
-            tableDateLabel: "Tanggal",
-            tableSetoranLabel: "Setoran",
-            tableTypeLabel: "Jenis",
-            tableGradeLabel: "Penilaian Guru",
-            // Halaman Jadwal & Donasi
-            prayerScheduleTitle: "Jadwal Solat Hari Ini",
-            azanAlarmLabel: "Alarm Azan:",
-            donationTitle: "Donasi Pengembangan Aplikasi",
-            donationText: "Dukungan anda sangat berarti bagi kami untuk terus mengembangkan aplikasi ini agar lebih bermanfaat bagi ummat. Salurkan donasi terbaik anda melalui e-wallet berikut:",
-            copyBtn: "Salin",
-            donationName: "a.n. Tim Pengembang MUHAMMAD NAHYA FADLALLAH",
-            backToDashboardBtn2: "Kembali ke Dashboard",
-            // Halaman Guru Dashboard
-            guruDashboardTitle: "Panel Guru",
-            guruDashboardSubtitle: "Kelola data hafalan santri.",
-            jadwalDonasiBtn2: "Jadwal & Donasi",
-            manageGuruBtn: "Kelola Data Guru",
-            addSantriBtn: "+ Tambah Santri Baru",
-            logoutBtn2: "Keluar",
-            accessCodeSectionTitle: "Kode Akses Wali Santri",
-            copyAccessCodeBtn: "Salin Kode",
-            whatsappShareText: "Bagikan di WhatsApp",
-            // Halaman Guru Form
-            backToGuruDashboardBtn: "Kembali ke Panel Guru",
-            santriNameLabel: "Nama Lengkap Santri",
-            classLabel: "Kelas",
-            uploadPhotoLabel: "Unggah Foto Santri",
-            targetDataTitle: "Data Target Hafalan",
-            totalJuzGuruLabel: "Total Hafalan Juz",
-            dailyTargetLabelForm: "Target Harian",
-            weeklyTargetLabelForm: "Target Mingguan",
-            monthlyTargetLabelForm: "Target Bulanan",
-            yearlyTargetLabelForm: "Target Tahunan",
-            targetStatusLabel: "Status Pencapaian Target",
-            achievedLabel: "Mencapai Target",
-            notAchievedLabel: "Belum Mencapai Target",
-            saveSantriBtn: "Simpan Data Santri",
-            manageHafalanTitle: "Kelola Setoran Hafalan",
-            hafalanDateLabel: "Tanggal",
-            hafalanSetoranLabel: "Setoran",
-            hafalanTypeLabel: "Jenis",
-            newHafalanOption: "Hafalan Baru",
-            murojaahOption: "Muroja'ah",
-            hafalanGradeLabel: "Penilaian",
-            lancarOption: "Lancar",
-            ulangOption: "Perlu Diulang",
-            addHafalanBtn: "Tambah",
-            tableDateLabel2: "Tanggal",
-            tableSetoranLabel2: "Setoran",
-            tableTypeLabel2: "Jenis",
-            tableGradeLabel2: "Penilaian Guru",
-            tableActionLabel: "Aksi",
-            // Halaman Guru Management
-            backToGuruDashboardBtn2: "Kembali ke Panel Guru",
-            manageGuruTitle: "Kelola Data Guru",
-            guruNameLabel: "Nama Guru (Ustadz/Ustadzah)",
-            guruClassLabel: "Mengajar Kelas",
-            saveGuruBtn: "Simpan Guru",
-            registeredGuruList: "Daftar Guru Terdaftar",
-            guruTableName: "Nama Guru",
-            guruTableClass: "Mengajar Kelas",
-            guruTableAction: "Aksi",
-            // Halaman Metode Menghafal
-            menghafalTitle: "Keistimewaan dan Metode Menghafal Al-Qur'an",
-            // Halaman Tentang Aplikasi
-            backToRole5: "Kembali",
-            aboutTitle: "Tentang Aplikasi Monitoring Hafalan",
-            aboutBackgroundTitle: "Latar Belakang Pembuatan",
-            aboutGoalTitle: "Tujuan Utama Aplikasi",
-            goal1Title: "Memudahkan Guru:",
-            goal1Text: "Menyediakan alat yang praktis bagi para guru untuk mencatat, mengelola, dan menganalisis data hafalan santri dengan cepat dan mudah, sehingga mereka dapat lebih fokus pada proses pengajaran.",
-            goal2Title: "Memberikan Ketenangan bagi Wali Santri:",
-            goal2Text: "Memberikan akses langsung kepada wali santri untuk memantau pencapaian, riwayat setoran, dan target hafalan anak mereka kapan saja dan di mana saja.",
-            goal3Title: "Meningkatkan Motivasi Santri:",
-            goal3Text: "Dengan adanya target yang jelas dan progres yang dapat dilihat secara visual, kami berharap para santri akan lebih termotivasi untuk mencapai target hafalan mereka.",
-            aboutQuote: "Kami percaya bahwa teknologi dapat menjadi alat yang ampuh untuk mendukung pendidikan Al-Qur'an. Semoga aplikasi ini dapat memberikan manfaat yang luas dan menjadi bagian dari ladang amal jariyah kita semua. Aamiin."
-          },
-          ar: {
-            // Halaman Awal
-            appTitle: "تطبيق سنتري كيو",
-            selectRoleText: "الرجاء اختيار دورك للمتابعة:",
-            waliButton: "أنا ولي أمر الطالب",
-            guruButton: "أنا مدير / معلم",
-            menghafalButton: "طريقة حفظ القرآن الكريم 30 جزءاً",
-            tooltipRealtime: "مراقبة فورية",
-            tooltipAccess: "وصول ولي الأمر",
-            tooltipReport: "تقارير منظمة",
-            quoteText: "“خيركم من تعلم القرآن وعلمه.”",
-            aboutButton: "حول التطبيق",
-            copyrightText: "تم تطوير المشروع بواسطة (محمد ناهيا فاضلالله) ©2025 جميع الحقوق محفوظة",
-            helpCenterText: "مركز المساعدة",
-            // Halaman Pendaftaran Pondok
-            registerTitle: "سجل معهدا",
-            registerPondokLabel: "اسم المعهد والرقم الفريد",
-            registerPondokHint: "استخدم علامة (#) للفصل بين الاسم والرقم.",
-            registerPasswordLabel: "إنشاء كلمة مرور",
-            registerButton: "تسجيل",
-            haveAccountText: "هل لديك حساب بالفعل؟",
-            loginLink1: "تسجيل الدخول هنا",
-            backToRole1: "العودة إلى اختيار الدور",
-            // Halaman Login Pondok
-            loginTitle: "تسجيل دخول المدير / المعلم",
-            loginPondokLabel: "اسم المعهد والرقم الفريد",
-            loginPasswordLabel: "كلمة المرور",
-            loginButton: "دخول",
-            noAccountText: "ليس لديك حساب؟",
-            registerLink2: "سجل هنا",
-            backToRole2: "العودة إلى اختيار الدور",
-            // Halaman Kode Akses Wali
-            accessCodeTitle: "رمز وصول ولي الأمر",
-            accessCodeSubtitle: "الرجاء إدخال رمز الوصول الذي قدمه المدير.",
-            accessCodeLabel: "رمز الوصول",
-            accessCodeButton: "دخول",
-            backToRole3: "العودة إلى اختيار الدور",
-            // Halaman Wali Dashboard
-            waliDashboardTitle: "لوحة تحكم ولي الأمر",
-            waliDashboardSubtitle: "اختر فصل ابنك لرؤية تقدم الحفظ.",
-            jadwalDonasiBtn: "الجدول والتبرع",
-            logoutBtn1: "خروج",
-            backToDashboardBtn: "عودة",
-            // Halaman Detail Santri
-            reportTitle: "تقرير إنجاز الأهداف",
-            totalJuzLabel: "إجمالي أجزاء الحفظ",
-            dailyTargetLabel: "الهدف اليومي",
-            weeklyTargetLabel: "الهدف الأسبوعي",
-            monthlyTargetLabel: "الهدف الشهري",
-            yearlyTargetLabel: "الهدف السنوي",
-            progressChartTitle: "تقدم الحفظ",
-            historyTitle: "سجل مراجعة الحفظ",
-            tableDateLabel: "التاريخ",
-            tableSetoranLabel: "التلاوة",
-            tableTypeLabel: "النوع",
-            tableGradeLabel: "تقييم المعلم",
-            // Halaman Jadwal & Donasi
-            prayerScheduleTitle: "مواقيت الصلاة اليوم",
-            azanAlarmLabel: "منبه الأذان:",
-            donationTitle: "تبرع لتطوير التطبيق",
-            donationText: "دعمك له أهمية كبيرة لنا لمواصلة تطوير هذا التطبيق ليكون أكثر فائدة للأمة. يمكنك التبرع عبر المحافظ الإلكترونية التالية:",
-            copyBtn: "نسخ",
-            donationName: "باسم: فريق التطوير محمد ناهيا فاضلالله",
-            backToDashboardBtn2: "العودة إلى لوحة التحكم",
-            // Halaman Guru Dashboard
-            guruDashboardTitle: "لوحة المعلم",
-            guruDashboardSubtitle: "إدارة بيانات حفظ الطلاب.",
-            jadwalDonasiBtn2: "الجدول والتبرع",
-            manageGuruBtn: "إدارة بيانات المعلمين",
-            addSantriBtn: "+ إضافة طالب جديد",
-            logoutBtn2: "خروج",
-            accessCodeSectionTitle: "رمز وصول ولي الأمر",
-            copyAccessCodeBtn: "نسخ الرمز",
-            whatsappShareText: "شارك عبر الواتساب",
-            // Halaman Guru Form
-            backToGuruDashboardBtn: "العودة إلى لوحة المعلم",
-            santriNameLabel: "الاسم الكامل للطالب",
-            classLabel: "الفصل",
-            uploadPhotoLabel: "تحميل صورة الطالب",
-            targetDataTitle: "بيانات أهداف الحفظ",
-            totalJuzGuruLabel: "إجمالي أجزاء الحفظ",
-            dailyTargetLabelForm: "الهدف اليومي",
-            weeklyTargetLabelForm: "الهدف الأسبوعي",
-            monthlyTargetLabelForm: "الهدف الشهري",
-            yearlyTargetLabelForm: "الهدف السنوي",
-            targetStatusLabel: "حالة إنجاز الهدف",
-            achievedLabel: "تم تحقيق الهدف",
-            notAchievedLabel: "لم يتم تحقيق الهدف",
-            saveSantriBtn: "حفظ بيانات الطالب",
-            manageHafalanTitle: "إدارة مراجعة الحفظ",
-            hafalanDateLabel: "التاريخ",
-            hafalanSetoranLabel: "التلاوة",
-            hafalanTypeLabel: "النوع",
-            newHafalanOption: "حفظ جديد",
-            murojaahOption: "مراجعة",
-            hafalanGradeLabel: "التقييم",
-            lancarOption: "ممتاز",
-            ulangOption: "يحتاج إلى مراجعة",
-            addHafalanBtn: "إضافة",
-            tableDateLabel2: "التاريخ",
-            tableSetoranLabel2: "التلاوة",
-            tableTypeLabel2: "النوع",
-            tableGradeLabel2: "تقييم المعلم",
-            tableActionLabel: "العمل",
-            // Halaman Guru Management
-            backToGuruDashboardBtn2: "العودة إلى لوحة المعلم",
-            manageGuruTitle: "إدارة بيانات المعلمين",
-            guruNameLabel: "اسم المعلم (أستاذ/أستاذة)",
-            guruClassLabel: "يدرس الفصل",
-            saveGuruBtn: "حفظ المعلم",
-            registeredGuruList: "قائمة المعلمين المسجلين",
-            guruTableName: "اسم المعلم",
-            guruTableClass: "الفصل",
-            guruTableAction: "العمل",
-            // Halaman Metode Menghafal
-            menghafalTitle: "أهمية وطريقة حفظ القرآن",
-            // Halaman Tentang Aplikasi
-            backToRole5: "عودة",
-            aboutTitle: "حول تطبيق مراقبة الحفظ",
-            aboutBackgroundTitle: "خلفية التطبيق",
-            aboutGoalTitle: "الهدف الرئيسي للتطبيق",
-            goal1Title: "تسهيل مهمة المعلم:",
-            goal1Text: "توفير أداة عملية للمعلمين لتسجيل وإدارة وتحليل بيانات حفظ الطلاب بسرعة وسهولة، مما يسمح لهم بالتركيز أكثر على عملية التدريس.",
-            goal2Title: "توفير الطمأنينة لولي الأمر:",
-            goal2Text: "منح أولياء الأمور وصولاً مباشراً لمراقبة إنجازات أبنائهم، وتاريخ مراجعتهم، وأهداف حفظهم في أي وقت ومكان.",
-            goal3Title: "زيادة تحفيز الطالب:",
-            goal3Text: "من خلال تحديد أهداف واضحة وعرض التقدم بشكل بصري، نأمل أن يصبح الطلاب أكثر تحفيزًا لتحقيق أهدافهم في الحفظ.",
-            aboutQuote: "نؤمن بأن التكنولوجيا يمكن أن تكون أداة قوية لدعم تعليم القرآن. نأمل أن يكون هذا التطبيق مفيدًا على نطاق واسع وأن يكون جزءًا من أعمالنا الصالحة الجارية. آمين."
-          }
-        };
-        let currentLang = 'id';
-        
-        // Fungsi helper untuk mengkonversi kebab-case ke camelCase
-        function kebabToCamelCase(str) {
-            return str.replace(/-./g, match => match.charAt(1).toUpperCase());
-        }
-
-        window.setLanguage = function(lang) {
-            currentLang = lang;
-            document.documentElement.lang = lang;
-            const elements = document.querySelectorAll('[id]');
-            elements.forEach(el => {
-                const translationKey = kebabToCamelCase(el.id);
-                if (translations[lang] && translations[lang][translationKey]) {
-                    if(el.tagName === 'INPUT' || el.tagName === 'SELECT') {
-                        // For select options, you might need special handling
-                        const placeholderKey = el.getAttribute('placeholder');
-                        if (placeholderKey && translations[lang][kebabToCamelCase(placeholderKey)]) {
-                            el.placeholder = translations[lang][kebabToCamelCase(placeholderKey)];
-                        }
-                    } else if (el.tagName === 'BUTTON' && el.id.includes('button')) {
-                        // Do not change button text if it is a flag
-                        if (el.dataset.lang) return;
-                        el.textContent = translations[lang][translationKey];
-                    } else if (el.tagName === 'P' && el.id === 'quote-text') {
-                        // special handling for quote
-                        el.innerHTML = translations[lang][translationKey];
-                    } else {
-                        el.textContent = translations[lang][translationKey];
-                    }
-                }
-            });
-            // Handle placeholders manually since they aren't 'textContent'
-            const placeholders = {
-                'register-pondok-id': 'Contoh: PPTI#12345',
-                'register-password': 'Minimal 6 karakter',
-                'login-pondok-id': 'Contoh: PPTI#12345',
-                'login-password': 'Kata Sandi Anda',
-                'access-code': 'Masukkan kode',
-                'santri-name-label': 'Nama Lengkap Santri',
-                'total-juz-guru-label': 'Total Hafalan Juz',
-                'monthly-target-label-form': 'Target Bulanan',
-                'yearly-target-label-form': 'Target Tahunan',
-                'hafalan-setoran-label': 'Setoran',
-                'guru-name-label': 'Nama Guru (Ustadz/Ustadzah)'
-            };
-            const arPlaceholders = {
-                'register-pondok-id': 'مثال: PPTI#12345',
-                'register-password': '6 حروف على الأقل',
-                'login-pondok-id': 'مثال: PPTI#12345',
-                'login-password': 'كلمة المرور الخاصة بك',
-                'access-code': 'أدخل الرمز',
-                'santri-name-label': 'الاسم الكامل للطالب',
-                'total-juz-guru-label': 'إجمالي أجزاء الحفظ',
-                'monthly-target-label-form': 'الهدف الشهري',
-                'yearly-target-label-form': 'الهدف السنوي',
-                'hafalan-setoran-label': 'مثال: النبأ: 1-20',
-                'guru-name-label': 'اسم المعلم (أستاذ/أستاذة)'
-            };
-            
-            for (const id in placeholders) {
-                const el = document.getElementById(id);
-                if (el && el.tagName === 'INPUT') {
-                    if (lang === 'ar') {
-                        el.placeholder = arPlaceholders[id] || placeholders[id];
-                    } else {
-                        el.placeholder = placeholders[id];
-                    }
-                }
-            }
-        };
-
         let appDataCache = {};
         let loginContext = null;
         let alarmInterval = null;
@@ -1724,6 +1401,12 @@
             
             const chartCtx = document.getElementById('hafalan-progres-chart');
             if (chartCtx) {
+                // Dapatkan konteks 2D untuk membuat gradien
+                const ctx = chartCtx.getContext('2d');
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(109, 40, 217, 0.6)'); // ungu
+                gradient.addColorStop(1, 'rgba(37, 99, 235, 0.2)'); // biru
+                
                 myChart = new Chart(chartCtx, {
                     type: 'line',
                     data: {
@@ -1731,19 +1414,32 @@
                         datasets: [{
                             label: 'Jumlah Setoran Hafalan Baru',
                             data: data,
-                            borderColor: 'var(--graph-line-color)',
-                            backgroundColor: 'var(--graph-fill-color)',
+                            borderColor: getComputedStyle(document.body).getPropertyValue('--accent-color'),
+                            backgroundColor: gradient,
                             fill: true,
-                            tension: 0.4
+                            tension: 0.4,
+                            pointRadius: 6,
+                            pointHoverRadius: 8,
+                            pointBackgroundColor: getComputedStyle(document.body).getPropertyValue('--accent-color'),
+                            pointBorderColor: '#fff',
+                            borderWidth: 3,
+                            shadowColor: 'rgba(255, 215, 0, 0.5)',
+                            shadowBlur: 15,
+                            shadowOffsetX: 0,
+                            shadowOffsetY: 0
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
+                        animation: {
+                            duration: 2000,
+                            easing: 'easeInOutQuart'
+                        },
                         plugins: {
                             legend: {
                                 labels: {
-                                    color: 'var(--graph-text-color)'
+                                    color: getComputedStyle(document.body).getPropertyValue('--graph-text-color')
                                 }
                             },
                             tooltip: {
@@ -1762,13 +1458,13 @@
                                 title: {
                                     display: true,
                                     text: 'Tanggal',
-                                    color: 'var(--graph-text-color)'
+                                    color: getComputedStyle(document.body).getPropertyValue('--graph-text-color')
                                 },
                                 ticks: {
-                                    color: 'var(--graph-text-color)'
+                                    color: getComputedStyle(document.body).getPropertyValue('--graph-text-color')
                                 },
                                 grid: {
-                                    color: 'var(--graph-grid-color)'
+                                    color: getComputedStyle(document.body).getPropertyValue('--graph-grid-color')
                                 }
                             },
                             y: {
@@ -1776,14 +1472,14 @@
                                 title: {
                                     display: true,
                                     text: 'Jumlah Setoran',
-                                    color: 'var(--graph-text-color)'
+                                    color: getComputedStyle(document.body).getPropertyValue('--graph-text-color')
                                 },
                                 ticks: {
-                                    color: 'var(--graph-text-color)',
+                                    color: getComputedStyle(document.body).getPropertyValue('--graph-text-color'),
                                     stepSize: 1
                                 },
                                 grid: {
-                                    color: 'var(--graph-grid-color)'
+                                    color: getComputedStyle(document.body).getPropertyValue('--graph-grid-color')
                                 }
                             }
                         }
@@ -1996,30 +1692,84 @@
                 }
             });
         }
-        window.fetchJadwalSholat = async function() {
-            const container = document.getElementById('jadwal-sholat-container');
-            const lokasiEl = document.getElementById('jadwal-lokasi');
-            if (!container || !lokasiEl) return;
-            container.innerHTML = `<div class="col-span-full text-center text-theme-secondary">Memuat...</div>`;
-            let latitude = -6.2088;
-            let longitude = 106.8456;
-            let locationName = "Jakarta, Indonesia";
-            try {
-                const coords = await window.getCoordinates();
-                latitude = coords.latitude;
-                longitude = coords.longitude;
-                const geoNameResponse = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=id`);
-                if (geoNameResponse.ok) {
-                    const geoNameData = await geoNameResponse.json();
-                    locationName = `${geoNameData.city || geoNameData.locality}, ${geoNameData.countryName}`;
-                } else {
-                    locationName = "Lokasi Anda Saat Ini";
-                }
-            } catch (error) {
-                container.innerHTML = `<div class="col-span-full text-center text-red-500">Gagal memuat jadwal solat. Pastikan anda mempunyai sambungan internet.</div>`;
-                console.error("Error fetching prayer times:", error);
-            }
+	        window.fetchJadwalSholat = async function() {
+	    const container = document.getElementById('jadwal-sholat-container');
+	    const lokasiEl = document.getElementById('jadwal-lokasi');
+	    if (!container || !lokasiEl) return;
+
+	    container.innerHTML = `<div class="col-span-full text-center text-theme-secondary">Memuat...</div>`;
+	    let latitude = -6.2088; // Default Jakarta
+	    let longitude = 106.8456; // Default Jakarta
+	    let locationName = "Jakarta, Indonesia";
+    
+	    // Format tanggal hari ini (DD-MM-YYYY)
+	    const today = new Date();
+	    const formattedDate = `${String(today.getDate()).padStart(2, '0')}-${String(today.getMonth() + 1).padStart(2, '0')}-${today.getFullYear()}`;
+    
+    try {
+        // Mendapatkan Koordinat Lokasi
+        const coords = await window.getCoordinates();
+        latitude = coords.latitude;
+        longitude = coords.longitude;
+        
+        // Mengubah Koordinat menjadi Nama Lokasi (API BigDataCloud)
+        const geoNameResponse = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=id`);
+        if (geoNameResponse.ok) {
+            const geoNameData = await geoNameResponse.json();
+            locationName = `${geoNameData.city || geoNameData.locality}, ${geoNameData.countryName}`;
+        } else {
+            locationName = "Lokasi Anda Saat Ini";
         }
+
+        // MENGAMBIL JADWAL SHOLAT DARI ALADHAN API (Methode: Kemenag Indonesia=11)
+        const prayerApiUrl = `https://api.aladhan.com/v1/timingsByCity/${formattedDate}?city=${locationName.split(',')[0]}&country=${locationName.split(',')[1]}&method=11`;
+        const prayerResponse = await fetch(prayerApiUrl);
+        const prayerData = await prayerResponse.json();
+        
+        if (prayerData.code === 200) {
+            const timings = prayerData.data.timings;
+            // Filter dan simpan waktu salat yang relevan ke variabel global
+            prayerTimesToday = {
+                Fajr: timings.Fajr,
+                Dhuhr: timings.Dhuhr,
+                Asr: timings.Asr,
+                Maghrib: timings.Maghrib,
+                Isha: timings.Isha
+            };
+
+            // Menampilkan Jadwal ke UI
+            lokasiEl.textContent = `Jadwal Solat di: ${locationName}`;
+            container.innerHTML = ''; // Bersihkan kontainer
+            
+            const prayerNames = { Fajr: "Subuh", Dhuhr: "Zuhur", Asr: "Asar", Maghrib: "Magrib", Isha: "Isya", Sunrise: "Terbit" };
+            
+            // Urutan waktu yang ingin ditampilkan di UI
+            const displayOrder = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+
+            displayOrder.forEach(key => {
+                const timeValue = timings[key];
+                if (timeValue) {
+                    container.innerHTML += `
+                        <div class="futuristic-panel p-4 rounded-lg shadow-sm">
+                            <p class="text-lg font-semibold text-yellow-400">${prayerNames[key]}</p>
+                            <p class="text-3xl font-bold text-theme">${timeValue}</p>
+                        </div>
+                    `;
+                }
+            });
+	            
+	            window.setupPrayerAlarm(); // Mulai alarm setelah data didapat
+	            
+	        } else {
+	            lokasiEl.textContent = `Jadwal Solat: Gagal memuat data waktu salat.`;
+	            container.innerHTML = `<div class="col-span-full text-center text-red-500">Gagal memuat jadwal solat dari API eksternal.</div>`;
+	        }
+	        
+	    } catch (error) {
+	        container.innerHTML = `<div class="col-span-full text-center text-red-500">Gagal memuat jadwal solat. Pastikan Anda mempunyai sambungan internet.</div>`;
+	        console.error("Error fetching prayer times:", error);
+	    }
+	}
         window.handleAlarmToggleChange = function() {
             const isChecked = document.getElementById('alarm-toggle').checked;
             localStorage.setItem('alarmEnabled', isChecked);
@@ -2033,36 +1783,72 @@
                 window.showToast('info', 'Alarm Azan dinonaktifkan.');
             }
         }
-        window.setupPrayerAlarm = function() {
+	        window.setupPrayerAlarm = function() {
             if (alarmInterval) clearInterval(alarmInterval);
             const alarmEnabled = localStorage.getItem('alarmEnabled') === 'true';
             if (!alarmEnabled) return;
             alarmInterval = setInterval(window.checkPrayerTimes, 30000);
-        }
-        window.checkPrayerTimes = function() {
-            const now = new Date();
-            const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-            for (const [prayer, time] of Object.entries(prayerTimesToday)) {
-                if (time === currentTime) {
-                    const prayerName = { Fajr: "Subuh", Dhuhr: "Zuhur", Asr: "Asar", Maghrib: "Magrib", Isha: "Isya" }[prayer];
-                    window.playAlarm(prayerName);
-                }
-            }
-        }
-        window.playAlarm = function(prayerName) {
-            const audio = document.getElementById('azan-alarm');
-            audio.pause();
-            audio.currentTime = 0;
-            const notification = document.getElementById('alarm-notification');
-            notification.classList.add('hidden');
-        }
-        window.dismissAlarm = function() {
-            const audio = document.getElementById('azan-alarm');
-            audio.pause();
-            audio.currentTime = 0;
-            const notification = document.getElementById('alarm-notification');
-            notification.classList.add('hidden');
-        }
+	        }
+	        window.checkPrayerTimes = function() {
+	    const now = new Date();
+	    // Gunakan format HH:MM (Contoh: 09:00)
+	    const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    
+	    // Definisikan nama salat untuk dipanggil ke playAlarm
+	    const prayerNames = { Fajr: "Subuh", Dhuhr: "Zuhur", Asr: "Asar", Maghrib: "Magrib", Isha: "Isya" };
+
+	    // Cek setiap waktu salat yang telah tersimpan
+	    for (const [prayerKey, time] of Object.entries(prayerTimesToday)) {
+	        if (time === currentTime) {
+	            const prayerName = prayerNames[prayerKey];
+	            window.playAlarm(prayerName);
+	        }
+	    }
+	}
+	        window.playAlarm = function(prayerName) {
+	    const audio = document.getElementById('azan-alarm');
+	    const notification = document.getElementById('alarm-notification');
+	    const alarmText = document.getElementById('alarm-text');
+
+	    // 1. Memainkan Audio
+	    audio.pause();
+	    audio.currentTime = 0;
+	    // Panggil play() dan tangani error jika browser memblokir putar otomatis
+	    audio.play().catch(e => console.error("Gagal memutar Azan, perlu interaksi pengguna:", e)); 
+
+	    // 2. Menampilkan Notifikasi Pop-up (di dalam aplikasi)
+	    if (alarmText) {
+	        alarmText.textContent = `Waktu Salãt ${prayerName} Tiba!`;
+	    }
+	    // Hapus 'hidden' dan tampilkan dengan transisi
+	    notification.classList.remove('hidden', 'translate-x-full', 'opacity-0');
+	    notification.classList.add('translate-x-0', 'opacity-100');
+    
+	    // 3. Mengirim Notifikasi Desktop (opsional)
+	    window.sendNotification("Waktu Salãt Tiba!", `Sudah masuk waktu salãt ${prayerName}. Mari tunaikan ibadah.`);
+
+	    // Sembunyikan notifikasi setelah beberapa saat
+	    setTimeout(() => {
+	        window.dismissAlarm();
+	    }, 15000); // Notifikasi akan hilang setelah 15 detik
+	}
+	        window.dismissAlarm = function() {
+	    const audio = document.getElementById('azan-alarm');
+	    const notification = document.getElementById('alarm-notification');
+	    
+	    // Hentikan audio
+	    audio.pause();
+	    audio.currentTime = 0;
+    
+	    // Sembunyikan notifikasi dengan transisi
+	    notification.classList.remove('translate-x-0', 'opacity-100');
+	    notification.classList.add('translate-x-full', 'opacity-0');
+	    
+	    // Sembunyikan elemen secara total setelah transisi selesai
+	    setTimeout(() => {
+	        notification.classList.add('hidden');
+	    }, 300); 
+	}
         window.showSantriListByKelas = function(kelas) {
             // 1. Ambil data dengan kunci yang sudah diubah ke angka
             const pondokId = sessionStorage.getItem('currentPondokId');
@@ -2244,26 +2030,25 @@
                     myChart.options.scales.x.grid.color = getComputedStyle(document.body).getPropertyValue('--graph-grid-color');
                     myChart.options.scales.y.grid.color = getComputedStyle(document.body).getPropertyValue('--graph-grid-color');
                     myChart.options.plugins.legend.labels.color = getComputedStyle(document.body).getPropertyValue('--graph-text-color');
-                    myChart.data.datasets[0].borderColor = getComputedStyle(document.body).getPropertyValue('--graph-line-color');
-                    myChart.data.datasets[0].backgroundColor = getComputedStyle(document.body).getPropertyValue('--graph-fill-color');
+                    myChart.data.datasets[0].borderColor = getComputedStyle(document.body).getPropertyValue('--accent-color');
+                    const ctx = myChart.canvas.getContext('2d');
+                    const newGradient = ctx.createLinearGradient(0, 0, 0, 400);
+                    const isDark = document.body.classList.contains('dark-mode');
+                    if (isDark) {
+                         newGradient.addColorStop(0, 'rgba(255, 215, 0, 0.4)');
+                         newGradient.addColorStop(1, 'rgba(255, 215, 0, 0.1)');
+                         myChart.data.datasets[0].shadowColor = 'rgba(255, 215, 0, 0.5)';
+                    } else {
+                         newGradient.addColorStop(0, 'rgba(109, 40, 217, 0.6)');
+                         newGradient.addColorStop(1, 'rgba(37, 99, 235, 0.2)');
+                         myChart.data.datasets[0].shadowColor = 'rgba(0, 0, 0, 0.2)';
+                    }
+                    myChart.data.datasets[0].backgroundColor = newGradient;
                     myChart.update();
                 }
             });
             setInitialTheme();
             // End Dark/Light Mode
-
-            // Language Selection
-            const langButtons = document.querySelectorAll('.lang-btn');
-            langButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const lang = btn.dataset.lang;
-                    setLanguage(lang);
-                    localStorage.setItem('lang', lang);
-                });
-            });
-            const savedLang = localStorage.getItem('lang') || 'id';
-            setLanguage(savedLang);
-            // End Language Selection
 
             // --- Inisialisasi awal
             
