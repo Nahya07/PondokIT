@@ -1186,15 +1186,35 @@
             uploadBtn.classList.add('hidden');
             navBottom.classList.remove('hidden'); // Wali uses the bottom nav
         }
-        
-        // FAKE DATA UNTUK DEMO
-        // Ganti ini dengan fetch data aktual dari endpoint /api/get-data atau endpoint baru
-        const videos = [
-            { id: 1, author: 'Ustadz Ahmad', authorRole: 'Guru', text: 'Tausiyah Singkat tentang Istiqomah.', mediaUrl: 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4', likes: 12, comments: 5, time: '3 jam lalu', mediaType: 'video' },
-            { id: 2, author: 'Ustadzah Fatimah', authorRole: 'Guru', text: 'Tips Murajaah efektif di malam hari.', mediaUrl: 'https://storage.googleapis.com/web-dev-assets/video-and-source-sets/hls/sample-video.mp4', likes: 25, comments: 10, time: '1 hari lalu', mediaType: 'video' },
-            { id: 3, author: 'Admin Pondok', authorRole: 'Guru', text: 'Pengumuman Liburan Akhir Semester.', mediaUrl: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_5MB.mp4', likes: 8, comments: 2, time: '2 hari lalu', mediaType: 'video' }
-        ];
+        // --- GANTI BLOK FAKE DATA LAMA DENGAN KODE BARU INI ---
+    let videos = [];
+    const pondokId = sessionStorage.getItem('currentPondokId');
 
+    try {
+        const response = await fetch('/api/get-feed', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ pondokDbId: pondokId })
+        });
+        const result = await response.json();
+        if (result.success && result.videos) {
+            videos = result.videos; // Ambil data video dari backend
+            window.showToast('success', 'Feed video berhasil dimuat dari server!');
+        } else {
+             // Jika gagal, tampilkan pesan error
+             container.innerHTML = `<div class="text-white text-center p-10">Gagal memuat feed: ${result.message || 'Server error.'}</div>`;
+             return;
+        }
+    } catch (error) {
+        container.innerHTML = `<div class="text-white text-center p-10">Error koneksi: Tidak dapat terhubung ke server feed.</div>`;
+        return;
+    }
+    
+    // Jika tidak ada video, tampilkan pesan
+    if (videos.length === 0) {
+        container.innerHTML = '<div class="text-white text-center p-10">Belum ada unggahan video di pondok ini.</div>';
+        return;
+    }
         // Render video cards
         container.innerHTML = videos.map(v => `
             <div class="video-card w-full h-full snap-center relative flex items-center justify-center">
@@ -1250,15 +1270,128 @@
     // --- Video Interaction Stubs (Wali Santri) ---
 
     window.likePost = async function(postId, type) {
-        window.showToast('info', `Menyukai Post ID ${postId} (${type})...`);
-        // Implementasi nyata: panggil /api/like-post atau endpoint khusus video
-        // const response = await fetch('/api/like-post', { method: 'POST', body: JSON.stringify({ postId: postId }) });
-    }
+    window.showToast('info', `Menyukai Post ID ${postId}...`);
 
-    window.showCommentModal = function(postId) {
-        window.showToast('info', `Menampilkan modal komentar untuk Post ID ${postId}.`);
-        // Implementasi nyata: tampilkan modal untuk input komentar, lalu panggil /api/add-comment
+    try {
+        const response = await fetch('/api/like-post', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ postId: postId })
+        });
+        const result = await response.json();
+
+        if (result.success) {
+            window.showToast('success', 'Postingan disukai!');
+            
+            // --- LOGIKA PEMBARUAN JUMLAH LIKE DI TAMPILAN (FRONTEND) ---
+            const likeCountElement = document.getElementById(`like-count-${postId}`);
+            if (likeCountElement) {
+                // Konversi ke angka, tambahkan 1, lalu set kembali
+                let currentLikes = parseInt(likeCountElement.textContent) || 0;
+                likeCountElement.textContent = currentLikes + 1;
+            }
+            // -----------------------------------------------------------
+
+        } else {
+            window.showToast('error', `Gagal menyukai postingan: ${result.message}`);
+        }
+    } catch (error) {
+        console.error('Error liking post:', error);
+        window.showToast('error', 'Koneksi gagal saat mencoba menyukai postingan.');
     }
+};
+	window.updateCommentCount = function(postId) {
+    const countElement = document.getElementById(`comment-count-${postId}`);
+    if (countElement) {
+        let currentCount = parseInt(countElement.textContent) || 0;
+        countElement.textContent = currentCount + 1;
+    }
+}
+    window.showCommentModal = async function(postId) {
+    const post = appDataCache.posts.find(p => p.id === postId);
+    if (!post) return;
+
+    // 1. Ambil data komentar dari backend (kita gunakan /api/get-data, tapi filter di frontend)
+    // Sebaiknya buat endpoint khusus get-comments-by-post-id di backend di masa depan.
+    const allComments = (await window.fetchData()).allComments || [];
+    const postComments = allComments.filter(c => c.post_id === postId);
+
+    // Fungsi utilitas untuk memformat komentar
+    const formatComment = (comment) => `
+        <div class="p-2 border-b border-gray-700/50">
+            <span class="font-semibold text-sm text-yellow-300">${comment.author}</span>
+            <p class="text-white text-sm mt-1">${comment.text}</p>
+        </div>
+    `;
+
+    // Buat konten komentar yang sudah ada
+    const commentsHtml = postComments.map(formatComment).join('') || 
+                         '<div class="text-center text-gray-500 py-4">Belum ada komentar.</div>';
+
+    // 2. Tampilkan Modal Komentar
+    window.showModal(
+        `Komentar: ${post.author}`,
+        `
+        <div id="comments-container" class="max-h-80 overflow-y-auto mb-4 bg-gray-800 rounded p-2">
+            ${commentsHtml}
+        </div>
+        <form id="comment-form-${postId}" class="mt-4">
+            <input type="hidden" name="postId" value="${postId}">
+            <textarea name="text" rows="2" placeholder="Tulis komentar..." class="w-full p-2 bg-gray-700 text-white rounded focus:ring-yellow-500 focus:border-yellow-500 border border-gray-600"></textarea>
+            <button type="submit" class="w-full mt-2 futuristic-panel bg-yellow-600 hover:bg-yellow-700 text-white py-2 rounded-lg font-semibold transition duration-300">
+                Kirim Komentar
+            </button>
+        </form>
+        `
+    );
+	
+    // 3. Tambahkan Event Listener untuk Kirim Komentar
+    document.getElementById(`comment-form-${postId}`).addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const commentText = this.elements['text'].value.trim();
+        const currentRole = sessionStorage.getItem('currentRole');
+        const currentUserName = currentRole === 'guru' ? sessionStorage.getItem('currentGuruName') : 'Wali Santri';
+        
+        if (!commentText || !currentUserName) {
+            window.showToast('error', 'Komentar atau nama pengguna tidak valid.');
+            return;
+        }
+
+        const commentData = {
+            author: currentUserName,
+            text: commentText
+        };
+
+        try {
+            const response = await fetch('/api/add-comment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ postId: postId, commentData: commentData })
+            });
+            const result = await response.json();
+
+            if (result.success) {
+                window.showToast('success', 'Komentar berhasil dikirim!');
+                this.elements['text'].value = ''; // Kosongkan input
+
+                // Tambahkan komentar baru secara instan ke modal (tanpa reload)
+                const newComment = { 
+                    author: commentData.author, 
+                    text: commentData.text 
+                };
+                document.getElementById('comments-container').insertAdjacentHTML('beforeend', formatComment(newComment));
+                
+                // Tambahkan jumlah komentar di feed
+                window.updateCommentCount(postId);
+
+            } else {
+                window.showToast('error', `Gagal mengirim komentar: ${result.message}`);
+            }
+        } catch (error) {
+            window.showToast('error', 'Koneksi gagal saat mengirim komentar.');
+        }
+    });
+};
 
     window.sharePost = function(postId, mediaUrl) {
         if (navigator.share) {
