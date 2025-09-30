@@ -456,27 +456,100 @@ def delete_hafalan():
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
 
-# --- Rute Unggah File ---
-@app.route('/unggah', methods=['POST'])
-def upload_file():
-    UPLOAD_FOLDER = 'static/uploads'
+# --- Rute Khusus Unggah Video (BARU) ---
+@app.route('/api/videos/upload', methods=['POST'])
+def upload_video():
+    # Folder terpisah untuk video
+    UPLOAD_FOLDER = 'static/uploads/video'
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-    if 'file' not in request.files:
-        return jsonify({'success': False, 'message': 'Tidak ada file di request'}), 400
+    if 'video' not in request.files:
+        return jsonify({'success': False, 'message': 'Tidak ada file video di request'}), 400
 
-    file = request.files['file']
+    file = request.files['video']
+    caption = request.form.get('caption')
+    # Ambil pondokId dan Author Name dari FormData yang dikirim frontend
+    pondok_db_id = request.form.get('pondokId') 
+    author_name = request.form.get('authorName')
+    
+    if file.filename == '' or not pondok_db_id or not author_name:
+        return jsonify({'success': False, 'message': 'Data tidak lengkap atau file tidak dipilih.'}), 400
 
-    if file.filename == '':
-        return jsonify({'success': False, 'message': 'Tidak ada file dipilih'}), 400
+    if not allowed_file(file.filename):
+        return jsonify({'success': False, 'message': 'Jenis file video tidak diizinkan.'}), 400
 
-    if file and allowed_file(file.filename):
+    try:
+        # Simpan file
         filename = secure_filename(file.filename)
-        filepath = os.path.join(UPLOAD_FOLDER, filename)
+        unique_filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}"
+        filepath = os.path.join(UPLOAD_FOLDER, unique_filename)
         file.save(filepath)
-        return jsonify({'success': True, 'file_url': f'/static/uploads/{filename}'})
+        file_url = f'/static/uploads/video/{unique_filename}'
+        
+        # Simpan metadata video ke tabel Post
+        pondok_id = int(pondok_db_id)
+        
+        new_post = Post(
+            pondok_id=pondok_id,
+            author=author_name,
+            author_role="guru",
+            text=caption,
+            media_url=file_url,
+            media_type='video' # Penting untuk memfilter di feed
+        )
+        db.session.add(new_post)
+        db.session.commit()
+        
+        return jsonify({'success': True, 'file_url': file_url, 'message': 'Video berhasil diunggah dan disimpan!', 'postId': new_post.id})
 
-    return jsonify({'success': False, 'message': 'Jenis file tidak diizinkan'}), 400
+    except Exception as e:
+        # Hapus file jika terjadi error database setelah upload
+        if 'filepath' in locals() and os.path.exists(filepath):
+            os.remove(filepath)
+        return jsonify({'success': False, 'message': f'Gagal mengunggah/menyimpan: {str(e)}'}), 500
+
+# --- Rute Pengambilan Feed Video (BARU) ---
+@app.route('/api/get-feed', methods=['POST'])
+def get_feed():
+    try:
+        data = request.json
+        pondok_db_id = data.get('pondokDbId')
+
+        if not pondok_db_id:
+            return jsonify({'success': False, 'message': 'ID Pondok tidak ditemukan.'}), 400
+
+        # Ambil SEMUA postingan dengan media_type='video'
+        posts_list = Post.query.filter_by(
+            pondok_id=pondok_db_id, 
+            media_type='video'
+        ).order_by(Post.timestamp.desc()).all()
+
+        posts_json = []
+        for p in posts_list:
+            # Ambil komentar untuk post ini
+            comments_count = Comment.query.filter_by(post_id=p.id).count()
+
+            # Menggunakan format ISO 8601, kemudian diformat di frontend
+            timestamp_iso = p.timestamp.isoformat() if p.timestamp else None
+
+            posts_json.append({
+                "id": p.id,
+                "author": p.author,
+                "authorRole": p.author_role,
+                "text": p.text,
+                "mediaUrl": p.media_url,
+                "mediaType": p.media_type,
+                "timestamp": timestamp_iso,
+                "likes": p.likes,
+                "comments": comments_count
+            })
+
+        return jsonify({
+            'success': True,
+            'videos': posts_json
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)}), 500
 
 # --- Rute Feed ---
 @app.route('/api/add-post', methods=['POST'])
