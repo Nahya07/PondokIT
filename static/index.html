@@ -383,6 +383,10 @@
           <h1 class="text-3xl font-bold text-yellow-400" id="wali-dashboard-title">Dashboard Wali Santri</h1>
           <p class="text-theme-secondary" id="wali-dashboard-subtitle">Pilih kelas anak Anda untuk melihat detail progres hafalan.</p>
           <div class="w-full md:w-auto mt-4 md:mt-0 flex flex-wrap justify-center items-center space-x-2 space-y-2 md:space-x-4 md:space-y-0">
+            <button onclick="window.showFeedPage('wali')" 
+              class="px-4 py-2 font-semibold text-black bg-blue-400 rounded-lg hover:bg-blue-500" id="feed-btn-wali">
+              <i class="fas fa-home mr-1"></i> Beranda
+            </button>
             <button onclick="window.showJadwalDonasiPage()" 
               class="px-4 py-2 font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500" id="jadwal-donasi-btn">
             Jadwal & Donasi
@@ -565,7 +569,8 @@
         <header class="flex flex-col items-center justify-center text-center mb-8 pb-4 border-b border-border-color flex-shrink-0">
           <h1 class="text-3xl font-bold text-yellow-400" id="guru-dashboard-title">Panel Guru</h1>
           <p class="text-theme-secondary mb-4" id="guru-dashboard-subtitle">Kelola data hafalan santri.</p>
-          <div class="flex items-center space-x-2 mt-2 flex-wrap justify-center">
+	<div class="flex items-center space-x-2 mt-2 flex-wrap justify-center">
+            <button onclick="window.showFeedPage('guru')" class="px-3 py-2 text-sm font-semibold text-black bg-blue-400 rounded-lg hover:bg-blue-500" id="feed-btn-guru"><i class="fas fa-home mr-1"></i> Beranda</button>
             <button onclick="window.showJadwalDonasiPage()" class="px-3 py-2 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500" id="jadwal-donasi-btn-2">Jadwal & Donasi</button>
             <button onclick="window.showGuruManagementPage()" class="px-3 py-2 text-sm font-semibold text-black bg-yellow-400 rounded-lg hover:bg-yellow-500" id="manage-guru-btn">
             Kelola Data Guru
@@ -1030,669 +1035,930 @@
     <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed top-5 right-5 z-50"></div>
     <audio id="success-ding" src="https://actions.google.com/sounds/v1/foley/ding_a_ling.ogg" preload="auto"></audio>
-	  
+<div id="feed-page" class="hidden fixed inset-0 z-50 bg-black flex-col">
+        <div id="feed-top-bar" class="absolute top-0 w-full z-10 p-4 flex justify-between items-center bg-gradient-to-b from-black/50 to-transparent">
+          <button onclick="window.goBackFromFeed()" class="text-white text-2xl"><i class="fas fa-arrow-left"></i></button>
+          <h1 class="text-xl font-bold text-white">Beranda</h1>
+          <button id="upload-video-btn" onclick="window.showUploadModal()" class="text-white bg-yellow-400 p-2 rounded-full hidden"><i class="fas fa-cloud-upload-alt"></i></button>
+        </div>
+
+        <div id="video-feed-container" class="w-full h-full overflow-y-scroll snap-y snap-mandatory">
+          </div>
+
+        <div id="feed-bottom-nav" class="absolute bottom-0 w-full z-10 p-4 flex justify-around items-center bg-black/50">
+          <button class="text-white text-3xl" onclick="window.showFeedPage('wali')"><i class="fas fa-home"></i></button>
+          <button onclick="window.goBackFromFeed()" class="text-gray-400 text-3xl"><i class="fas fa-list"></i></button>
+          <button onclick="window.showPage('jadwalDonasi')" class="text-gray-400 text-3xl"><i class="fas fa-mosque"></i></button>
+        </div>
+
+        <div id="upload-modal" class="hidden fixed inset-0 bg-black/80 z-50 items-center justify-center p-4">
+            <div class="bg-panel-bg p-6 rounded-xl w-full max-w-md space-y-4">
+                <h3 class="text-2xl font-bold text-yellow-400">Unggah Video Santri</h3>
+                <form id="video-upload-form" class="space-y-4">
+                    <input type="file" id="video-file" name="video" accept="video/mp4,video/mov,video/avi,video/webm" class="w-full text-theme p-3 futuristic-panel" required>
+                    <p id="video-duration-status" class="text-sm text-red-500 hidden">Durasi maksimal 2 menit (120 detik).</p>
+                    <div>
+                        <label for="video-caption" class="block text-sm font-medium text-theme">Judul/Deskripsi</label>
+                        <textarea id="video-caption" class="w-full mt-1 p-3 futuristic-panel" rows="3" placeholder="Contoh: Setoran hafalan terbaik hari ini"></textarea>
+                    </div>
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" onclick="document.getElementById('upload-modal').classList.add('hidden')" class="px-4 py-2 bg-gray-500 text-white rounded-md">Batal</button>
+                        <button type="submit" id="upload-submit-btn" class="px-4 py-2 bg-yellow-400 text-black rounded-md disabled:bg-gray-400" disabled>Unggah</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+      </div>  
     <script type="module">
-        const pages = {
-            roleSelection: document.getElementById('role-selection-page'),
-            pondokRegister: document.getElementById('pondok-register-page'),
-            pondokLogin: document.getElementById('pondok-login-page'),
-            accessCode: document.getElementById('access-code-page'),
-            waliDashboard: document.getElementById('wali-dashboard-page'),
-            detailSantri: document.getElementById('detail-santri-page'),
-            guruDashboard: document.getElementById('guru-dashboard-page'),
-            guruForm: document.getElementById('guru-form-page'),
-            guruManagement: document.getElementById('guru-management-page'),
-            jadwalDonasi: document.getElementById('jadwal-donasi-page'),
-            menghafal: document.getElementById('menghafal-page'),
-            about: document.getElementById('about-page'),
-            
-        };
-        let appDataCache = {};
-        let loginContext = null;
-        let alarmInterval = null;
-        let prayerTimesToday = {};
-        let myChart = null;
-        
-        // --- Semua Fungsi-Fungsi Aplikasi Anda ---
-        // Fungsi renderFutureChart yang sudah diperbaiki
-        
-        window.showPage = function(pageName) {
-            Object.values(pages).forEach(page => {
-                if (page) {
-                    page.classList.add('hidden');
-                    page.classList.remove('flex');
-                }
-            });
-            if (pages[pageName]) {
-                pages[pageName].classList.remove('hidden');
-                pages[pageName].classList.add('flex');
+    const pages = {
+        roleSelection: document.getElementById('role-selection-page'),
+        pondokRegister: document.getElementById('pondok-register-page'),
+        pondokLogin: document.getElementById('pondok-login-page'),
+        accessCode: document.getElementById('access-code-page'),
+        waliDashboard: document.getElementById('wali-dashboard-page'),
+        detailSantri: document.getElementById('detail-santri-page'),
+        guruDashboard: document.getElementById('guru-dashboard-page'),
+        guruForm: document.getElementById('guru-form-page'),
+        guruManagement: document.getElementById('guru-management-page'),
+        jadwalDonasi: document.getElementById('jadwal-donasi-page'),
+        menghafal: document.getElementById('menghafal-page'),
+        about: document.getElementById('about-page'),
+        feed: document.getElementById('feed-page'), // Halaman BARU
+    };
+    let appDataCache = {};
+    let loginContext = null;
+    let alarmInterval = null;
+    let prayerTimesToday = {};
+    let myChart = null;
+    
+    // --- Semua Fungsi-Fungsi Aplikasi Anda ---
+    
+    window.showPage = function(pageName) {
+        Object.values(pages).forEach(page => {
+            if (page) {
+                page.classList.add('hidden');
+                page.classList.remove('flex');
             }
+        });
+        if (pages[pageName]) {
+            pages[pageName].classList.remove('hidden');
+            pages[pageName].classList.add('flex');
         }
-        window.showHomePage = function() {
-            showPage('roleSelection');
-        }
+    }
+    window.showHomePage = function() {
+        showPage('roleSelection');
+    }
 
-        window.checkLoginState = function() {
-            const role = sessionStorage.getItem('role');
-            const pondokDbId = sessionStorage.getItem('currentPondokId');
-            if (role && pondokDbId) {
-                if (role === 'guru') {
-                    renderGuruDashboard();
-                    showPage('guruDashboard');
-                } else if (role === 'wali') {
-                    renderWaliDashboard();
-                    showPage('waliDashboard');
-                }
-            } else {
-                showPage('roleSelection');
-            }
-        }
-
-        window.goBackFromJadwal = function() {
-            const role = sessionStorage.getItem('role');
+    window.checkLoginState = function() {
+        const role = sessionStorage.getItem('role');
+        const pondokDbId = sessionStorage.getItem('currentPondokId');
+        if (role && pondokDbId) {
             if (role === 'guru') {
-                backToGuruDashboard();
+                renderGuruDashboard();
+                showPage('guruDashboard');
             } else if (role === 'wali') {
-                backToWaliDashboard();
-            } else {
-                showPage('roleSelection');
+                renderWaliDashboard();
+                showPage('waliDashboard');
             }
-        }
-
-        window.backToWaliDashboard = function() {
-            renderWaliDashboard();
-            showPage('waliDashboard');
-        }
-
-        window.backToGuruDashboard = function() {
-            renderGuruDashboard();
-            showPage('guruDashboard');
-        }
-
-        
-
-        window.showToast = function(type, message) {
-            const toastContainer = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `p-4 mb-3 rounded-lg shadow-xl text-white transform transition-all duration-300 translate-x-full opacity-0`;
-            
-            let bgColor = '';
-            if (type === 'success') {
-                bgColor = 'bg-green-500';
-            } else if (type === 'error') {
-                bgColor = 'bg-red-500';
-            } else if (type === 'info') {
-                bgColor = 'bg-blue-500';
-            } else if (type === 'notification') {
-                bgColor = 'bg-yellow-400';
-            }
-            
-            toast.classList.add(bgColor);
-            toast.innerHTML = `<div class="flex items-center"><div class="flex-shrink-0"><i class="fa-solid ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'} mr-2"></i></div><div><p class="font-bold">${message}</p></div></div>`;
-            toastContainer.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.classList.remove('translate-x-full', 'opacity-0');
-                toast.classList.add('translate-x-0', 'opacity-100');
-            }, 100);
-
-            setTimeout(() => {
-                toast.classList.remove('translate-x-0', 'opacity-100');
-                toast.classList.add('translate-x-full', 'opacity-0');
-                toast.addEventListener('transitionend', () => toast.remove());
-            }, 5000);
-        }
-
-        window.copyAccessCode = function() {
-            const codeEl = document.getElementById('unique-access-code');
-            const range = document.createRange();
-            range.selectNode(codeEl);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showToast('success', 'Kode akses berhasil disalin!');
-                }
-            } catch (err) {
-                console.error('Failed to copy text:', err);
-                showToast('error', "Gagal menyalin kode. Silakan salin manual: " + codeEl.textContent);
-            }
-            window.getSelection().removeAllRanges();
-        }
-
-        window.copyDonationNumber = function() {
-            const numberEl = document.getElementById('donation-number');
-            const range = document.createRange();
-            range.selectNode(numberEl);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showToast('success', 'Nomor telepon berhasil disalin!');
-                }
-            } catch (err) {
-                console.error('Failed to copy text:', err);
-                showToast('error', "Gagal menyalin nomor. Silakan salin manual: " + numberEl.textContent);
-            }
-            window.getSelection().removeAllRanges();
-        }
-
-        window.fetchData = async function() {
-            const pondokDbId = sessionStorage.getItem('currentPondokId');
-            if (!pondokDbId) return null;
-            if (appDataCache[pondokDbId]) {
-                return appDataCache[pondokDbId];
-            }
-            try {
-                const response = await fetch('/api/get-data', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ pondokDbId: pondokDbId })
-                });
-                const result = await response.json();
-                if (result.success) {
-                    appDataCache[pondokDbId] = result.data;
-                    return appDataCache[pondokDbId];
-                } else {
-                    console.error("Gagal mengambil data dari server:", result.message);
-                    return null;
-                }
-            } catch (error) {
-                console.error("Gagal mengirim data ke server:", error);
-                return null;
-            }
-        }
-
-        window.saveData = async function(endpoint, payload) {
-            const currentPondokId = sessionStorage.getItem('currentPondokId');
-            if (!currentPondokId) {
-                showToast('error', "Sesi login berakhir. Silakan login kembali.");
-                logout();
-                return false;
-            }
-            try {
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const result = await response.json();
-                if (result.success) {
-                    appDataCache = {};
-                    // Play a success sound for the guru when data is saved
-                    const successDing = document.getElementById('success-ding');
-                    if (successDing) {
-                        successDing.play().catch(e => console.error("Error playing success sound:", e));
-                    }
-                    return true;
-                } else {
-                    console.error("Gagal menyimpan data:", result.message);
-                    showToast('error', "Gagal menyimpan data: " + result.message);
-                    return false;
-                }
-            } catch (error) {
-                console.error("Gagal mengirim data ke server:", error);
-                showToast('error', "Error koneksi ke server.");
-                return false;
-            }
-        }
-
-        window.uploadFile = async function(file) {
-            const formData = new FormData();
-            formData.append('file', file);
-            try {
-                const response = await fetch('/unggah', {
-                    method: 'POST',
-                    body: formData
-                });
-                const result = await response.json();
-                if (result.success) {
-                    return result.file_url;
-                } else {
-                    showToast('error', 'Gagal mengunggah foto: ' + result.message);
-                    return null;
-                }
-            } catch (error) {
-                showToast('error', 'Error koneksi saat mengunggah foto.');
-                return null;
-            }
-        }
-        
-        window.requestNotificationPermission = function() {
-            if (!("Notification" in window)) {
-                console.log("Browser ini tidak mendukung notifikasi desktop");
-            } else if (Notification.permission === "granted") {
-                console.log("Izin notifikasi sudah diberikan.");
-            } else if (Notification.permission !== "denied") {
-                Notification.requestPermission().then(function (permission) {
-                    if (permission === "granted") {
-                        showToast('info', "Notifikasi diaktifkan!");
-                    }
-                });
-            }
-        }
-
-        window.sendNotification = function(title, body) {
-            if (Notification.permission === "granted") {
-                const options = {
-                    body: body,
-                    icon: 'https://placehold.co/64x64/2a9d8f/ffffff?text=SQ'
-                };
-                const notification = new Notification(title, options);
-                notification.onclick = function(event) {
-                    event.preventDefault();
-                    window.focus();
-                }
-            } else {
-                console.log("Izin notifikasi tidak diberikan.");
-            }
-        }
-
-        window.sendNotificationToGuardian = function(santriName, setoran, penilaian) {
-            sendNotification("Update Hafalan Santri", `${santriName} telah selesai menyetorkan hafalannya. Setoran: ${setoran}. Penilaian: ${penilaian}.`);
-        }
-
-        
-
-        window.handleRoleSelection = function(role) {
-            loginContext = role;
-            if (role === 'wali') {
-                showPage('accessCode');
-            } else if (role === 'guru') {
-                showPage('pondokLogin');
-            }
-        }
-
-        window.logout = function() {
-            sessionStorage.clear();
-            loginContext = null;
-            const accessCodeInput = document.getElementById('access-code');
-            if (accessCodeInput) {
-                accessCodeInput.value = '';
-            }
-            const pondokLoginForm = document.getElementById('pondok-login-form');
-            if (pondokLoginForm) {
-                pondokLoginForm.reset();
-            }
+        } else {
             showPage('roleSelection');
         }
+    }
 
-        window.renderWaliDashboard = async function() {
-            const pondokData = await fetchData();
-            if (!pondokData || !pondokData.santri) return;
-            const kelasListContainer = document.getElementById('kelas-list-container');
-            const santriListContainer = document.getElementById('santri-list-container');
-            if (kelasListContainer) kelasListContainer.classList.remove('hidden');
-            if (santriListContainer) santriListContainer.classList.add('hidden');
-            const kelasGrid = document.getElementById('kelas-grid');
-            if (!kelasGrid) return;
-            kelasGrid.innerHTML = '';
-            
-            const uniqueKelas = [...new Set(pondokData.santri.map(s => s.kelas))].sort();
-            uniqueKelas.forEach(kelas => {
-                const card = document.createElement('div');
-                card.className = 'text-center cursor-pointer p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 futuristic-panel';
-                card.innerHTML = `<div class="flex items-center justify-center mb-4 text-4xl text-yellow-400"><i class="fas fa-mosque"></i></div><h3 class="text-xl font-bold text-yellow-400">Kelas ${kelas}</h3><p class="text-sm text-theme-secondary mt-2">Lihat daftar santri</p>`;
-                card.onclick = () => window.showSantriListByKelas(kelas);
-                kelasGrid.appendChild(card);
+    window.goBackFromJadwal = function() {
+        const role = sessionStorage.getItem('role');
+        if (role === 'guru') {
+            backToGuruDashboard();
+        } else if (role === 'wali') {
+            backToWaliDashboard();
+        } else {
+            showPage('roleSelection');
+        }
+    }
+
+    window.backToWaliDashboard = function() {
+        renderWaliDashboard();
+        showPage('waliDashboard');
+    }
+
+    window.backToGuruDashboard = function() {
+        renderGuruDashboard();
+        showPage('guruDashboard');
+    }
+
+    // --- FUNGSI BERANDA (FEED) BARU DIMULAI ---
+    
+    window.showFeedPage = function(role) {
+        window.showPage('feed');
+        window.renderVideoFeed(role);
+    }
+
+    window.goBackFromFeed = function() {
+        const role = sessionStorage.getItem('role');
+        if (role === 'guru') {
+            window.backToGuruDashboard();
+        } else if (role === 'wali') {
+            window.backToWaliDashboard();
+        } else {
+            window.showPage('roleSelection');
+        }
+    }
+
+    window.showUploadModal = function() {
+        document.getElementById('upload-modal').classList.remove('hidden');
+        document.getElementById('upload-modal').classList.add('flex');
+        document.getElementById('video-upload-form').reset();
+        document.getElementById('video-duration-status').classList.add('hidden');
+        document.getElementById('upload-submit-btn').disabled = true;
+    }
+
+    window.renderVideoFeed = async function(role) {
+        const container = document.getElementById('video-feed-container');
+        const uploadBtn = document.getElementById('upload-video-btn');
+        const navBottom = document.getElementById('feed-bottom-nav');
+        container.innerHTML = '<div class="text-white text-center p-10">Memuat Feed Video...</div>';
+
+        // Show/Hide upload button based on role
+        if (role === 'guru') {
+            uploadBtn.classList.remove('hidden');
+            navBottom.classList.add('hidden'); // Guru doesn't need the bottom nav
+        } else {
+            uploadBtn.classList.add('hidden');
+            navBottom.classList.remove('hidden'); // Wali uses the bottom nav
+        }
+        
+        // FAKE DATA UNTUK DEMO
+        // Ganti ini dengan fetch data aktual dari endpoint /api/get-data atau endpoint baru
+        const videos = [
+            { id: 1, author: 'Ustadz Ahmad', authorRole: 'Guru', text: 'Tausiyah Singkat tentang Istiqomah.', mediaUrl: 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4', likes: 12, comments: 5, time: '3 jam lalu', mediaType: 'video' },
+            { id: 2, author: 'Ustadzah Fatimah', authorRole: 'Guru', text: 'Tips Murajaah efektif di malam hari.', mediaUrl: 'https://storage.googleapis.com/web-dev-assets/video-and-source-sets/hls/sample-video.mp4', likes: 25, comments: 10, time: '1 hari lalu', mediaType: 'video' },
+            { id: 3, author: 'Admin Pondok', authorRole: 'Guru', text: 'Pengumuman Liburan Akhir Semester.', mediaUrl: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_5MB.mp4', likes: 8, comments: 2, time: '2 hari lalu', mediaType: 'video' }
+        ];
+
+        // Render video cards
+        container.innerHTML = videos.map(v => `
+            <div class="video-card w-full h-full snap-center relative flex items-center justify-center">
+                <video id="video-${v.id}" class="w-full h-full object-cover" src="${v.mediaUrl}" loop muted playsinline 
+                       onclick="this.paused ? this.play() : this.pause()" poster="https://placehold.co/400x700/000/fff?text=Loading+Video">
+                <source src="${v.mediaUrl}" type="video/mp4">
+                </video>
+
+                <div class="absolute bottom-20 left-0 p-4 text-white z-20 w-full bg-gradient-to-t from-black/80 to-transparent">
+                    <p class="font-bold">${v.author} <span class="text-sm font-normal">(${v.authorRole})</span></p>
+                    <p class="text-sm">${v.text}</p>
+                    <p class="text-xs text-gray-300">${v.time}</p>
+                </div>
+
+                <div class="absolute right-0 bottom-20 p-4 flex flex-col space-y-6 text-white text-center z-20">
+                    <div class="flex flex-col items-center cursor-pointer" onclick="window.likePost(${v.id}, 'video')">
+                        <i class="fas fa-heart text-3xl transition-colors duration-200 hover:text-red-500"></i>
+                        <span class="text-xs">${v.likes}</span>
+                    </div>
+                    <div class="flex flex-col items-center cursor-pointer" onclick="window.showCommentModal(${v.id})">
+                        <i class="fas fa-comment-dots text-3xl transition-colors duration-200 hover:text-yellow-400"></i>
+                        <span class="text-xs">${v.comments}</span>
+                    </div>
+                    <div class="flex flex-col items-center cursor-pointer" onclick="window.sharePost(${v.id}, '${v.mediaUrl}')">
+                        <i class="fas fa-share text-3xl transition-colors duration-200 hover:text-green-400"></i>
+                        <span class="text-xs">Bagikan</span>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        
+        // Logic to play/pause video on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target;
+                if (entry.isIntersecting) {
+                    video.play().catch(e => console.log("Video playback blocked."));
+                } else {
+                    video.pause();
+                }
+            });
+        }, { threshold: 0.75 }); // 75% of video must be visible
+
+        container.querySelectorAll('video').forEach(video => {
+            observer.observe(video);
+            // Ensure video starts playing when feed loads (for first video)
+            if (video.id === 'video-1') { 
+                video.play().catch(e => console.log("Video playback blocked."));
+            }
+        });
+    }
+
+    // --- Video Interaction Stubs (Wali Santri) ---
+
+    window.likePost = async function(postId, type) {
+        window.showToast('info', `Menyukai Post ID ${postId} (${type})...`);
+        // Implementasi nyata: panggil /api/like-post atau endpoint khusus video
+        // const response = await fetch('/api/like-post', { method: 'POST', body: JSON.stringify({ postId: postId }) });
+    }
+
+    window.showCommentModal = function(postId) {
+        window.showToast('info', `Menampilkan modal komentar untuk Post ID ${postId}.`);
+        // Implementasi nyata: tampilkan modal untuk input komentar, lalu panggil /api/add-comment
+    }
+
+    window.sharePost = function(postId, mediaUrl) {
+        if (navigator.share) {
+            navigator.share({
+                title: 'SantriQ Video Feed',
+                text: `Lihat video keren ini dari SantriQ: ${mediaUrl}`,
+                url: window.location.href, // Gunakan URL aplikasi saat ini
+            }).then(() => {
+                window.showToast('success', 'Berbagi berhasil!');
+            }).catch((error) => {
+                window.showToast('error', `Gagal berbagi: ${error.message}`);
+            });
+        } else {
+            window.showToast('info', 'API Share tidak didukung. Silakan salin URL video.');
+        }
+    }
+
+    // --- FUNGSI ASLI YANG SUDAH ADA (DIMODIFIKASI UNTUK UPLOAD FILE) ---
+
+    window.showToast = function(type, message) {
+        const toastContainer = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `p-4 mb-3 rounded-lg shadow-xl text-white transform transition-all duration-300 translate-x-full opacity-0`;
+        
+        let bgColor = '';
+        if (type === 'success') {
+            bgColor = 'bg-green-500';
+        } else if (type === 'error') {
+            bgColor = 'bg-red-500';
+        } else if (type === 'info') {
+            bgColor = 'bg-blue-500';
+        } else if (type === 'notification') {
+            bgColor = 'bg-yellow-400';
+        }
+        
+        toast.classList.add(bgColor);
+        toast.innerHTML = `<div class="flex items-center"><div class="flex-shrink-0"><i class="fa-solid ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'} mr-2"></i></div><div><p class="font-bold">${message}</p></div></div>`;
+        toastContainer.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.classList.remove('translate-x-full', 'opacity-0');
+            toast.classList.add('translate-x-0', 'opacity-100');
+        }, 100);
+
+        setTimeout(() => {
+            toast.classList.remove('translate-x-0', 'opacity-100');
+            toast.classList.add('translate-x-full', 'opacity-0');
+            toast.addEventListener('transitionend', () => toast.remove());
+        }, 5000);
+    }
+
+    window.copyAccessCode = function() {
+        const codeEl = document.getElementById('unique-access-code');
+        const range = document.createRange();
+        range.selectNode(codeEl);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                showToast('success', 'Kode akses berhasil disalin!');
+            }
+        } catch (err) {
+            console.error('Failed to copy text:', err);
+            showToast('error', "Gagal menyalin kode. Silakan salin manual: " + codeEl.textContent);
+        }
+        window.getSelection().removeAllRanges();
+    }
+
+    window.copyDonationNumber = function() {
+        const numberEl = document.getElementById('donation-number');
+        const range = document.createRange();
+        range.selectNode(numberEl);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                showToast('success', 'Nomor telepon berhasil disalin!');
+            }
+        } catch (err) {
+            console.error('Failed to copy text:', err);
+            showToast('error', "Gagal menyalin nomor. Silakan salin manual: " + numberEl.textContent);
+        }
+        window.getSelection().removeAllRanges();
+    }
+
+    window.fetchData = async function() {
+        const pondokDbId = sessionStorage.getItem('currentPondokId');
+        if (!pondokDbId) return null;
+        if (appDataCache[pondokDbId]) {
+            return appDataCache[pondokDbId];
+        }
+        try {
+            const response = await fetch('/api/get-data', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ pondokDbId: pondokDbId })
+            });
+            const result = await response.json();
+            if (result.success) {
+                appDataCache[pondokDbId] = result.data;
+                return appDataCache[pondokDbId];
+            } else {
+                console.error("Gagal mengambil data dari server:", result.message);
+                return null;
+            }
+        } catch (error) {
+            console.error("Gagal mengirim data ke server:", error);
+            return null;
+        }
+    }
+
+    window.saveData = async function(endpoint, payload) {
+        const currentPondokId = sessionStorage.getItem('currentPondokId');
+        if (!currentPondokId) {
+            showToast('error', "Sesi login berakhir. Silakan login kembali.");
+            logout();
+            return false;
+        }
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            if (result.success) {
+                appDataCache = {};
+                // Play a success sound for the guru when data is saved
+                const successDing = document.getElementById('success-ding');
+                if (successDing) {
+                    successDing.play().catch(e => console.error("Error playing success sound:", e));
+                }
+                return true;
+            } else {
+                console.error("Gagal menyimpan data:", result.message);
+                showToast('error', "Gagal menyimpan data: " + result.message);
+                return false;
+            }
+        } catch (error) {
+            console.error("Gagal mengirim data ke server:", error);
+            showToast('error', "Error koneksi ke server.");
+            return false;
+        }
+    }
+
+    // FUNGSI INI DITINGKATKAN
+    window.uploadFile = async function(file) {
+        const formData = new FormData();
+        formData.append('file', file);
+        try {
+            // Endpoint diubah dari /unggah menjadi /api/upload-file
+            const response = await fetch('/api/upload-file', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (result.success) {
+                return result.file_url;
+            } else {
+                showToast('error', 'Gagal mengunggah foto: ' + result.message);
+                return null;
+            }
+        } catch (error) {
+            showToast('error', 'Error koneksi saat mengunggah foto.');
+            return null;
+        }
+    }
+
+    window.requestNotificationPermission = function() {
+        if (!("Notification" in window)) {
+            console.log("Browser ini tidak mendukung notifikasi desktop");
+        } else if (Notification.permission === "granted") {
+            console.log("Izin notifikasi sudah diberikan.");
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(function (permission) {
+                if (permission === "granted") {
+                    showToast('info', "Notifikasi diaktifkan!");
+                }
             });
         }
-                
-        window.showSantriDetail = async function(santriId) {
-            const pondokData = await fetchData();
-            if (!pondokData || !pondokData.santri) {
-                console.error("Gagal memuat data pondok.");
-                showPage('waliDashboard');
-                showToast('error', "Gagal memuat detail santri. Silakan coba lagi.");
-                return;
-            }
-            
-            const santri = pondokData.santri.find(s => s.id === santriId);
-            if (!santri) {
-                console.error("Santri tidak ditemukan di data.");
-                showPage('waliDashboard');
-                showToast('error', "Santri tidak ditemukan.");
-                return;
-            }
-            
-            sessionStorage.setItem('currentWaliKelas', santri.kelas);
-            const guru = pondokData.guru.find(g => g.mengajar_kelas === santri.kelas);
-            const hafalan = pondokData.hafalan
-                .filter(h => h.santri_id === santriId)
-                .sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
-            document.getElementById('detail-foto').src = santri.foto || 'https://placehold.co/400x400?text=No+Photo';
-            document.getElementById('detail-nama').textContent = santri.nama;
-            document.getElementById('detail-kelas').textContent = `Kelas ${santri.kelas}`;
-            document.getElementById('detail-pengajar').textContent = guru ? `Pengajar: ${guru.nama}` : 'Pengajar belum diatur';
-            
-            const statusEl = document.getElementById('detail-status-target');
-            if (santri.tercapai) {
-                statusEl.className = 'mt-4 inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-green-100 text-green-800';
-                statusEl.innerHTML = `✅ Mencapai Target`;
-            } else {
-                statusEl.className = 'mt-4 inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800';
-                statusEl.innerHTML = `⚠️ Belum Mencapai Target`;
-            }
-            
-            const target = santri.target || {};
-            document.getElementById('total-hafalan-juz').textContent = santri.total_hafalan_juz || '-';
-            document.getElementById('target-harian').textContent = target.harian || '-';
-            document.getElementById('target-mingguan').textContent = target.mingguan || '-';
-            document.getElementById('target-bulanan').textContent = target.bulanan || '-';
-            document.getElementById('target-tahunan').textContent = target.tahunan || '-';
-            
-            // Render the progress chart
-            const progressData = hafalan.filter(h => h.jenis === 'Hafalan Baru' && h.penilaian === 'Lancar')
-                                        .map(h => ({ date: h.tanggal, setoran: h.setoran }));
+    }
 
-            const labels = progressData.map(d => d.date);
-            const data = progressData.map((d, i) => {
-                // A simple way to represent progress is to count each entry
-                return i + 1;
+    window.sendNotification = function(title, body) {
+        if (Notification.permission === "granted") {
+            const options = {
+                body: body,
+                icon: 'https://placehold.co/64x64/2a9d8f/ffffff?text=SQ'
+            };
+            const notification = new Notification(title, options);
+            notification.onclick = function(event) {
+                event.preventDefault();
+                window.focus();
+            }
+        } else {
+            console.log("Izin notifikasi tidak diberikan.");
+        }
+    }
+
+    window.sendNotificationToGuardian = function(santriName, setoran, penilaian) {
+        sendNotification("Update Hafalan Santri", `${santriName} telah selesai menyetorkan hafalannya. Setoran: ${setoran}. Penilaian: ${penilaian}.`);
+    }
+
+    window.handleRoleSelection = function(role) {
+        loginContext = role;
+        if (role === 'wali') {
+            showPage('accessCode');
+        } else if (role === 'guru') {
+            showPage('pondokLogin');
+        }
+    }
+
+    window.logout = function() {
+        sessionStorage.clear();
+        loginContext = null;
+        const accessCodeInput = document.getElementById('access-code');
+        if (accessCodeInput) {
+            accessCodeInput.value = '';
+        }
+        const pondokLoginForm = document.getElementById('pondok-login-form');
+        if (pondokLoginForm) {
+            pondokLoginForm.reset();
+        }
+        showPage('roleSelection');
+    }
+
+    window.renderWaliDashboard = async function() {
+        const pondokData = await fetchData();
+        if (!pondokData || !pondokData.santri) return;
+        const kelasListContainer = document.getElementById('kelas-list-container');
+        const santriListContainer = document.getElementById('santri-list-container');
+        if (kelasListContainer) kelasListContainer.classList.remove('hidden');
+        if (santriListContainer) santriListContainer.classList.add('hidden');
+        const kelasGrid = document.getElementById('kelas-grid');
+        if (!kelasGrid) return;
+        kelasGrid.innerHTML = '';
+        
+        const uniqueKelas = [...new Set(pondokData.santri.map(s => s.kelas))].sort();
+        uniqueKelas.forEach(kelas => {
+            const card = document.createElement('div');
+            card.className = 'text-center cursor-pointer p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 futuristic-panel';
+            card.innerHTML = `<div class="flex items-center justify-center mb-4 text-4xl text-yellow-400"><i class="fas fa-mosque"></i></div><h3 class="text-xl font-bold text-yellow-400">Kelas ${kelas}</h3><p class="text-sm text-theme-secondary mt-2">Lihat daftar santri</p>`;
+            card.onclick = () => window.showSantriListByKelas(kelas);
+            kelasGrid.appendChild(card);
+        });
+    }
+        
+    window.showSantriDetail = async function(santriId) {
+        const pondokData = await fetchData();
+        if (!pondokData || !pondokData.santri) {
+            console.error("Gagal memuat data pondok.");
+            showPage('waliDashboard');
+            showToast('error', "Gagal memuat detail santri. Silakan coba lagi.");
+            return;
+        }
+        
+        const santri = pondokData.santri.find(s => s.id === santriId);
+        if (!santri) {
+            console.error("Santri tidak ditemukan di data.");
+            showPage('waliDashboard');
+            showToast('error', "Santri tidak ditemukan.");
+            return;
+        }
+        
+        sessionStorage.setItem('currentWaliKelas', santri.kelas);
+        const guru = pondokData.guru.find(g => g.mengajar_kelas === santri.kelas);
+        const allHafalan = pondokData.hafalan
+            .filter(h => h.santri_id === santriId)
+            .sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal)); // Urutkan berdasarkan tanggal
+        
+        document.getElementById('detail-foto').src = santri.foto || 'https://placehold.co/400x400?text=No+Photo';
+        document.getElementById('detail-nama').textContent = santri.nama;
+        document.getElementById('detail-kelas').textContent = `Kelas ${santri.kelas}`;
+        document.getElementById('detail-pengajar').textContent = guru ? `Pengajar: ${guru.nama}` : 'Pengajar belum diatur';
+        
+        const statusEl = document.getElementById('detail-status-target');
+        if (santri.tercapai) {
+            statusEl.className = 'mt-4 inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-green-100 text-green-800';
+            statusEl.innerHTML = `✅ Mencapai Target`;
+        } else {
+            statusEl.className = 'mt-4 inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800';
+            statusEl.innerHTML = `⚠️ Belum Mencapai Target`;
+        }
+        
+        const target = santri.target || {};
+        document.getElementById('total-hafalan-juz').textContent = santri.total_hafalan_juz || '-';
+        document.getElementById('target-harian').textContent = target.harian || '-';
+        document.getElementById('target-mingguan').textContent = target.mingguan || '-';
+        document.getElementById('target-bulanan').textContent = target.bulanan || '-';
+        document.getElementById('target-tahunan').textContent = target.tahunan || '-';
+        
+        // --- LOGIKA PERHITUNGAN GRAFIK DINAMIS ---
+        
+        // 1. Kumpulkan semua tanggal unik yang ada di riwayat hafalan
+        const uniqueDates = [...new Set(allHafalan.map(h => h.tanggal))].sort();
+        
+        // 2. Tentukan skor awal
+        let scoreHafalanBaru = 0;
+        let scoreMurojaah = 0;
+        
+        // 3. Hitung data untuk setiap tanggal
+        const dataHarian = uniqueDates.map(date => {
+            const recordsToday = allHafalan.filter(h => h.tanggal === date);
+            let dailyScoreNew = 0;
+            let dailyScoreMur = 0;
+
+            recordsToday.forEach(h => {
+                const score = h.penilaian === 'Lancar' ? 1 : -1;
+                if (h.jenis === 'Hafalan Baru') {
+                    dailyScoreNew += score;
+                } else if (h.jenis === 'Muroja\'ah') {
+                    dailyScoreMur += score;
+                }
             });
 
-            // Destroy old chart if it exists
-            const existingChart = Chart.getChart("hafalan-progres-chart");
-            if (existingChart) {
-                existingChart.destroy();
+            // Terapkan kenaikan/penurunan skor kumulatif
+            scoreHafalanBaru += dailyScoreNew;
+            scoreMurojaah += dailyScoreMur;
+
+            // Hitung skor bulanan untuk data Target
+            // Ambil nilai target bulanan (contoh: "1 Juz") dan konversi ke angka jika bisa
+            let targetBulananValue = 0;
+            if (target.bulanan && target.bulanan.toLowerCase().includes('juz')) {
+                targetBulananValue = parseFloat(target.bulanan.match(/\d+(\.\d+)?/));
+                if(isNaN(targetBulananValue)) targetBulananValue = 0;
+            } else {
+                 // Jika formatnya bukan Juz, asumsikan angka biasa
+                targetBulananValue = parseFloat(target.bulanan) || 0;
             }
             
-            const chartCtx = document.getElementById('hafalan-progres-chart');
-            if (chartCtx) {
-                // Dapatkan konteks 2D untuk membuat gradien
-                const ctx = chartCtx.getContext('2d');
-                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                gradient.addColorStop(0, 'rgba(109, 40, 217, 0.6)'); // ungu
-                gradient.addColorStop(1, 'rgba(37, 99, 235, 0.2)'); // biru
-                
-                myChart = new Chart(chartCtx, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Jumlah Setoran Hafalan Baru',
-                            data: data,
-                            borderColor: getComputedStyle(document.body).getPropertyValue('--accent-color'),
-                            backgroundColor: gradient,
+            // Logika Target Bulanan: Naik jika tercapai, turun jika tidak (Sederhana)
+            // Catatan: Karena kita tidak punya data 'kapan' target bulanan dievaluasi, 
+            // kita hanya bisa mencerminkan status 'tercapai' saat ini di sepanjang grafik.
+            // Untuk simulasi dinamis, kita akan buat Target Bulanan sebagai garis rata-rata.
+            const isTargetAchievedToday = santri.tercapai; // Status target saat ini (Sederhana)
+
+            return {
+                date: date,
+                newHafalanScore: scoreHafalanBaru,
+                murojaahScore: scoreMurojaah,
+                monthlyTargetStatus: isTargetAchievedToday ? 10 : 0 // Representasi visual target
+            };
+        });
+        
+        const labels = dataHarian.map(d => new Date(d.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }));
+        const dataNewHafalan = dataHarian.map(d => d.newHafalanScore);
+        const dataMurojaah = dataHarian.map(d => d.murojaahScore);
+
+        // Logika Target Bulanan: Naik jika status saat ini 'tercapai', turun jika 'tidak tercapai'.
+        // Catatan: Karena Target Bulanan biasanya dievaluasi sebulan sekali, di sini kita buat garis lurus
+        // yang mencerminkan status performa santri saat ini (tercapai: 10, tidak tercapai: 0)
+        const dataMonthlyTarget = dataHarian.map((d, i) => {
+            // Untuk simulasi tren, kita bisa ambil status 'tercapai' dan menjadikannya nilai konstan.
+            // Jika ingin dinamis, kita perlu data historis status 'tercapai'.
+            // Untuk sementara, kita gunakan nilai '10' dan '0' untuk memvisualisasikan status.
+            return santri.tercapai ? 10 : -5; 
+        });
+
+
+        // Destroy old chart if it exists
+        const existingChart = Chart.getChart("hafalan-progres-chart");
+        if (existingChart) {
+            existingChart.destroy();
+        }
+        
+        const chartCtx = document.getElementById('hafalan-progres-chart');
+        if (chartCtx) {
+            // Konfigurasi Warna untuk Light/Dark Mode
+            const isDark = document.body.classList.contains('dark-mode');
+            const colorNewHafalan = '#72A0C1'; // Biru Langit
+            const colorMurojaah = '#DC2626'; // Merah (Red-600)
+            const colorMonthlyTarget = isDark ? '#6B7280' : '#4B5563'; // Abu-abu Tua
+            const gridColor = getComputedStyle(document.body).getPropertyValue('--graph-grid-color');
+            const textColor = getComputedStyle(document.body).getPropertyValue('--graph-text-color');
+
+            myChart = new Chart(chartCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Setoran Hafalan Baru (Skor Akumulatif)',
+                            data: dataNewHafalan,
+                            borderColor: colorNewHafalan,
+                            backgroundColor: 'rgba(114, 160, 193, 0.3)', // Isi Biru Langit transparan
                             fill: true,
-                            tension: 0.4,
-                            pointRadius: 6,
-                            pointHoverRadius: 8,
-                            pointBackgroundColor: getComputedStyle(document.body).getPropertyValue('--accent-color'),
-                            pointBorderColor: '#fff',
+                            tension: 0.2,
+                            pointRadius: 5,
+                            pointHoverRadius: 7,
                             borderWidth: 3,
-                            shadowColor: 'rgba(255, 215, 0, 0.5)',
-                            shadowBlur: 15,
-                            shadowOffsetX: 0,
-                            shadowOffsetY: 0
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        animation: {
-                            duration: 2000,
-                            easing: 'easeInOutQuart'
+                            yAxisID: 'y'
                         },
-                        plugins: {
-                            legend: {
-                                labels: {
-                                    color: getComputedStyle(document.body).getPropertyValue('--graph-text-color')
-                                }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    title: (context) => {
-                                        return `Tanggal: ${context[0].label}`;
-                                    },
-                                    label: (context) => {
-                                        return `Jumlah Setoran: ${context.raw}`;
-                                    }
-                                }
+                        {
+                            label: 'Muroja\'ah (Skor Akumulatif)',
+                            data: dataMurojaah,
+                            borderColor: colorMurojaah,
+                            backgroundColor: 'rgba(220, 38, 38, 0.3)', // Isi Merah transparan
+                            fill: true,
+                            tension: 0.2,
+                            pointRadius: 5,
+                            pointHoverRadius: 7,
+                            borderWidth: 3,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Status Target Bulanan (Naik/Turun)',
+                            data: dataMonthlyTarget,
+                            borderColor: colorMonthlyTarget,
+                            backgroundColor: 'transparent',
+                            fill: false,
+                            borderDash: [10, 5], // Garis putus-putus
+                            tension: 0, // Garis lurus
+                            pointRadius: 0,
+                            borderWidth: 2,
+                            yAxisID: 'y'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeInOutQuart'
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: textColor
                             }
                         },
-                        scales: {
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Tanggal',
-                                    color: getComputedStyle(document.body).getPropertyValue('--graph-text-color')
+                        tooltip: {
+                            callbacks: {
+                                title: (context) => {
+                                    return `Tanggal: ${context[0].label}`;
                                 },
-                                ticks: {
-                                    color: getComputedStyle(document.body).getPropertyValue('--graph-text-color')
-                                },
-                                grid: {
-                                    color: getComputedStyle(document.body).getPropertyValue('--graph-grid-color')
-                                }
-                            },
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Jumlah Setoran',
-                                    color: getComputedStyle(document.body).getPropertyValue('--graph-text-color')
-                                },
-                                ticks: {
-                                    color: getComputedStyle(document.body).getPropertyValue('--graph-text-color'),
-                                    stepSize: 1
-                                },
-                                grid: {
-                                    color: getComputedStyle(document.body).getPropertyValue('--graph-grid-color')
+                                label: (context) => {
+                                    let label = context.dataset.label || '';
+                                    if (label.includes('Setoran')) {
+                                        label += `: ${context.raw}`;
+                                    } else if (label.includes('Target')) {
+                                        label = `Status Target: ${santri.tercapai ? 'Mencapai' : 'Belum Mencapai'}`;
+                                    }
+                                    return label;
                                 }
                             }
                         }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Tanggal Setoran',
+                                color: textColor
+                            },
+                            ticks: {
+                                color: textColor,
+                                maxRotation: 45,
+                                minRotation: 45
+                            },
+                            grid: {
+                                color: gridColor
+                            }
+                        },
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: 'Skor Progres Akumulatif (Lancar: +1, Perlu Diulang: -1)',
+                                color: textColor
+                            },
+                            ticks: {
+                                color: textColor,
+                                stepSize: 1
+                            },
+                            grid: {
+                                color: gridColor
+                            }
+                        }
                     }
+                }
+            });
+        }
+
+
+        
+        const historyBody = document.getElementById('hafalan-history');
+        if (historyBody) {
+            historyBody.innerHTML = '';
+            if (allHafalan.length > 0) {
+                allHafalan.forEach(h => {
+                    const row = historyBody.insertRow();
+                    row.innerHTML = `<td class="py-4 px-6 text-sm text-theme">${new Date(h.tanggal).toLocaleDateString('id-ID')}</td><td class="py-4 px-6 text-sm text-theme font-medium">${h.setoran}</td><td class="py-4 px-6 text-sm text-theme-secondary">${h.jenis}</td><td class="py-4 px-6 text-sm"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${h.penilaian === 'Lancar' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${h.penilaian}</span></td>`;
                 });
+            } else {
+                historyBody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-theme-secondary">Belum ada riwayat setoran.</td></tr>';
             }
+        }
+        showPage('detailSantri');
+    }
 
+    window.renderGuruDashboard = async function() {
+        const pondokData = await fetchData();
+        if (!pondokData || !pondokData.santri) return;
+        const uniqueAccessCodeElement = document.getElementById('unique-access-code');
+        if (uniqueAccessCodeElement) {
+            uniqueAccessCodeElement.textContent = pondokData.uniqueAccessCode || 'Tidak ada kode';
+        }
+        const whatsappLinkElement = document.getElementById('whatsapp-link');
+        if (whatsappLinkElement) {
+            whatsappLinkElement.href = `https://wa.me/?text=${encodeURIComponent('Halo, wali santri! Berikut adalah kode akses unik untuk monitoring hafalan anak Anda: ' + pondokData.uniqueAccessCode)}`;
+        }
+        const listContainer = document.getElementById('guru-santri-list');
+        if (listContainer) {
+            listContainer.innerHTML = '';
+            pondokData.santri.sort((a, b) => a.nama.localeCompare(b.nama)).forEach(santri => {
+                const fotoUrl = santri.foto || 'https://placehold.co/400x400?text=No+Photo';
+                const card = document.createElement('div');
+                card.className = 'text-center cursor-pointer group santri-card futuristic-panel p-4 rounded-lg shadow-md';
+                card.onclick = () => window.showGuruForm(`${santri.id}`);
+                card.innerHTML = `
+                    <div class="relative">
+                        <img src="${fotoUrl}" alt="Foto ${santri.nama}" class="w-full h-auto aspect-square rounded-full object-cover transition-transform duration-300 group-hover:scale-105 border-4 border-yellow-400 shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=Error';">
+                    </div>
+                    <p class="mt-4 font-semibold text-theme">${santri.nama}</p>
+                    <p class="text-sm text-theme-secondary">${santri.kelas}</p>
+                    <div class="flex space-x-2 mt-4 justify-center">
+                        <button onclick="event.stopPropagation(); window.showGuruForm('${santri.id}')" class="px-2 py-1 text-xs font-semibold text-black bg-yellow-400 rounded-md hover:bg-yellow-500">Ubah Data</button>
+                        <button onclick="event.stopPropagation(); window.deleteSantri('${santri.id}')" class="px-2 py-1 text-xs font-semibold text-white bg-red-600 rounded-md hover:bg-red-700">Hapus</button>
+                    </div>
+                `;
+                listContainer.appendChild(card);
+            });
+        }
+    }
 
+    window.showGuruForm = async function(santriIdString) {
+        const santriId = santriIdString === 'null' ? null : parseInt(santriIdString);
+        const pondokData = await fetchData();
+        if (!pondokData || !pondokData.santri) {
+            console.error("Data pondok tidak ditemukan atau tidak memiliki properti 'santri'.");
+            showToast('error', "Gagal memuat data santri. Silakan coba lagi.");
+            return;
+        }
+        const form = document.getElementById('santri-form');
+        if (form) form.reset();
+        const hafalanSection = document.getElementById('hafalan-management-section');
+        if (hafalanSection) hafalanSection.classList.add('hidden');
+        const santriIdInput = document.getElementById('santri-id');
+        if (santriIdInput) santriIdInput.value = santriId || '';
+        const fotoStatus = document.getElementById('foto-status');
+
+        if (santriId) {
+            const santri = pondokData.santri.find(s => s.id === santriId);
+            if (!santri) {
+                console.error(`Santri dengan ID ${santriId} tidak ditemukan.`);
+                showToast('error', "Santri tidak ditemukan.");
+                return;
+            }
+            const formTitle = document.getElementById('form-title');
+            if (formTitle) formTitle.textContent = `Ubah Data: ${santri.nama}`;
+            const namaInput = document.getElementById('nama');
+            if (namaInput) namaInput.value = santri.nama;
+            const kelasSelect = document.getElementById('kelas');
+            if (kelasSelect) kelasSelect.value = santri.kelas;
             
-            const historyBody = document.getElementById('hafalan-history');
-            if (historyBody) {
-                historyBody.innerHTML = '';
-                if (hafalan.length > 0) {
-                    hafalan.forEach(h => {
-                        const row = historyBody.insertRow();
-                        row.innerHTML = `<td class="py-4 px-6 text-sm text-theme">${new Date(h.tanggal).toLocaleDateString('id-ID')}</td><td class="py-4 px-6 text-sm text-theme font-medium">${h.setoran}</td><td class="py-4 px-6 text-sm text-theme-secondary">${h.jenis}</td><td class="py-4 px-6 text-sm"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${h.penilaian === 'Lancar' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${h.penilaian}</span></td>`;
-                    });
-                } else {
-                    historyBody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-theme-secondary">Belum ada riwayat setoran.</td></tr>';
-                }
-            }
-            showPage('detailSantri');
-        }
+            const currentPhotoUrl = document.getElementById('current-photo-url');
+            if (currentPhotoUrl) currentPhotoUrl.value = santri.foto || '';
+            if (fotoStatus) fotoStatus.textContent = santri.foto ? 'Foto sudah ada, tidak perlu diunggah lagi.' : 'Belum ada foto. Unggah sekarang.';
 
-        window.renderGuruDashboard = async function() {
-            const pondokData = await fetchData();
-            if (!pondokData || !pondokData.santri) return;
-            const uniqueAccessCodeElement = document.getElementById('unique-access-code');
-            if (uniqueAccessCodeElement) {
-                uniqueAccessCodeElement.textContent = pondokData.uniqueAccessCode || 'Tidak ada kode';
-            }
-            const whatsappLinkElement = document.getElementById('whatsapp-link');
-            if (whatsappLinkElement) {
-                whatsappLinkElement.href = `https://wa.me/?text=${encodeURIComponent('Halo, wali santri! Berikut adalah kode akses unik untuk monitoring hafalan anak Anda: ' + pondokData.uniqueAccessCode)}`;
-            }
-            const listContainer = document.getElementById('guru-santri-list');
-            if (listContainer) {
-                listContainer.innerHTML = '';
-                pondokData.santri.sort((a, b) => a.nama.localeCompare(b.nama)).forEach(santri => {
-                    const fotoUrl = santri.foto || 'https://placehold.co/400x400?text=No+Photo';
-                    const card = document.createElement('div');
-                    card.className = 'text-center cursor-pointer group santri-card futuristic-panel p-4 rounded-lg shadow-md';
-                    card.onclick = () => window.showGuruForm(`${santri.id}`);
-                    card.innerHTML = `
-                        <div class="relative">
-                            <img src="${fotoUrl}" alt="Foto ${santri.nama}" class="w-full h-auto aspect-square rounded-full object-cover transition-transform duration-300 group-hover:scale-105 border-4 border-yellow-400 shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=Error';">
-                        </div>
-                        <p class="mt-4 font-semibold text-theme">${santri.nama}</p>
-                        <p class="text-sm text-theme-secondary">${santri.kelas}</p>
-                        <div class="flex space-x-2 mt-4 justify-center">
-                            <button onclick="event.stopPropagation(); window.showGuruForm('${santri.id}')" class="px-2 py-1 text-xs font-semibold text-black bg-yellow-400 rounded-md hover:bg-yellow-500">Ubah Data</button>
-                            <button onclick="event.stopPropagation(); window.deleteSantri('${santri.id}')" class="px-2 py-1 text-xs font-semibold text-white bg-red-600 rounded-md hover:bg-red-700">Hapus</button>
-                        </div>
-                    `;
-                    listContainer.appendChild(card);
-                });
-            }
-        }
-
-        window.showGuruForm = async function(santriIdString) {
-            const santriId = santriIdString === 'null' ? null : parseInt(santriIdString);
-            const pondokData = await fetchData();
-            if (!pondokData || !pondokData.santri) {
-                console.error("Data pondok tidak ditemukan atau tidak memiliki properti 'santri'.");
-                showToast('error', "Gagal memuat data santri. Silakan coba lagi.");
-                return;
-            }
-            const form = document.getElementById('santri-form');
-            if (form) form.reset();
-            const hafalanSection = document.getElementById('hafalan-management-section');
-            if (hafalanSection) hafalanSection.classList.add('hidden');
-            const santriIdInput = document.getElementById('santri-id');
-            if (santriIdInput) santriIdInput.value = santriId || '';
-            const fotoStatus = document.getElementById('foto-status');
-
-            if (santriId) {
-                const santri = pondokData.santri.find(s => s.id === santriId);
-                if (!santri) {
-                    console.error(`Santri dengan ID ${santriId} tidak ditemukan.`);
-                    showToast('error', "Santri tidak ditemukan.");
-                    return;
-                }
-                const formTitle = document.getElementById('form-title');
-                if (formTitle) formTitle.textContent = `Ubah Data: ${santri.nama}`;
-                const namaInput = document.getElementById('nama');
-                if (namaInput) namaInput.value = santri.nama;
-                const kelasSelect = document.getElementById('kelas');
-                if (kelasSelect) kelasSelect.value = santri.kelas;
-                
-                const currentPhotoUrl = document.getElementById('current-photo-url');
-                if (currentPhotoUrl) currentPhotoUrl.value = santri.foto || '';
-                if (fotoStatus) fotoStatus.textContent = santri.foto ? 'Foto sudah ada, tidak perlu diunggah lagi.' : 'Belum ada foto. Unggah sekarang.';
-
-                const target = santri.target || {};
-                const totalHafalanJuzInput = document.getElementById('total-hafalan-juz-guru');
-                if (totalHafalanJuzInput) totalHafalanJuzInput.value = santri.total_hafalan_juz || '';
-                const formTargetHarian = document.getElementById('form-target-harian');
-                if (formTargetHarian) formTargetHarian.value = target.harian || '';
-                const formTargetMingguan = document.getElementById('form-target-mingguan');
-                if (formTargetMingguan) formTargetMingguan.value = target.mingguan || '';
-                const formTargetBulanan = document.getElementById('form-target-bulanan');
-                if (formTargetBulanan) formTargetBulanan.value = target.bulanan || '-';
-                const formTargetTahunan = document.getElementById('form-target-tahunan');
-                if (formTargetTahunan) formTargetTahunan.value = target.tahunan || '-';
-                const checkedRadio = document.querySelector(`input[name="tercapai"]:checked`)?.value === 'true';
-                if (checkedRadio) {
-                    checkedRadio.checked = true;
-                }
-
-                if (hafalanSection) hafalanSection.classList.remove('hidden');
-                window.renderGuruHafalanTable(santriId);
+            const target = santri.target || {};
+            const totalHafalanJuzInput = document.getElementById('total-hafalan-juz-guru');
+            if (totalHafalanJuzInput) totalHafalanJuzInput.value = santri.total_hafalan_juz || '';
+            const formTargetHarian = document.getElementById('form-target-harian');
+            if (formTargetHarian) formTargetHarian.value = target.harian || '';
+            const formTargetMingguan = document.getElementById('form-target-mingguan');
+            if (formTargetMingguan) formTargetMingguan.value = target.mingguan || '';
+            const formTargetBulanan = document.getElementById('form-target-bulanan');
+            if (formTargetBulanan) formTargetBulanan.value = target.bulanan || '-';
+            const formTargetTahunan = document.getElementById('form-target-tahunan');
+            if (formTargetTahunan) formTargetTahunan.value = target.tahunan || '-';
+            
+            // Set radio button status
+            const tercapaiRadio = document.querySelector(`input[name="tercapai"][value="${santri.tercapai === true}"]`);
+            if (tercapaiRadio) {
+                tercapaiRadio.checked = true;
             } else {
-                const formTitle = document.getElementById('form-title');
-                if (formTitle) formTitle.textContent = 'Tambah Santri Baru';
-                if (fotoStatus) fotoStatus.textContent = 'Unggah foto baru untuk santri ini.';
-                const totalHafalanJuzInput = document.getElementById('total-hafalan-juz-guru');
-                if (totalHafalanJuzInput) totalHafalanJuzInput.value = '';
+                // Set default if value is undefined/null
+                const defaultRadio = document.querySelector(`input[name="tercapai"][value="false"]`);
+                if (defaultRadio) defaultRadio.checked = true;
             }
-            showPage('guruForm');
-        }
 
-        window.deleteSantri = async function(santriIdString) {
-            const santriId = parseInt(santriIdString);
-            if (!confirm('Apakah Anda yakin ingin menghapus data santri ini? Semua data hafalan yang terkait juga akan dihapus.')) {
-                return;
+            if (hafalanSection) hafalanSection.classList.remove('hidden');
+            window.renderGuruHafalanTable(santriId);
+        } else {
+            const formTitle = document.getElementById('form-title');
+            if (formTitle) formTitle.textContent = 'Tambah Santri Baru';
+            if (fotoStatus) fotoStatus.textContent = 'Unggah foto baru untuk santri ini.';
+            const totalHafalanJuzInput = document.getElementById('total-hafalan-juz-guru');
+            if (totalHafalanJuzInput) totalHafalanJuzInput.value = '';
+            // Set default radio button for new santri
+            const defaultRadio = document.querySelector(`input[name="tercapai"][value="false"]`);
+            if (defaultRadio) defaultRadio.checked = true;
+        }
+        showPage('guruForm');
+    }
+
+    window.deleteSantri = async function(santriIdString) {
+        const santriId = parseInt(santriIdString);
+        if (!confirm('Apakah Anda yakin ingin menghapus data santri ini? Semua data hafalan yang terkait juga akan dihapus.')) {
+            return;
+        }
+        const saveSuccess = await saveData('/api/delete-santri', { santriId });
+        if (saveSuccess) {
+            showToast('success', 'Data santri berhasil dihapus!');
+            window.renderGuruDashboard();
+        } else {
+            showToast('error', "Gagal menghapus data di server.");
+        }
+    }
+
+    window.showGuruManagementPage = async function() {
+        const guruForm = document.getElementById('guru-form');
+        if (guruForm) guruForm.reset();
+        const guruIdInput = document.getElementById('guru-id');
+        if (guruIdInput) guruIdInput.value = '';
+        await window.renderGuruList();
+        showPage('guruManagement');
+    }
+
+    window.renderGuruList = async function() {
+        const pondokData = await fetchData();
+        if (!pondokData || !pondokData.guru) return;
+        const tableBody = document.getElementById('guru-list-table');
+        if (!tableBody) return;
+        tableBody.innerHTML = '';
+        pondokData.guru.sort((a, b) => a.nama.localeCompare(b.nama)).forEach(guru => {
+            const row = tableBody.insertRow();
+            row.innerHTML = `<td class="py-4 px-6 text-sm font-medium text-theme">${guru.nama}</td><td class="py-4 px-6 text-sm text-theme-secondary">${guru.mengajar_kelas}</td><td class="py-4 px-6 text-sm font-medium space-x-2"><button onclick="window.editGuru('${guru.id}')" class="text-yellow-400 hover:text-yellow-500">Ubah</button><button onclick="window.deleteGuru('${guru.id}')" class="text-red-600 hover:text-red-700">Hapus</button></td>`;
+        });
+    }
+
+    // Tambahkan kode fungsi-fungsi ini di sini
+    window.togglePasswordVisibility = function(inputId, toggleButton) {
+        const input = document.getElementById(inputId);
+        const eyeIcon = `<i class="fas fa-eye text-theme-secondary"></i>`;
+        const eyeSlashIcon = `<i class="fas fa-eye-slash text-theme-secondary"></i>`;
+        if (input.type === "password") {
+            input.type = "text";
+            toggleButton.innerHTML = eyeSlashIcon;
+        } else {
+            input.type = "password";
+            toggleButton.innerHTML = eyeIcon;
+        }
+    }
+    window.showAboutPage = function() { showPage('about'); }
+    window.playWelcomeAnimation = function() {
+        const modal = document.getElementById('welcome-modal');
+        const title = document.getElementById('welcome-title');
+        const subtitle = document.getElementById('welcome-subtitle');
+        const message = document.getElementById('welcome-message');
+
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            if (title) {
+                setTimeout(() => { title.classList.remove('-translate-y-10', 'opacity-0'); title.classList.add('translate-y-0', 'opacity-100'); }, 100);
             }
-            const saveSuccess = await saveData('/api/delete-santri', { santriId });
-            if (saveSuccess) {
-                showToast('success', 'Data santri berhasil dihapus!');
-                window.renderGuruDashboard();
+            if (subtitle) {
+                setTimeout(() => { subtitle.classList.remove('translate-y-10', 'opacity-0'); subtitle.classList.add('translate-y-0', 'opacity-100'); }, 600);
+            }
+            if (message) {
+                setTimeout(() => { message.classList.remove('translate-y-10', 'opacity-0'); message.classList.add('translate-y-0', 'opacity-100'); }, 1100);
+            }
+            
+            setTimeout(() => { 
+                modal.classList.add('hidden'); 
+                showPage('roleSelection'); 
+            }, 3000);
+        } else {
+            // If modal is not found, just show the role selection page
+            showPage('roleSelection');
+        }
+    }
+    window.showJadwalDonasiPage = function() { window.fetchJadwalSholat(); showPage('jadwalDonasi'); }
+    window.getCoordinates = function() {
+        return new Promise((resolve, reject) => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    position => resolve({ latitude: position.coords.latitude, longitude: position.coords.longitude }),
+                    error => reject(error)
+                );
             } else {
-                showToast('error', "Gagal menghapus data di server.");
+                reject(new Error("Geolocation is not supported by this browser."));
             }
-        }
-
-        window.showGuruManagementPage = async function() {
-            const guruForm = document.getElementById('guru-form');
-            if (guruForm) guruForm.reset();
-            const guruIdInput = document.getElementById('guru-id');
-            if (guruIdInput) guruIdInput.value = '';
-            await window.renderGuruList();
-            showPage('guruManagement');
-        }
-
-        window.renderGuruList = async function() {
-            const pondokData = await fetchData();
-            if (!pondokData || !pondokData.guru) return;
-            const tableBody = document.getElementById('guru-list-table');
-            if (!tableBody) return;
-            tableBody.innerHTML = '';
-            pondokData.guru.sort((a, b) => a.nama.localeCompare(b.nama)).forEach(guru => {
-                const row = tableBody.insertRow();
-                row.innerHTML = `<td class="py-4 px-6 text-sm font-medium text-theme">${guru.nama}</td><td class="py-4 px-6 text-sm text-theme-secondary">${guru.mengajar_kelas}</td><td class="py-4 px-6 text-sm font-medium space-x-2"><button onclick="window.editGuru('${guru.id}')" class="text-yellow-400 hover:text-yellow-500">Ubah</button><button onclick="window.deleteGuru('${guru.id}')" class="text-red-600 hover:text-red-700">Hapus</button></td>`;
-            });
-        }
-
-        // Tambahkan kode fungsi-fungsi ini di sini
-        window.togglePasswordVisibility = function(inputId, toggleButton) {
-            const input = document.getElementById(inputId);
-            const eyeIcon = `<i class="fas fa-eye text-theme-secondary"></i>`;
-            const eyeSlashIcon = `<i class="fas fa-eye-slash text-theme-secondary"></i>`;
-            if (input.type === "password") {
-                input.type = "text";
-                toggleButton.innerHTML = eyeSlashIcon;
-            } else {
-                input.type = "password";
-                toggleButton.innerHTML = eyeIcon;
-            }
-        }
-        window.showAboutPage = function() { showPage('about'); }
-        window.playWelcomeAnimation = function() {
-            const modal = document.getElementById('welcome-modal');
-            const title = document.getElementById('welcome-title');
-            const subtitle = document.getElementById('welcome-subtitle');
-            const message = document.getElementById('welcome-message');
-
-            if (modal) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-
-                if (title) {
-                    setTimeout(() => { title.classList.remove('-translate-y-10', 'opacity-0'); title.classList.add('translate-y-0', 'opacity-100'); }, 100);
-                }
-                if (subtitle) {
-                    setTimeout(() => { subtitle.classList.remove('translate-y-10', 'opacity-0'); subtitle.classList.add('translate-y-0', 'opacity-100'); }, 600);
-                }
-                if (message) {
-                    setTimeout(() => { message.classList.remove('translate-y-10', 'opacity-0'); message.classList.add('translate-y-0', 'opacity-100'); }, 1100);
-                }
-                
-                setTimeout(() => { 
-                    modal.classList.add('hidden'); 
-                    showPage('roleSelection'); 
-                }, 3000);
-            } else {
-                // If modal is not found, just show the role selection page
-                showPage('roleSelection');
-            }
-        }
-        window.showJadwalDonasiPage = function() { window.fetchJadwalSholat(); showPage('jadwalDonasi'); }
-        window.getCoordinates = function() {
-            return new Promise((resolve, reject) => {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        position => resolve({ latitude: position.coords.latitude, longitude: position.coords.longitude }),
-                        error => reject(error)
-                    );
-                } else {
-                    reject(new Error("Geolocation is not supported by this browser."));
-                }
-            });
-        }
-	        window.fetchJadwalSholat = async function() {
+        });
+    }
+	    window.fetchJadwalSholat = async function() {
 	    const container = document.getElementById('jadwal-sholat-container');
 	    const lokasiEl = document.getElementById('jadwal-lokasi');
 	    if (!container || !lokasiEl) return;
@@ -1701,63 +1967,62 @@
 	    let latitude = -6.2088; // Default Jakarta
 	    let longitude = 106.8456; // Default Jakarta
 	    let locationName = "Jakarta, Indonesia";
-    
 	    // Format tanggal hari ini (DD-MM-YYYY)
 	    const today = new Date();
 	    const formattedDate = `${String(today.getDate()).padStart(2, '0')}-${String(today.getMonth() + 1).padStart(2, '0')}-${today.getFullYear()}`;
     
-    try {
-        // Mendapatkan Koordinat Lokasi
-        const coords = await window.getCoordinates();
-        latitude = coords.latitude;
-        longitude = coords.longitude;
-        
-        // Mengubah Koordinat menjadi Nama Lokasi (API BigDataCloud)
-        const geoNameResponse = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=id`);
-        if (geoNameResponse.ok) {
-            const geoNameData = await geoNameResponse.json();
-            locationName = `${geoNameData.city || geoNameData.locality}, ${geoNameData.countryName}`;
-        } else {
-            locationName = "Lokasi Anda Saat Ini";
-        }
-
-        // MENGAMBIL JADWAL SHOLAT DARI ALADHAN API (Methode: Kemenag Indonesia=11)
-        const prayerApiUrl = `https://api.aladhan.com/v1/timingsByCity/${formattedDate}?city=${locationName.split(',')[0]}&country=${locationName.split(',')[1]}&method=11`;
-        const prayerResponse = await fetch(prayerApiUrl);
-        const prayerData = await prayerResponse.json();
-        
-        if (prayerData.code === 200) {
-            const timings = prayerData.data.timings;
-            // Filter dan simpan waktu salat yang relevan ke variabel global
-            prayerTimesToday = {
-                Fajr: timings.Fajr,
-                Dhuhr: timings.Dhuhr,
-                Asr: timings.Asr,
-                Maghrib: timings.Maghrib,
-                Isha: timings.Isha
-            };
-
-            // Menampilkan Jadwal ke UI
-            lokasiEl.textContent = `Jadwal Solat di: ${locationName}`;
-            container.innerHTML = ''; // Bersihkan kontainer
+        try {
+            // Mendapatkan Koordinat Lokasi
+            const coords = await window.getCoordinates();
+            latitude = coords.latitude;
+            longitude = coords.longitude;
             
-            const prayerNames = { Fajr: "Subuh", Dhuhr: "Zuhur", Asr: "Asar", Maghrib: "Magrib", Isha: "Isya", Sunrise: "Terbit" };
-            
-            // Urutan waktu yang ingin ditampilkan di UI
-            const displayOrder = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+            // Mengubah Koordinat menjadi Nama Lokasi (API BigDataCloud)
+            const geoNameResponse = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=id`);
+            if (geoNameResponse.ok) {
+                const geoNameData = await geoNameResponse.json();
+                locationName = `${geoNameData.city || geoNameData.locality}, ${geoNameData.countryName}`;
+            } else {
+                locationName = "Lokasi Anda Saat Ini";
+            }
 
-            displayOrder.forEach(key => {
-                const timeValue = timings[key];
-                if (timeValue) {
-                    container.innerHTML += `
-                        <div class="futuristic-panel p-4 rounded-lg shadow-sm">
-                            <p class="text-lg font-semibold text-yellow-400">${prayerNames[key]}</p>
-                            <p class="text-3xl font-bold text-theme">${timeValue}</p>
-                        </div>
-                    `;
-                }
-            });
-	            
+            // MENGAMBIL JADWAL SHOLAT DARI ALADHAN API (Methode: Kemenag Indonesia=11)
+            const prayerApiUrl = `https://api.aladhan.com/v1/timingsByCity/${formattedDate}?city=${locationName.split(',')[0]}&country=${locationName.split(',')[1]}&method=11`;
+            const prayerResponse = await fetch(prayerApiUrl);
+            const prayerData = await prayerResponse.json();
+            
+            if (prayerData.code === 200) {
+                const timings = prayerData.data.timings;
+                // Filter dan simpan waktu salat yang relevan ke variabel global
+                prayerTimesToday = {
+                    Fajr: timings.Fajr,
+                    Dhuhr: timings.Dhuhr,
+                    Asr: timings.Asr,
+                    Maghrib: timings.Maghrib,
+                    Isha: timings.Isha
+                };
+
+                // Menampilkan Jadwal ke UI
+                lokasiEl.textContent = `Jadwal Solat di: ${locationName}`;
+                container.innerHTML = ''; // Bersihkan kontainer
+                
+                const prayerNames = { Fajr: "Subuh", Dhuhr: "Zuhur", Asr: "Asar", Maghrib: "Magrib", Isha: "Isya", Sunrise: "Terbit" };
+                
+                // Urutan waktu yang ingin ditampilkan di UI
+                const displayOrder = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+
+                displayOrder.forEach(key => {
+                    const timeValue = timings[key];
+                    if (timeValue) {
+                        container.innerHTML += `
+                            <div class="futuristic-panel p-4 rounded-lg shadow-sm">
+                                <p class="text-lg font-semibold text-yellow-400">${prayerNames[key]}</p>
+                                <p class="text-3xl font-bold text-theme">${timeValue}</p>
+                            </div>
+                        `;
+                    }
+                });
+	    
 	            window.setupPrayerAlarm(); // Mulai alarm setelah data didapat
 	            
 	        } else {
@@ -1770,30 +2035,29 @@
 	        console.error("Error fetching prayer times:", error);
 	    }
 	}
-        window.handleAlarmToggleChange = function() {
-            const isChecked = document.getElementById('alarm-toggle').checked;
-            localStorage.setItem('alarmEnabled', isChecked);
-            if (isChecked) {
-                const audio = document.getElementById('azan-alarm');
-                audio.play().then(() => audio.pause()).catch(e => console.log("User interaction needed to play audio."));
-                window.setupPrayerAlarm();
-                window.showToast('info', 'Alarm Azan diaktifkan. Notifikasi akan muncul saat waktu salat tiba.');
-            } else {
-                if (alarmInterval) clearInterval(alarmInterval);
-                window.showToast('info', 'Alarm Azan dinonaktifkan.');
-            }
-        }
-	        window.setupPrayerAlarm = function() {
+    window.handleAlarmToggleChange = function() {
+        const isChecked = document.getElementById('alarm-toggle').checked;
+        localStorage.setItem('alarmEnabled', isChecked);
+        if (isChecked) {
+            const audio = document.getElementById('azan-alarm');
+            audio.play().then(() => audio.pause()).catch(e => console.log("User interaction needed to play audio."));
+            window.setupPrayerAlarm();
+            window.showToast('info', 'Alarm Azan diaktifkan. Notifikasi akan muncul saat waktu salat tiba.');
+        } else {
             if (alarmInterval) clearInterval(alarmInterval);
-            const alarmEnabled = localStorage.getItem('alarmEnabled') === 'true';
-            if (!alarmEnabled) return;
-            alarmInterval = setInterval(window.checkPrayerTimes, 30000);
-	        }
-	        window.checkPrayerTimes = function() {
+            window.showToast('info', 'Alarm Azan dinonaktifkan.');
+        }
+    }
+	    window.setupPrayerAlarm = function() {
+        if (alarmInterval) clearInterval(alarmInterval);
+        const alarmEnabled = localStorage.getItem('alarmEnabled') === 'true';
+        if (!alarmEnabled) return;
+        alarmInterval = setInterval(window.checkPrayerTimes, 30000);
+	    }
+	    window.checkPrayerTimes = function() {
 	    const now = new Date();
 	    // Gunakan format HH:MM (Contoh: 09:00)
 	    const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-    
 	    // Definisikan nama salat untuk dipanggil ke playAlarm
 	    const prayerNames = { Fajr: "Subuh", Dhuhr: "Zuhur", Asr: "Asar", Maghrib: "Magrib", Isha: "Isya" };
 
@@ -1804,8 +2068,8 @@
 	            window.playAlarm(prayerName);
 	        }
 	    }
-	}
-	        window.playAlarm = function(prayerName) {
+	    }
+	    window.playAlarm = function(prayerName) {
 	    const audio = document.getElementById('azan-alarm');
 	    const notification = document.getElementById('alarm-notification');
 	    const alarmText = document.getElementById('alarm-text');
@@ -1823,7 +2087,7 @@
 	    // Hapus 'hidden' dan tampilkan dengan transisi
 	    notification.classList.remove('hidden', 'translate-x-full', 'opacity-0');
 	    notification.classList.add('translate-x-0', 'opacity-100');
-    
+	    
 	    // 3. Mengirim Notifikasi Desktop (opsional)
 	    window.sendNotification("Waktu Salãt Tiba!", `Sudah masuk waktu salãt ${prayerName}. Mari tunaikan ibadah.`);
 
@@ -1831,15 +2095,15 @@
 	    setTimeout(() => {
 	        window.dismissAlarm();
 	    }, 15000); // Notifikasi akan hilang setelah 15 detik
-	}
-	        window.dismissAlarm = function() {
+	    }
+	    window.dismissAlarm = function() {
 	    const audio = document.getElementById('azan-alarm');
 	    const notification = document.getElementById('alarm-notification');
 	    
 	    // Hentikan audio
 	    audio.pause();
 	    audio.currentTime = 0;
-    
+	    
 	    // Sembunyikan notifikasi dengan transisi
 	    notification.classList.remove('translate-x-0', 'opacity-100');
 	    notification.classList.add('translate-x-full', 'opacity-0');
@@ -1848,446 +2112,535 @@
 	    setTimeout(() => {
 	        notification.classList.add('hidden');
 	    }, 300); 
-	}
-        window.showSantriListByKelas = function(kelas) {
-            // 1. Ambil data dengan kunci yang sudah diubah ke angka
-            const pondokId = sessionStorage.getItem('currentPondokId');
-            const pondokData = appDataCache[pondokId];
-            if (!pondokData) {
-                // Jika data tidak ada, kembali ke halaman utama
-                window.showPage('waliDashboard');
-                return;
-            }
-            
-            //  Tangani navigasi antar halaman utama
-            //    showPage akan menyembunyikan halaman detail dan menampilkan dashboard wali
+	    }
+    window.showSantriListByKelas = function(kelas) {
+        // 1. Ambil data dengan kunci yang sudah diubah ke angka
+        const pondokId = sessionStorage.getItem('currentPondokId');
+        const pondokData = appDataCache[pondokId];
+        if (!pondokData) {
+            // Jika data tidak ada, kembali ke halaman utama
             window.showPage('waliDashboard');
-            //  Tangani navigasi antar sub-halaman
-            //    Ini yang membedakan tampilan kelas dan tampilan daftar santri
-            const kelasListContainer = document.getElementById('kelas-list-container');
-            const santriListContainer = document.getElementById('santri-list-container');
-            if (kelasListContainer) kelasListContainer.classList.add('hidden');
-            if (santriListContainer) santriListContainer.classList.remove('hidden');
-            const filteredSantri = pondokData.santri.filter(s => s.kelas === kelas).sort((a, b) => a.nama.localeCompare(b.nama));
-            const currentClassTitle = document.getElementById('current-class-title');
-            const santriGallery = document.getElementById('santri-gallery');
-            if (currentClassTitle) {
-            currentClassTitle.textContent = `Daftar Santri Kelas ${kelas}`;
-            }
-
-            sessionStorage.setItem('currentWaliKelas', kelas);
-            if (santriGallery) {
-                santriGallery.innerHTML = '';
-                if (filteredSantri.length === 0) {
-                    santriGallery.innerHTML = '<p class="text-center text-theme-secondary py-10">Tidak ada santri di kelas ini.</p>';
-                } else {
-                    filteredSantri.forEach(santri => {
-                        const fotoUrl = santri.foto || 'https://placehold.co/400x400?text=No+Photo';
-                        const card = document.createElement('div');
-                        card.className = 'text-center cursor-pointer group santri-card';
-                        card.dataset.name = santri.nama;
-                        card.innerHTML = `<div class="relative"><img src="${fotoUrl}" alt="Foto ${santri.nama}" class="w-full h-auto aspect-square rounded-full object-cover transition-transform duration-300 group-hover:scale-105 border-4 border-yellow-400 shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=Error';"><div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 rounded-full transition-all duration-300 flex items-center justify-center"><span class="text-white opacity-0 group-hover:opacity-100 font-bold">Lihat Detail</span></div></div><p class="mt-4 font-semibold text-theme">${santri.nama}</p><p class="text-sm text-theme-secondary">Kelas ${santri.kelas}</p>`;
-                        card.onclick = () => window.showSantriDetail(santri.id);
-                        santriGallery.appendChild(card);
-                    });
-                }
-            }
+            return;
         }
-        window.editGuru = async function(guruIdString) {
-            const guruId = parseInt(guruIdString);
-            const pondokData = await window.fetchData();
-            if (!pondokData || !pondokData.guru) return;
-            const guru = pondokData.guru.find(g => g.id === guruId);
-            if (guru) {
-                document.getElementById('guru-id').value = guru.id;
-                document.getElementById('guru-nama').value = guru.nama;
-                document.getElementById('guru-kelas').value = guru.mengajar_kelas;
-                window.scrollTo(0, 0);
-            }
+        
+        //  Tangani navigasi antar halaman utama
+        //    showPage akan menyembunyikan halaman detail dan menampilkan dashboard wali
+        window.showPage('waliDashboard');
+        //  Tangani navigasi antar sub-halaman
+        //    Ini yang membedakan tampilan kelas dan tampilan daftar santri
+        const kelasListContainer = document.getElementById('kelas-list-container');
+        const santriListContainer = document.getElementById('santri-list-container');
+        if (kelasListContainer) kelasListContainer.classList.add('hidden');
+        if (santriListContainer) santriListContainer.classList.remove('hidden');
+        const filteredSantri = pondokData.santri.filter(s => s.kelas === kelas).sort((a, b) => a.nama.localeCompare(b.nama));
+        const currentClassTitle = document.getElementById('current-class-title');
+        const santriGallery = document.getElementById('santri-gallery');
+        if (currentClassTitle) {
+        currentClassTitle.textContent = `Daftar Santri Kelas ${kelas}`;
         }
 
-        window.deleteGuru = async function(guruIdString) {
-            const guruId = parseInt(guruIdString);
-            if (!confirm('Apakah Anda yakin ingin menghapus data guru ini?')) {
-                return;
-            }
-            const pondokId = sessionStorage.getItem('currentPondokId');
-            const saveSuccess = await window.saveData('/api/delete-guru', { pondokId, guruId });
-            if (saveSuccess) {
-                window.showToast('success', 'Data guru berhasil dihapus!');
-                window.renderGuruList();
+        sessionStorage.setItem('currentWaliKelas', kelas);
+        if (santriGallery) {
+            santriGallery.innerHTML = '';
+            if (filteredSantri.length === 0) {
+                santriGallery.innerHTML = '<p class="text-center text-theme-secondary py-10">Tidak ada santri di kelas ini.</p>';
             } else {
-                window.showToast('error', "Gagal menghapus data guru.");
+                filteredSantri.forEach(santri => {
+                    const fotoUrl = santri.foto || 'https://placehold.co/400x400?text=No+Photo';
+                    const card = document.createElement('div');
+                    card.className = 'text-center cursor-pointer group santri-card';
+                    card.dataset.name = santri.nama;
+                    card.innerHTML = `<div class="relative"><img src="${fotoUrl}" alt="Foto ${santri.nama}" class="w-full h-auto aspect-square rounded-full object-cover transition-transform duration-300 group-hover:scale-105 border-4 border-yellow-400 shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=Error';"><div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 rounded-full transition-all duration-300 flex items-center justify-center"><span class="text-white opacity-0 group-hover:opacity-100 font-bold">Lihat Detail</span></div></div><p class="mt-4 font-semibold text-theme">${santri.nama}</p><p class="text-sm text-theme-secondary">Kelas ${santri.kelas}</p>`;
+                    card.onclick = () => window.showSantriDetail(santri.id);
+                    santriGallery.appendChild(card);
+                });
             }
         }
+    }
+    window.editGuru = async function(guruIdString) {
+        const guruId = parseInt(guruIdString);
+        const pondokData = await window.fetchData();
+        if (!pondokData || !pondokData.guru) return;
+        const guru = pondokData.guru.find(g => g.id === guruId);
+        if (guru) {
+            document.getElementById('guru-id').value = guru.id;
+            document.getElementById('guru-nama').value = guru.nama;
+            document.getElementById('guru-kelas').value = guru.mengajar_kelas;
+            window.scrollTo(0, 0);
+        }
+    }
 
-        window.renderGuruHafalanTable = async function(santriId) {
-            const pondokData = await window.fetchData();
-            if (!pondokData || !pondokData.hafalan) return;
-            const tableBody = document.getElementById('guru-hafalan-table');
-            if (!tableBody) return;
-            tableBody.innerHTML = '';
-            const hafalanList = pondokData.hafalan.filter(h => h.santri_id === santriId).sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
-            if (hafalanList.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-theme-secondary">Belum ada setoran.</td></tr>';
-                return;
+    window.deleteGuru = async function(guruIdString) {
+        const guruId = parseInt(guruIdString);
+        if (!confirm('Apakah Anda yakin ingin menghapus data guru ini?')) {
+            return;
+        }
+        const pondokId = sessionStorage.getItem('currentPondokId');
+        const saveSuccess = await window.saveData('/api/delete-guru', { pondokId, guruId });
+        if (saveSuccess) {
+            window.showToast('success', 'Data guru berhasil dihapus!');
+            window.renderGuruList();
+        } else {
+            window.showToast('error', "Gagal menghapus data guru.");
+        }
+    }
+
+    window.renderGuruHafalanTable = async function(santriId) {
+        const pondokData = await window.fetchData();
+        if (!pondokData || !pondokData.hafalan) return;
+        const tableBody = document.getElementById('guru-hafalan-table');
+        if (!tableBody) return;
+        tableBody.innerHTML = '';
+        const hafalanList = pondokData.hafalan.filter(h => h.santri_id === santriId).sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
+        if (hafalanList.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-theme-secondary">Belum ada setoran.</td></tr>';
+            return;
+        }
+        hafalanList.forEach(h => {
+            const row = tableBody.insertRow();
+            row.innerHTML = `<td class="py-2 px-4 text-theme">${h.tanggal}</td><td class="py-2 px-4 font-medium text-theme">${h.setoran}</td><td class="py-2 px-4 text-theme">${h.jenis}</td><td class="py-2 px-4 text-theme">${h.penilaian}</td><td class="py-2 px-4"><button onclick="window.deleteHafalan('${h.id}', '${santriId}')" class="text-red-500 hover:text-red-700">Hapus</button></td>`;
+        });
+    }
+    window.deleteHafalan = async function(hafalanIdString, santriIdString) {
+        const hafalanId = parseInt(hafalanIdString);
+        const santriId = parseInt(santriIdString);
+        if (!confirm('Apakah Anda yakin ingin menghapus setoran hafalan ini?')) {
+            return;
+        }
+        const pondokId = sessionStorage.getItem('currentPondokId');
+        const saveSuccess = await window.saveData('/api/delete-hafalan', { pondokId, hafalanId });
+        if (saveSuccess) {
+            window.showToast('success', 'Setoran hafalan berhasil dihapus!');
+            window.renderGuruHafalanTable(santriId);
+        } else {
+            window.showToast('error', "Gagal menghapus setoran hafalan.");
+        }
+    }
+    
+    window.updateTotalHafalan = async function() {
+        // Ambil ID santri dari input tersembunyi
+        const santriId = document.getElementById('santri-id').value;
+        
+        // Ambil nilai total hafalan juz dari input
+        const totalHafalanJuzInput = document.getElementById('total-hafalan-juz-guru').value;
+
+        console.log("ID Santri saat ini:", santriId);
+        console.log("Total Hafalan Juz:", totalHafalanJuzInput);
+
+        // Periksa apakah ID santri dan nilai total hafalan juz ada
+        if (!santriId || totalHafalanJuzInput === "") {
+            console.error("ID Santri atau total hafalan juz tidak ditemukan.");
+            window.showToast('error', "ID Santri atau total hafalan juz tidak ditemukan.");
+            return;
+        }
+        
+        // Pastikan nilai yang dimasukkan adalah angka
+        const totalHafalanJuz = parseInt(totalHafalanJuzInput);
+        if (isNaN(totalHafalanJuz)) {
+            console.error("Total Hafalan Juz harus berupa angka.");
+            window.showToast('error', "Total Hafalan Juz harus berupa angka.");
+            return;
+        }
+        
+        const santri = (await window.fetchData()).santri.find(s => s.id === santriId);
+        if (!santri) {
+            window.showToast('error', "Santri tidak ditemukan.");
+            return;
+        }
+
+        const santriData = {
+            ...santri,
+            total_hafalan_juz: totalHafalanJuz,
+            target: { ...santri.target }
+        };
+
+        const saveSuccess = await window.saveData('/api/save-santri', { pondokId: sessionStorage.getItem('currentPondokId'), santriData: santriData });
+        if (saveSuccess) {
+            console.log("Total hafalan berhasil diperbarui!");
+            window.showToast('success', "Total hafalan berhasil diperbarui!");
+            // Perbarui cache data setelah perubahan
+            await window.fetchData();
+        } else {
+            console.error("Gagal memperbarui total hafalan.");
+            window.showToast('error', "Gagal memperbarui total hafalan.");
+        }
+    }
+
+
+    // --- INITIALIZATION DAN EVENT LISTENERS ---
+    document.addEventListener('DOMContentLoaded', () => {
+        // Dark/Light Mode
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+        const setInitialTheme = () => {
+            let theme = localStorage.getItem('theme');
+            if (!theme) {
+                theme = prefersDark.matches ? 'dark' : 'light';
             }
-            hafalanList.forEach(h => {
-                const row = tableBody.insertRow();
-                row.innerHTML = `<td class="py-2 px-4 text-theme">${h.tanggal}</td><td class="py-2 px-4 font-medium text-theme">${h.setoran}</td><td class="py-2 px-4 text-theme">${h.jenis}</td><td class="py-2 px-4 text-theme">${h.penilaian}</td><td class="py-2 px-4"><button onclick="window.deleteHafalan('${h.id}', '${santriId}')" class="text-red-500 hover:text-red-700">Hapus</button></td>`;
+            document.body.classList.toggle('dark-mode', theme === 'dark');
+            themeIcon.textContent = theme === 'dark' ? '🌙' : '🌞';
+        };
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            themeIcon.textContent = isDarkMode ? '🌙' : '🌞';
+            if(myChart) {
+                const textColor = getComputedStyle(document.body).getPropertyValue('--graph-text-color');
+                const gridColor = getComputedStyle(document.body).getPropertyValue('--graph-grid-color');
+                const colorMonthlyTarget = isDarkMode ? '#6B7280' : '#4B5563'; // Abu-abu Tua
+
+                myChart.options.scales.x.ticks.color = textColor;
+                myChart.options.scales.y.ticks.color = textColor;
+                myChart.options.scales.x.grid.color = gridColor;
+                myChart.options.scales.y.grid.color = gridColor;
+                myChart.options.plugins.legend.labels.color = textColor;
+                
+                // Update warna dataset target bulanan
+                const targetDataset = myChart.data.datasets.find(d => d.label.includes('Target Bulanan'));
+                if (targetDataset) {
+                    targetDataset.borderColor = colorMonthlyTarget;
+                }
+                
+                myChart.update();
+            }
+        });
+        setInitialTheme();
+        // End Dark/Light Mode
+
+        // --- Inisialisasi awal
+        
+        const alarmToggle = document.getElementById('alarm-toggle');
+        if (alarmToggle) {
+            alarmToggle.checked = localStorage.getItem('alarmEnabled') === 'true';
+            alarmToggle.addEventListener('change', window.handleAlarmToggleChange);
+        }
+        
+        const genderedKelas = [];
+        for (let i = 65; i <= 90; i++) {
+            const letter = String.fromCharCode(i);
+            genderedKelas.push(`Kelas ${letter} putra`, `Kelas ${letter} putri`);
+        }
+        
+        const kelasSelectSantri = document.getElementById('kelas');
+        if (kelasSelectSantri) {
+            kelasSelectSantri.innerHTML = '';
+            genderedKelas.forEach(kelas => {
+                kelasSelectSantri.add(new Option(kelas, kelas));
             });
         }
-        window.deleteHafalan = async function(hafalanIdString, santriIdString) {
-            const hafalanId = parseInt(hafalanIdString);
-            const santriId = parseInt(santriIdString);
-            if (!confirm('Apakah Anda yakin ingin menghapus setoran hafalan ini?')) {
-                return;
+        const kelasSelectGuru = document.getElementById('guru-kelas');
+        if (kelasSelectGuru) {
+            kelasSelectGuru.innerHTML = '';
+            genderedKelas.forEach(kelas => {
+                kelasSelectGuru.add(new Option(kelas, kelas));
+            });
+        }
+
+        const targetHarianSelect = document.getElementById('form-target-harian');
+        if (targetHarianSelect) {
+            targetHarianSelect.innerHTML = '';
+            for (let i = 1; i <= 20; i++) {
+                targetHarianSelect.add(new Option(`${i} Halaman`, `${i} Halaman`));
             }
-            const pondokId = sessionStorage.getItem('currentPondokId');
-            const saveSuccess = await window.saveData('/api/delete-hafalan', { pondokId, hafalanId });
-            if (saveSuccess) {
-                window.showToast('success', 'Setoran hafalan berhasil dihapus!');
-                window.renderGuruHafalanTable(santriId);
-            } else {
-                window.showToast('error', "Gagal menghapus setoran hafalan.");
+        }
+        const targetMingguanSelect = document.getElementById('form-target-mingguan');
+        if (targetMingguanSelect) {
+            targetMingguanSelect.innerHTML = '';
+            for (let i = 1; i <= 20; i++) {
+                targetMingguanSelect.add(new Option(`${i} Halaman`, `${i} Halaman`));
             }
         }
         
-        window.updateTotalHafalan = async function() {
-            // Ambil ID santri dari input tersembunyi
-            const santriId = document.getElementById('santri-id').value;
-            
-            // Ambil nilai total hafalan juz dari input
-            const totalHafalanJuzInput = document.getElementById('total-hafalan-juz-guru').value;
+        // --- EVENT LISTENER BARU UNTUK UNGGAH VIDEO ---
+        const videoFileEl = document.getElementById('video-file');
+        const durationStatusEl = document.getElementById('video-duration-status');
+        const uploadSubmitBtn = document.getElementById('upload-submit-btn');
 
-            console.log("ID Santri saat ini:", santriId);
-            console.log("Total Hafalan Juz:", totalHafalanJuzInput);
-
-            // Periksa apakah ID santri dan nilai total hafalan juz ada
-            if (!santriId || totalHafalanJuzInput === "") {
-                console.error("ID Santri atau total hafalan juz tidak ditemukan.");
-                window.showToast('error', "ID Santri atau total hafalan juz tidak ditemukan.");
-                return;
-            }
-            
-            // Pastikan nilai yang dimasukkan adalah angka
-            const totalHafalanJuz = parseInt(totalHafalanJuzInput);
-            if (isNaN(totalHafalanJuz)) {
-                console.error("Total Hafalan Juz harus berupa angka.");
-                window.showToast('error', "Total Hafalan Juz harus berupa angka.");
-                return;
-            }
-            
-            const santri = (await window.fetchData()).santri.find(s => s.id === santriId);
-            if (!santri) {
-                window.showToast('error', "Santri tidak ditemukan.");
-                return;
-            }
-
-            const santriData = {
-                ...santri,
-                total_hafalan_juz: totalHafalanJuz,
-                target: { ...santri.target }
-            };
-
-            const saveSuccess = await window.saveData('/api/save-santri', { pondokId: sessionStorage.getItem('currentPondokId'), santriData: santriData });
-            if (saveSuccess) {
-                console.log("Total hafalan berhasil diperbarui!");
-                window.showToast('success', "Total hafalan berhasil diperbarui!");
-                // Perbarui cache data setelah perubahan
-                await window.fetchData();
-            } else {
-                console.error("Gagal memperbarui total hafalan.");
-                window.showToast('error', "Gagal memperbarui total hafalan.");
-            }
-        }
-
-
-        // --- INITIALIZATION ---
-        document.addEventListener('DOMContentLoaded', () => {
-            // Dark/Light Mode
-            const themeToggleBtn = document.getElementById('theme-toggle');
-            const themeIcon = document.getElementById('theme-icon');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-
-            const setInitialTheme = () => {
-                let theme = localStorage.getItem('theme');
-                if (!theme) {
-                    theme = prefersDark.matches ? 'dark' : 'light';
-                }
-                document.body.classList.toggle('dark-mode', theme === 'dark');
-                themeIcon.textContent = theme === 'dark' ? '🌙' : '🌞';
-            };
-
-            themeToggleBtn.addEventListener('click', () => {
-                document.body.classList.toggle('dark-mode');
-                const isDarkMode = document.body.classList.contains('dark-mode');
-                localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-                themeIcon.textContent = isDarkMode ? '🌙' : '🌞';
-                if(myChart) {
-                    myChart.options.scales.x.ticks.color = getComputedStyle(document.body).getPropertyValue('--graph-text-color');
-                    myChart.options.scales.y.ticks.color = getComputedStyle(document.body).getPropertyValue('--graph-text-color');
-                    myChart.options.scales.x.grid.color = getComputedStyle(document.body).getPropertyValue('--graph-grid-color');
-                    myChart.options.scales.y.grid.color = getComputedStyle(document.body).getPropertyValue('--graph-grid-color');
-                    myChart.options.plugins.legend.labels.color = getComputedStyle(document.body).getPropertyValue('--graph-text-color');
-                    myChart.data.datasets[0].borderColor = getComputedStyle(document.body).getPropertyValue('--accent-color');
-                    const ctx = myChart.canvas.getContext('2d');
-                    const newGradient = ctx.createLinearGradient(0, 0, 0, 400);
-                    const isDark = document.body.classList.contains('dark-mode');
-                    if (isDark) {
-                         newGradient.addColorStop(0, 'rgba(255, 215, 0, 0.4)');
-                         newGradient.addColorStop(1, 'rgba(255, 215, 0, 0.1)');
-                         myChart.data.datasets[0].shadowColor = 'rgba(255, 215, 0, 0.5)';
-                    } else {
-                         newGradient.addColorStop(0, 'rgba(109, 40, 217, 0.6)');
-                         newGradient.addColorStop(1, 'rgba(37, 99, 235, 0.2)');
-                         myChart.data.datasets[0].shadowColor = 'rgba(0, 0, 0, 0.2)';
+        if (videoFileEl) {
+            videoFileEl.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const tempVideo = document.createElement('video');
+                    tempVideo.preload = 'metadata';
+                    tempVideo.onloadedmetadata = function() {
+                        window.URL.revokeObjectURL(tempVideo.src);
+                        const duration = tempVideo.duration;
+                        if (duration > 120) { // Max 2 minutes = 120 seconds
+                            durationStatusEl.textContent = 'Durasi video terlalu panjang: ' + Math.floor(duration) + ' detik. Maksimal 120 detik.';
+                            durationStatusEl.classList.remove('hidden');
+                            uploadSubmitBtn.disabled = true;
+                        } else {
+                            durationStatusEl.classList.add('hidden');
+                            uploadSubmitBtn.disabled = false;
+                        }
                     }
-                    myChart.data.datasets[0].backgroundColor = newGradient;
-                    myChart.update();
+                    tempVideo.src = URL.createObjectURL(file);
+                } else {
+                    uploadSubmitBtn.disabled = true;
                 }
             });
-            setInitialTheme();
-            // End Dark/Light Mode
+        }
 
-            // --- Inisialisasi awal
-            
-            const alarmToggle = document.getElementById('alarm-toggle');
-            if (alarmToggle) {
-                alarmToggle.checked = localStorage.getItem('alarmEnabled') === 'true';
-                alarmToggle.addEventListener('change', window.handleAlarmToggleChange);
-            }
-            
-            const genderedKelas = [];
-            for (let i = 65; i <= 90; i++) {
-                const letter = String.fromCharCode(i);
-                genderedKelas.push(`Kelas ${letter} putra`, `Kelas ${letter} putri`);
-            }
-            
-            const kelasSelectSantri = document.getElementById('kelas');
-            if (kelasSelectSantri) {
-                kelasSelectSantri.innerHTML = '';
-                genderedKelas.forEach(kelas => {
-                    kelasSelectSantri.add(new Option(kelas, kelas));
-                });
-            }
-            const kelasSelectGuru = document.getElementById('guru-kelas');
-            if (kelasSelectGuru) {
-                kelasSelectGuru.innerHTML = '';
-                genderedKelas.forEach(kelas => {
-                    kelasSelectGuru.add(new Option(kelas, kelas));
-                });
-            }
-
-            const targetHarianSelect = document.getElementById('form-target-harian');
-            if (targetHarianSelect) {
-                targetHarianSelect.innerHTML = '';
-                for (let i = 1; i <= 20; i++) {
-                    targetHarianSelect.add(new Option(`${i} Halaman`, `${i} Halaman`));
+        const videoUploadForm = document.getElementById('video-upload-form');
+        if(videoUploadForm) {
+            videoUploadForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                uploadSubmitBtn.disabled = true;
+                
+                const videoFile = document.getElementById('video-file').files[0];
+                const caption = document.getElementById('video-caption').value;
+                const pondokId = sessionStorage.getItem('currentPondokId');
+                const authorName = sessionStorage.getItem('pondokName'); 
+                
+                if (!videoFile || !pondokId) {
+                     window.showToast('error', 'File video atau ID Pondok tidak ditemukan.');
+                     uploadSubmitBtn.disabled = false;
+                     return;
                 }
-            }
-            const targetMingguanSelect = document.getElementById('form-target-mingguan');
-            if (targetMingguanSelect) {
-                targetMingguanSelect.innerHTML = '';
-                for (let i = 1; i <= 20; i++) {
-                    targetMingguanSelect.add(new Option(`${i} Halaman`, `${i} Halaman`));
+                
+                const formData = new FormData();
+                formData.append('video', videoFile);
+                formData.append('caption', caption);
+                formData.append('pondokId', pondokId);
+                formData.append('authorName', authorName);
+                
+                try {
+                    const response = await fetch('/api/videos/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        window.showToast('success', 'Video berhasil diunggah!');
+                        document.getElementById('upload-modal').classList.add('hidden');
+                        window.renderVideoFeed('guru'); // Refresh feed
+                    } else {
+                        window.showToast('error', 'Gagal mengunggah video: ' + result.message);
+                    }
+                } catch (error) {
+                    window.showToast('error', 'Error koneksi saat mengunggah video.');
+                } finally {
+                    uploadSubmitBtn.disabled = false;
                 }
-            }
-
-            // --- Semua Event Listener ---
-            const pondokRegisterForm = document.getElementById('pondok-register-form');
-            if (pondokRegisterForm) {
-                pondokRegisterForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    const pondokId = document.getElementById('register-pondok-id').value.trim();
-                    const password = document.getElementById('register-password').value;
-                    const errorEl = document.getElementById('register-error');
-                    if (!pondokId.includes('#') || password.length < 6) {
-                        errorEl.textContent = "Format Nama Pondok salah atau kata sandi terlalu pendek.";
-                        errorEl.classList.remove('hidden');
-                        return;
-                    }
-                    const pondokName = pondokId.split('#')[0].trim();
-                    try {
-                        const response = await fetch('/api/register', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ pondokId, password, pondokName })
-                        });
-                        const result = await response.json();
-                        if (result.success) {
-                            window.showToast('success', `Pendaftaran berhasil! Kode Akses Unik Anda: ${result.accessCode}. Salin kode ini dan berikan kepada wali santri.`);
-                            window.showPage('pondokLogin');
-                        } else {
-                            errorEl.textContent = result.message;
-                            errorEl.classList.remove('hidden');
-                        }
-                    } catch (error) {
-                        errorEl.textContent = "Terjadi kesalahan saat mendaftar.";
-                        errorEl.classList.remove('hidden');
-                    }
-                });
-            }
-
-            const pondokLoginForm = document.getElementById('pondok-login-form');
-            if (pondokLoginForm) {
-                pondokLoginForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    const pondokId = document.getElementById('login-pondok-id').value.trim();
-                    const password = document.getElementById('login-password').value;
-                    const errorEl = document.getElementById('pondok-login-error');
-                    try {
-                        const response = await fetch('/api/login', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ pondokId, password })
-                        });
-                        const result = await response.json();
-                        if (result.success) {
-                            sessionStorage.setItem('currentPondokId', result.pondokDbId);
-                            sessionStorage.setItem('pondokName', result.pondokName);
-                            sessionStorage.setItem('role', 'guru');
-                            window.checkLoginState();
-                        } else {
-                            errorEl.textContent = result.message;
-                            errorEl.classList.remove('hidden');
-                        }
-                    } catch (error) {
-                        errorEl.textContent = "Terjadi kesalahan saat login.";
-                        errorEl.classList.remove('hidden');
-                    }
-                });
-            }
-
-            const accessCodeForm = document.getElementById('access-code-form');
-            if (accessCodeForm) {
-                accessCodeForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const accessCode = document.getElementById('access-code').value.trim();
-                    const errorEl = document.getElementById('access-code-error');
-                    errorEl.classList.add('hidden');
-                    try {
-                        const response = await fetch('/api/wali-login', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ accessCode })
-                        });
-                        const result = await response.json();
-                        if (result.success) {
-                            sessionStorage.setItem('currentPondokId', result.pondokDbId);
-                            sessionStorage.setItem('pondokName', result.pondokName);
-                            sessionStorage.setItem('role', 'wali');
-                            window.checkLoginState();
-                        } else {
-                            errorEl.textContent = result.message;
-                            errorEl.classList.remove('hidden');
-                        }
-                    } catch (error) {
-                        console.error("Error:", error);
-                        errorEl.textContent = "Terjadi kesalahan koneksi. Silakan coba lagi.";
-                        errorEl.classList.remove('hidden');
-                    }
-                });
-            }
-
-            const santriForm = document.getElementById('santri-form');
-            if (santriForm) {
-                santriForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    const form = this;
-                    const pondokId = sessionStorage.getItem('currentPondokId');
-                    const fotoInput = document.getElementById('foto');
-                    const currentPhotoUrl = document.getElementById('current-photo-url').value;
-                    let fotoUrl = currentPhotoUrl || null;
-                    if (fotoInput.files.length > 0) {
-                        fotoUrl = await window.uploadFile(fotoInput.files[0]);
-                        if (!fotoUrl) return;
-                    }
-                    const santriId = document.getElementById('santri-id').value ? parseInt(document.getElementById('santri-id').value) : null;
-                    const nama = document.getElementById('nama').value;
-                    const kelas = document.getElementById('kelas').value;
-                    
-                    const totalHafalanJuz = document.getElementById('total-hafalan-juz-guru').value;
-                    const harian = document.getElementById('form-target-harian').value;
-                    const mingguan = document.getElementById('form-target-mingguan').value;
-                    const bulanan = document.getElementById('form-target-bulanan').value;
-                    const tahunan = document.getElementById('form-target-tahunan').value;
-                    const tercapai = document.querySelector('input[name="tercapai"]:checked')?.value === 'true';
-                    
-                    const santriData = {
-                        id: santriId,
-                        nama: nama,
-                        kelas: kelas,
-                        foto: fotoUrl,
-                        total_hafalan_juz: totalHafalanJuz,
-                        target: { harian, mingguan, bulanan, tahunan, tercapai }
-                    };
-                    const saveSuccess = await window.saveData('/api/save-santri', { pondokId: pondokId, santriData: santriData });
-                    if (saveSuccess) {
-                        window.showToast('success', 'Data santri berhasil disimpan!');
-                        // Perbarui cache data setelah perubahan
-                        await window.fetchData();
-                        window.backToGuruDashboard();
+            });
+        }
+        
+        // --- Semua Event Listener yang Sudah Ada (LANJUTKAN DI BAWAH INI) ---
+        const pondokRegisterForm = document.getElementById('pondok-register-form');
+        if (pondokRegisterForm) {
+            pondokRegisterForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const pondokId = document.getElementById('register-pondok-id').value.trim();
+                const password = document.getElementById('register-password').value;
+         
+                const errorEl = document.getElementById('register-error');
+                if (!pondokId.includes('#') || password.length < 6) {
+                    errorEl.textContent = "Format Nama Pondok salah atau kata sandi terlalu pendek.";
+                    errorEl.classList.remove('hidden');
+      
+                    return;
+                }
+                const pondokName = pondokId.split('#')[0].trim();
+                try {
+              
+                    const response = await fetch('/api/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        
+                        body: JSON.stringify({ pondokId, password, pondokName })
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        window.showToast('success', `Pendaftaran berhasil! Kode Akses Unik Anda: ${result.accessCode}. Salin kode ini dan berikan kepada wali santri.`);
+                        window.showPage('pondokLogin');
                     } else {
-                        window.showToast('error', "Gagal menyimpan data di server.");
+                        errorEl.textContent = result.message;
+                        errorEl.classList.remove('hidden');
                     }
-                });
-            }
+                } catch (error) {
+                    errorEl.textContent = "Terjadi kesalahan saat mendaftar.";
+                    errorEl.classList.remove('hidden');
+                }
+            });
+        }
 
-            const guruForm = document.getElementById('guru-form');
-            if (guruForm) {
-                guruForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    const pondokId = sessionStorage.getItem('currentPondokId');
-                    if (!pondokId) return;
-                    const guruId = document.getElementById('guru-id').value ? parseInt(document.getElementById('guru-id').value) : null;
-                    const nama = document.getElementById('guru-nama').value;
-                    const kelas = document.getElementById('guru-kelas').value;
-                    const guruData = { id: guruId, nama, mengajar_kelas: kelas };
-                    const saveSuccess = await window.saveData('/api/save-guru', { pondokId, guruData });
-                    if (saveSuccess) {
-                        window.renderGuruList();
-                        this.reset();
-                        document.getElementById('guru-id').value = '';
-                        window.showToast('success', 'Data guru berhasil disimpan!');
+        const pondokLoginForm = document.getElementById('pondok-login-form');
+        if (pondokLoginForm) {
+            pondokLoginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const pondokId = document.getElementById('login-pondok-id').value.trim();
+                const password = document.getElementById('login-password').value;
+         
+                const errorEl = document.getElementById('pondok-login-error');
+                try {
+                    const response = await fetch('/api/login', {
+                        method: 'POST',
+       
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ pondokId, password })
+                    });
+                   
+                    const result = await response.json();
+                    if (result.success) {
+                        sessionStorage.setItem('currentPondokId', result.pondokDbId);
+                        sessionStorage.setItem('pondokName', result.pondokName);
+                        sessionStorage.setItem('role', 'guru');
+                        window.checkLoginState();
                     } else {
-                        window.showToast('error', "Gagal menyimpan data guru.");
+                        errorEl.textContent = result.message;
+                        errorEl.classList.remove('hidden');
                     }
-                });
-            }
-            
-            const hafalanForm = document.getElementById('hafalan-form');
-            if (hafalanForm) {
-                hafalanForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    const pondokId = sessionStorage.getItem('currentPondokId');
-                    if (!pondokId) return;
-                    const santriId = parseInt(document.getElementById('santri-id').value);
-                    const newHafalan = {
-                        tanggal: document.getElementById('hafalan-tanggal').value,
-                        setoran: document.getElementById('hafalan-setoran').value,
-                        jenis: document.getElementById('hafalan-jenis').value,
-                        penilaian: document.getElementById('hafalan-penilaian').value,
-                        santriId: santriId
-                    };
-                    const saveSuccess = await window.saveData('/api/save-hafalan', { pondokId, hafalanData: newHafalan });
-                    if (saveSuccess) {
-                        const santri = (await window.fetchData()).santri.find(s => s.id === santriId);
-                        window.sendNotificationToGuardian(santri.nama, newHafalan.setoran, newHafalan.penilaian);
-                        window.showToast('success', 'Data hafalan berhasil disimpan!');
-                        window.renderGuruHafalanTable(santriId);
-                        this.reset();
-                    } else {
-                        window.showToast('error', "Gagal menambahkan setoran hafalan.");
-                    }
-                });
-            }
-            
-            
+                } catch (error) {
+                    errorEl.textContent = "Terjadi kesalahan saat login.";
+                    errorEl.classList.remove('hidden');
+                }
+            });
+        }
 
-            // --- Panggil Fungsi Inisialisasi Aplikasi ---
-            window.playWelcomeAnimation();
-        });
-    </script>
+        const accessCodeForm = document.getElementById('access-code-form');
+        if (accessCodeForm) {
+            accessCodeForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const accessCode = document.getElementById('access-code').value.trim();
+                const errorEl = document.getElementById('access-code-error');
+        
+                errorEl.classList.add('hidden');
+                try {
+                    const response = await fetch('/api/wali-login', {
+                        method: 'POST',
+         
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ accessCode })
+                    });
+                    const result 
+                        = await response.json();
+                    if (result.success) {
+                        sessionStorage.setItem('currentPondokId', result.pondokDbId);
+                        sessionStorage.setItem('pondokName', result.pondokName);
+          
+                        sessionStorage.setItem('role', 'wali');
+                        window.checkLoginState();
+                    } else {
+                        errorEl.textContent = result.message;
+                        errorEl.classList.remove('hidden');
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    errorEl.textContent = "Terjadi kesalahan koneksi. Silakan coba lagi.";
+                    errorEl.classList.remove('hidden');
+                }
+            });
+        }
+
+        const santriForm = document.getElementById('santri-form');
+        if (santriForm) {
+            santriForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const form = this;
+                const pondokId = sessionStorage.getItem('currentPondokId');
+         
+                const fotoInput = document.getElementById('foto');
+                const currentPhotoUrl = document.getElementById('current-photo-url').value;
+                let fotoUrl = currentPhotoUrl || null;
+                if (fotoInput.files.length > 0) {
+              
+                    fotoUrl = await window.uploadFile(fotoInput.files[0]);
+                    if (!fotoUrl) return;
+                }
+                const santriId = document.getElementById('santri-id').value ? parseInt(document.getElementById('santri-id').value) : null;
+              
+                const nama = document.getElementById('nama').value;
+                const kelas = document.getElementById('kelas').value;
+                
+                const totalHafalanJuz = document.getElementById('total-hafalan-juz-guru').value;
+                const harian = document.getElementById('form-target-harian').value;
+                const mingguan = document.getElementById('form-target-mingguan').value;
+                const bulanan = document.getElementById('form-target-bulanan').value;
+                const tahunan = document.getElementById('form-target-tahunan').value;
+                // Ambil nilai radio button. Perhatikan bahwa nilai yang disimpan adalah string 'true' atau 'false'
+                const tercapaiValue = document.querySelector('input[name="tercapai"]:checked')?.value;
+                const tercapai = tercapaiValue === 'true'; // Konversi ke boolean
+                
+                const santriData = {
+                    id: santriId,
+                   
+                    nama: nama,
+                    kelas: kelas,
+                    foto: fotoUrl,
+                    total_hafalan_juz: totalHafalanJuz,
+                   
+                    target: { harian, mingguan, bulanan, tahunan },
+                    tercapai: tercapai // Simpan sebagai boolean
+                };
+
+                const saveSuccess = await window.saveData('/api/save-santri', { pondokId: pondokId, santriData: santriData });
+                if (saveSuccess) {
+                    window.showToast('success', 'Data santri berhasil disimpan!');
+                    // Perbarui cache data setelah perubahan
+                    await window.fetchData();
+                    window.backToGuruDashboard();
+                } else {
+                    window.showToast('error', "Gagal menyimpan data di server.");
+                }
+            });
+        }
+
+        const guruForm = document.getElementById('guru-form');
+        if (guruForm) {
+            guruForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const pondokId = sessionStorage.getItem('currentPondokId');
+                if (!pondokId) return;
+                const guruId = document.getElementById('guru-id').value ? parseInt(document.getElementById('guru-id').value) : null;
+                const nama = document.getElementById('guru-nama').value;
+                const kelas = document.getElementById('guru-kelas').value;
+                const guruData = { id: guruId, nama, mengajar_kelas: kelas };
+                const saveSuccess = await window.saveData('/api/save-guru', { pondokId, guruData });
+                if (saveSuccess) {
+                    window.renderGuruList();
+                    this.reset();
+                    document.getElementById('guru-id').value = '';
+                    window.showToast('success', 'Data guru berhasil disimpan!');
+                } else {
+                    window.showToast('error', "Gagal menyimpan data guru.");
+                }
+            });
+        }
+        
+        const hafalanForm = document.getElementById('hafalan-form');
+        if (hafalanForm) {
+            hafalanForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const pondokId = sessionStorage.getItem('currentPondokId');
+                if (!pondokId) return;
+                const santriId = parseInt(document.getElementById('santri-id').value);
+                const newHafalan = {
+                    tanggal: document.getElementById('hafalan-tanggal').value,
+                    setoran: document.getElementById('hafalan-setoran').value,
+                    jenis: document.getElementById('hafalan-jenis').value,
+                    penilaian: document.getElementById('hafalan-penilaian').value,
+                    santriId: santriId
+                };
+                const saveSuccess = await window.saveData('/api/save-hafalan', { pondokId, hafalanData: newHafalan });
+                if (saveSuccess) {
+                    const santri = (await window.fetchData()).santri.find(s => s.id === santriId);
+                    window.sendNotificationToGuardian(santri.nama, newHafalan.setoran, newHafalan.penilaian);
+                    window.showToast('success', 'Data hafalan berhasil disimpan!');
+                    window.renderGuruHafalanTable(santriId);
+                    this.reset();
+                } else {
+                    window.showToast('error', "Gagal menambahkan setoran hafalan.");
+                }
+            });
+        }
+        
+        // --- Panggil Fungsi Inisialisasi Aplikasi ---
+        window.playWelcomeAnimation();
+    });
+</script>
   </body>
 </html>
