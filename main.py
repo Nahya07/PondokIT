@@ -331,7 +331,7 @@ def save_santri():
             total_juz = santri_data.get('total_hafalan_juz')
             santri_to_update.total_hafalan_juz = int(total_juz) if total_juz is not None and str(total_juz).isdigit() else None
             
-            santri_to_update.tercapai = santri_data['target']['tercapai']
+            santri_to_update.tercapai = santri_data['tercapai'] 
             santri_to_update.target_harian = santri_data['target']['harian']
             santri_to_update.target_mingguan = santri_data['target']['mingguan']
             santri_to_update.target_bulanan = santri_data['target']['bulanan']
@@ -345,7 +345,7 @@ def save_santri():
                 nama=santri_data['nama'],
                 kelas=santri_data['kelas'],
                 foto=santri_data.get('foto'),
-                tercapai=santri_data['target']['tercapai'],
+                tercapai=santri_data['tercapai'],
                 total_hafalan_juz=total_juz,
                 target_harian=santri_data['target']['harian'],
                 target_mingguan=santri_data['target']['mingguan'],
