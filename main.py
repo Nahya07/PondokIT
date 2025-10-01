@@ -404,7 +404,42 @@ def delete_santri():
         return jsonify({'success': True, 'message': 'Data santri berhasil dihapus!'})
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
+# --- Rute Unggah File Statis (Khusus FOTO Santri) ---
+@app.route('/api/upload-file', methods=['POST'])
+def upload_file():
+    # Folder untuk FOTO (langsung di uploads)
+    UPLOAD_FOLDER = 'static/uploads'
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+    if 'file' not in request.files:
+        return jsonify({'success': False, 'message': 'Tidak ada file di request'}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'success': False, 'message': 'File tidak dipilih.'}), 400
+
+    if not allowed_file(file.filename):
+        return jsonify({'success': False, 'message': 'Jenis file tidak diizinkan.'}), 400
+
+    try:
+        # Gunakan nama file asli (disanitasi) untuk mendapatkan ekstensi
+        filename_secure = secure_filename(file.filename)
+        ext = filename_secure.rsplit('.', 1)[1].lower()
+        
+        # Buat nama file unik: Timestamp milidetik + ekstensi (Ini aman dan unik)
+        unique_id = int(time.time() * 1000) 
+        new_filename = f"{unique_id}.{ext}"
+
+        filepath = os.path.join(UPLOAD_FOLDER, new_filename)
+        file.save(filepath)
+        
+        # URL yang akan disimpan ke database (Ini yang dicari Nginx)
+        file_url = f'/static/uploads/{new_filename}'
+        
+        return jsonify({'success': True, 'file_url': file_url, 'message': 'File berhasil diunggah!'})
+
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'Gagal mengunggah: {str(e)}'}), 500
 # --- Rute Manajemen Hafalan ---
 @app.route('/api/save-hafalan', methods=['POST'])
 def save_hafalan():
